@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  saffold-api-db:
+  submit-api-db:
     image: postgres
     volumes:
       - db-data:/var/lib/postgresql/data2
