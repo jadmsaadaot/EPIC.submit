@@ -57,6 +57,10 @@ jobs:
 
      runs-on: ubuntu-20.04
 
+     strategy:
+       matrix:
+         python-version: [3.9]
+
      services:
       postgres:
         image: postgres:12
@@ -103,6 +107,9 @@ jobs:
   build:
     # needs: PyTest
     runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        python-version: [3.9]
     name: Build
     steps:
       - uses: actions/checkout@v2
