@@ -52,8 +52,8 @@ class Users(Resource):
         return created_user, HTTPStatus.CREATED
 
 
-@cors_preflight('GET, OPTIONS, PATCH, DELETE')
-@API.route('/<user_id>', methods=["PATCH", "GET", "OPTIONS", "DELETE"])
+@cors_preflight('GET, OPTIONS, PUT, DELETE')
+@API.route('/<user_id>', methods=["PUT", "GET", "OPTIONS", "DELETE"])
 class User(Resource):
     """Resource for managing a single user"""
 
@@ -68,7 +68,7 @@ class User(Resource):
     @staticmethod
     @cross_origin(origins=allowedorigins())
     @auth.require
-    def patch(user_id):
+    def put(user_id):
         """Update a user by id."""
         user_data = request.get_json()
         updated_user = UserService.update_user(user_id, user_data)
