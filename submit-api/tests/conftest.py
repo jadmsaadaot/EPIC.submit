@@ -136,20 +136,6 @@ def client_id():
     return f'client-{_id}'
 
 
-@pytest.fixture(scope='session', autouse=True)
-def auto(docker_services, app):
-    """Spin up a keycloak instance and initialize jwt."""
-    if app.config['USE_TEST_KEYCLOAK_DOCKER']:
-        docker_services.start('keycloak')
-        docker_services.wait_for_service('keycloak', 8081)
-
-    setup_jwt_manager(app, _jwt)
-
-    if app.config['USE_DOCKER_MOCK']:
-        docker_services.start('proxy')
-        time.sleep(10)
-
-
 @pytest.fixture(scope='session')
 def docker_compose_files(pytestconfig):
     """Get the docker-compose.yml absolute path."""
