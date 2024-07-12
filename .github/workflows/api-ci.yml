@@ -98,7 +98,7 @@ jobs:
           fail_ci_if_error: true
           verbose: true
           token: ${{ secrets.CODECOV_TOKEN }}
-          override_branch: ${{env.CODECOV_BRANCH}}        
+          override_branch: ${{ env.CODECOV_BRANCH }}
 
   build:
     # needs: PyTest
