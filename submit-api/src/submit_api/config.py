@@ -103,6 +103,23 @@ class TestConfig(_Config):  # pylint: disable=too-few-public-methods
     DEBUG = True
     TESTING = True
 
+    # POSTGRESQL
+    DB_USER = os.getenv('DATABASE_TEST_USERNAME', 'postgres')
+    DB_PASSWORD = os.getenv('DATABASE_TEST_PASSWORD', 'postgres')
+    DB_NAME = os.getenv('DATABASE_TEST_NAME', 'testdb')
+    DB_HOST = os.getenv('DATABASE_TEST_HOST', 'localhost')
+    DB_PORT = os.getenv('DATABASE_TEST_PORT', '5432')
+    SQLALCHEMY_DATABASE_URI = f'postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{int(DB_PORT)}/{DB_NAME}'
+
+    JWT_OIDC_TEST_MODE = True
+    # JWT_OIDC_ISSUER = _get_config('JWT_OIDC_TEST_ISSUER')
+    JWT_OIDC_TEST_AUDIENCE = os.getenv('JWT_OIDC_TEST_AUDIENCE')
+    JWT_OIDC_TEST_CLIENT_SECRET = os.getenv('JWT_OIDC_TEST_CLIENT_SECRET')
+    JWT_OIDC_TEST_ISSUER = os.getenv('JWT_OIDC_TEST_ISSUER')
+    JWT_OIDC_WELL_KNOWN_CONFIG = os.getenv('JWT_OIDC_WELL_KNOWN_CONFIG')
+    JWT_OIDC_TEST_ALGORITHMS = os.getenv('JWT_OIDC_TEST_ALGORITHMS')
+    JWT_OIDC_TEST_JWKS_URI = os.getenv('JWT_OIDC_TEST_JWKS_URI', default=None)
+
 
 class DockerConfig(_Config):  # pylint: disable=too-few-public-methods
     """In support of testing only.used by the py.test suite."""
