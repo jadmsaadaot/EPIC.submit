@@ -4,7 +4,7 @@ Manages the engagement
 """
 
 from marshmallow import EXCLUDE, Schema, fields
-from scaffold_api.models import User
+from submit_api.models import User
 
 
 class UserSchema(Schema):

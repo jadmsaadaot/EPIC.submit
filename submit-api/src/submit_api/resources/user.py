@@ -16,9 +16,9 @@
 from http import HTTPStatus
 
 from flask_restx import Namespace, Resource
-from scaffold_api.services.user_service import UserService
-from scaffold_api.utils.util import cors_preflight
-from scaffold_api.schemas.user import UserSchema, UserRequestSchema
+from submit_api.services.user_service import UserService
+from submit_api.utils.util import cors_preflight
+from submit_api.schemas.user import UserSchema, UserRequestSchema
 from .apihelper import Api as ApiHelper
 
 API = Namespace("users", description="Endpoints for User Management")

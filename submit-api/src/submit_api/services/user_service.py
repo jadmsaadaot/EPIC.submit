@@ -1,5 +1,5 @@
 """Service for user management."""
-from scaffold_api.models.user import User as UserModel
+from submit_api.models.user import User as UserModel
 
 
 class UserService:

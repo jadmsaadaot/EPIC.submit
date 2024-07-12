@@ -21,8 +21,8 @@ from flask_cors import cross_origin
 from flask_restx import Api as BaseApi, fields
 from flask_restx.apidoc import apidoc
 from marshmallow import fields as ma_fields
-from scaffold_api.utils.util import allowedorigins
-from scaffold_api.auth import auth
+from submit_api.utils.util import allowedorigins
+from submit_api.auth import auth
 
 
 class Api(BaseApi):
