@@ -5,11 +5,6 @@ import { theme } from "@/styles/theme";
 
 export default function SideNavBar() {
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
-  const location = useLocation();
-
-  useEffect(() => {
-    setCurrentPath(location.pathname);
-  }, [location]);
 
   const routes = [
     {
