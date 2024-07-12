@@ -19,7 +19,7 @@ import pytest
 from flask_migrate import Migrate, upgrade
 from sqlalchemy import event, text
 
-from api import create_app, setup_jwt_manager
+from submit_api import create_app, setup_jwt_manager
 from submit_api.auth import jwt as _jwt
 from submit_api.models import db as _db
 
@@ -134,20 +134,6 @@ def client_id():
     #     _id = (base64.urlsafe_b64encode(uuid.uuid4().bytes)).replace('=', '')
 
     return f'client-{_id}'
-
-
-@pytest.fixture(scope='session', autouse=True)
-def auto(docker_services, app):
-    """Spin up a keycloak instance and initialize jwt."""
-    if app.config['USE_TEST_KEYCLOAK_DOCKER']:
-        docker_services.start('keycloak')
-        docker_services.wait_for_service('keycloak', 8081)
-
-    setup_jwt_manager(app, _jwt)
-
-    if app.config['USE_DOCKER_MOCK']:
-        docker_services.start('proxy')
-        time.sleep(10)
 
 
 @pytest.fixture(scope='session')
