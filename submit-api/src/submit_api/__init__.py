@@ -4,6 +4,7 @@ This module is for the initiation of the flask app.
 """
 
 import os
+from http import HTTPStatus
 
 import secure
 from flask import Flask, current_app, g, request
@@ -49,7 +50,7 @@ def create_app(run_mode=os.getenv('FLASK_ENV', 'development')):
     # All configuration are in config file
     app.config.from_object(get_named_config(run_mode))
 
-    CORS(app, origins=allowedorigins(), supports_credentials=True)
+    CORS(app, resources={r"/*": {"origins": allowedorigins()}}, supports_credentials=True)
 
     # Register blueprints
     app.register_blueprint(API_BLUEPRINT)
@@ -81,6 +82,14 @@ def create_app(run_mode=os.getenv('FLASK_ENV', 'development')):
         response.headers['Cross-Origin-Opener-Policy'] = '*'
         response.headers['Cross-Origin-Embedder-Policy'] = 'unsafe-none'
         return response
+
+    @app.errorhandler(Exception)
+    def handle_error(err):
+        if run_mode != "production":
+            # To get stacktrace in local development for internal server errors
+            raise err
+        current_app.logger.error(str(err))
+        return "Internal server error", HTTPStatus.INTERNAL_SERVER_ERROR
 
     # Return App for run in run.py file
     return app

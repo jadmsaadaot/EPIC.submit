@@ -35,13 +35,11 @@ class Api(BaseApi):
         return url_for(self.endpoint("specs"), _external=True, _scheme=scheme)
 
     @classmethod
-    def common_decorator(cls, api, endpoint_description):
+    def swagger_decorators(cls, api, endpoint_description):
         """Common decorators for the resources"""
 
         def decorator(func):
             @wraps(func)
-            @cross_origin(origins=allowedorigins())
-            @auth.require
             @api.doc(description=endpoint_description)
             @api.response(401, "Unauthorized")
             @api.response(500, "Internal Server Error")
@@ -62,31 +60,20 @@ class Api(BaseApi):
         :param name: The name of the Flask-RESTX model
         :return: A Flask-RESTX model
         """
+        type_mapping = {
+            ma_fields.Integer: fields.Integer,
+            ma_fields.String: fields.String,
+            ma_fields.Float: fields.Float,
+            ma_fields.Boolean: fields.Boolean,
+            ma_fields.DateTime: fields.DateTime,
+            # Add more field types as needed
+        }
         model_fields = {}
         for field_name, field in schema.fields.items():
             field_type = type(field)
-            if field_type == ma_fields.Integer:
-                model_fields[field_name] = fields.Integer(
-                    required=field.required,
-                    description=field.metadata.get("description", ""),
-                )
-            elif field_type == ma_fields.String:
-                model_fields[field_name] = fields.String(
-                    required=field.required,
-                    description=field.metadata.get("description", ""),
-                )
-            elif field_type == ma_fields.Float:
-                model_fields[field_name] = fields.Float(
-                    required=field.required,
-                    description=field.metadata.get("description", ""),
-                )
-            elif field_type == ma_fields.Boolean:
-                model_fields[field_name] = fields.Boolean(
-                    required=field.required,
-                    description=field.metadata.get("description", ""),
-                )
-            elif field_type == ma_fields.DateTime:
-                model_fields[field_name] = fields.DateTime(
+            restx_field = type_mapping.get(field_type)
+            if restx_field:
+                model_fields[field_name] = restx_field(
                     required=field.required,
                     description=field.metadata.get("description", ""),
                 )

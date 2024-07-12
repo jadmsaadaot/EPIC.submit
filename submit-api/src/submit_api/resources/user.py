@@ -19,6 +19,7 @@ from flask_restx import Namespace, Resource
 from submit_api.services.user_service import UserService
 from submit_api.utils.util import cors_preflight
 from submit_api.schemas.user import UserSchema, UserRequestSchema
+from submit_api.exceptions import ResourceNotFoundError
 from .apihelper import Api as ApiHelper
 
 API = Namespace("users", description="Endpoints for User Management")
@@ -40,7 +41,7 @@ class Users(Resource):
 
     @staticmethod
     @API.response(code=200, description="Success", model=[user_list_model])
-    @ApiHelper.common_decorator(API, endpoint_description="Fetch all users")
+    @ApiHelper.swagger_decorators(API, endpoint_description="Fetch all users")
     def get():
         """Fetch all users."""
         users = UserService.get_all_users()
@@ -48,7 +49,7 @@ class Users(Resource):
         return user_list_schema.dump(users), HTTPStatus.OK
 
     @staticmethod
-    @ApiHelper.common_decorator(API, endpoint_description="Create a user")
+    @ApiHelper.swagger_decorators(API, endpoint_description="Create a user")
     @API.expect(user_request_model)
     @API.response(code=201, model=user_request_model, description="UserCreated")
     @API.response(400, "Bad Request")
@@ -66,18 +67,18 @@ class User(Resource):
     """Resource for managing a single user"""
 
     @staticmethod
-    @ApiHelper.common_decorator(API, endpoint_description="Fetch a user by id")
+    @ApiHelper.swagger_decorators(API, endpoint_description="Fetch a user by id")
     @API.response(code=200, model=user_list_model, description="Success")
     @API.response(404, "Not Found")
     def get(user_id):
         """Fetch a user by id."""
         user = UserService.get_user_by_id(user_id)
         if not user:
-            return UserSchema().dump(user), HTTPStatus.NOT_FOUND
+            raise ResourceNotFoundError(f"User with {user_id} not found")
         return UserSchema().dump(user), HTTPStatus.OK
 
     @staticmethod
-    @ApiHelper.common_decorator(API, endpoint_description="Update a user by id")
+    @ApiHelper.swagger_decorators(API, endpoint_description="Update a user by id")
     @API.expect(user_request_model)
     @API.response(code=200, model=user_list_model, description="Success")
     @API.response(400, "Bad Request")
@@ -87,16 +88,16 @@ class User(Resource):
         user_data = UserRequestSchema().load(API.payload)
         updated_user = UserService.update_user(user_id, user_data)
         if not updated_user:
-            return UserSchema().dump(updated_user), HTTPStatus.NOT_FOUND
+            raise ResourceNotFoundError(f"User with {user_id} not found")
         return UserSchema().dump(updated_user), HTTPStatus.OK
 
     @staticmethod
-    @ApiHelper.common_decorator(API, endpoint_description="Delete a user by id")
+    @ApiHelper.swagger_decorators(API, endpoint_description="Delete a user by id")
     @API.response(code=200, model=user_list_model, description="Deleted")
     @API.response(404, "Not Found")
     def delete(user_id):
         """Delete a user by id."""
         deleted_user = UserService.delete_user(user_id)
         if not deleted_user:
-            return UserSchema().dump(deleted_user), HTTPStatus.NOT_FOUND
+            raise ResourceNotFoundError(f"User with {user_id} not found")
         return UserSchema().dump(deleted_user), HTTPStatus.OK
