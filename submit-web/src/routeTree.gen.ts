@@ -27,7 +27,7 @@ const PlanPageImport = createFileRoute("/planslist/$planId")();
 const PlansListLazyRoute = PlansListLazyImport.update({
   path: "/PlansList",
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/PlansList.lazy").then((d) => d.Route));
+} as any).lazy(() => import("./routes/Plans/PlansList.lazy").then((d) => d.Route));
 
 const PlanPageRoute = PlanPageImport.update({
   path: "/planslist/$planId",
