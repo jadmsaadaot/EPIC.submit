@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { Box, List, ListItem, ListItemButton, useTheme } from "@mui/material";
-import { Link, useLocation } from "@tanstack/react-router";
+import { useState } from "react";
+import { Box, List, ListItem, ListItemButton } from "@mui/material";
+import { Link } from "@tanstack/react-router";
 import { theme } from "@/styles/theme";
 
 export default function SideNavBar() {
