@@ -16,15 +16,7 @@ import { Link } from "@tanstack/react-router";
 export default function PlanListPage() {
   const { isLoading, data, isError, error } = usePlansData();
 
-  const plans: Array<Plan> = [
-    {
-      id: 1,
-      name: "Test Plan",
-      submittedDate: "2021-10-10",
-      submittedBy: "Test User",
-      isCompleted: false,
-    },
-  ];
+  const plans: Array<Plan> = (data as AxiosResponse)?.data;
 
   if (isLoading) {
     return <h2>Loading...</h2>;

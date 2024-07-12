@@ -10,7 +10,7 @@ export default function PlanPage() {
   const { status, data, isError, error, isFetching, isLoading } =
     usePlanById(planId);
 
-  const plan: Plan = data as AxiosResponse<Plan>["data"];
+  const plan: Plan = (data as AxiosResponse)?.data;
 
   if (isLoading) {
     return <h2>Loading...</h2>;
