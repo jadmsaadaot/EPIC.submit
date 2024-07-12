@@ -43,7 +43,6 @@ export default function SideNavBar() {
               >
                 <ListItemButton
                   sx={{
-                    fontWeight: "700",
                     backgroundColor:
                       currentPath === route.path
                         ? "rgba(0, 0, 0, 0.1)"
