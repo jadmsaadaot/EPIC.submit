@@ -5,15 +5,12 @@ import { AxiosResponse } from "axios";
 import { Link, useParams } from "@tanstack/react-router";
 
 export default function PlanPage() {
-  const { planIdParam } = useParams();
-
+  const { planId: planIdParam } = useParams({ strict: false });
   const planId = Number(planIdParam);
   const { status, data, isError, error, isFetching, isLoading } =
     usePlanById(planId);
 
-  const plan: Plan = (data as AxiosResponse)?.data;
-
-  console.log(plan);
+  const plan: Plan = data as AxiosResponse<Plan>["data"];
 
   if (isLoading) {
     return <h2>Loading...</h2>;
@@ -42,7 +39,7 @@ export default function PlanPage() {
             <p>On {plan.submittedDate}</p>
           </div>
           <div>{isFetching ? "Background Updating..." : " "}</div>
-          <Link to={"/PlansList"}>
+          <Link to={"/planslist"}>
             <Button variant="outlined" color="primary">
               Go Back
             </Button>

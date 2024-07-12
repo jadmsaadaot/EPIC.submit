@@ -14,7 +14,7 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { Route as rootRoute } from "./routes/__root";
 import { Route as NewPageImport } from "./routes/NewPage";
-
+import { Route as PlanPageImport } from "./routes/Plans/$planId.lazy";
 // Create Virtual Routes
 
 const PlansListLazyImport = createFileRoute("/PlansList")();
@@ -27,12 +27,14 @@ const PlanPageImport = createFileRoute("/planslist/$planId")();
 const PlansListLazyRoute = PlansListLazyImport.update({
   path: "/PlansList",
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import("./routes/Plans/PlansList.lazy").then((d) => d.Route));
+} as any).lazy(() =>
+  import("./routes/Plans/PlansList.lazy").then((d) => d.Route)
+);
 
 const PlanPageRoute = PlanPageImport.update({
   path: "/planslist/$planId",
   getParentRoute: () => rootRoute,
-} as any);
+} as any).lazy(() => import("./routes/Plans/$planId.lazy").then((d) => d.Route));
 
 const AboutLazyRoute = AboutLazyImport.update({
   path: "/About",
@@ -83,8 +85,8 @@ declare module "@tanstack/react-router" {
     };
     "/planslist/$planId": {
       id: "/planslist/$planId";
-      path: '/planslist/$planId';
-      fullPath: '/planslist/$planId';
+      path: "/planslist/$planId";
+      fullPath: "/planslist/$planId";
       preLoaderRoute: typeof PlanPageImport;
       parentRoute: typeof rootRoute;
     };
