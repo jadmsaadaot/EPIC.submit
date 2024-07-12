@@ -90,6 +90,7 @@ def build_cache(app):
     """Build cache."""
     cache.init_app(app)
 
+
 def setup_jwt_manager(app_context, jwt_manager):
     """Use flask app to configure the JWTManager to work for a particular Realm."""
 
