@@ -11,12 +11,20 @@ import {
 import { usePlansData } from "@/hooks/usePlans";
 import { AxiosResponse } from "axios";
 import { Plan } from "@/models/Plan";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 
 export default function PlanListPage() {
   const { isLoading, data, isError, error } = usePlansData();
 
-  const plans: Array<Plan> = [];
+  const plans: Array<Plan> = [
+    {
+      id: 1,
+      name: "Test Plan",
+      submittedDate: "2021-10-10",
+      submittedBy: "Test User",
+      isCompleted: false,
+    },
+  ];
 
   if (isLoading) {
     return <h2>Loading...</h2>;
@@ -45,7 +53,12 @@ export default function PlanListPage() {
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
                 <TableCell component="th" scope="row">
-                  <Link to={`${row.id}`}>{row.name}</Link>
+                  <Link
+                    to={`/planslist/$planId`}
+                    params={{ planId: `${row.id}` }}
+                  >
+                    {row.name}
+                  </Link>
                 </TableCell>
                 <TableCell align="right">{row.submittedDate}</TableCell>
                 <TableCell align="right">{row.submittedBy}</TableCell>
