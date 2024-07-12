@@ -1,7 +1,7 @@
 import EAOAppBar from "@/components/EAOAppBar";
 import SideNavBar from "@/components/SideNavBar";
 import { Box } from "@mui/material";
-import { createRootRoute, Outlet } from "@tanstack/react-router";
+import { Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
 
 function App() {
@@ -10,7 +10,12 @@ function App() {
       <EAOAppBar />
       <Box display={"flex"}>
         <SideNavBar />
-        <Box display={"flex"} flexDirection={"column"} flex={1} padding={"1rem"}>
+        <Box
+          display={"flex"}
+          flexDirection={"column"}
+          flex={1}
+          padding={"1rem"}
+        >
           <Outlet />
         </Box>
       </Box>
