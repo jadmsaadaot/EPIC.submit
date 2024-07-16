@@ -12,14 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Common setup and fixtures for the pytest suite used by this service."""
-import time
 from random import random
 
 import pytest
 from flask_migrate import Migrate, upgrade
 from sqlalchemy import event, text
 
-from submit_api import create_app, setup_jwt_manager
+from submit_api import create_app
 from submit_api.auth import jwt as _jwt
 from submit_api.models import db as _db
 
@@ -30,7 +29,6 @@ def app():
     _app = create_app('testing')
 
     return _app
-
 
 @pytest.fixture(scope='function')
 def app_request():
