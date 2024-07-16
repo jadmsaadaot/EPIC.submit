@@ -17,12 +17,9 @@ to support swagger on http
 """
 from functools import wraps
 from flask import url_for
-from flask_cors import cross_origin
 from flask_restx import Api as BaseApi, fields
 from flask_restx.apidoc import apidoc
 from marshmallow import fields as ma_fields
-from submit_api.utils.util import allowedorigins
-from submit_api.auth import auth
 
 
 class Api(BaseApi):
