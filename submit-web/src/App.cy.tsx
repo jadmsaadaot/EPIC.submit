@@ -1,14 +1,12 @@
-import React from 'react'
-import App from './App'
-import { BrowserRouter } from 'react-router-dom'
+import { routeTree } from "./routeTree.gen.ts";
+import { createRouter, RouterProvider } from "@tanstack/react-router";
 
-describe('<App />', () => {
-  it('renders', () => {
+// Create a new router instance
+const router = createRouter({ routeTree });
+
+describe("<App />", () => {
+  it("renders", () => {
     // see: https://on.cypress.io/mounting-react
-    cy.mount(
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-    )
-  })
-})
+    cy.mount(<RouterProvider router={router} />);
+  });
+});

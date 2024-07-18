@@ -2,19 +2,15 @@ import { usePlanById } from "@/hooks/usePlans";
 import { Plan } from "@/models/Plan";
 import { Box, Button, Chip } from "@mui/material";
 import { AxiosResponse } from "axios";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "@tanstack/react-router";
 
 export default function PlanPage() {
-  const navigate = useNavigate();
-  const { planIdParam } = useParams();
-
+  const { planId: planIdParam } = useParams({ strict: false });
   const planId = Number(planIdParam);
   const { status, data, isError, error, isFetching, isLoading } =
     usePlanById(planId);
 
   const plan: Plan = (data as AxiosResponse)?.data;
-
-  console.log(plan);
 
   if (isLoading) {
     return <h2>Loading...</h2>;
@@ -43,13 +39,11 @@ export default function PlanPage() {
             <p>On {plan.submittedDate}</p>
           </div>
           <div>{isFetching ? "Background Updating..." : " "}</div>
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => navigate("/planslist")}
-          >
-            Go Back
-          </Button>
+          <Link to={"/planslist"}>
+            <Button variant="outlined" color="primary">
+              Go Back
+            </Button>
+          </Link>
         </>
       )}
     </div>
