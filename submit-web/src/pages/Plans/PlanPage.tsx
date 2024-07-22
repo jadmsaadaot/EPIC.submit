@@ -39,7 +39,7 @@ export default function PlanPage() {
             <p>On {plan.submittedDate}</p>
           </div>
           <div>{isFetching ? "Background Updating..." : " "}</div>
-          <Link to={"/planslist"}>
+          <Link to={"/PlansList"}>
             <Button variant="outlined" color="primary">
               Go Back
             </Button>
