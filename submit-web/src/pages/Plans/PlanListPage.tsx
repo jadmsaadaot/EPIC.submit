@@ -46,7 +46,7 @@ export default function PlanListPage() {
               >
                 <TableCell component="th" scope="row">
                   <Link
-                    to={`/planslist/$planId`}
+                    to="/Plans/$planId"
                     params={{ planId: `${row.id}` }}
                   >
                     {row.name}
