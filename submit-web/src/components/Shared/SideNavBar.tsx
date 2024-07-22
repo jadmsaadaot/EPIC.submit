@@ -15,7 +15,7 @@ export default function SideNavBar() {
     },
     {
       routeName: "About",
-      path: "/about",
+      path: "/aboutpage",
     },
     {
       routeName: "Lazy Loaded Page",
