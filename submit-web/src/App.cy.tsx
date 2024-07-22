@@ -3,7 +3,7 @@ import { ThemeProvider } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthProvider } from "react-oidc-context";
-import { AppConfig, OidcConfig } from "@/utils/config";
+import { OidcConfig } from "@/utils/config";
 import { theme } from "@/styles/theme";
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import { routeTree } from "@/routeTree.gen";
