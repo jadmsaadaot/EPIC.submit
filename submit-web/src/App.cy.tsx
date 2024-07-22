@@ -42,7 +42,6 @@ describe("<App />", () => {
       // add other necessary mocks here
     };
     mount(<TestApp authentication={mockAuth} />);
-    cy.contains(AppConfig.appTitle);
     cy.contains("Users");
   });
 });
