@@ -1,4 +1,4 @@
-import { mount } from "cypress/react"; // or `cypress/react18` if using React 18
+import { mount } from "cypress/react18"; // or `cypress/react18` if using React 18
 import { ThemeProvider } from "@mui/material";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
