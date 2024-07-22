@@ -24,9 +24,7 @@ import { Route as AuthenticatedUsersIndexImport } from './routes/_authenticated/
 // Create Virtual Routes
 
 const NewpageLazyImport = createFileRoute('/newpage')()
-const AboutLazyImport = createFileRoute('/About')()
-const PlansPlansListLazyImport = createFileRoute('/Plans/PlansList')()
-const PlansPlanIdLazyImport = createFileRoute('/Plans/$planId')()
+const AboutpageLazyImport = createFileRoute('/aboutpage')()
 
 // Create/Update Routes
 
@@ -35,10 +33,10 @@ const NewpageLazyRoute = NewpageLazyImport.update({
   getParentRoute: () => rootRoute,
 } as any).lazy(() => import('./routes/newpage.lazy').then((d) => d.Route))
 
-const AboutLazyRoute = AboutLazyImport.update({
-  path: '/About',
+const AboutpageLazyRoute = AboutpageLazyImport.update({
+  path: '/aboutpage',
   getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/About.lazy').then((d) => d.Route))
+} as any).lazy(() => import('./routes/aboutpage.lazy').then((d) => d.Route))
 
 const OidcCallbackRoute = OidcCallbackImport.update({
   path: '/oidc-callback',
@@ -59,18 +57,6 @@ const EaoPlansIndexRoute = EaoPlansIndexImport.update({
   path: '/eao-plans/',
   getParentRoute: () => rootRoute,
 } as any)
-
-const PlansPlansListLazyRoute = PlansPlansListLazyImport.update({
-  path: '/Plans/PlansList',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() =>
-  import('./routes/Plans/PlansList.lazy').then((d) => d.Route),
-)
-
-const PlansPlanIdLazyRoute = PlansPlanIdLazyImport.update({
-  path: '/Plans/$planId',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/Plans/$planId.lazy').then((d) => d.Route))
 
 const EaoPlansPlanIdRoute = EaoPlansPlanIdImport.update({
   path: '/eao-plans/$planId',
@@ -112,11 +98,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OidcCallbackImport
       parentRoute: typeof rootRoute
     }
-    '/About': {
-      id: '/About'
-      path: '/About'
-      fullPath: '/About'
-      preLoaderRoute: typeof AboutLazyImport
+    '/aboutpage': {
+      id: '/aboutpage'
+      path: '/aboutpage'
+      fullPath: '/aboutpage'
+      preLoaderRoute: typeof AboutpageLazyImport
       parentRoute: typeof rootRoute
     }
     '/newpage': {
@@ -138,20 +124,6 @@ declare module '@tanstack/react-router' {
       path: '/eao-plans/$planId'
       fullPath: '/eao-plans/$planId'
       preLoaderRoute: typeof EaoPlansPlanIdImport
-      parentRoute: typeof rootRoute
-    }
-    '/Plans/$planId': {
-      id: '/Plans/$planId'
-      path: '/Plans/$planId'
-      fullPath: '/Plans/$planId'
-      preLoaderRoute: typeof PlansPlanIdLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/Plans/PlansList': {
-      id: '/Plans/PlansList'
-      path: '/Plans/PlansList'
-      fullPath: '/Plans/PlansList'
-      preLoaderRoute: typeof PlansPlansListLazyImport
       parentRoute: typeof rootRoute
     }
     '/eao-plans/': {
@@ -180,11 +152,9 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedUsersIndexRoute,
   }),
   OidcCallbackRoute,
-  AboutLazyRoute,
+  AboutpageLazyRoute,
   NewpageLazyRoute,
   EaoPlansPlanIdRoute,
-  PlansPlanIdLazyRoute,
-  PlansPlansListLazyRoute,
   EaoPlansIndexRoute,
 })
 
@@ -199,11 +169,9 @@ export const routeTree = rootRoute.addChildren({
         "/",
         "/_authenticated",
         "/oidc-callback",
-        "/About",
+        "/aboutpage",
         "/newpage",
         "/eao-plans/$planId",
-        "/Plans/$planId",
-        "/Plans/PlansList",
         "/eao-plans/"
       ]
     },
@@ -220,8 +188,8 @@ export const routeTree = rootRoute.addChildren({
     "/oidc-callback": {
       "filePath": "oidc-callback.tsx"
     },
-    "/About": {
-      "filePath": "About.lazy.tsx"
+    "/aboutpage": {
+      "filePath": "aboutpage.lazy.tsx"
     },
     "/newpage": {
       "filePath": "newpage.lazy.tsx"
@@ -232,12 +200,6 @@ export const routeTree = rootRoute.addChildren({
     },
     "/eao-plans/$planId": {
       "filePath": "eao-plans/$planId.tsx"
-    },
-    "/Plans/$planId": {
-      "filePath": "Plans/$planId.lazy.tsx"
-    },
-    "/Plans/PlansList": {
-      "filePath": "Plans/PlansList.lazy.tsx"
     },
     "/eao-plans/": {
       "filePath": "eao-plans/index.tsx"
