@@ -2,24 +2,45 @@ import { useState } from "react";
 import { Box, List, ListItem, ListItemButton } from "@mui/material";
 import { Link } from "@tanstack/react-router";
 import { theme } from "@/styles/theme";
+import { useAuth } from "react-oidc-context";
 
 export default function SideNavBar() {
+  const { isAuthenticated } = useAuth();
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
-  const routes = [
+  let routeMenuItems = [
     {
       routeName: "Root",
       path: "/",
     },
     {
       routeName: "About",
-      path: "/about",
+      path: "/aboutpage",
     },
     {
-      routeName: "Plans list",
-      path: "/planslist",
+      routeName: "Lazy Loaded Page",
+      path: "/newpage",
+    },
+    {
+      routeName: "Plans",
+      path: "/eao-plans",
+    },
+    {
+      routeName: "Users",
+      path: "/users",
     },
   ];
+
+  const authenticatedRouteMenuItems = [
+    {
+      routeName: "Profile",
+      path: "/profile",
+    },
+  ];
+
+  if(isAuthenticated) {
+    routeMenuItems = routeMenuItems.concat(authenticatedRouteMenuItems);
+  }
 
   return (
     <div>
@@ -29,20 +50,21 @@ export default function SideNavBar() {
         height={"calc(100vh - 88px)"}
       >
         <List>
-          {routes.map((route) => (
+          {routeMenuItems.map((route) => (
             <ListItem key={route.routeName}>
               <Link
                 to={route.path}
                 onClick={() => setCurrentPath(route.path)}
-                style={{
+                activeProps={{style: {
                   color: theme.palette.primary.main,
                   fontWeight: currentPath === route.path ? "bold" : "normal",
                   textDecoration: "none",
                   width: "100%",
-                }}
+                }}}
               >
                 <ListItemButton
                   sx={{
+                    pl: "2rem",
                     backgroundColor:
                       currentPath === route.path
                         ? "rgba(0, 0, 0, 0.1)"

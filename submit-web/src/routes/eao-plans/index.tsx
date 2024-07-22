@@ -1,3 +1,4 @@
+import { createFileRoute } from "@tanstack/react-router";
 import {
   Chip,
   Paper,
@@ -9,14 +10,18 @@ import {
   TableRow,
 } from "@mui/material";
 import { usePlansData } from "@/hooks/usePlans";
-import { AxiosResponse } from "axios";
 import { Plan } from "@/models/Plan";
 import { Link } from "@tanstack/react-router";
+import { OpenInNew } from "@mui/icons-material";
 
-export default function PlanListPage() {
+export const Route = createFileRoute("/eao-plans/")({
+  component: PlanListPage,
+});
+
+function PlanListPage() {
   const { isLoading, data, isError, error } = usePlansData();
 
-  const plans: Array<Plan> = (data as AxiosResponse)?.data;
+  const plans: Array<Plan> = data as Array<Plan>;
 
   if (isLoading) {
     return <h2>Loading...</h2>;
@@ -46,11 +51,12 @@ export default function PlanListPage() {
               >
                 <TableCell component="th" scope="row">
                   <Link
-                    to="/Plans/$planId"
+                    to={"/eao-plans/$planId"}
                     params={{ planId: `${row.id}` }}
                   >
                     {row.name}
                   </Link>
+                  <OpenInNew fontSize={"small"} sx={{ pl: ".25rem" }} />
                 </TableCell>
                 <TableCell align="right">{row.submittedDate}</TableCell>
                 <TableCell align="right">{row.submittedBy}</TableCell>

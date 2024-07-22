@@ -1,25 +1,25 @@
-import EAOAppBar from "@/components/EAOAppBar";
-import SideNavBar from "@/components/SideNavBar";
-import { Box } from "@mui/material";
-import { Outlet } from "@tanstack/react-router";
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
+import { ThemeProvider } from "@mui/material";
+import { QueryClient } from "@tanstack/query-core";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { AuthProvider } from "react-oidc-context";
+import { OidcConfig } from "@/utils/config";
+import { theme } from "@/styles/theme";
+import RouterProviderWithAuthContext from "@/router";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
     <>
-      <EAOAppBar />
-      <Box display={"flex"}>
-        <SideNavBar />
-        <Box
-          display={"flex"}
-          flexDirection={"column"}
-          flex={1}
-          padding={"1rem"}
-        >
-          <Outlet />
-        </Box>
-      </Box>
-      <TanStackRouterDevtools />
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <AuthProvider {...OidcConfig}>
+            <RouterProviderWithAuthContext />
+          </AuthProvider>
+        </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </>
   );
 }
