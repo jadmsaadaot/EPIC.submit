@@ -72,7 +72,8 @@ jobs:
         with:
           start: npm run preview
           wait-on: 'http://localhost:3000'
-          browser: chrome      
+          browser: chrome
+          working-directory: ./submit-web
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
