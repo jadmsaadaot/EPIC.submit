@@ -54,10 +54,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Print working directory
-        run:  |
-          echo "Working directory: ${PWD}"
-
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -67,22 +63,26 @@ jobs:
         run: |
           npm install --legacy-peer-deps
 
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
-        with:
-          start: npm run preview
-          wait-on: 'http://localhost:3000'
-          browser: chrome
-          working-directory: ./submit-web
-          component: true
+      - name: Test with Cypress
+        id: test
+        run: |
+          npx cypress run --component --headed --browser chrome
+
+      - name: Sets Codecov branch name
+        run: |
+          echo "CODECOV_BRANCH=PR_${{ github.head_ref }}" >> $GITHUB_ENV
+        if: github.event_name == 'pull_request'
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./coverage
+          flags: epicsubmitweb
+          name: codecov-submit-web
           fail_ci_if_error: true
           verbose: true
+          override_branch: ${{ env.CODECOV_BRANCH }}
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage
 
   build-check:
     needs: setup-job
