@@ -76,7 +76,7 @@ jobs:
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
         with:
-          flags: epicsubmitweb
+          flags: submit-web
           name: codecov-submit-web
           fail_ci_if_error: true
           verbose: true
