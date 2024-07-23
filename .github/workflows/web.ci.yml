@@ -74,6 +74,7 @@ jobs:
           wait-on: 'http://localhost:3000'
           browser: chrome
           working-directory: ./submit-web
+          component: true
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v4
