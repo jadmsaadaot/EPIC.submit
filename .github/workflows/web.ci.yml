@@ -66,6 +66,7 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
+          working-directory: ./submit-web
           component: true
 
       - name: Sets Codecov branch name
