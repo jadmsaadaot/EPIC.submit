@@ -1,4 +1,5 @@
 import EAOAppBar from "@/components/Shared/EAOAppBar";
+import Footer from "@/components/Shared/layout/Footer";
 import PageNotFound from "@/components/Shared/PageNotFound";
 import SideNavBar from "@/components/Shared/SideNavBar";
 import { Box } from "@mui/system";
@@ -30,6 +31,7 @@ function Layout() {
           <Outlet />
         </Box>
       </Box>
+      <Footer />
       <TanStackRouterDevtools />
     </>
   );
