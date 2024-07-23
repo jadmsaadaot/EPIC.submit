@@ -16,10 +16,6 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as OidcCallbackImport } from './routes/oidc-callback'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
-import { Route as EaoPlansIndexImport } from './routes/eao-plans/index'
-import { Route as EaoPlansPlanIdImport } from './routes/eao-plans/$planId'
-import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
-import { Route as AuthenticatedUsersIndexImport } from './routes/_authenticated/users/index'
 
 // Create Virtual Routes
 
@@ -51,26 +47,6 @@ const AuthenticatedRoute = AuthenticatedImport.update({
 const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
-} as any)
-
-const EaoPlansIndexRoute = EaoPlansIndexImport.update({
-  path: '/eao-plans/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const EaoPlansPlanIdRoute = EaoPlansPlanIdImport.update({
-  path: '/eao-plans/$planId',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AuthenticatedProfileRoute = AuthenticatedProfileImport.update({
-  path: '/profile',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-
-const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexImport.update({
-  path: '/users/',
-  getParentRoute: () => AuthenticatedRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -112,34 +88,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewpageLazyImport
       parentRoute: typeof rootRoute
     }
-    '/_authenticated/profile': {
-      id: '/_authenticated/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AuthenticatedProfileImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/eao-plans/$planId': {
-      id: '/eao-plans/$planId'
-      path: '/eao-plans/$planId'
-      fullPath: '/eao-plans/$planId'
-      preLoaderRoute: typeof EaoPlansPlanIdImport
-      parentRoute: typeof rootRoute
-    }
-    '/eao-plans/': {
-      id: '/eao-plans/'
-      path: '/eao-plans'
-      fullPath: '/eao-plans'
-      preLoaderRoute: typeof EaoPlansIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/_authenticated/users/': {
-      id: '/_authenticated/users/'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof AuthenticatedUsersIndexImport
-      parentRoute: typeof AuthenticatedImport
-    }
   }
 }
 
@@ -147,15 +95,9 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
-  AuthenticatedRoute: AuthenticatedRoute.addChildren({
-    AuthenticatedProfileRoute,
-    AuthenticatedUsersIndexRoute,
-  }),
   OidcCallbackRoute,
   AboutpageLazyRoute,
   NewpageLazyRoute,
-  EaoPlansPlanIdRoute,
-  EaoPlansIndexRoute,
 })
 
 /* prettier-ignore-end */
@@ -170,20 +112,14 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated",
         "/oidc-callback",
         "/aboutpage",
-        "/newpage",
-        "/eao-plans/$planId",
-        "/eao-plans/"
+        "/newpage"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
     "/_authenticated": {
-      "filePath": "_authenticated.tsx",
-      "children": [
-        "/_authenticated/profile",
-        "/_authenticated/users/"
-      ]
+      "filePath": "_authenticated.tsx"
     },
     "/oidc-callback": {
       "filePath": "oidc-callback.tsx"
@@ -193,20 +129,6 @@ export const routeTree = rootRoute.addChildren({
     },
     "/newpage": {
       "filePath": "newpage.lazy.tsx"
-    },
-    "/_authenticated/profile": {
-      "filePath": "_authenticated/profile.tsx",
-      "parent": "/_authenticated"
-    },
-    "/eao-plans/$planId": {
-      "filePath": "eao-plans/$planId.tsx"
-    },
-    "/eao-plans/": {
-      "filePath": "eao-plans/index.tsx"
-    },
-    "/_authenticated/users/": {
-      "filePath": "_authenticated/users/index.tsx",
-      "parent": "/_authenticated"
     }
   }
 }
