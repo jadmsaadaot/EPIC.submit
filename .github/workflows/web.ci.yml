@@ -78,7 +78,6 @@ jobs:
         with:
           flags: epicsubmitweb
           name: codecov-submit-web
-          files: ./submit-web/coverage/lcov.info
           fail_ci_if_error: true
           verbose: true
           override_branch: ${{ env.CODECOV_BRANCH }}
