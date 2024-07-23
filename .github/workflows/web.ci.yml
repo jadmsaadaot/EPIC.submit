@@ -78,12 +78,12 @@ jobs:
         with:
           flags: epicsubmitweb
           name: codecov-submit-web
-          files: ./coverage/lcov.info
+          files: ./submit-web/coverage/lcov.info
           fail_ci_if_error: true
           verbose: true
           override_branch: ${{ env.CODECOV_BRANCH }}
           token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./coverage
+          directory: ./submit-web/coverage
 
   build-check:
     needs: setup-job
