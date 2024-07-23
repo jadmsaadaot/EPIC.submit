@@ -1,7 +1,6 @@
-import { Box, Divider, Grid } from "@mui/material";
+import { Box, Divider, Grid, Typography } from "@mui/material";
 import EAOLogo from "@/assets/images/EAO_Logo.png";
 import { COPYRIGHT_TEXT, FOOTER_COLORS, FOOTER_DESCRIPTION } from "./constants";
-import { BodyText } from "@/components/Shared/Typography/Body";
 import { theme } from "@/styles/theme";
 
 const Footer = () => {
@@ -23,7 +22,9 @@ const Footer = () => {
         }}
         padding={{ xs: "2em 1em", md: "2em 6em" }}
       >
-        <BodyText color="white">{FOOTER_DESCRIPTION}</BodyText>
+        <Typography variant="body1" color="white">
+          {FOOTER_DESCRIPTION}
+        </Typography>
       </Grid>
       <Grid
         item
@@ -57,7 +58,7 @@ const Footer = () => {
           <Divider sx={{ borderColor: theme.palette.text.primary }} />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <BodyText>{COPYRIGHT_TEXT}</BodyText>
+          <Typography variant="body1">{COPYRIGHT_TEXT}</Typography>
         </Grid>
       </Grid>
     </Grid>
