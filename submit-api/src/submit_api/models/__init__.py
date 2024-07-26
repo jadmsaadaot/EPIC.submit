@@ -16,3 +16,10 @@
 
 from .db import db, ma, migrate
 from .user import User
+from .AccountRole import AccountRole
+from .AccountUser import AccountUser
+from .Role import Role
+from .Account import Account
+from .base_model import BaseModel
+from .AccountProject import AccountProject
+from .ProjectTeam import ProjectTeam
