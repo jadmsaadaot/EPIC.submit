@@ -1,7 +1,6 @@
 import EAOAppBar from "@/components/Shared/EAOAppBar";
 import Footer from "@/components/Shared/layout/Footer";
 import PageNotFound from "@/components/Shared/PageNotFound";
-import SideNavBar from "@/components/Shared/SideNavBar";
 import { Box } from "@mui/system";
 import { createRootRouteWithContext, Outlet } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/router-devtools";
@@ -20,19 +19,13 @@ function Layout() {
   return (
     <>
       <EAOAppBar />
-      <Box display={"flex"}>
-        <SideNavBar />
-        <Box
-          display={"flex"}
-          flexDirection={"column"}
-          flex={1}
-          padding={"1rem"}
-        >
-          <Outlet />
-        </Box>
+      <Box
+        height={"calc(100vh - 88px)"}
+      >
+        <Outlet />
       </Box>
       <Footer />
-      <TanStackRouterDevtools />
+      <TanStackRouterDevtools position="bottom-right" />
     </>
   );
 }
