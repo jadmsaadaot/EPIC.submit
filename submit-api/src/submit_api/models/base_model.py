@@ -31,12 +31,12 @@ class BaseModel(db.Model):
     updated_date = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=True)
 
     @declared_attr
-    def created_by(self):
+    def created_by(cls):  # pylint:disable=no-self-argument, no-self-use, # noqa: N805
         """Return foreign key for created by."""
         return Column(db.String(50))
 
     @declared_attr
-    def updated_by(self):
+    def updated_by(cls):  # pylint:disable=no-self-argument, no-self-use, # noqa: N805
         """Return foreign key for modified by."""
         return Column(db.String(50))
 
