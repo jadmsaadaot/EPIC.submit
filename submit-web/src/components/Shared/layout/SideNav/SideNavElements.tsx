@@ -1,24 +1,7 @@
 export const Routes: RouteType[] = [
   {
-    name: "Admin",
+    name: "Root",
     path: "/",
-    routes: [
-      {
-        name: "Account Information",
-        path: '/test1',
-      },
-      {
-        name: "User Management",
-        path: '/test2',
-      },
-      {
-        name: "Hom3",
-        path: '/test3',
-      },
-
-
-
-    ]
   },
   {
     name: "About",
