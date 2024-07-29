@@ -13,9 +13,9 @@ from .db import db
 class ProjectTeam(BaseModel):
     """Definition of the Project Team entity."""
 
-    __tablename__ = 'project_team'
+    __tablename__ = 'project_teams'
 
     id = Column(db.Integer, primary_key=True, autoincrement=True)
-    account_user_id = Column(db.Integer, ForeignKey('account_user.id'), nullable=False)
+    account_user_id = Column(db.Integer, ForeignKey('account_users.id'), nullable=False)
     project_id = Column(db.Integer, nullable=False)
-    role_id = Column(db.Integer, ForeignKey('role.id'), nullable=False)
+    role_id = Column(db.Integer, ForeignKey('roles.id'), nullable=False)

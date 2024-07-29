@@ -13,7 +13,7 @@ from .db import db
 class Account(BaseModel):
     """Definition of the Account entity."""
 
-    __tablename__ = 'account'
+    __tablename__ = 'accounts'
 
     id = Column(db.Integer, primary_key=True, autoincrement=True)
     proponent_id = Column(db.String())

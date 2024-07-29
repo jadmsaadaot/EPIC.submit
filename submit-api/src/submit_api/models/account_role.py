@@ -13,8 +13,8 @@ from .db import db
 class AccountRole(BaseModel):
     """Definition of the Account Role entity."""
 
-    __tablename__ = 'account_role'
+    __tablename__ = 'account_roles'
 
     id = Column(db.Integer, primary_key=True, autoincrement=True)
-    account_user_id = Column(db.Integer, ForeignKey('account_user.id'), nullable=False)
-    role_id = Column(db.Integer, ForeignKey('role.id'), nullable=False)
+    account_user_id = Column(db.Integer, ForeignKey('account_users.id'), nullable=False)
+    role_id = Column(db.Integer, ForeignKey('roles.id'), nullable=False)

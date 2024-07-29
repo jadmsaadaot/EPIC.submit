@@ -13,7 +13,7 @@ from .db import db
 class Role(BaseModel):
     """Definition of the Role entity."""
 
-    __tablename__ = 'role'
+    __tablename__ = 'roles'
 
     id = Column(db.Integer, primary_key=True, autoincrement=True)
     role_name = Column(db.String(50), nullable=False)

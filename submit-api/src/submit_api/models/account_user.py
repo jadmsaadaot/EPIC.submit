@@ -14,10 +14,10 @@ from .db import db
 class AccountUser(BaseModel):
     """Definition of the Account User entity."""
 
-    __tablename__ = 'account_user'
+    __tablename__ = 'account_users'
 
     id = Column(db.Integer, primary_key=True, autoincrement=True)
-    account_id = Column(db.Integer, ForeignKey('account.id'), nullable=False)
+    account_id = Column(db.Integer, ForeignKey('accounts.id'), nullable=False)
     first_name = Column(db.String(50), nullable=False)
     last_name = Column(db.String(50), nullable=False)
     full_name = column_property(first_name + ' ' + last_name)
