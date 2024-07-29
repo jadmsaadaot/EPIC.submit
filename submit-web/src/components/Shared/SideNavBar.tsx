@@ -1,45 +1,25 @@
 import { useState } from "react";
-import { Box, List, ListItem, ListItemButton } from "@mui/material";
+import {
+  Box,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+} from "@mui/material";
 import { Link } from "@tanstack/react-router";
 import { theme } from "@/styles/theme";
 import { useAuth } from "react-oidc-context";
+import { AuthenticatedRoutes, Routes } from "./layout/SideNav/SideNavElements";
+import { hexToRgba } from "@/styles/utils";
 
 export default function SideNavBar() {
   const { isAuthenticated } = useAuth();
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
 
-  let routeMenuItems = [
-    {
-      routeName: "Root",
-      path: "/",
-    },
-    {
-      routeName: "About",
-      path: "/aboutpage",
-    },
-    {
-      routeName: "Lazy Loaded Page",
-      path: "/newpage",
-    },
-    {
-      routeName: "Plans",
-      path: "/eao-plans",
-    },
-    {
-      routeName: "Users",
-      path: "/users",
-    },
-  ];
+  let routeMenuItems = Routes;
 
-  const authenticatedRouteMenuItems = [
-    {
-      routeName: "Profile",
-      path: "/profile",
-    },
-  ];
-
-  if(isAuthenticated) {
-    routeMenuItems = routeMenuItems.concat(authenticatedRouteMenuItems);
+  if (isAuthenticated) {
+    routeMenuItems = routeMenuItems.concat(AuthenticatedRoutes);
   }
 
   return (
@@ -51,34 +31,79 @@ export default function SideNavBar() {
       >
         <List>
           {routeMenuItems.map((route) => (
-            <ListItem key={route.routeName}>
-              <Link
-                to={route.path}
-                onClick={() => setCurrentPath(route.path)}
-                activeProps={{style: {
-                  color: theme.palette.primary.main,
-                  fontWeight: currentPath === route.path ? "bold" : "normal",
-                  textDecoration: "none",
-                  width: "100%",
-                }}}
-              >
-                <ListItemButton
-                  sx={{
-                    pl: "2rem",
-                    backgroundColor:
-                      currentPath === route.path
-                        ? "rgba(0, 0, 0, 0.1)"
-                        : "transparent",
-                    borderLeft:
-                      currentPath === route.path
-                        ? `4px solid ${theme.palette.primary.main}`
-                        : "none",
+            <>
+              <ListItem key={route.name}>
+                <Link
+                  to={route.path}
+                  onClick={() => setCurrentPath(route.path)}
+                  style={{
+                    color: theme.palette.primary.light,
+                    fontWeight:  "bold",
+                    textDecoration: "none",
+                    width: "100%",
                   }}
                 >
-                  <span style={{ color: "inherit" }}>{route.routeName}</span>
-                </ListItemButton>
-              </Link>
-            </ListItem>
+                  <ListItemButton
+                    sx={{
+                      pl: "2rem",
+                      backgroundColor:
+                        currentPath === route.path
+                          ? hexToRgba(theme.palette.secondary.main, 0.1)
+                          : hexToRgba(theme.palette.primary.light, 0.1),
+                      borderLeft: `4px solid ${theme.palette.primary.main}`,
+                    }}
+                  >
+                    <span style={{ color: "inherit" }}>{route.name}</span>
+                  </ListItemButton>
+                </Link>
+              </ListItem>
+              {route.routes && route.routes?.length > 0 && (
+                <List disablePadding key={`list-${route.name}`}>
+                  {route.routes?.map((subRoute) => (
+                    <ListItem
+                      key={`sub-list-${subRoute?.name}`}
+                      sx={{ margin: 0, padding: 0 }}
+                    >
+                      <Link
+                        to={subRoute.path}
+                        onClick={() => setCurrentPath(subRoute.path)}
+                        style={{
+                          textDecoration: "none",
+                          margin: 0,
+                          padding: 0,
+                          color: "inherit",
+                        }}
+                        activeProps={{
+                          style: {
+                            color: theme.palette.primary.main,
+                            fontWeight:
+                              currentPath === subRoute.path ? "bold" : "normal",
+                            width: "100%",
+                          },
+                        }}
+                      >
+                        <ListItemButton
+                          key={`sub-list-button-${subRoute?.name}`}
+                          sx={{
+                            marginLeft: "40px",
+                            borderLeft:
+                              currentPath === subRoute.path
+                                ? `4px solid ${theme.palette.primary.main}`
+                                : `1px solid ${theme.palette.divider}`,
+                          }}
+                        >
+                          <ListItemText key={`sub-list-text-${subRoute?.name}`}>
+                            <span style={{ color: "inherit" }}>
+                              {subRoute.name}
+                            </span>
+                          </ListItemText>
+                        </ListItemButton>
+                      </Link>
+                    </ListItem>
+                  ))}
+                </List>
+              )}
+            </>
           ))}
         </List>
       </Box>
