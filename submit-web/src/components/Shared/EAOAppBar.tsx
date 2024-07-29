@@ -48,7 +48,7 @@ export default function EAOAppBar() {
                   </Typography>
                 </Box>
                 <Button
-                  variant="outlined"
+                  variant="text"
                   color="primary"
                   onClick={() => auth.signoutRedirect()}
                 >
@@ -57,7 +57,7 @@ export default function EAOAppBar() {
               </>
             ) : (
               <Button
-                variant="outlined"
+                variant="text"
                 color="primary"
                 onClick={() => auth.signinRedirect()}
               >

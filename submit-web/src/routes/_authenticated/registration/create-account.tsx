@@ -1,13 +1,13 @@
+import { Save } from "@mui/icons-material";
 import {
   Box,
-  Button,
   Divider,
-  FormControl,
   FormGroup,
   Grid,
-  OutlinedInput,
+  TextField,
   Typography,
 } from "@mui/material";
+import Button from "@mui/material/Button";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute(
@@ -40,16 +40,18 @@ function CreateAccount() {
       </Box>
       <Grid
         container
-        direction="column"
-        justifyContent="center"
+        direction="row"
+        justifyContent="flex-start"
         alignItems="flex-start"
         px={9.5}
         py={7}
+        height={"calc(100vh - 242px)"}
+        overflow={"auto"}
       >
-        <Typography variant="h4" color="initial" fontWeight={600}>
+        <Typography variant="h4" fontWeight={600}>
           First, create your account.
         </Typography>
-        <Typography variant="body1" color="initial" py={1.5}>
+        <Typography variant="body1" py={1.5}>
           Welcome to EPIC.submit and thank you for taking a few minutes to set
           up the BC Hydro account. First of all, please create your Account as
           an Adminstrator of EPIC.submit for CGI Mines Inc.
@@ -67,7 +69,7 @@ function CreateAccount() {
           alignItems="flex-start"
           marginTop="0.75rem"
         >
-          <Typography variant="h4" color="#858A8C">
+          <Typography variant="h4" color="#858A8C" fontWeight={400}>
             Your Contact Information
           </Typography>
           <Divider
@@ -75,53 +77,20 @@ function CreateAccount() {
           ></Divider>
           <form onSubmit={handleSubmit}>
             <FormGroup>
-              <FormControl>
-                <label htmlFor="givenName" style={{ fontWeight: "600" }}>
-                  Your Given Name
-                </label>
-                <OutlinedInput
-                  id="givenName"
-                  sx={{ height: "40px", marginBottom: "1.5rem" }}
-                />
-              </FormControl>
-              <FormControl>
-                <label htmlFor="surname" style={{ fontWeight: "600" }}>
-                  Your Surname
-                </label>
-                <OutlinedInput
-                  id="surname"
-                  sx={{ height: "40px", marginBottom: "1.5rem" }}
-                />
-              </FormControl>
-              <FormControl>
-                <label htmlFor="position" style={{ fontWeight: "600" }}>
-                  Your Position/Role at CGI Mines Inc.
-                </label>
-                <OutlinedInput
-                  id="position"
-                  sx={{ height: "40px", marginBottom: "1.5rem" }}
-                />
-              </FormControl>
-              <FormControl>
-                <label htmlFor="phone" style={{ fontWeight: "600" }}>
-                  Your Work Phone Number
-                </label>
-                <OutlinedInput
-                  id="phone"
-                  sx={{ height: "40px", marginBottom: "1.5rem" }}
-                />
-              </FormControl>
-              <FormControl>
-                <label htmlFor="email" style={{ fontWeight: "600" }}>
-                  Your Work Email Address
-                </label>
-                <OutlinedInput
-                  id="email"
-                  sx={{ height: "40px", marginBottom: "1.5rem" }}
-                />
-              </FormControl>
+              <TextField id="givenName" label="Your Given Name" />
+              <TextField id="surname" label="Your Surname" />
+              <TextField
+                id="position"
+                label="Your Position/Role at CGI Mines Inc."
+              />
+              <TextField id="phone" label="Your Work Phone Number" />
+              <TextField id="email" label="Your Work Email Address" />
             </FormGroup>
-            <Button variant={"contained"} type="submit">
+            <Button
+              type="submit"
+              color="primary"
+              startIcon={<Save />}
+            >
               Save
             </Button>
           </form>
@@ -135,7 +104,7 @@ function CreateAccount() {
         width="100%"
         bottom="0"
       >
-        <Button variant="outlined" sx={{ mx: 9.5, my: 2.25 }}>
+        <Button color="secondary" sx={{ mx: 9.5, my: 2.25 }}>
           Save & Continue Later
         </Button>
       </Box>
