@@ -27,12 +27,12 @@ export default function EAOAppBar() {
               {AppConfig.appTitle}
             </Typography>
           </Grid>
-          <Grid display="flex" justifyContent="center" alignItems="center" paddingRight={"0.75rem"}>
-            <AccountCircleIcon
-              fontSize="large"
-              color="primary"
-              sx={{ marginRight: "0.25rem" }}
-            ></AccountCircleIcon>
+          <Grid
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            paddingRight={"0.75rem"}
+          >
             {auth.isAuthenticated ? (
               <>
                 <Box
@@ -48,7 +48,7 @@ export default function EAOAppBar() {
                   </Typography>
                 </Box>
                 <Button
-                  variant="outlined"
+                  variant="text"
                   color="primary"
                   onClick={() => auth.signoutRedirect()}
                 >
@@ -57,13 +57,18 @@ export default function EAOAppBar() {
               </>
             ) : (
               <Button
-                variant="outlined"
+                variant="text"
                 color="primary"
                 onClick={() => auth.signinRedirect()}
               >
                 Sign In
               </Button>
             )}
+            <AccountCircleIcon
+              fontSize="large"
+              color="inherit"
+              sx={{ marginLeft: "0.25rem" }}
+            ></AccountCircleIcon>
           </Grid>
         </Grid>
       </AppBar>

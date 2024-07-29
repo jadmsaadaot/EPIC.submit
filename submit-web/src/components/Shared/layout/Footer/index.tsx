@@ -10,7 +10,6 @@ const Footer = () => {
       justifyContent="center"
       alignItems="center"
       spacing={0}
-      mt="2em"
     >
       <Grid
         item

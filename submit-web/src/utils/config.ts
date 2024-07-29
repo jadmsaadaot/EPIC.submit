@@ -1,3 +1,5 @@
+import { WebStorageStateStore } from "oidc-client-ts";
+
 declare global {
   interface Window {
     _env_: {
@@ -37,4 +39,5 @@ export const OidcConfig = {
   post_logout_redirect_uri: `${APP_URL}/`,
   scope: "openid profile email",
   revokeTokensOnSignout: true,
+  userStore: new WebStorageStateStore({ store: window.localStorage }),
 };

@@ -16,6 +16,12 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as OidcCallbackImport } from './routes/oidc-callback'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
+import { Route as EaoPlansIndexImport } from './routes/eao-plans/index'
+import { Route as EaoPlansPlanIdImport } from './routes/eao-plans/$planId'
+import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
+import { Route as AuthenticatedAdminLoginImport } from './routes/_authenticated/admin-login'
+import { Route as AuthenticatedUsersIndexImport } from './routes/_authenticated/users/index'
+import { Route as AuthenticatedRegistrationCreateAccountImport } from './routes/_authenticated/registration/create-account'
 
 // Create Virtual Routes
 
@@ -48,6 +54,37 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const EaoPlansIndexRoute = EaoPlansIndexImport.update({
+  path: '/eao-plans/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const EaoPlansPlanIdRoute = EaoPlansPlanIdImport.update({
+  path: '/eao-plans/$planId',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const AuthenticatedProfileRoute = AuthenticatedProfileImport.update({
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedAdminLoginRoute = AuthenticatedAdminLoginImport.update({
+  path: '/admin-login',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexImport.update({
+  path: '/users/',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+
+const AuthenticatedRegistrationCreateAccountRoute =
+  AuthenticatedRegistrationCreateAccountImport.update({
+    path: '/registration/create-account',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -88,6 +125,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewpageLazyImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated/admin-login': {
+      id: '/_authenticated/admin-login'
+      path: '/admin-login'
+      fullPath: '/admin-login'
+      preLoaderRoute: typeof AuthenticatedAdminLoginImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/eao-plans/$planId': {
+      id: '/eao-plans/$planId'
+      path: '/eao-plans/$planId'
+      fullPath: '/eao-plans/$planId'
+      preLoaderRoute: typeof EaoPlansPlanIdImport
+      parentRoute: typeof rootRoute
+    }
+    '/eao-plans/': {
+      id: '/eao-plans/'
+      path: '/eao-plans'
+      fullPath: '/eao-plans'
+      preLoaderRoute: typeof EaoPlansIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/_authenticated/registration/create-account': {
+      id: '/_authenticated/registration/create-account'
+      path: '/registration/create-account'
+      fullPath: '/registration/create-account'
+      preLoaderRoute: typeof AuthenticatedRegistrationCreateAccountImport
+      parentRoute: typeof AuthenticatedImport
+    }
+    '/_authenticated/users/': {
+      id: '/_authenticated/users/'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof AuthenticatedUsersIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
   }
 }
 
@@ -95,9 +174,17 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
+  AuthenticatedRoute: AuthenticatedRoute.addChildren({
+    AuthenticatedAdminLoginRoute,
+    AuthenticatedProfileRoute,
+    AuthenticatedRegistrationCreateAccountRoute,
+    AuthenticatedUsersIndexRoute,
+  }),
   OidcCallbackRoute,
   AboutpageLazyRoute,
   NewpageLazyRoute,
+  EaoPlansPlanIdRoute,
+  EaoPlansIndexRoute,
 })
 
 /* prettier-ignore-end */
@@ -112,14 +199,22 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated",
         "/oidc-callback",
         "/aboutpage",
-        "/newpage"
+        "/newpage",
+        "/eao-plans/$planId",
+        "/eao-plans/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
     "/_authenticated": {
-      "filePath": "_authenticated.tsx"
+      "filePath": "_authenticated.tsx",
+      "children": [
+        "/_authenticated/admin-login",
+        "/_authenticated/profile",
+        "/_authenticated/registration/create-account",
+        "/_authenticated/users/"
+      ]
     },
     "/oidc-callback": {
       "filePath": "oidc-callback.tsx"
@@ -129,6 +224,28 @@ export const routeTree = rootRoute.addChildren({
     },
     "/newpage": {
       "filePath": "newpage.lazy.tsx"
+    },
+    "/_authenticated/admin-login": {
+      "filePath": "_authenticated/admin-login.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/profile": {
+      "filePath": "_authenticated/profile.tsx",
+      "parent": "/_authenticated"
+    },
+    "/eao-plans/$planId": {
+      "filePath": "eao-plans/$planId.tsx"
+    },
+    "/eao-plans/": {
+      "filePath": "eao-plans/index.tsx"
+    },
+    "/_authenticated/registration/create-account": {
+      "filePath": "_authenticated/registration/create-account.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/users/": {
+      "filePath": "_authenticated/users/index.tsx",
+      "parent": "/_authenticated"
     }
   }
 }
