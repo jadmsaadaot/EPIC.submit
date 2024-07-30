@@ -16,4 +16,22 @@ class Account(BaseModel):
     __tablename__ = 'accounts'
 
     id = Column(db.Integer, primary_key=True, autoincrement=True)
-    proponent_id = Column(db.String())
+    proponent_id = Column(db.String(), nullable=False, unique=True)
+
+    @classmethod
+    def get_by_proponent_id(cls, proponent_id) -> Account:
+        """Fetch account by proponent id."""
+        return cls.query.filter_by(proponent_id=proponent_id).first()
+    
+    @classmethod
+    def create_account(cls, account_data, session=None) -> Account:
+        """Create account."""
+        account = Account(
+            proponent_id=account_data.get('proponent_id', None),
+        )
+        if session:
+            session.add(account)
+            session.commit()
+        else:
+            account.save()
+        return account
