@@ -1,13 +1,19 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Outlet } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { useAuth } from "react-oidc-context";
 
-export const Route = createFileRoute('/_authenticated')({
-  beforeLoad: ({ context }) => {
-    const { isAuthenticated, signinRedirect, isLoading } = context.authentication;
-    // eslint-disable-next-line no-console
-    console.log(isAuthenticated, isLoading);
+export const Route = createFileRoute("/_authenticated")({
+  component: Auth,
+});
 
-    if (!isLoading && !isAuthenticated) {
+function Auth() {
+  const { isAuthenticated, signinRedirect, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isAuthenticated && !isLoading) {
       signinRedirect();
     }
-  },
-})
+  }, [isAuthenticated, isLoading, signinRedirect]);
+
+  return <Outlet />;
+}
