@@ -35,7 +35,9 @@ function CreateAccount() {
   const { mutate: doCreateAccount, isPending: isCreateAccountPending } =
     useCreateAccount(
       () => navigate({ to: "/projects" }),
-      (error) => console.log("error", error),
+      () => {
+        return;
+      },
     );
 
   const methods = useForm({
