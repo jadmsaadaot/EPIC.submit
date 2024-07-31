@@ -15,7 +15,7 @@
 
 from http import HTTPStatus
 
-from flask_restx import Namespace, Resource
+from flask_restx import Namespace, Resource, cors
 from submit_api.services.account_service import AccountService
 from submit_api.utils.util import cors_preflight
 from submit_api.schemas.account import AccountSchema, AccountCreateSchema
@@ -52,6 +52,7 @@ class Accounts(Resource):
     @API.expect(account_create_model)
     @API.response(code=HTTPStatus.CREATED, model=account_list_model, description="Account Created")
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
+    @cors.crossdomain(origin="*")
     def post():
         """Create an account."""
         account_data = AccountCreateSchema().load(API.payload)
