@@ -24,3 +24,21 @@ class AccountUser(BaseModel):
     position = Column(db.String(100), nullable=False)
     work_email_address = Column(db.String(100), nullable=False)
     work_contact_number = Column(db.String(50), nullable=False)
+
+    @classmethod
+    def create_account_user(cls, data, session=None) -> AccountUser:
+        """Create account."""
+        account_user = AccountUser(
+            account_id=data.get('account_id', None),
+            first_name=data.get('first_name', None),
+            last_name=data.get('last_name', None),
+            position=data.get('position', None),
+            work_email_address=data.get('work_email_address', None),
+            work_contact_number=data.get('work_contact_number', None),
+        )
+        if session:
+            session.add(account_user)
+            session.commit()
+        else:
+            account_user.save()
+        return account_user

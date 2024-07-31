@@ -4,10 +4,18 @@ Manages the role
 """
 from __future__ import annotations
 
+import enum
+
 from sqlalchemy import Column
 
 from .base_model import BaseModel
 from .db import db
+
+
+class RoleEnum(enum.Enum):
+    """Enum for Role"""
+
+    ACCOUNT_PRIMARY_ADMIN = 'ACCOUNT_PRIMARY_ADMIN'
 
 
 class Role(BaseModel):
@@ -17,3 +25,9 @@ class Role(BaseModel):
 
     id = Column(db.Integer, primary_key=True, autoincrement=True)
     role_name = Column(db.String(50), nullable=False)
+    description = Column(db.Text(), nullable=False)
+
+    @classmethod
+    def get_by_name(cls, role_name) -> Role:
+        """Fetch role by role name."""
+        return cls.query.filter_by(role_name=role_name).first()
