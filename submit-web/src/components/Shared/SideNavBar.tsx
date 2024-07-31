@@ -10,7 +10,8 @@ import { Link } from "@tanstack/react-router";
 import { theme } from "@/styles/theme";
 import { useAuth } from "react-oidc-context";
 import { AuthenticatedRoutes, Routes } from "./layout/SideNav/SideNavElements";
-import { hexToRgba } from "@/styles/utils";
+import { alpha } from '@mui/system';
+
 
 export default function SideNavBar() {
   const { isAuthenticated } = useAuth();
@@ -47,9 +48,9 @@ export default function SideNavBar() {
                     sx={{
                       pl: "2rem",
                       backgroundColor:
-                        currentPath === route.path
-                          ? hexToRgba(theme.palette.secondary.main, 0.1)
-                          : hexToRgba(theme.palette.primary.light, 0.1),
+                      currentPath === route.path
+                        ? alpha(theme.palette.secondary.main, 0.1)
+                        : alpha(theme.palette.primary.light, 0.1),
                       borderLeft: `4px solid ${theme.palette.primary.main}`,
                     }}
                   >
