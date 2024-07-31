@@ -22,7 +22,7 @@ class Account(BaseModel):
     def get_by_proponent_id(cls, proponent_id) -> Account:
         """Fetch account by proponent id."""
         return cls.query.filter_by(proponent_id=proponent_id).first()
-    
+
     @classmethod
     def create_account(cls, account_data, session=None) -> Account:
         """Create account."""

@@ -4,13 +4,17 @@ Manages the role
 """
 from __future__ import annotations
 
+import enum
+
 from sqlalchemy import Column
 
 from .base_model import BaseModel
 from .db import db
 
 
-class RoleEnum:
+class RoleEnum(enum.Enum):
+    """Enum for Role"""
+
     ACCOUNT_PRIMARY_ADMIN = 'ACCOUNT_PRIMARY_ADMIN'
 
 

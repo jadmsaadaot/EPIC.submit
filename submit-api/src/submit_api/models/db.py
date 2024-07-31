@@ -16,6 +16,7 @@ migrate = Migrate()
 # Marshmallow for database model schema
 ma = Marshmallow()
 
+
 @contextmanager
 def session_scope():
     """Provide a transactional scope around a series of operations."""

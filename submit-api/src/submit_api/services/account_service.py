@@ -46,7 +46,7 @@ class AccountService:
             }
             account_user = AccountUserModel.create_account_user(account_user_data, session)
 
-            account_admin_role = RoleModel.get_by_name(RoleEnum.ACCOUNT_PRIMARY_ADMIN)
+            account_admin_role = RoleModel.get_by_name(RoleEnum.ACCOUNT_PRIMARY_ADMIN.value)
             if not account_admin_role:
                 raise Exception("Account admin role not found")
 
