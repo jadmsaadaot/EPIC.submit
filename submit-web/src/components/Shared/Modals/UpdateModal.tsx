@@ -1,4 +1,4 @@
-import { Button, Grid, Modal, Typography } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { useModal } from "./modalStore";
 import { modalStyle } from "./constants";
 
@@ -8,9 +8,8 @@ interface UpdateModalProps {
 }
 
 const UpdateModal = ({ header, subText }: UpdateModalProps) => {
-
   const { setClose } = useModal();
-  
+
   return (
     <Grid
       container

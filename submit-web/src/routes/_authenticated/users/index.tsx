@@ -50,7 +50,8 @@ function UsersPage() {
   };
 
   const handleOpenModal = (user?: User) => {
-    setOpen(<UserModal user={user}  onSubmit={handleOnSubmit} />, );
+    setOpen(<UserModal user={user} onSubmit={handleOnSubmit} />);
+    setSelectedUser(user || null);
   };
 
   /** Delete user START */
