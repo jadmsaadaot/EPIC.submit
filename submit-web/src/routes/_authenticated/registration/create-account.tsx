@@ -1,16 +1,13 @@
-import { useModal } from "@/components/Shared/Modals/modalStore";
-import UpdateModal from "@/components/Shared/Modals/UpdateModal";
+import { useCreateAccount } from "@/hooks/useAccounts";
 import { Save } from "@mui/icons-material";
-import {
-  Box,
-  Divider,
-  FormGroup,
-  Grid,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import * as yup from "yup";
+import { FormProvider, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import ControlledTextField from "@/components/Shared/controlled/ControlledTextField";
+import { theme } from "@/styles/theme";
 
 export const Route = createFileRoute(
   "/_authenticated/registration/create-account"
@@ -18,18 +15,48 @@ export const Route = createFileRoute(
   component: CreateAccount,
 });
 
-function CreateAccount() {
-  const { setOpen } = useModal();
+type CreateAccountForm = {
+  givenName: string;
+  surname: string;
+  position: string;
+  phone: string;
+  email: string;
+};
+const schema = yup.object().shape({
+  givenName: yup.string().required("Name is required"),
+  surname: yup.string().required("Surname is required"),
+  position: yup.string().required("Position is required"),
+  phone: yup.string().required("Phone number is required"),
+  email: yup.string().email("Invalid email").required("Email is required"),
+});
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    // eslint-disable-next-line no-console
-    setOpen(
-      <UpdateModal
-        header="Success"
-        subText={[{ text: "Your account has been created successfully." }]}
-      />
+function CreateAccount() {
+  const navigate = useNavigate();
+  const { mutate: doCreateAccount, isPending: isCreateAccountPending } =
+    useCreateAccount(
+      () => navigate({ to: "/projects" }),
+      () => {
+        return;
+      }
     );
+
+  const methods = useForm({
+    resolver: yupResolver(schema),
+    mode: "onBlur",
+  });
+
+  const { handleSubmit } = methods;
+
+  const onSubmitHandler = async (data: CreateAccountForm) => {
+    const accountData = {
+      first_name: data.givenName,
+      last_name: data.surname,
+      position: data.position,
+      work_contact_number: data.phone,
+      work_email_address: data.email,
+      proponent_id: "5",
+    };
+    doCreateAccount(accountData);
   };
 
   return (
@@ -37,7 +64,7 @@ function CreateAccount() {
       <Box
         position="relative"
         bgcolor="#F0F8FF"
-        zIndex={-1}
+        zIndex={theme.zIndex.appBar - 10}
         height={76}
         display={"flex"}
         alignItems={"center"}
@@ -73,32 +100,63 @@ function CreateAccount() {
         </Typography>
 
         <Grid
-          width={"25%"}
+          item
+          xs={3}
           justifyContent="center"
           alignItems="flex-start"
           marginTop="0.75rem"
+          container
         >
-          <Typography variant="h4" color="#858A8C" fontWeight={400}>
-            Your Contact Information
-          </Typography>
-          <Divider
-            sx={{ marginTop: "1rem", marginBottom: "1.25rem" }}
-          ></Divider>
-          <form onSubmit={handleSubmit}>
-            <FormGroup>
-              <TextField id="givenName" label="Your Given Name" />
-              <TextField id="surname" label="Your Surname" />
-              <TextField
-                id="position"
-                label="Your Position/Role at CGI Mines Inc."
-              />
-              <TextField id="phone" label="Your Work Phone Number" />
-              <TextField id="email" label="Your Work Email Address" />
-            </FormGroup>
-            <Button type="submit" color="primary" startIcon={<Save />}>
-              Save
-            </Button>
-          </form>
+          <Grid item xs={12}>
+            <Typography variant="h4" color="#858A8C" fontWeight={400}>
+              Your Contact Information
+            </Typography>
+            <Divider sx={{ marginTop: "1rem", marginBottom: "1.25rem" }} />
+          </Grid>
+          <Grid item xs={12}>
+            <FormProvider {...methods}>
+              <form onSubmit={handleSubmit(onSubmitHandler)}>
+                <ControlledTextField
+                  name="givenName"
+                  label="Your Given Name"
+                  fullWidth
+                  InputLabelProps={{ sx: { fontWeight: "bold" } }}
+                />
+                <ControlledTextField
+                  name="surname"
+                  label="Your Surname"
+                  fullWidth
+                  InputLabelProps={{ sx: { fontWeight: "bold" } }}
+                />
+                <ControlledTextField
+                  name="position"
+                  label="Your Position/Role at CGI Mines Inc."
+                  fullWidth
+                  InputLabelProps={{ sx: { fontWeight: "bold" } }}
+                />
+                <ControlledTextField
+                  name="phone"
+                  label="Your Work Phone Number"
+                  fullWidth
+                  InputLabelProps={{ sx: { fontWeight: "bold" } }}
+                />
+                <ControlledTextField
+                  name="email"
+                  label="Your Work Email Address"
+                  fullWidth
+                  InputLabelProps={{ sx: { fontWeight: "bold" } }}
+                />
+                <Button
+                  type="submit"
+                  color="primary"
+                  startIcon={<Save />}
+                  disabled={isCreateAccountPending}
+                >
+                  Save
+                </Button>
+              </form>
+            </FormProvider>
+          </Grid>
         </Grid>
       </Grid>
       <Box
