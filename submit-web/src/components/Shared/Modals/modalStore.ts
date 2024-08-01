@@ -13,7 +13,7 @@ export type ModalData = {
 interface ModalStore {
   data: ModalData
   isOpen: boolean
-  showingModal: React.ReactNode | null
+  modalContent: React.ReactNode | null
   setOpen: (modal: React.ReactNode, fetchData?: () => Promise<ModalData>) => Promise<void>
   setClose: () => void
 }
@@ -22,14 +22,14 @@ interface ModalStore {
 export const useModal = create<ModalStore>((set) => ({
   data: {},
   isOpen: false,
-  showingModal: null,
+  modalContent: null,
 
   setOpen: async (modal, fetchData) => {
     if (modal) {
       const fetchedData = fetchData ? await fetchData() : {}
       set((state) => ({
         data: { ...state.data, ...fetchedData },
-        showingModal: modal,
+        modalContent: modal,
         isOpen: true,
       }))
     }
@@ -39,7 +39,7 @@ export const useModal = create<ModalStore>((set) => ({
     set({
       isOpen: false,
       data: {},
-      showingModal: null,
+      modalContent: null,
     })
   },
 }))

@@ -1,11 +1,9 @@
-import { useModal } from "@/components/Shared/Modals/modalStore";
 import { useAddUser, useUpdateUser } from "@/hooks/useUsers";
 import { User } from "@/models/User";
 import { Save } from "@mui/icons-material";
 import {
   Alert,
   Button,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -27,10 +25,8 @@ const initFormData: Omit<User, "id"> = {
   description: "",
 };
 
-const UserModal: React.FC<AddUserModalProps> = ({ onSubmit }) => {
+const UserModal: React.FC<AddUserModalProps> = ({ onSubmit, user }) => {
   const [formData, setFormData] = useState<Omit<User, "id">>(initFormData);
-  const { isOpen, setClose, data } = useModal();
-  const user = data.user;
 
   useEffect(() => {
     if (user) {
@@ -86,11 +82,10 @@ const UserModal: React.FC<AddUserModalProps> = ({ onSubmit }) => {
   const handleClose = () => {
     reset();
     setFormData(initFormData);
-    setClose();
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose}>
+    <>
       <DialogTitle fontWeight={"bold"}>Add New User</DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
@@ -147,7 +142,7 @@ const UserModal: React.FC<AddUserModalProps> = ({ onSubmit }) => {
           </Button>
         </DialogActions>
       </form>
-    </Dialog>
+      </>
   );
 };
 

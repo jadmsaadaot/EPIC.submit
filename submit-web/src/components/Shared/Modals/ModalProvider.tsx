@@ -1,26 +1,15 @@
-import React, { useEffect, useState } from 'react'
-import { useModal } from './modalStore'
+import React from "react";
+import { useModal } from "./modalStore";
+import { Modal } from "@mui/material";
 
-interface ModalProviderProps {
-  children: React.ReactNode
-}
-
-const ModalProvider: React.FC<ModalProviderProps> = ({ children }) => {
-  const { showingModal } = useModal()
-  const [isMounted, setIsMounted] = useState(false)
-
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
-
-  if (!isMounted) return null
+const ModalProvider: React.FC<ModalProviderProps> = () => {
+  const { modalContent, setClose, isOpen } = useModal();
 
   return (
-    <>
-      {children}
-      {showingModal}
-    </>
-  )
-}
+    <Modal open={isOpen} onClose={setClose}>
+      <>{modalContent}</>
+    </Modal>
+  );
+};
 
-export default ModalProvider
+export default ModalProvider;
