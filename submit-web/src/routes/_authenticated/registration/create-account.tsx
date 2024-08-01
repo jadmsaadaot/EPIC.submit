@@ -10,7 +10,7 @@ import ControlledTextField from "@/components/Shared/controlled/ControlledTextFi
 import { theme } from "@/styles/theme";
 
 export const Route = createFileRoute(
-  "/_authenticated/registration/create-account",
+  "/_authenticated/registration/create-account"
 )({
   component: CreateAccount,
 });
@@ -37,7 +37,7 @@ function CreateAccount() {
       () => navigate({ to: "/projects" }),
       () => {
         return;
-      },
+      }
     );
 
   const methods = useForm({

@@ -23,6 +23,7 @@ import CustomSnackbar, {
   SnackBarMessageProps,
 } from "@/components/Shared/Popups/SnackBarMessage";
 import UserModal from "@/components/App/Users/UserModal";
+import { useModal } from "@/components/Shared/Modals/modalStore";
 
 export const Route = createFileRoute("/_authenticated/users/")({
   component: UsersPage,
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/_authenticated/users/")({
 
 function UsersPage() {
   const queryClient = useQueryClient();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { setOpen } = useModal();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null);
@@ -46,17 +47,11 @@ function UsersPage() {
     } else {
       setSnackbarConfig({ message: "User added successfully!" });
     }
-    handleCloseModal();
   };
 
   const handleOpenModal = (user?: User) => {
+    setOpen(<UserModal user={user} onSubmit={handleOnSubmit} />);
     setSelectedUser(user || null);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedUser(null);
   };
 
   /** Delete user START */
@@ -68,8 +63,11 @@ function UsersPage() {
     });
   };
 
-  const onDeleteError = (error: AxiosError) => {    
-    setSnackbarConfig({ message: `User deletion failed! ${error.message}`, severity: "error" });
+  const onDeleteError = (error: AxiosError) => {
+    setSnackbarConfig({
+      message: `User deletion failed! ${error.message}`,
+      severity: "error",
+    });
   };
 
   const { mutate: deleteUser } = useDeleteUser(onDeleteSuccess, onDeleteError);
@@ -140,7 +138,9 @@ function UsersPage() {
                 key={row.id}
                 sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
               >
-                <TableCell component="th" scope="row">{row.first_name}</TableCell>
+                <TableCell component="th" scope="row">
+                  {row.first_name}
+                </TableCell>
                 <TableCell>{row.last_name}</TableCell>
                 <TableCell>{row.username}</TableCell>
                 <TableCell>{row.email_address}</TableCell>
@@ -165,12 +165,6 @@ function UsersPage() {
           </TableBody>
         </Table>
       </TableContainer>
-      <UserModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSubmit={handleOnSubmit}
-        user={selectedUser}
-      ></UserModal>
       <ConfirmationDialog
         isOpen={isConfirmationOpen}
         title="Delete User"

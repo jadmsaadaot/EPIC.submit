@@ -6,7 +6,7 @@ import { AuthProvider } from "react-oidc-context";
 import { OidcConfig } from "@/utils/config";
 import { theme } from "@/styles/theme";
 import RouterProviderWithAuthContext from "@/router";
-
+import ModalProvider from "./components/Shared/Modals/ModalProvider";
 const queryClient = new QueryClient();
 
 function App() {
@@ -15,6 +15,7 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider theme={theme}>
           <AuthProvider {...OidcConfig}>
+            <ModalProvider />
             <RouterProviderWithAuthContext />
           </AuthProvider>
         </ThemeProvider>

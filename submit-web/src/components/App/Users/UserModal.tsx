@@ -1,10 +1,10 @@
+import { useModal } from "@/components/Shared/Modals/modalStore";
 import { useAddUser, useUpdateUser } from "@/hooks/useUsers";
 import { User } from "@/models/User";
 import { Save } from "@mui/icons-material";
 import {
   Alert,
   Button,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
@@ -13,10 +13,8 @@ import {
 import { useEffect, useState } from "react";
 
 type AddUserModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
   onSubmit: () => void;
-  user?: User | null;
+  user: User | undefined;
 };
 
 const initFormData: Omit<User, "id"> = {
@@ -25,16 +23,12 @@ const initFormData: Omit<User, "id"> = {
   username: "",
   email_address: "",
   contact_number: "",
-  description: ""
+  description: "",
 };
 
-const UserModal: React.FC<AddUserModalProps> = ({
-  isOpen,
-  onClose,
-  onSubmit,
-  user,
-}) => {
+const UserModal: React.FC<AddUserModalProps> = ({ onSubmit, user }) => {
   const [formData, setFormData] = useState<Omit<User, "id">>(initFormData);
+  const {setClose} = useModal();
 
   useEffect(() => {
     if (user) {
@@ -90,11 +84,11 @@ const UserModal: React.FC<AddUserModalProps> = ({
   const handleClose = () => {
     reset();
     setFormData(initFormData);
-    onClose();
+    setClose();
   };
 
   return (
-    <Dialog open={isOpen} onClose={handleClose}>
+    <>
       <DialogTitle fontWeight={"bold"}>Add New User</DialogTitle>
       <form onSubmit={handleSubmit}>
         <DialogContent>
@@ -151,7 +145,7 @@ const UserModal: React.FC<AddUserModalProps> = ({
           </Button>
         </DialogActions>
       </form>
-    </Dialog>
+      </>
   );
 };
 
