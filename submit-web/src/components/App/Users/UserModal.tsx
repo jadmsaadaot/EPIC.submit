@@ -1,3 +1,4 @@
+import { useModal } from "@/components/Shared/Modals/modalStore";
 import { useAddUser, useUpdateUser } from "@/hooks/useUsers";
 import { User } from "@/models/User";
 import { Save } from "@mui/icons-material";
@@ -13,10 +14,8 @@ import {
 import { useEffect, useState } from "react";
 
 type AddUserModalProps = {
-  isOpen: boolean;
-  onClose: () => void;
   onSubmit: () => void;
-  user?: User | null;
+  user: User | undefined;
 };
 
 const initFormData: Omit<User, "id"> = {
@@ -25,16 +24,13 @@ const initFormData: Omit<User, "id"> = {
   username: "",
   email_address: "",
   contact_number: "",
-  description: ""
+  description: "",
 };
 
-const UserModal: React.FC<AddUserModalProps> = ({
-  isOpen,
-  onClose,
-  onSubmit,
-  user,
-}) => {
+const UserModal: React.FC<AddUserModalProps> = ({ onSubmit }) => {
   const [formData, setFormData] = useState<Omit<User, "id">>(initFormData);
+  const { isOpen, setClose, data } = useModal();
+  const user = data.user;
 
   useEffect(() => {
     if (user) {
@@ -90,7 +86,7 @@ const UserModal: React.FC<AddUserModalProps> = ({
   const handleClose = () => {
     reset();
     setFormData(initFormData);
-    onClose();
+    setClose();
   };
 
   return (
