@@ -1,3 +1,5 @@
+import { useModal } from "@/components/Shared/Modals/modalStore";
+import UpdateModal from "@/components/Shared/Modals/UpdateModal";
 import { Save } from "@mui/icons-material";
 import {
   Box,
@@ -17,10 +19,17 @@ export const Route = createFileRoute(
 });
 
 function CreateAccount() {
+  const { setOpen } = useModal();
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // eslint-disable-next-line no-console
-    console.log("save");
+    setOpen(
+      <UpdateModal
+        header="Success"
+        subText={[{ text: "Your account has been created successfully." }]}
+      />
+    );
   };
 
   return (
@@ -86,11 +95,7 @@ function CreateAccount() {
               <TextField id="phone" label="Your Work Phone Number" />
               <TextField id="email" label="Your Work Email Address" />
             </FormGroup>
-            <Button
-              type="submit"
-              color="primary"
-              startIcon={<Save />}
-            >
+            <Button type="submit" color="primary" startIcon={<Save />}>
               Save
             </Button>
           </form>
