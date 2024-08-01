@@ -2,7 +2,7 @@ import React from "react";
 import { useModal } from "./modalStore";
 import { Modal } from "@mui/material";
 
-const ModalProvider: React.FC<ModalProviderProps> = () => {
+const ModalProvider: React.FC = () => {
   const { modalContent, setClose, isOpen } = useModal();
 
   return (
