@@ -21,6 +21,7 @@ import { Route as EaoPlansPlanIdImport } from './routes/eao-plans/$planId'
 import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedAdminLoginImport } from './routes/_authenticated/admin-login'
 import { Route as AuthenticatedUsersIndexImport } from './routes/_authenticated/users/index'
+import { Route as AuthenticatedProjectsIndexImport } from './routes/_authenticated/projects/index'
 import { Route as AuthenticatedRegistrationCreateAccountImport } from './routes/_authenticated/registration/create-account'
 
 // Create Virtual Routes
@@ -79,6 +80,13 @@ const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexImport.update({
   path: '/users/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+
+const AuthenticatedProjectsIndexRoute = AuthenticatedProjectsIndexImport.update(
+  {
+    path: '/projects/',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any,
+)
 
 const AuthenticatedRegistrationCreateAccountRoute =
   AuthenticatedRegistrationCreateAccountImport.update({
@@ -160,6 +168,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRegistrationCreateAccountImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/projects/': {
+      id: '/_authenticated/projects/'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof AuthenticatedProjectsIndexImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/users/': {
       id: '/_authenticated/users/'
       path: '/users'
@@ -178,6 +193,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedAdminLoginRoute,
     AuthenticatedProfileRoute,
     AuthenticatedRegistrationCreateAccountRoute,
+    AuthenticatedProjectsIndexRoute,
     AuthenticatedUsersIndexRoute,
   }),
   OidcCallbackRoute,
@@ -213,6 +229,7 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/admin-login",
         "/_authenticated/profile",
         "/_authenticated/registration/create-account",
+        "/_authenticated/projects/",
         "/_authenticated/users/"
       ]
     },
@@ -241,6 +258,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/registration/create-account": {
       "filePath": "_authenticated/registration/create-account.tsx",
+      "parent": "/_authenticated"
+    },
+    "/_authenticated/projects/": {
+      "filePath": "_authenticated/projects/index.tsx",
       "parent": "/_authenticated"
     },
     "/_authenticated/users/": {
