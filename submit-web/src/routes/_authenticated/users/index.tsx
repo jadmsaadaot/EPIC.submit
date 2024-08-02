@@ -58,7 +58,7 @@ function UsersPage() {
   };
 
   const onDeleteError = (error: AxiosError) => {
-    notify.error("Error deleting user");
+    notify.error(`User deletion failed! ${error.message}`);
   };
 
   const { mutate: deleteUser } = useDeleteUser(onDeleteSuccess, onDeleteError);
