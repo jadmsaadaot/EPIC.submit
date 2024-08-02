@@ -19,11 +19,9 @@ import { useDeleteUser, useUsersData } from "@/hooks/useUsers";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import ConfirmationDialog from "@/components/Shared/Popups/ConfirmationDialog";
-import CustomSnackbar, {
-  SnackBarMessageProps,
-} from "@/components/Shared/Popups/SnackBarMessage";
 import UserModal from "@/components/App/Users/UserModal";
 import { useModal } from "@/components/Shared/Modals/modalStore";
+import { notify } from "@/components/Shared/Popups/snackbarStore";
 
 export const Route = createFileRoute("/_authenticated/users/")({
   component: UsersPage,
@@ -33,19 +31,15 @@ function UsersPage() {
   const queryClient = useQueryClient();
   const { setOpen } = useModal();
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState<number | null>(null);
-  const [snackbarConfig, setSnackbarConfig] =
-    useState<SnackBarMessageProps | null>(null);
-
   const { isLoading, data, isError, error } = useUsersData();
 
   const handleOnSubmit = () => {
     queryClient.invalidateQueries({ queryKey: ["users"] });
     if (selectedUser) {
-      setSnackbarConfig({ message: "User updated successfully!" });
+      notify.success("User updated successfully!");
     } else {
-      setSnackbarConfig({ message: "User added successfully!" });
+      notify.success("User created successfully!");
     }
   };
 
@@ -57,37 +51,35 @@ function UsersPage() {
   /** Delete user START */
 
   const onDeleteSuccess = () => {
-    setSnackbarConfig({ message: "User deleted successfully!" });
+    notify.success("User deleted successfully!");
     queryClient.invalidateQueries({
       queryKey: ["users"],
     });
   };
 
   const onDeleteError = (error: AxiosError) => {
-    setSnackbarConfig({
-      message: `User deletion failed! ${error.message}`,
-      severity: "error",
-    });
+    notify.error("Error deleting user");
   };
 
   const { mutate: deleteUser } = useDeleteUser(onDeleteSuccess, onDeleteError);
 
   const handleDeleteUser = () => {
-    setSnackbarConfig({ message: "" });
+    notify.success("User deleted successfully!");
     if (userIdToDelete !== null) {
       deleteUser(userIdToDelete);
-      setIsConfirmationOpen(false);
+      setUserIdToDelete(null);
     }
   };
 
   const handleOpenConfirmationDialog = (userId: number) => {
     setUserIdToDelete(userId);
-    setIsConfirmationOpen(true);
-  };
-
-  const handleCloseConfirmationDialog = () => {
-    setIsConfirmationOpen(false);
-    setUserIdToDelete(null);
+    setOpen(
+      <ConfirmationDialog
+        title="Delete User"
+        description="Are you sure you want to delete this user?"
+        onConfirm={handleDeleteUser}
+      />
+    );
   };
 
   /** Delete user END */
@@ -165,19 +157,6 @@ function UsersPage() {
           </TableBody>
         </Table>
       </TableContainer>
-      <ConfirmationDialog
-        isOpen={isConfirmationOpen}
-        title="Delete User"
-        description="Are you sure you want to delete this user?"
-        onConfirm={handleDeleteUser}
-        onCancel={handleCloseConfirmationDialog}
-      />
-      {snackbarConfig?.message && (
-        <CustomSnackbar
-          message={snackbarConfig.message}
-          severity={snackbarConfig.severity}
-        />
-      )}
     </>
   );
 }

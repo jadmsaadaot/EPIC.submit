@@ -7,6 +7,7 @@ import { OidcConfig } from "@/utils/config";
 import { theme } from "@/styles/theme";
 import RouterProviderWithAuthContext from "@/router";
 import ModalProvider from "./components/Shared/Modals/ModalProvider";
+import SnackBarProvider from "./components/Shared/Popups/SnackBarProvider";
 const queryClient = new QueryClient();
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <AuthProvider {...OidcConfig}>
             <ModalProvider />
+            <SnackBarProvider />
             <RouterProviderWithAuthContext />
           </AuthProvider>
         </ThemeProvider>
