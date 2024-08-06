@@ -11,32 +11,34 @@ export const Route = createFileRoute("/oidc-callback")({
 });
 
 function OidcCallback() {
-  const { isAuthenticated, error: getAuthError, user } = useAuth();
+  const { error: getAuthError, user } = useAuth();
   const {
     setAccount,
     proponentId,
     isLoading: isAccountStateLoading,
   } = useAccount();
-  const {
-    data: accountData,
-    isLoading: isGetAccountLoading,
-    error: getAccountError,
-  } = useGetAccountByProponentId({
-    proponentId: user?.profile.sub,
-  });
+
+  const { data: accountData, error: getAccountError } =
+    useGetAccountByProponentId({
+      proponentId: user?.profile.sub,
+    });
 
   useEffect(() => {
     if (accountData) {
-      console.log("accountData", accountData);
       setAccount({
         proponentId: accountData.data?.proponent_id,
         isLoading: false,
       });
     }
-  }, [accountData]);
+    if (getAccountError) {
+      setAccount({
+        isLoading: false,
+      });
+    }
+  }, [accountData, getAccountError]);
 
-  if (getAuthError || getAccountError) {
-    return <h1>An error occured</h1>;
+  if (getAuthError) {
+    return <Navigate to="/error" />;
   }
 
   if (isAccountStateLoading) {

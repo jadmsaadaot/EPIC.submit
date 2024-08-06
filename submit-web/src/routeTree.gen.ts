@@ -14,6 +14,7 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as OidcCallbackImport } from './routes/oidc-callback'
+import { Route as ErrorImport } from './routes/error'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
 import { Route as EaoPlansIndexImport } from './routes/eao-plans/index'
@@ -43,6 +44,11 @@ const AboutpageLazyRoute = AboutpageLazyImport.update({
 
 const OidcCallbackRoute = OidcCallbackImport.update({
   path: '/oidc-callback',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ErrorRoute = ErrorImport.update({
+  path: '/error',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -110,6 +116,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof AuthenticatedImport
+      parentRoute: typeof rootRoute
+    }
+    '/error': {
+      id: '/error'
+      path: '/error'
+      fullPath: '/error'
+      preLoaderRoute: typeof ErrorImport
       parentRoute: typeof rootRoute
     }
     '/oidc-callback': {
@@ -196,6 +209,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedProjectsIndexRoute,
     AuthenticatedUsersIndexRoute,
   }),
+  ErrorRoute,
   OidcCallbackRoute,
   AboutpageLazyRoute,
   NewpageLazyRoute,
@@ -213,6 +227,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/_authenticated",
+        "/error",
         "/oidc-callback",
         "/aboutpage",
         "/newpage",
@@ -232,6 +247,9 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/projects/",
         "/_authenticated/users/"
       ]
+    },
+    "/error": {
+      "filePath": "error.tsx"
     },
     "/oidc-callback": {
       "filePath": "oidc-callback.tsx"
