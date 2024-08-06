@@ -9,7 +9,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import ControlledTextField from "@/components/Shared/controlled/ControlledTextField";
 import { theme } from "@/styles/theme";
 import { useAuth } from "react-oidc-context";
-import { useAccount } from "@/store/accountStore";
 
 export const Route = createFileRoute(
   "/_authenticated/registration/create-account",
