@@ -7,13 +7,13 @@ import {
 } from "@mui/material";
 import { useModal } from "./modalStore";
 
-type ConfirmationDialogProps = {
+type ConfirmationModalProps = {
   title: string;
   description: string;
   onConfirm: () => void;
 };
 
-const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
+const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   title,
   description,
   onConfirm,
@@ -37,4 +37,4 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   );
 };
 
-export default ConfirmationDialog;
+export default ConfirmationModal;
