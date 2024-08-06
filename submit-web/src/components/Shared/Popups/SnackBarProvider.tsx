@@ -10,7 +10,7 @@ const SnackBarProvider: React.FC = () => {
       open={isOpen}
       autoHideDuration={3000}
       onClose={setClose}
-      anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+      anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
     >
       <Alert
         onClose={setClose}
