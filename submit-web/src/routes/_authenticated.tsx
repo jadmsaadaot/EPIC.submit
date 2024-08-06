@@ -11,15 +11,16 @@ export const Route = createFileRoute("/_authenticated")({
 function Auth() {
   const { isAuthenticated, signinRedirect, isLoading, user } = useAuth();
   const { setAccount } = useAccount();
+  const proponent_id = user?.profile.sub;
 
   useEffect(() => {
     if (!isAuthenticated && !isLoading) {
       signinRedirect();
     }
     if (isAuthenticated && !isLoading) {
-      setAccount({ isLoading: false, proponentId: user?.profile.sub });
+      setAccount({ isLoading: false, proponentId: proponent_id });
     }
-  }, [isAuthenticated, isLoading, signinRedirect]);
+  }, [isAuthenticated, isLoading, signinRedirect, setAccount, proponent_id]);
 
   if (isLoading) {
     return <Loader />;

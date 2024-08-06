@@ -1,11 +1,8 @@
-import {
-  useCreateAccount,
-  useGetAccountByProponentId,
-} from "@/hooks/useAccounts";
+import { useCreateAccount } from "@/hooks/useAccounts";
 import { Save } from "@mui/icons-material";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import * as yup from "yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -38,7 +35,6 @@ const schema = yup.object().shape({
 function CreateAccount() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { proponentId } = useAccount();
 
   const { mutate: doCreateAccount, isPending: isCreateAccountPending } =
     useCreateAccount(

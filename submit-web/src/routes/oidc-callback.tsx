@@ -1,7 +1,6 @@
 import { Loader } from "@/components/Shared/Loader";
 import { useGetAccountByProponentId } from "@/hooks/useAccounts";
 import { useAccount } from "@/store/accountStore";
-import { CircularProgress } from "@mui/material";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useAuth } from "react-oidc-context";
@@ -35,7 +34,7 @@ function OidcCallback() {
         isLoading: false,
       });
     }
-  }, [accountData, getAccountError]);
+  }, [accountData, getAccountError, setAccount]);
 
   if (getAuthError) {
     return <Navigate to="/error" />;

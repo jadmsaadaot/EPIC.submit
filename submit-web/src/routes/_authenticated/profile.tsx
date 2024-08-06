@@ -1,4 +1,3 @@
-import { useAccount } from "@/store/accountStore";
 import {
   Button,
   Card,
