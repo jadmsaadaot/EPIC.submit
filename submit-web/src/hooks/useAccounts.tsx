@@ -20,7 +20,6 @@ const createAccount = (account: CreateAccount) => {
 };
 
 const getAccountByProponentId = (proponentId?: string) => {
-  if (!proponentId) return Promise.reject("Proponent ID is required");
   return request({ url: `/accounts/proponent/${proponentId}` });
 };
 
@@ -35,11 +34,15 @@ export const useCreateAccount = (
   });
 };
 
-export const useGetAccountByProponentId = (proponent_id?: string) => {
+export const useGetAccountByProponentId = ({
+  proponentId,
+}: {
+  proponentId?: string;
+}) => {
   return useQuery({
-    queryKey: ["account", proponent_id],
-    queryFn: () => getAccountByProponentId(proponent_id),
-    enabled: !!proponent_id,
+    queryKey: ["account", proponentId],
+    queryFn: () => getAccountByProponentId(proponentId),
+    enabled: Boolean(proponentId),
     retry: false,
   });
 };

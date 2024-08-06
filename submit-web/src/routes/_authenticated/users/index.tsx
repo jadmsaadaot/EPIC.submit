@@ -20,7 +20,7 @@ import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import UserModal from "@/components/App/Users/UserModal";
 import { useModal } from "@/components/Shared/Modals/modalStore";
-import { notify } from "@/components/Shared/Popups/snackbarStore";
+import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import ConfirmationModal from "@/components/Shared/Modals/ConfirmationModal";
 
 export const Route = createFileRoute("/_authenticated/users/")({
@@ -78,7 +78,7 @@ function UsersPage() {
         title="Delete User"
         description="Are you sure you want to delete this user?"
         onConfirm={handleDeleteUser}
-      />
+      />,
     );
   };
 

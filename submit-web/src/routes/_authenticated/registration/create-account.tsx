@@ -5,13 +5,14 @@ import {
 import { Save } from "@mui/icons-material";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import * as yup from "yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ControlledTextField from "@/components/Shared/controlled/ControlledTextField";
 import { theme } from "@/styles/theme";
 import { useAuth } from "react-oidc-context";
+import { useAccount } from "@/store/accountStore";
 
 export const Route = createFileRoute(
   "/_authenticated/registration/create-account",
@@ -37,10 +38,7 @@ const schema = yup.object().shape({
 function CreateAccount() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const proponent_id = user?.profile.sub;
-
-  const { isSuccess: isGetAccountSuccess } =
-    useGetAccountByProponentId(proponent_id);
+  const { proponentId } = useAccount();
 
   const { mutate: doCreateAccount, isPending: isCreateAccountPending } =
     useCreateAccount(
@@ -58,21 +56,17 @@ function CreateAccount() {
   const { handleSubmit } = methods;
 
   const onSubmitHandler = async (data: CreateAccountForm) => {
-    if (!proponent_id) return;
+    if (!user?.profile.sub) return;
     const accountData = {
       first_name: data.givenName,
       last_name: data.surname,
       position: data.position,
       work_contact_number: data.phone,
       work_email_address: data.email,
-      proponent_id: proponent_id,
+      proponent_id: user?.profile.sub,
     };
     doCreateAccount(accountData);
   };
-
-  if (isGetAccountSuccess) {
-    navigate({ to: "/profile" });
-  }
 
   return (
     <>

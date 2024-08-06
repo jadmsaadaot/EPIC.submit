@@ -1,3 +1,4 @@
+import { useAccount } from "@/store/accountStore";
 import {
   Button,
   Card,
@@ -14,11 +15,7 @@ export const Route = createFileRoute("/_authenticated/profile")({
 });
 
 function Profile() {
-  const { isAuthenticated, user, signoutSilent } = useAuth();
-
-  if (!isAuthenticated) {
-    return <h3>You are not authorized</h3>;
-  }
+  const { user, signoutSilent } = useAuth();
 
   return (
     <Card>
