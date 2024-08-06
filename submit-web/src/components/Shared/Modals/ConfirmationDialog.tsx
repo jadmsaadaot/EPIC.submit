@@ -5,7 +5,7 @@ import {
   DialogTitle,
   Button,
 } from "@mui/material";
-import { useModal } from "../Modals/modalStore";
+import { useModal } from "./modalStore";
 
 type ConfirmationDialogProps = {
   title: string;
