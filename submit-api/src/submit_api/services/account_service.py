@@ -15,6 +15,12 @@ class AccountService:
         return db_account
 
     @classmethod
+    def get_account_by_proponent_id(cls, _proponent_id):
+        """Get account by id."""
+        db_account = AccountModel.get_by_proponent_id(_proponent_id)
+        return db_account
+
+    @classmethod
     def get_all_accounts(cls):
         """Get all accounts."""
         accounts = AccountModel.get_all()

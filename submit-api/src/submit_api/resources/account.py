@@ -20,6 +20,7 @@ from submit_api.services.account_service import AccountService
 from submit_api.utils.util import cors_preflight
 from submit_api.schemas.account import AccountSchema, AccountCreateSchema
 from .apihelper import Api as ApiHelper
+from ..exceptions import ResourceNotFoundError
 
 API = Namespace("accounts", description="Endpoints for Account Management")
 """Custom exception messages
@@ -58,3 +59,22 @@ class Accounts(Resource):
         account_data = AccountCreateSchema().load(API.payload)
         created_account = AccountService.create_account(account_data)
         return AccountSchema().dump(created_account), HTTPStatus.CREATED
+
+
+@cors_preflight("GET, OPTIONS")
+@API.route("/proponent/<proponent_id>", methods=["GET", "OPTIONS"])
+@API.doc(params={"proponent_id": "The account identifier"})
+class User(Resource):
+    """Resource for managing a single account"""
+
+    @staticmethod
+    @ApiHelper.swagger_decorators(API, endpoint_description="Fetch a account by proponent id")
+    @API.response(code=200, model=account_list_model, description="Success")
+    @API.response(404, "Not Found")
+    @cors.crossdomain(origin="*")
+    def get(proponent_id):
+        """Fetch an account by id."""
+        account = AccountService.get_account_by_proponent_id(proponent_id)
+        if not account:
+            return ResourceNotFoundError(f"Account with proponent {proponent_id} not found")
+        return AccountSchema().dump(account), HTTPStatus.OK

@@ -16,8 +16,8 @@ function OidcCallback() {
     return <h1>Error: {error.message}</h1>;
   }
 
-  if(!isLoading && isAuthenticated) {
+  if (!isLoading && isAuthenticated) {
     // TODO: check for user already created account and navigate to home page accrodingly
-    return <Navigate to="/registration/create-account"></Navigate>
+    return <Navigate to="/registration/create-account"></Navigate>;
   }
 }

@@ -1,4 +1,7 @@
-import { useCreateAccount } from "@/hooks/useAccounts";
+import {
+  useCreateAccount,
+  useGetAccountByProponentId,
+} from "@/hooks/useAccounts";
 import { Save } from "@mui/icons-material";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -8,9 +11,10 @@ import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ControlledTextField from "@/components/Shared/controlled/ControlledTextField";
 import { theme } from "@/styles/theme";
+import { useAuth } from "react-oidc-context";
 
 export const Route = createFileRoute(
-  "/_authenticated/registration/create-account"
+  "/_authenticated/registration/create-account",
 )({
   component: CreateAccount,
 });
@@ -32,12 +36,18 @@ const schema = yup.object().shape({
 
 function CreateAccount() {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const proponent_id = user?.profile.sub;
+
+  const { isSuccess: isGetAccountSuccess } =
+    useGetAccountByProponentId(proponent_id);
+
   const { mutate: doCreateAccount, isPending: isCreateAccountPending } =
     useCreateAccount(
-      () => navigate({ to: "/projects" }),
+      () => navigate({ to: "/profile" }),
       () => {
         return;
-      }
+      },
     );
 
   const methods = useForm({
@@ -48,16 +58,21 @@ function CreateAccount() {
   const { handleSubmit } = methods;
 
   const onSubmitHandler = async (data: CreateAccountForm) => {
+    if (!proponent_id) return;
     const accountData = {
       first_name: data.givenName,
       last_name: data.surname,
       position: data.position,
       work_contact_number: data.phone,
       work_email_address: data.email,
-      proponent_id: "5",
+      proponent_id: proponent_id,
     };
     doCreateAccount(accountData);
   };
+
+  if (isGetAccountSuccess) {
+    navigate({ to: "/profile" });
+  }
 
   return (
     <>
