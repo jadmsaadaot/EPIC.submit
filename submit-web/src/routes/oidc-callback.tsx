@@ -1,4 +1,8 @@
+import { Loader } from "@/components/Shared/Loader";
+import { useGetAccountByProponentId } from "@/hooks/useAccounts";
+import { useAccount } from "@/store/accountStore";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
+import { useEffect } from "react";
 import { useAuth } from "react-oidc-context";
 
 export const Route = createFileRoute("/oidc-callback")({
@@ -6,18 +10,43 @@ export const Route = createFileRoute("/oidc-callback")({
 });
 
 function OidcCallback() {
-  const { isAuthenticated, isLoading, error } = useAuth();
+  const { error: getAuthError, user } = useAuth();
+  const {
+    setAccount,
+    proponentId,
+    isLoading: isAccountStateLoading,
+  } = useAccount();
 
-  if (isLoading) {
-    return <h1>Redirecting, Please wait...</h1>;
+  const { data: accountData, error: getAccountError } =
+    useGetAccountByProponentId({
+      proponentId: user?.profile.sub,
+    });
+
+  useEffect(() => {
+    if (accountData) {
+      setAccount({
+        proponentId: accountData.data?.proponent_id,
+        isLoading: false,
+      });
+    }
+    if (getAccountError) {
+      setAccount({
+        isLoading: false,
+      });
+    }
+  }, [accountData, getAccountError, setAccount]);
+
+  if (getAuthError) {
+    return <Navigate to="/error" />;
   }
 
-  if (error?.message) {
-    return <h1>Error: {error.message}</h1>;
+  if (isAccountStateLoading) {
+    return <Loader />;
   }
 
-  if(!isLoading && isAuthenticated) {
-    // TODO: check for user already created account and navigate to home page accrodingly
-    return <Navigate to="/registration/create-account"></Navigate>
+  if (proponentId) {
+    return <Navigate to="/profile" />;
   }
+
+  return <Navigate to="/registration/create-account"></Navigate>;
 }
