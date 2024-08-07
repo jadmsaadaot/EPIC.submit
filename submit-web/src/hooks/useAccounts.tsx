@@ -14,6 +14,7 @@ type CreateAccount = {
   work_contact_number: string;
   work_email_address: string;
   proponent_id: string;
+  auth_guid: string;
 };
 const createAccount = (account: CreateAccount) => {
   return request({ url: "/accounts", method: "post", data: account });

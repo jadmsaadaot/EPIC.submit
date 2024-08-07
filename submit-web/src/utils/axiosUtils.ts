@@ -7,6 +7,7 @@ export type OnErrorType = (error: AxiosError) => void;
 export type OnSuccessType = (data: any) => void;
 
 const client = axios.create({ baseURL: AppConfig.apiUrl });
+const trackClient = axios.create({ baseURL: AppConfig.apiUrl });
 
 function getUser() {
   const oidcStorage = sessionStorage.getItem(
@@ -38,5 +39,6 @@ export const request = ({ ...options }) => {
     throw error;
   };
 
+  client.get("/health").then(onSuccess).catch(onError);
   return client(options).then(onSuccess).catch(onError);
 };

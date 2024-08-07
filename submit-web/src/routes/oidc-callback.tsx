@@ -11,6 +11,9 @@ export const Route = createFileRoute("/oidc-callback")({
 
 function OidcCallback() {
   const { error: getAuthError, user } = useAuth();
+  const params = new URLSearchParams(window.location.search);
+  const proponent_id = params.get("proponent_id");
+  console.log(params);
   const {
     setAccount,
     proponentId,
@@ -48,5 +51,12 @@ function OidcCallback() {
     return <Navigate to="/profile" />;
   }
 
-  return <Navigate to="/registration/create-account"></Navigate>;
+  return (
+    <Navigate
+      to="/registration/create-account"
+      search={{
+        proponent_id: proponent_id ? Number.parseInt(proponent_id) : undefined,
+      }}
+    ></Navigate>
+  );
 }

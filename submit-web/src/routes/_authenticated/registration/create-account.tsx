@@ -10,20 +10,19 @@ import ControlledTextField from "@/components/Shared/controlled/ControlledTextFi
 import { theme } from "@/styles/theme";
 import { useAuth } from "react-oidc-context";
 
+const queryParamSchema = yup.object().shape({
+  proponent_id: yup.number(),
+});
+
+type QueryParamsSchema = yup.InferType<typeof queryParamSchema>;
+
 export const Route = createFileRoute(
   "/_authenticated/registration/create-account",
 )({
   component: CreateAccount,
 });
 
-type CreateAccountForm = {
-  givenName: string;
-  surname: string;
-  position: string;
-  phone: string;
-  email: string;
-};
-const schema = yup.object().shape({
+const createAccountSchema = yup.object().shape({
   givenName: yup.string().required("Name is required"),
   surname: yup.string().required("Surname is required"),
   position: yup.string().required("Position is required"),
@@ -31,9 +30,12 @@ const schema = yup.object().shape({
   email: yup.string().email("Invalid email").required("Email is required"),
 });
 
+type CreateAccountForm = yup.InferType<typeof createAccountSchema>;
+
 function CreateAccount() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { proponent_id } = Route.useSearch<QueryParamsSchema>();
 
   const { mutate: doCreateAccount, isPending: isCreateAccountPending } =
     useCreateAccount(
@@ -44,21 +46,22 @@ function CreateAccount() {
     );
 
   const methods = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(createAccountSchema),
     mode: "onBlur",
   });
 
   const { handleSubmit } = methods;
 
   const onSubmitHandler = async (data: CreateAccountForm) => {
-    if (!user?.profile.sub) return;
+    if (!user?.profile.sub || !proponent_id) return;
     const accountData = {
       first_name: data.givenName,
       last_name: data.surname,
       position: data.position,
       work_contact_number: data.phone,
       work_email_address: data.email,
-      proponent_id: user?.profile.sub,
+      auth_guid: user?.profile.sub,
+      proponent_id: String(proponent_id),
     };
     doCreateAccount(accountData);
   };
