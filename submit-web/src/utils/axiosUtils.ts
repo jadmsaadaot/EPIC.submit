@@ -7,7 +7,6 @@ export type OnErrorType = (error: AxiosError) => void;
 export type OnSuccessType = (data: any) => void;
 
 const client = axios.create({ baseURL: AppConfig.apiUrl });
-const trackClient = axios.create({ baseURL: AppConfig.apiUrl });
 
 function getUser() {
   const oidcStorage = sessionStorage.getItem(
@@ -20,7 +19,7 @@ function getUser() {
   return User.fromStorageString(oidcStorage);
 }
 
-export const request = ({ ...options }) => {
+export const request = async <T = any>({ ...options }) => {
   const user = getUser();
 
   if (user?.access_token) {
@@ -29,16 +28,14 @@ export const request = ({ ...options }) => {
     throw new Error("No access token!");
   }
 
-  const onSuccess = (response: any) => response;
-  const onError = (error: AxiosError) => {
-    // optionaly catch errors and add additional logging here
-    if (!error.response) {
-      // CORS error or network error
-      throw new Error("Internal Server error");
+  try {
+    const response = await client.request<T>(options);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && !error.response) {
+      throw new Error(error.message || "Internal Server error");
+    } else {
+      throw error;
     }
-    throw error;
-  };
-
-  client.get("/health").then(onSuccess).catch(onError);
-  return client(options).then(onSuccess).catch(onError);
+  }
 };
