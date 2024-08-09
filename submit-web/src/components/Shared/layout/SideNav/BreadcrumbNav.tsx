@@ -1,39 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
-import { Routes, RouteType, AuthenticatedRoutes } from "./SideNavElements";
 import { useRouter } from "@tanstack/react-router";
-
-const findRouteTrace = (path: string, routes: RouteType[]): RouteType[] => {
-  let routeTrace: RouteType[] = [];
-
-  for (const route of routes) {
-    if (path.startsWith(route.path)) {
-      routeTrace.push(route);
-      if (route.routes) {
-        const nestedRouteTrace = findRouteTrace(path, route.routes);
-        routeTrace = routeTrace.concat(nestedRouteTrace);
-      }
-    }
-  }
-
-  return routeTrace;
-};
 
 const BreadcrumbNav: React.FC = () => {
   const router = useRouter();
-  const { pathname, search } = router.state.location;
-
-  const [currentPath, setCurrentPath] = useState(window.location.pathname);
-
-  // Get the full breadcrumb trace
-  const routeTrace = findRouteTrace(currentPath, [
-    ...Routes,
-    ...AuthenticatedRoutes,
-  ]);
-
-  useEffect(() => {
-    setCurrentPath(pathname);
-  }, [pathname, search]);
+  const { pathname } = router.state.location;
+  const pathSegments = pathname.split("/").filter((segment) => segment !== "");
 
   return (
     <Box
@@ -44,22 +16,19 @@ const BreadcrumbNav: React.FC = () => {
       }}
     >
       <Breadcrumbs aria-label="breadcrumb">
-        {routeTrace.map((route, index) =>
-          index < routeTrace.length - 1 ? (
-            <Link
-              key={route.path}
-              color="primary"
-              href={route.path}
-              onClick={() => setCurrentPath(route.path)}
-            >
-              {route.name}
-            </Link>
-          ) : (
-            <Typography key={route.path} color="textPrimary">
-              {route.name}
+        {pathSegments.map((segment, index) => {
+          const url = `/${pathSegments.slice(0, index + 1).join("/")}`;
+          const isLast = index === pathSegments.length - 1;
+          return isLast ? (
+            <Typography key={segment} color="text.primary">
+              {segment}
             </Typography>
-          )
-        )}
+          ) : (
+            <Link key={segment} color="primary" href={url}>
+              {segment}
+            </Link>
+          );
+        })}
       </Breadcrumbs>
     </Box>
   );
