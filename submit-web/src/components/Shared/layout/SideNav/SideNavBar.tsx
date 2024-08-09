@@ -19,7 +19,7 @@ export default function SideNavBar() {
 
   let routeMenuItems = Routes;
 
-  if (!isAuthenticated) {
+  if (isAuthenticated) {
     routeMenuItems = routeMenuItems.concat(AuthenticatedRoutes);
   }
 
