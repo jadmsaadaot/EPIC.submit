@@ -8,6 +8,9 @@ const dummyProjects = [
   },
 ];
 const loadProjectsByProponentId = (proponentId?: string) => {
+  if (!proponentId) {
+    return Promise.reject(new Error("Proponent ID is required"));
+  }
   return Promise.resolve(dummyProjects);
 };
 

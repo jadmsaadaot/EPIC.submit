@@ -6,7 +6,6 @@ import { useAuth } from "react-oidc-context";
 
 export default function EAOAppBar() {
   const auth = useAuth();
-  console.log(window.location.search);
   return (
     <>
       <AppBar position="static" color="inherit" elevation={2}>
