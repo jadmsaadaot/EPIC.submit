@@ -16,30 +16,34 @@ const BreadcrumbNav: React.FC = () => {
   const pathSegments = pathname.split("/").filter((segment) => segment !== "");
 
   return (
-    <Box
-      sx={{
-        p: 1,
-        paddingLeft: 5,
-        borderBottom: "1px solid #0000001A",
-      }}
-    >
-      <Breadcrumbs aria-label="breadcrumb">
-        {pathSegments.map((segment, index) => {
-          const url = `/${pathSegments.slice(0, index + 1).join("/")}`;
-          const isLast = index === pathSegments.length - 1;
-          const path = formatSegmentName(segment);
-          return isLast ? (
-            <Typography key={path} color="text.primary">
-              {path}
-            </Typography>
-          ) : (
-            <Link key={path} color="primary" href={url}>
-              {path}
-            </Link>
-          );
-        })}
-      </Breadcrumbs>
-    </Box>
+    <>
+      {pathSegments.length > 0 && (
+        <Box
+          sx={{
+            p: 1,
+            paddingLeft: 5,
+            borderBottom: "1px solid #0000001A",
+          }}
+        >
+          <Breadcrumbs aria-label="breadcrumb">
+            {pathSegments.map((segment, index) => {
+              const url = `/${pathSegments.slice(0, index + 1).join("/")}`;
+              const isLast = index === pathSegments.length - 1;
+              const path = formatSegmentName(segment);
+              return isLast ? (
+                <Typography key={path} color="text.primary">
+                  {path}
+                </Typography>
+              ) : (
+                <Link key={path} color="primary" href={url}>
+                  {path}
+                </Link>
+              );
+            })}
+          </Breadcrumbs>
+        </Box>
+      )}
+    </>
   );
 };
 
