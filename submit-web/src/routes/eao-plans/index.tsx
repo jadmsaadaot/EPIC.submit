@@ -16,6 +16,7 @@ import { OpenInNew } from "@mui/icons-material";
 
 export const Route = createFileRoute("/eao-plans/")({
   component: PlanListPage,
+  meta: () => [{ title: "Plans" }],
 });
 
 function PlanListPage() {

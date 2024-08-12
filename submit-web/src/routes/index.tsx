@@ -4,14 +4,21 @@ import { useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: Index,
+  meta: () => [{ title: "Home" }],
 });
 
 function Index() {
   const navigate = useNavigate();
-  
+
   return (
     <>
-      <Paper elevation={2} sx={{ padding: "1.5rem 2.5rem", backgroundColor: 'primary.accent.light' }}>
+      <Paper
+        elevation={2}
+        sx={{
+          padding: "1.5rem 2.5rem",
+          backgroundColor: "primary.accent.light",
+        }}
+      >
         <h2>Environmental Assessments</h2>
         <p>
           British Columbia's environmental assessment process provides
@@ -22,7 +29,7 @@ function Index() {
         <Button
           variant="outlined"
           color="primary"
-          onClick={() => navigate({to: "/registration/create-account"})}
+          onClick={() => navigate({ to: "/registration/create-account" })}
         >
           See Plans
         </Button>
@@ -30,4 +37,3 @@ function Index() {
     </>
   );
 }
-

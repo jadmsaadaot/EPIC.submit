@@ -1,20 +1,37 @@
 import React from "react";
-import { Box, Breadcrumbs, Link, Typography } from "@mui/material";
-import { useRouter } from "@tanstack/react-router";
+import { Box, Breadcrumbs, Typography } from "@mui/material";
+import { Link, useRouter } from "@tanstack/react-router";
+import { theme } from "@/styles/theme";
 
-// Helper function to format segment names
-const formatSegmentName = (segment: string) => {
-  return segment
-    .split("-")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
+interface RouteSegment {
+  title: string;
+  path: string;
+}
+
+const filterUniqueRoutes = (breadcrumbs: RouteSegment[]) => {
+  const seenPaths = new Set();
+  return breadcrumbs.filter((segment) => {
+    const isUnique = !seenPaths.has(segment.path);
+    if (isUnique) {
+      seenPaths.add(segment.path);
+    }
+    return isUnique;
+  });
 };
 
 const BreadcrumbNav: React.FC = () => {
   const router = useRouter();
-  const { pathname } = router.state.location;
-  const pathSegments = pathname.split("/").filter((segment) => segment !== "");
-  const isRoot = pathSegments.length === 0;
+  const breadcrumbs = router.state.matches.map((match) => {
+    const { meta, pathname } = match;
+    if (meta)
+      return {
+        title: meta[0].title,
+        path: pathname,
+      };
+  });
+
+  const uniqueBreadcrumbs = filterUniqueRoutes(breadcrumbs as RouteSegment[]);
+  const isRoot = uniqueBreadcrumbs.length === 1;
 
   return (
     <>
@@ -27,20 +44,25 @@ const BreadcrumbNav: React.FC = () => {
           }}
         >
           <Breadcrumbs aria-label="breadcrumb">
-            {pathSegments.map((segment, index) => {
-              const url = `/${pathSegments.slice(0, index + 1).join("/")}`;
-              const isLast = index === pathSegments.length - 1;
-              const path = formatSegmentName(segment);
-              return isLast ? (
-                <Typography key={path} color="text.primary">
-                  {path}
-                </Typography>
-              ) : (
-                <Link key={path} color="primary" href={url}>
-                  {path}
-                </Link>
-              );
-            })}
+            {uniqueBreadcrumbs.map(
+              (segment: { title: string; path: string }, index: number) => {
+                const { title, path } = segment;
+                const isLast = index === uniqueBreadcrumbs.length - 1;
+                return isLast ? (
+                  <Typography key={path} color="text.primary">
+                    {title}
+                  </Typography>
+                ) : (
+                  <Link
+                    key={path}
+                    style={{ color: theme.palette.primary.dark }}
+                    to={path}
+                  >
+                    {title}
+                  </Link>
+                );
+              }
+            )}
           </Breadcrumbs>
         </Box>
       )}

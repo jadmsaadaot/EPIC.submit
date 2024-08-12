@@ -3,6 +3,7 @@ import { AppConfig } from "@/utils/config";
 
 export const Route = createLazyFileRoute("/aboutpage")({
   component: About,
+  meta: () => [{ title: "About" }],
 });
 
 function About() {
