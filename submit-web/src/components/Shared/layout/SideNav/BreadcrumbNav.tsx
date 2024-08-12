@@ -14,10 +14,11 @@ const BreadcrumbNav: React.FC = () => {
   const router = useRouter();
   const { pathname } = router.state.location;
   const pathSegments = pathname.split("/").filter((segment) => segment !== "");
+  const isRoot = pathSegments.length === 0;
 
   return (
     <>
-      {pathSegments.length > 0 && (
+      {!isRoot && (
         <Box
           sx={{
             p: 1,
