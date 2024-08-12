@@ -38,13 +38,12 @@ function CreateAccount() {
   const { user } = useAuth();
   const { proponent_id } = Route.useSearch<QueryParamsSchema>();
 
-  const { mutate: doCreateAccount, isPending: isCreateAccountPending } =
-    useCreateAccount(
-      () => navigate({ to: "/profile" }),
-      () => {
-        return;
-      },
-    );
+  const { mutate: doCreateAccount } = useCreateAccount(
+    () => navigate({ to: "/profile" }),
+    () => {
+      return;
+    },
+  );
 
   const methods = useForm({
     resolver: yupResolver(createAccountSchema),
@@ -166,7 +165,7 @@ function CreateAccount() {
                   type="submit"
                   color="primary"
                   startIcon={<Save />}
-                  disabled={isCreateAccountPending}
+                  // disabled={isCreateAccountPending}
                 >
                   Save
                 </Button>

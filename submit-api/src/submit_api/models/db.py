@@ -27,5 +27,6 @@ def session_scope():
         session.commit()
     except Exception as e:  # noqa: B901, E722
         print(str(e))
+        print(f"Rolling back the session; error: {e}")
         session.rollback()
         raise

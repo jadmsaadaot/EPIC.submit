@@ -24,7 +24,7 @@ class AccountUser(BaseModel):
     position = Column(db.String(100), nullable=False)
     work_email_address = Column(db.String(100), nullable=False)
     work_contact_number = Column(db.String(50), nullable=False)
-    auth_guid = Column(db.String(), nullable=True)
+    auth_guid = Column(db.String(), nullable=False)
 
     @classmethod
     def create_account_user(cls, data, session=None) -> AccountUser:
@@ -36,6 +36,7 @@ class AccountUser(BaseModel):
             position=data.get('position', None),
             work_email_address=data.get('work_email_address', None),
             work_contact_number=data.get('work_contact_number', None),
+            auth_guid=data.get('auth_guid', None)
         )
         if session:
             session.add(account_user)

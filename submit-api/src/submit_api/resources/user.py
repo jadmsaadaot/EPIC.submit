@@ -32,7 +32,7 @@ user_model = ApiHelper.convert_ma_schema_to_restx_model(
 
 
 @cors_preflight("GET, OPTIONS")
-@API.route("/guid/<int:guid>", methods=["GET", "OPTIONS"])
+@API.route("/guid/<string:guid>", methods=["GET", "OPTIONS"])
 @API.doc(params={"guid": "The user global unique identifier"})
 class User(Resource):
     """Resource for managing a single account"""

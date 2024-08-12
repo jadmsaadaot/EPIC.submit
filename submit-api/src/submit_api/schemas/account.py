@@ -32,3 +32,4 @@ class AccountCreateSchema(Schema):
     work_contact_number = fields.Str(data_key="work_contact_number")
     position = fields.Str(data_key="position")
     proponent_id = fields.Str(data_key="proponent_id")
+    auth_guid = fields.Str(data_key="auth_guid")

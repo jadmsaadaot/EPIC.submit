@@ -25,17 +25,9 @@ export const request = async <T = any>({ ...options }) => {
   if (user?.access_token) {
     client.defaults.headers.common.Authorization = `Bearer ${user?.access_token}`;
   } else {
-    throw new Error("No access token!");
+    return Promise.reject(new Error("No access token"));
   }
 
-  try {
-    const response = await client.request<T>(options);
-    return response.data;
-  } catch (error) {
-    if (axios.isAxiosError(error) && !error.response) {
-      throw new Error(error.message || "Internal Server error");
-    } else {
-      throw error;
-    }
-  }
+  const response = await client.request<T>(options);
+  return response.data;
 };

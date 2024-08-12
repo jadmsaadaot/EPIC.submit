@@ -31,7 +31,7 @@ type GetUserResponse = {
   auth_guid: string;
   created_at: string;
   updated_at: string;
-  account?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  account_id: number;
 };
 const getUserByGuid = (guid?: string) => {
   return request<GetUserResponse>({ url: `/users/guid/${guid}` });

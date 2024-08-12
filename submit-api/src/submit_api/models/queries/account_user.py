@@ -20,10 +20,10 @@ class UserQueries:
     """Query module for complex user queries"""
 
     @classmethod
-    def get_by_guid(cls, guid: int):
+    def get_by_guid(cls, guid: str):
         """Find user by guid"""
-        result = (db.session.query.filter_by(auth_guid=guid)
-                  .join(Account, Account.id == AccountUser.account_id)
-                  .join(AccountProject, AccountProject.account_id == Account.id)
+        print(guid)
+        result = (db.session.query(AccountUser)
+                  .filter(AccountUser.auth_guid == guid)
                   .first())
         return result
