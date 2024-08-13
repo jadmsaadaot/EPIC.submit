@@ -14,7 +14,7 @@ import { Plan } from "@/models/Plan";
 import { Link } from "@tanstack/react-router";
 import { OpenInNew } from "@mui/icons-material";
 
-export const Route = createFileRoute("/eao-plans/")({
+export const Route = createFileRoute("/_authenticated/_dashboard/eao-plans/")({
   component: PlanListPage,
   meta: () => [{ title: "Plans" }],
 });

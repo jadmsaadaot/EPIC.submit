@@ -4,7 +4,7 @@ import { Plan } from "@/models/Plan";
 import { Box, Button, Chip } from "@mui/material";
 import { Link, useParams } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/eao-plans/$planId")({
+export const Route = createFileRoute("/_authenticated/_dashboard/eao-plans/$planId")({
   component: PlanPage,
   meta: () => [{ title: "Plan" }],
   notFoundComponent: () => {
