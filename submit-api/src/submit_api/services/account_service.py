@@ -44,11 +44,12 @@ class AccountService:
             account = AccountModel.create_account(account_data, session)
             account_user_data = {
                 "account_id": account.id,
-                "first_name": data["first_name"],
-                "last_name": data["last_name"],
-                "position": data["position"],
-                "work_email_address": data["work_email_address"],
-                "work_contact_number": data["work_contact_number"],
+                "first_name": data.get("first_name"),
+                "last_name": data.get("last_name"),
+                "position": data.get("position"),
+                "work_email_address": data.get("work_email_address"),
+                "work_contact_number": data.get("work_contact_number"),
+                'auth_guid': data.get('auth_guid')
             }
             account_user = AccountUserModel.create_account_user(account_user_data, session)
 

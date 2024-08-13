@@ -19,24 +19,15 @@ function getUser() {
   return User.fromStorageString(oidcStorage);
 }
 
-export const request = ({ ...options }) => {
+export const request = async <T = any>({ ...options }) => {
   const user = getUser();
 
   if (user?.access_token) {
     client.defaults.headers.common.Authorization = `Bearer ${user?.access_token}`;
   } else {
-    throw new Error("No access token!");
+    return Promise.reject(new Error("No access token"));
   }
 
-  const onSuccess = (response: any) => response;
-  const onError = (error: AxiosError) => {
-    // optionaly catch errors and add additional logging here
-    if (!error.response) {
-      // CORS error or network error
-      throw new Error("Internal Server error");
-    }
-    throw error;
-  };
-
-  return client(options).then(onSuccess).catch(onError);
+  const response = await client.request<T>(options);
+  return response.data;
 };

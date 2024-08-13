@@ -1,8 +1,7 @@
 import { Loader } from "@/components/Shared/Loader";
-import { useGetAccountByProponentId } from "@/hooks/useAccounts";
-import { useAccount } from "@/store/accountStore";
+import { useGetUserByGuid } from "@/hooks/useAccounts";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
 
 export const Route = createFileRoute("/oidc-callback")({
@@ -10,43 +9,41 @@ export const Route = createFileRoute("/oidc-callback")({
 });
 
 function OidcCallback() {
-  const { error: getAuthError, user } = useAuth();
-  const {
-    setAccount,
-    proponentId,
-    isLoading: isAccountStateLoading,
-  } = useAccount();
-
-  const { data: accountData, error: getAccountError } =
-    useGetAccountByProponentId({
-      proponentId: user?.profile.sub,
-    });
+  const { error: getAuthError, user: kcUser } = useAuth();
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+  const params = new URLSearchParams(window.location.search);
+  const proponent_id = params.get("proponent_id");
 
   useEffect(() => {
-    if (accountData) {
-      setAccount({
-        proponentId: accountData.data?.proponent_id,
-        isLoading: false,
-      });
+    if (kcUser) {
+      setIsAuthLoading(false);
     }
-    if (getAccountError) {
-      setAccount({
-        isLoading: false,
-      });
-    }
-  }, [accountData, getAccountError, setAccount]);
+  }, [kcUser, setIsAuthLoading]);
+
+  const { data: userData, isLoading: isUserDataLoading } = useGetUserByGuid({
+    guid: kcUser?.profile.sub,
+  });
 
   if (getAuthError) {
     return <Navigate to="/error" />;
   }
 
-  if (isAccountStateLoading) {
-    return <Loader />;
-  }
-
-  if (proponentId) {
+  if (userData?.account_id) {
     return <Navigate to="/profile" />;
   }
 
-  return <Navigate to="/registration/create-account"></Navigate>;
+  if (!isAuthLoading && !isUserDataLoading) {
+    return (
+      <Navigate
+        to="/registration/create-account"
+        search={{
+          proponent_id: proponent_id
+            ? Number.parseInt(proponent_id)
+            : undefined,
+        }}
+      />
+    );
+  }
+
+  return <Loader />;
 }

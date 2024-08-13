@@ -1,7 +1,7 @@
 import { AppBar, Box, Button, Grid, Typography } from "@mui/material";
 import EAO_Logo from "@/assets/images/EAO_Logo.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { AppConfig } from "@/utils/config";
+import { AppConfig, OidcConfig } from "@/utils/config";
 import { useAuth } from "react-oidc-context";
 
 export default function EAOAppBar() {
@@ -59,7 +59,11 @@ export default function EAOAppBar() {
               <Button
                 variant="text"
                 color="primary"
-                onClick={() => auth.signinRedirect()}
+                onClick={() =>
+                  auth.signinRedirect({
+                    redirect_uri: `${OidcConfig.redirect_uri}${window.location.search}`,
+                  })
+                }
               >
                 Sign In
               </Button>
