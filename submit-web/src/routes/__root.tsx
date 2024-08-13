@@ -19,20 +19,21 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   meta: () => [{ title: "Home" }],
 });
 function Layout() {
-  const isMobile = useIsMobile();
   const { isAuthenticated } = useAuth();
-
+  const isMobile = useIsMobile();
   return (
     <>
       <EAOAppBar />
-      <BreadcrumbNav />
+      {isAuthenticated && <BreadcrumbNav />}
       <Box
         height={"calc(100vh - 88px)"}
-        width={isMobile ? "100%" : "calc(100vw)"}
-        flexDirection={"row"}
+        width={
+          isMobile ? "100%" : `calc(100vw - ${isAuthenticated ? 240 : 0}px)`
+        }
+        flexDirection={isAuthenticated ? "column" : "row"}
         display={"flex"}
       >
-        {<SideNavBar />}
+        {isAuthenticated && <SideNavBar />}
         <Outlet />
       </Box>
       <Footer />

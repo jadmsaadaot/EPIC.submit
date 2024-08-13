@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Breadcrumbs, Typography } from "@mui/material";
-import { Link, useRouter } from "@tanstack/react-router";
+import { Link, useRouter, useRouterState } from "@tanstack/react-router";
 import { theme } from "@/styles/theme";
 
 interface RouteSegment {
@@ -20,8 +20,8 @@ const filterUniqueRoutes = (breadcrumbs: RouteSegment[]) => {
 };
 
 const BreadcrumbNav: React.FC = () => {
-  const router = useRouter();
-  const breadcrumbs = router.state.matches.map((match) => {
+  const router = useRouterState();
+  const breadcrumbs = router.matches.map((match) => {
     const { meta, pathname } = match;
     if (meta)
       return {
