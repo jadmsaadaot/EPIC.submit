@@ -5,11 +5,11 @@ import { Box } from "@mui/material";
 import { Outlet, createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/_dashboard")({
-  component: LayoutComponent,
+  component: DashboardLayout,
   meta: () => [{ title: "Dashboard" }],
 });
 
-function LayoutComponent() {
+function DashboardLayout() {
   const isMobile = useIsMobile();
 
   return (
