@@ -23,7 +23,7 @@ import { useModal } from "@/components/Shared/Modals/modalStore";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import ConfirmationModal from "@/components/Shared/Modals/ConfirmationModal";
 
-export const Route = createFileRoute("/_authenticated/users/")({
+export const Route = createFileRoute("/_authenticated/_dashboard/users/")({
   component: UsersPage,
   meta: () => [{ title: "Users" }],
 });
