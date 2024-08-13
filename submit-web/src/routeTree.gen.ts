@@ -24,6 +24,7 @@ import { Route as AuthenticatedAdminLoginImport } from './routes/_authenticated/
 import { Route as AuthenticatedUsersIndexImport } from './routes/_authenticated/users/index'
 import { Route as AuthenticatedProjectsIndexImport } from './routes/_authenticated/projects/index'
 import { Route as AuthenticatedRegistrationCreateAccountImport } from './routes/_authenticated/registration/create-account'
+import { Route as AuthenticatedRegistrationAddProjectsImport } from './routes/_authenticated/registration/add-projects'
 import { Route as AuthenticatedRegistrationAccountAccountIdProjectsImport } from './routes/_authenticated/registration/account/$accountId/projects'
 
 // Create Virtual Routes
@@ -98,6 +99,12 @@ const AuthenticatedProjectsIndexRoute = AuthenticatedProjectsIndexImport.update(
 const AuthenticatedRegistrationCreateAccountRoute =
   AuthenticatedRegistrationCreateAccountImport.update({
     path: '/registration/create-account',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedRegistrationAddProjectsRoute =
+  AuthenticatedRegistrationAddProjectsImport.update({
+    path: '/registration/add-projects',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -181,6 +188,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EaoPlansIndexImport
       parentRoute: typeof rootRoute
     }
+    '/_authenticated/registration/add-projects': {
+      id: '/_authenticated/registration/add-projects'
+      path: '/registration/add-projects'
+      fullPath: '/registration/add-projects'
+      preLoaderRoute: typeof AuthenticatedRegistrationAddProjectsImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/registration/create-account': {
       id: '/_authenticated/registration/create-account'
       path: '/registration/create-account'
@@ -219,6 +233,7 @@ export const routeTree = rootRoute.addChildren({
   AuthenticatedRoute: AuthenticatedRoute.addChildren({
     AuthenticatedAdminLoginRoute,
     AuthenticatedProfileRoute,
+    AuthenticatedRegistrationAddProjectsRoute,
     AuthenticatedRegistrationCreateAccountRoute,
     AuthenticatedProjectsIndexRoute,
     AuthenticatedUsersIndexRoute,
@@ -258,6 +273,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_authenticated/admin-login",
         "/_authenticated/profile",
+        "/_authenticated/registration/add-projects",
         "/_authenticated/registration/create-account",
         "/_authenticated/projects/",
         "/_authenticated/users/",
@@ -289,6 +305,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/eao-plans/": {
       "filePath": "eao-plans/index.tsx"
+    },
+    "/_authenticated/registration/add-projects": {
+      "filePath": "_authenticated/registration/add-projects.tsx",
+      "parent": "/_authenticated"
     },
     "/_authenticated/registration/create-account": {
       "filePath": "_authenticated/registration/create-account.tsx",

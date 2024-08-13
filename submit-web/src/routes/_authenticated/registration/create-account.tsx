@@ -10,6 +10,8 @@ import ControlledTextField from "@/components/Shared/controlled/ControlledTextFi
 import { theme } from "@/styles/theme";
 import { useAuth } from "react-oidc-context";
 import { YellowBar } from "@/components/Shared/YellowBar";
+import { Banner } from "@/components/registration/Banner";
+import { GridContainer } from "@/components/registration/GridContainer";
 
 const queryParamSchema = yup.object().shape({
   proponent_id: yup.number(),
@@ -68,34 +70,8 @@ function CreateAccount() {
 
   return (
     <>
-      <Box
-        position="relative"
-        bgcolor="#F0F8FF"
-        zIndex={theme.zIndex.appBar - 10}
-        height={76}
-        display={"flex"}
-        alignItems={"center"}
-        px={9.5}
-      >
-        <Typography variant="h3" color="initial" fontWeight={600}>
-          CGI Mines Inc.
-        </Typography>
-      </Box>
-
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        px={9.5}
-        py={7}
-        height={"calc(100vh - 242px)"}
-        overflow={"auto"}
-        spacing={0}
-      >
-        <Grid item xs={12} mb={"5px"}>
-          <YellowBar />
-        </Grid>
+      <Banner>CGI Mines Inc.</Banner>
+      <GridContainer>
         <Grid item xs={12} mb={"16px"}>
           <Typography variant="h4" fontWeight={600}>
             First, create your account.
@@ -173,19 +149,7 @@ function CreateAccount() {
             </FormProvider>
           </Grid>
         </Grid>
-      </Grid>
-      <Box
-        justifyContent="center"
-        alignItems="flex-start"
-        position="absolute"
-        bgcolor="#F0F8FF"
-        width="100%"
-        bottom="0"
-      >
-        <Button color="secondary" sx={{ mx: 9.5, my: 2.25 }}>
-          Save & Continue Later
-        </Button>
-      </Box>
+      </GridContainer>
     </>
   );
 }
