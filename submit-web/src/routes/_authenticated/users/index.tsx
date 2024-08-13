@@ -25,6 +25,7 @@ import ConfirmationModal from "@/components/Shared/Modals/ConfirmationModal";
 
 export const Route = createFileRoute("/_authenticated/users/")({
   component: UsersPage,
+  meta: () => [{ title: "Users" }],
 });
 
 function UsersPage() {
@@ -78,7 +79,7 @@ function UsersPage() {
         title="Delete User"
         description="Are you sure you want to delete this user?"
         onConfirm={handleDeleteUser}
-      />,
+      />
     );
   };
 
