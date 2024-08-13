@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   Box,
+  Drawer,
   List,
   ListItem,
   ListItemButton,
@@ -27,9 +28,14 @@ export default function SideNavBar() {
     <div>
       <BreadcrumbNav />
       <Box
-        sx={{ overflow: "auto", borderRight: "1px solid #0000001A" }}
-        width={240}
-        height={"calc(100vh - 88px)"}
+        sx={{
+          overflow: "auto",
+          borderRight: "1px solid #0000001A",
+          width: 240,
+          height: "calc(100vh - 88px)",
+          zIndex: 0,
+          position: "static",
+        }}
       >
         <List>
           {routeMenuItems.map((route) => (
@@ -51,11 +57,15 @@ export default function SideNavBar() {
                       backgroundColor:
                         currentPath === route.path
                           ? alpha(theme.palette.secondary.main, 0.1)
-                          : alpha(theme.palette.primary.light, 0.1),
+                          : theme.palette.primary.light,
                       borderLeft: `4px solid ${theme.palette.primary.main}`,
                     }}
                   >
-                    <span style={{ color: "inherit" }}>{route.name}</span>
+                    <span
+                      style={{ color: alpha(theme.palette.primary.main, 0.8) }}
+                    >
+                      {route.name}
+                    </span>
                   </ListItemButton>
                 </Link>
               </ListItem>
