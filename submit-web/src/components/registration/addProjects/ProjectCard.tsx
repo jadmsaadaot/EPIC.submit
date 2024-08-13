@@ -1,7 +1,6 @@
 import { theme } from "@/styles/theme";
 import { Box, Paper, Typography } from "@mui/material";
 import { BCPalette } from "epic.theme";
-import React from "react";
 
 export const ProjectCard = () => {
   return (
