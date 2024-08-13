@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Breadcrumbs, Typography } from "@mui/material";
-import { Link, useRouter, useRouterState } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { theme } from "@/styles/theme";
 
 interface RouteSegment {

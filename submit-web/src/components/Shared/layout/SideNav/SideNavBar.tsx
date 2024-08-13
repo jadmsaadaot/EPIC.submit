@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   Box,
-  Drawer,
   List,
   ListItem,
   ListItemButton,
@@ -12,7 +11,6 @@ import { theme } from "@/styles/theme";
 import { useAuth } from "react-oidc-context";
 import { AuthenticatedRoutes, Routes } from "./SideNavElements";
 import { alpha } from "@mui/system";
-import BreadcrumbNav from "./BreadcrumbNav";
 import { useIsMobile } from "@/hooks/common";
 
 export default function SideNavBar() {
