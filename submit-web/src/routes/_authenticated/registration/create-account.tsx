@@ -1,21 +1,13 @@
 import { useCreateAccount } from "@/hooks/useAccounts";
 import { Save } from "@mui/icons-material";
-import {
-  Box,
-  CircularProgress,
-  Divider,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { CircularProgress, Divider, Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import * as yup from "yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ControlledTextField from "@/components/Shared/controlled/ControlledTextField";
-import { theme } from "@/styles/theme";
 import { useAuth } from "react-oidc-context";
-import { YellowBar } from "@/components/Shared/YellowBar";
 import { Banner } from "@/components/registration/Banner";
 import { GridContainer } from "@/components/registration/GridContainer";
 import { BCDesignTokens } from "epic.theme";
