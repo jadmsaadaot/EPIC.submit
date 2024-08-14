@@ -5,15 +5,15 @@ import { theme } from "@/styles/theme";
 
 interface RouteSegment {
   title: string;
-  path: string;
+  path?: string;
 }
 
 const filterUniqueRoutes = (breadcrumbs: RouteSegment[]) => {
   const seenPaths = new Set();
   return breadcrumbs.filter((segment) => {
-    const isUnique = !seenPaths.has(segment.path);
+    const isUnique = !seenPaths.has(segment?.path);
     if (isUnique) {
-      seenPaths.add(segment.path);
+      seenPaths.add(segment?.path);
     }
     return isUnique;
   });
@@ -45,7 +45,7 @@ const BreadcrumbNav: React.FC = () => {
         >
           <Breadcrumbs aria-label="breadcrumb">
             {uniqueBreadcrumbs.map(
-              (segment: { title: string; path: string }, index: number) => {
+              (segment: { title: string; path?: string }, index: number) => {
                 const { title, path } = segment;
                 const isLast = index === uniqueBreadcrumbs.length - 1;
                 return isLast ? (
