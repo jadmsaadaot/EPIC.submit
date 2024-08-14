@@ -56,7 +56,10 @@ const BreadcrumbNav: React.FC = () => {
                 ) : (
                   <Link
                     key={path}
-                    style={{ color: theme.palette.primary.dark }}
+                    style={{
+                      color: theme.palette.primary.dark,
+                      textDecoration: "underline",
+                    }}
                     to={path}
                   >
                     {title}
