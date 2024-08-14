@@ -1,15 +1,16 @@
 import { useCreateAccount } from "@/hooks/useAccounts";
 import { Save } from "@mui/icons-material";
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { CircularProgress, Divider, Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import * as yup from "yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ControlledTextField from "@/components/Shared/controlled/ControlledTextField";
-import { theme } from "@/styles/theme";
 import { useAuth } from "react-oidc-context";
-import { YellowBar } from "@/components/Shared/YellowBar";
+import { Banner } from "@/components/registration/Banner";
+import { GridContainer } from "@/components/registration/GridContainer";
+import { BCDesignTokens } from "epic.theme";
 
 const queryParamSchema = yup.object().shape({
   proponent_id: yup.number(),
@@ -38,12 +39,13 @@ function CreateAccount() {
   const { user } = useAuth();
   const { proponent_id } = Route.useSearch<QueryParamsSchema>();
 
-  const { mutate: doCreateAccount } = useCreateAccount(
-    () => navigate({ to: "/profile" }),
-    () => {
-      return;
-    },
-  );
+  const { mutate: doCreateAccount, isPending: isCreatingAccount } =
+    useCreateAccount(
+      () => navigate({ to: "/registration/add-projects" }),
+      () => {
+        return;
+      },
+    );
 
   const methods = useForm({
     resolver: yupResolver(createAccountSchema),
@@ -68,34 +70,8 @@ function CreateAccount() {
 
   return (
     <>
-      <Box
-        position="relative"
-        bgcolor="#F0F8FF"
-        zIndex={theme.zIndex.appBar - 10}
-        height={76}
-        display={"flex"}
-        alignItems={"center"}
-        px={9.5}
-      >
-        <Typography variant="h3" color="initial" fontWeight={600}>
-          CGI Mines Inc.
-        </Typography>
-      </Box>
-
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        px={9.5}
-        py={7}
-        height={"calc(100vh - 242px)"}
-        overflow={"auto"}
-        spacing={0}
-      >
-        <Grid item xs={12} mb={"5px"}>
-          <YellowBar />
-        </Grid>
+      <Banner>CGI Mines Inc.</Banner>
+      <GridContainer>
         <Grid item xs={12} mb={"16px"}>
           <Typography variant="h4" fontWeight={600}>
             First, create your account.
@@ -164,8 +140,22 @@ function CreateAccount() {
                 <Button
                   type="submit"
                   color="primary"
-                  startIcon={<Save />}
-                  // disabled={isCreateAccountPending}
+                  startIcon={
+                    isCreatingAccount ? (
+                      <CircularProgress
+                        size={16}
+                        sx={{
+                          color: BCDesignTokens.iconsColorPrimaryInvert,
+                        }}
+                      />
+                    ) : (
+                      <Save />
+                    )
+                  }
+                  sx={{
+                    height: "43px",
+                    width: "91px",
+                  }}
                 >
                   Save
                 </Button>
@@ -173,19 +163,7 @@ function CreateAccount() {
             </FormProvider>
           </Grid>
         </Grid>
-      </Grid>
-      <Box
-        justifyContent="center"
-        alignItems="flex-start"
-        position="absolute"
-        bgcolor="#F0F8FF"
-        width="100%"
-        bottom="0"
-      >
-        <Button color="secondary" sx={{ mx: 9.5, my: 2.25 }}>
-          Save & Continue Later
-        </Button>
-      </Box>
+      </GridContainer>
     </>
   );
 }

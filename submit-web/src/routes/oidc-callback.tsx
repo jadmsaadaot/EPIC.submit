@@ -29,7 +29,7 @@ function OidcCallback() {
   }
 
   if (userData?.account_id) {
-    return <Navigate to="/profile" />;
+    return <Navigate to="/projects" />;
   }
 
   if (!isAuthLoading && !isUserDataLoading) {
