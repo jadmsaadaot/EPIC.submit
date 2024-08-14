@@ -1,9 +1,5 @@
 export const Routes: RouteType[] = [
   {
-    name: "Root",
-    path: "/",
-  },
-  {
     name: "About",
     path: "/aboutpage",
   },

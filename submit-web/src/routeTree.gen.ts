@@ -17,31 +17,27 @@ import { Route as OidcCallbackImport } from './routes/oidc-callback'
 import { Route as ErrorImport } from './routes/error'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
 import { Route as IndexImport } from './routes/index'
-import { Route as EaoPlansIndexImport } from './routes/eao-plans/index'
-import { Route as EaoPlansPlanIdImport } from './routes/eao-plans/$planId'
-import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedAdminLoginImport } from './routes/_authenticated/admin-login'
-import { Route as AuthenticatedUsersIndexImport } from './routes/_authenticated/users/index'
+import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/_dashboard'
 import { Route as AuthenticatedRegistrationCreateAccountImport } from './routes/_authenticated/registration/create-account'
 import { Route as AuthenticatedRegistrationCompleteImport } from './routes/_authenticated/registration/complete'
 import { Route as AuthenticatedRegistrationAddProjectsImport } from './routes/_authenticated/registration/add-projects'
+import { Route as AuthenticatedDashboardProfileImport } from './routes/_authenticated/_dashboard/profile'
+import { Route as AuthenticatedDashboardUsersIndexImport } from './routes/_authenticated/_dashboard/users/index'
+import { Route as AuthenticatedDashboardProjectsIndexImport } from './routes/_authenticated/_dashboard/projects/index'
+import { Route as AuthenticatedDashboardEaoPlansIndexImport } from './routes/_authenticated/_dashboard/eao-plans/index'
+import { Route as AuthenticatedDashboardEaoPlansPlanIdImport } from './routes/_authenticated/_dashboard/eao-plans/$planId'
 
 // Create Virtual Routes
 
-const NewpageLazyImport = createFileRoute('/newpage')()
-const AboutpageLazyImport = createFileRoute('/aboutpage')()
+const AuthenticatedDashboardNewpageLazyImport = createFileRoute(
+  '/_authenticated/_dashboard/newpage',
+)()
+const AuthenticatedDashboardAboutpageLazyImport = createFileRoute(
+  '/_authenticated/_dashboard/aboutpage',
+)()
 
 // Create/Update Routes
-
-const NewpageLazyRoute = NewpageLazyImport.update({
-  path: '/newpage',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/newpage.lazy').then((d) => d.Route))
-
-const AboutpageLazyRoute = AboutpageLazyImport.update({
-  path: '/aboutpage',
-  getParentRoute: () => rootRoute,
-} as any).lazy(() => import('./routes/aboutpage.lazy').then((d) => d.Route))
 
 const OidcCallbackRoute = OidcCallbackImport.update({
   path: '/oidc-callback',
@@ -63,30 +59,35 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const EaoPlansIndexRoute = EaoPlansIndexImport.update({
-  path: '/eao-plans/',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const EaoPlansPlanIdRoute = EaoPlansPlanIdImport.update({
-  path: '/eao-plans/$planId',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const AuthenticatedProfileRoute = AuthenticatedProfileImport.update({
-  path: '/profile',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-
 const AuthenticatedAdminLoginRoute = AuthenticatedAdminLoginImport.update({
   path: '/admin-login',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
-const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexImport.update({
-  path: '/users/',
+const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
+  id: '/_dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+
+const AuthenticatedDashboardNewpageLazyRoute =
+  AuthenticatedDashboardNewpageLazyImport.update({
+    path: '/newpage',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/_dashboard/newpage.lazy').then(
+      (d) => d.Route,
+    ),
+  )
+
+const AuthenticatedDashboardAboutpageLazyRoute =
+  AuthenticatedDashboardAboutpageLazyImport.update({
+    path: '/aboutpage',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any).lazy(() =>
+    import('./routes/_authenticated/_dashboard/aboutpage.lazy').then(
+      (d) => d.Route,
+    ),
+  )
 
 const AuthenticatedRegistrationCreateAccountRoute =
   AuthenticatedRegistrationCreateAccountImport.update({
@@ -104,6 +105,36 @@ const AuthenticatedRegistrationAddProjectsRoute =
   AuthenticatedRegistrationAddProjectsImport.update({
     path: '/registration/add-projects',
     getParentRoute: () => AuthenticatedRoute,
+  } as any)
+
+const AuthenticatedDashboardProfileRoute =
+  AuthenticatedDashboardProfileImport.update({
+    path: '/profile',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+
+const AuthenticatedDashboardUsersIndexRoute =
+  AuthenticatedDashboardUsersIndexImport.update({
+    path: '/users/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+
+const AuthenticatedDashboardProjectsIndexRoute =
+  AuthenticatedDashboardProjectsIndexImport.update({
+    path: '/projects/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+
+const AuthenticatedDashboardEaoPlansIndexRoute =
+  AuthenticatedDashboardEaoPlansIndexImport.update({
+    path: '/eao-plans/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+
+const AuthenticatedDashboardEaoPlansPlanIdRoute =
+  AuthenticatedDashboardEaoPlansPlanIdImport.update({
+    path: '/eao-plans/$planId',
+    getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -138,19 +169,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OidcCallbackImport
       parentRoute: typeof rootRoute
     }
-    '/aboutpage': {
-      id: '/aboutpage'
-      path: '/aboutpage'
-      fullPath: '/aboutpage'
-      preLoaderRoute: typeof AboutpageLazyImport
-      parentRoute: typeof rootRoute
-    }
-    '/newpage': {
-      id: '/newpage'
-      path: '/newpage'
-      fullPath: '/newpage'
-      preLoaderRoute: typeof NewpageLazyImport
-      parentRoute: typeof rootRoute
+    '/_authenticated/_dashboard': {
+      id: '/_authenticated/_dashboard'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof AuthenticatedDashboardImport
+      parentRoute: typeof AuthenticatedImport
     }
     '/_authenticated/admin-login': {
       id: '/_authenticated/admin-login'
@@ -159,26 +183,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminLoginImport
       parentRoute: typeof AuthenticatedImport
     }
-    '/_authenticated/profile': {
-      id: '/_authenticated/profile'
+    '/_authenticated/_dashboard/profile': {
+      id: '/_authenticated/_dashboard/profile'
       path: '/profile'
       fullPath: '/profile'
-      preLoaderRoute: typeof AuthenticatedProfileImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/eao-plans/$planId': {
-      id: '/eao-plans/$planId'
-      path: '/eao-plans/$planId'
-      fullPath: '/eao-plans/$planId'
-      preLoaderRoute: typeof EaoPlansPlanIdImport
-      parentRoute: typeof rootRoute
-    }
-    '/eao-plans/': {
-      id: '/eao-plans/'
-      path: '/eao-plans'
-      fullPath: '/eao-plans'
-      preLoaderRoute: typeof EaoPlansIndexImport
-      parentRoute: typeof rootRoute
+      preLoaderRoute: typeof AuthenticatedDashboardProfileImport
+      parentRoute: typeof AuthenticatedDashboardImport
     }
     '/_authenticated/registration/add-projects': {
       id: '/_authenticated/registration/add-projects'
@@ -201,12 +211,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRegistrationCreateAccountImport
       parentRoute: typeof AuthenticatedImport
     }
-    '/_authenticated/users/': {
-      id: '/_authenticated/users/'
+    '/_authenticated/_dashboard/aboutpage': {
+      id: '/_authenticated/_dashboard/aboutpage'
+      path: '/aboutpage'
+      fullPath: '/aboutpage'
+      preLoaderRoute: typeof AuthenticatedDashboardAboutpageLazyImport
+      parentRoute: typeof AuthenticatedDashboardImport
+    }
+    '/_authenticated/_dashboard/newpage': {
+      id: '/_authenticated/_dashboard/newpage'
+      path: '/newpage'
+      fullPath: '/newpage'
+      preLoaderRoute: typeof AuthenticatedDashboardNewpageLazyImport
+      parentRoute: typeof AuthenticatedDashboardImport
+    }
+    '/_authenticated/_dashboard/eao-plans/$planId': {
+      id: '/_authenticated/_dashboard/eao-plans/$planId'
+      path: '/eao-plans/$planId'
+      fullPath: '/eao-plans/$planId'
+      preLoaderRoute: typeof AuthenticatedDashboardEaoPlansPlanIdImport
+      parentRoute: typeof AuthenticatedDashboardImport
+    }
+    '/_authenticated/_dashboard/eao-plans/': {
+      id: '/_authenticated/_dashboard/eao-plans/'
+      path: '/eao-plans'
+      fullPath: '/eao-plans'
+      preLoaderRoute: typeof AuthenticatedDashboardEaoPlansIndexImport
+      parentRoute: typeof AuthenticatedDashboardImport
+    }
+    '/_authenticated/_dashboard/projects/': {
+      id: '/_authenticated/_dashboard/projects/'
+      path: '/projects'
+      fullPath: '/projects'
+      preLoaderRoute: typeof AuthenticatedDashboardProjectsIndexImport
+      parentRoute: typeof AuthenticatedDashboardImport
+    }
+    '/_authenticated/_dashboard/users/': {
+      id: '/_authenticated/_dashboard/users/'
       path: '/users'
       fullPath: '/users'
-      preLoaderRoute: typeof AuthenticatedUsersIndexImport
-      parentRoute: typeof AuthenticatedImport
+      preLoaderRoute: typeof AuthenticatedDashboardUsersIndexImport
+      parentRoute: typeof AuthenticatedDashboardImport
     }
   }
 }
@@ -216,19 +261,22 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   AuthenticatedRoute: AuthenticatedRoute.addChildren({
+    AuthenticatedDashboardRoute: AuthenticatedDashboardRoute.addChildren({
+      AuthenticatedDashboardProfileRoute,
+      AuthenticatedDashboardAboutpageLazyRoute,
+      AuthenticatedDashboardNewpageLazyRoute,
+      AuthenticatedDashboardEaoPlansPlanIdRoute,
+      AuthenticatedDashboardEaoPlansIndexRoute,
+      AuthenticatedDashboardProjectsIndexRoute,
+      AuthenticatedDashboardUsersIndexRoute,
+    }),
     AuthenticatedAdminLoginRoute,
-    AuthenticatedProfileRoute,
     AuthenticatedRegistrationAddProjectsRoute,
     AuthenticatedRegistrationCompleteRoute,
     AuthenticatedRegistrationCreateAccountRoute,
-    AuthenticatedUsersIndexRoute,
   }),
   ErrorRoute,
   OidcCallbackRoute,
-  AboutpageLazyRoute,
-  NewpageLazyRoute,
-  EaoPlansPlanIdRoute,
-  EaoPlansIndexRoute,
 })
 
 /* prettier-ignore-end */
@@ -242,11 +290,7 @@ export const routeTree = rootRoute.addChildren({
         "/",
         "/_authenticated",
         "/error",
-        "/oidc-callback",
-        "/aboutpage",
-        "/newpage",
-        "/eao-plans/$planId",
-        "/eao-plans/"
+        "/oidc-callback"
       ]
     },
     "/": {
@@ -255,12 +299,11 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
+        "/_authenticated/_dashboard",
         "/_authenticated/admin-login",
-        "/_authenticated/profile",
         "/_authenticated/registration/add-projects",
         "/_authenticated/registration/complete",
-        "/_authenticated/registration/create-account",
-        "/_authenticated/users/"
+        "/_authenticated/registration/create-account"
       ]
     },
     "/error": {
@@ -269,25 +312,26 @@ export const routeTree = rootRoute.addChildren({
     "/oidc-callback": {
       "filePath": "oidc-callback.tsx"
     },
-    "/aboutpage": {
-      "filePath": "aboutpage.lazy.tsx"
-    },
-    "/newpage": {
-      "filePath": "newpage.lazy.tsx"
+    "/_authenticated/_dashboard": {
+      "filePath": "_authenticated/_dashboard.tsx",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/_dashboard/profile",
+        "/_authenticated/_dashboard/aboutpage",
+        "/_authenticated/_dashboard/newpage",
+        "/_authenticated/_dashboard/eao-plans/$planId",
+        "/_authenticated/_dashboard/eao-plans/",
+        "/_authenticated/_dashboard/projects/",
+        "/_authenticated/_dashboard/users/"
+      ]
     },
     "/_authenticated/admin-login": {
       "filePath": "_authenticated/admin-login.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/profile": {
-      "filePath": "_authenticated/profile.tsx",
-      "parent": "/_authenticated"
-    },
-    "/eao-plans/$planId": {
-      "filePath": "eao-plans/$planId.tsx"
-    },
-    "/eao-plans/": {
-      "filePath": "eao-plans/index.tsx"
+    "/_authenticated/_dashboard/profile": {
+      "filePath": "_authenticated/_dashboard/profile.tsx",
+      "parent": "/_authenticated/_dashboard"
     },
     "/_authenticated/registration/add-projects": {
       "filePath": "_authenticated/registration/add-projects.tsx",
@@ -301,9 +345,29 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/registration/create-account.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/users/": {
-      "filePath": "_authenticated/users/index.tsx",
-      "parent": "/_authenticated"
+    "/_authenticated/_dashboard/aboutpage": {
+      "filePath": "_authenticated/_dashboard/aboutpage.lazy.tsx",
+      "parent": "/_authenticated/_dashboard"
+    },
+    "/_authenticated/_dashboard/newpage": {
+      "filePath": "_authenticated/_dashboard/newpage.lazy.tsx",
+      "parent": "/_authenticated/_dashboard"
+    },
+    "/_authenticated/_dashboard/eao-plans/$planId": {
+      "filePath": "_authenticated/_dashboard/eao-plans/$planId.tsx",
+      "parent": "/_authenticated/_dashboard"
+    },
+    "/_authenticated/_dashboard/eao-plans/": {
+      "filePath": "_authenticated/_dashboard/eao-plans/index.tsx",
+      "parent": "/_authenticated/_dashboard"
+    },
+    "/_authenticated/_dashboard/projects/": {
+      "filePath": "_authenticated/_dashboard/projects/index.tsx",
+      "parent": "/_authenticated/_dashboard"
+    },
+    "/_authenticated/_dashboard/users/": {
+      "filePath": "_authenticated/_dashboard/users/index.tsx",
+      "parent": "/_authenticated/_dashboard"
     }
   }
 }

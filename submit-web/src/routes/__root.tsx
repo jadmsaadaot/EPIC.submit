@@ -15,6 +15,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
   notFoundComponent: PageNotFound,
   meta: () => [{ title: "Home" }],
 });
+
 function Layout() {
   return (
     <>
