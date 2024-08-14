@@ -1,6 +1,12 @@
 import { useCreateAccount } from "@/hooks/useAccounts";
 import { Save } from "@mui/icons-material";
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Divider,
+  Grid,
+  Typography,
+} from "@mui/material";
 import Button from "@mui/material/Button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import * as yup from "yup";
@@ -12,6 +18,7 @@ import { useAuth } from "react-oidc-context";
 import { YellowBar } from "@/components/Shared/YellowBar";
 import { Banner } from "@/components/registration/Banner";
 import { GridContainer } from "@/components/registration/GridContainer";
+import { BCDesignTokens } from "epic.theme";
 
 const queryParamSchema = yup.object().shape({
   proponent_id: yup.number(),
@@ -40,12 +47,13 @@ function CreateAccount() {
   const { user } = useAuth();
   const { proponent_id } = Route.useSearch<QueryParamsSchema>();
 
-  const { mutate: doCreateAccount } = useCreateAccount(
-    () => navigate({ to: "/profile" }),
-    () => {
-      return;
-    },
-  );
+  const { mutate: doCreateAccount, isPending: isCreatingAccount } =
+    useCreateAccount(
+      () => navigate({ to: "/registration/add-projects" }),
+      () => {
+        return;
+      },
+    );
 
   const methods = useForm({
     resolver: yupResolver(createAccountSchema),
@@ -140,8 +148,22 @@ function CreateAccount() {
                 <Button
                   type="submit"
                   color="primary"
-                  startIcon={<Save />}
-                  // disabled={isCreateAccountPending}
+                  startIcon={
+                    isCreatingAccount ? (
+                      <CircularProgress
+                        size={16}
+                        sx={{
+                          color: BCDesignTokens.iconsColorPrimaryInvert,
+                        }}
+                      />
+                    ) : (
+                      <Save />
+                    )
+                  }
+                  sx={{
+                    height: "43px",
+                    width: "91px",
+                  }}
                 >
                   Save
                 </Button>

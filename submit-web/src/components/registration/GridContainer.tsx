@@ -13,7 +13,7 @@ export const GridContainer = ({ children, ...rest }: GridProps) => {
       spacing={0}
       {...rest}
     >
-      <Grid item xs={12} mb={"5px"}>
+      <Grid item xs={12}>
         <YellowBar />
       </Grid>
       {children}

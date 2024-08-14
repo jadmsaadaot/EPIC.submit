@@ -19,7 +19,7 @@ function Layout() {
   return (
     <>
       <EAOAppBar />
-      <Box height={"calc(100vh - 88px)"}>
+      <Box minHeight={"calc(100vh - 88px)"}>
         <Outlet />
       </Box>
       <Footer />

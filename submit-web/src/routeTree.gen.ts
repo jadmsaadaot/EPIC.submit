@@ -22,10 +22,9 @@ import { Route as EaoPlansPlanIdImport } from './routes/eao-plans/$planId'
 import { Route as AuthenticatedProfileImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedAdminLoginImport } from './routes/_authenticated/admin-login'
 import { Route as AuthenticatedUsersIndexImport } from './routes/_authenticated/users/index'
-import { Route as AuthenticatedProjectsIndexImport } from './routes/_authenticated/projects/index'
 import { Route as AuthenticatedRegistrationCreateAccountImport } from './routes/_authenticated/registration/create-account'
+import { Route as AuthenticatedRegistrationCompleteImport } from './routes/_authenticated/registration/complete'
 import { Route as AuthenticatedRegistrationAddProjectsImport } from './routes/_authenticated/registration/add-projects'
-import { Route as AuthenticatedRegistrationAccountAccountIdProjectsImport } from './routes/_authenticated/registration/account/$accountId/projects'
 
 // Create Virtual Routes
 
@@ -89,28 +88,21 @@ const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexImport.update({
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 
-const AuthenticatedProjectsIndexRoute = AuthenticatedProjectsIndexImport.update(
-  {
-    path: '/projects/',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any,
-)
-
 const AuthenticatedRegistrationCreateAccountRoute =
   AuthenticatedRegistrationCreateAccountImport.update({
     path: '/registration/create-account',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
-const AuthenticatedRegistrationAddProjectsRoute =
-  AuthenticatedRegistrationAddProjectsImport.update({
-    path: '/registration/add-projects',
+const AuthenticatedRegistrationCompleteRoute =
+  AuthenticatedRegistrationCompleteImport.update({
+    path: '/registration/complete',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
-const AuthenticatedRegistrationAccountAccountIdProjectsRoute =
-  AuthenticatedRegistrationAccountAccountIdProjectsImport.update({
-    path: '/registration/account/$accountId/projects',
+const AuthenticatedRegistrationAddProjectsRoute =
+  AuthenticatedRegistrationAddProjectsImport.update({
+    path: '/registration/add-projects',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -195,6 +187,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRegistrationAddProjectsImport
       parentRoute: typeof AuthenticatedImport
     }
+    '/_authenticated/registration/complete': {
+      id: '/_authenticated/registration/complete'
+      path: '/registration/complete'
+      fullPath: '/registration/complete'
+      preLoaderRoute: typeof AuthenticatedRegistrationCompleteImport
+      parentRoute: typeof AuthenticatedImport
+    }
     '/_authenticated/registration/create-account': {
       id: '/_authenticated/registration/create-account'
       path: '/registration/create-account'
@@ -202,25 +201,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRegistrationCreateAccountImport
       parentRoute: typeof AuthenticatedImport
     }
-    '/_authenticated/projects/': {
-      id: '/_authenticated/projects/'
-      path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof AuthenticatedProjectsIndexImport
-      parentRoute: typeof AuthenticatedImport
-    }
     '/_authenticated/users/': {
       id: '/_authenticated/users/'
       path: '/users'
       fullPath: '/users'
       preLoaderRoute: typeof AuthenticatedUsersIndexImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/registration/account/$accountId/projects': {
-      id: '/_authenticated/registration/account/$accountId/projects'
-      path: '/registration/account/$accountId/projects'
-      fullPath: '/registration/account/$accountId/projects'
-      preLoaderRoute: typeof AuthenticatedRegistrationAccountAccountIdProjectsImport
       parentRoute: typeof AuthenticatedImport
     }
   }
@@ -234,10 +219,9 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedAdminLoginRoute,
     AuthenticatedProfileRoute,
     AuthenticatedRegistrationAddProjectsRoute,
+    AuthenticatedRegistrationCompleteRoute,
     AuthenticatedRegistrationCreateAccountRoute,
-    AuthenticatedProjectsIndexRoute,
     AuthenticatedUsersIndexRoute,
-    AuthenticatedRegistrationAccountAccountIdProjectsRoute,
   }),
   ErrorRoute,
   OidcCallbackRoute,
@@ -274,10 +258,9 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/admin-login",
         "/_authenticated/profile",
         "/_authenticated/registration/add-projects",
+        "/_authenticated/registration/complete",
         "/_authenticated/registration/create-account",
-        "/_authenticated/projects/",
-        "/_authenticated/users/",
-        "/_authenticated/registration/account/$accountId/projects"
+        "/_authenticated/users/"
       ]
     },
     "/error": {
@@ -310,20 +293,16 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/registration/add-projects.tsx",
       "parent": "/_authenticated"
     },
+    "/_authenticated/registration/complete": {
+      "filePath": "_authenticated/registration/complete.tsx",
+      "parent": "/_authenticated"
+    },
     "/_authenticated/registration/create-account": {
       "filePath": "_authenticated/registration/create-account.tsx",
       "parent": "/_authenticated"
     },
-    "/_authenticated/projects/": {
-      "filePath": "_authenticated/projects/index.tsx",
-      "parent": "/_authenticated"
-    },
     "/_authenticated/users/": {
       "filePath": "_authenticated/users/index.tsx",
-      "parent": "/_authenticated"
-    },
-    "/_authenticated/registration/account/$accountId/projects": {
-      "filePath": "_authenticated/registration/account/$accountId/projects.tsx",
       "parent": "/_authenticated"
     }
   }
