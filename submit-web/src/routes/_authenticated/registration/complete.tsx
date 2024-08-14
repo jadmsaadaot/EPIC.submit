@@ -9,13 +9,14 @@ import {
   RadioGroup,
   Typography,
 } from "@mui/material";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/registration/complete")({
   component: Complete,
 });
 
 function Complete() {
+  const navigate = useNavigate();
   return (
     <GridContainer>
       <Grid item xs={12}>
@@ -44,7 +45,13 @@ function Complete() {
         </FormControl>
       </Grid>
       <Grid item xs={12}>
-        <Button variant="contained" color="primary">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {
+            navigate({ to: "/projects" });
+          }}
+        >
           Go
         </Button>
       </Grid>
