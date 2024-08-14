@@ -18,7 +18,7 @@ const queryParamSchema = yup.object().shape({
 type QueryParamsSchema = yup.InferType<typeof queryParamSchema>;
 
 export const Route = createFileRoute(
-  "/_authenticated/registration/create-account",
+  "/_authenticated/registration/create-account"
 )({
   component: CreateAccount,
 });
@@ -42,7 +42,7 @@ function CreateAccount() {
     () => navigate({ to: "/profile" }),
     () => {
       return;
-    },
+    }
   );
 
   const methods = useForm({
@@ -138,7 +138,7 @@ function CreateAccount() {
                   label="Your Given Name"
                   fullWidth
                   InputLabelProps={{
-                    sx: { marginBottom: "0", color: "red", fontWeight: "bold" },
+                    sx: { marginBottom: "0", color: "red" },
                   }}
                 />
                 <ControlledTextField
