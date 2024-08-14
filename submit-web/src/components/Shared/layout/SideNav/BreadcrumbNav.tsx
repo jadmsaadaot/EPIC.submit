@@ -11,7 +11,7 @@ interface RouteSegment {
 const filterUniqueRoutes = (breadcrumbs: RouteSegment[]) => {
   const seenPaths = new Set();
   return breadcrumbs.filter((segment) => {
-    if (!segment.path || !segment.title) return false;
+    if (!segment?.path || !segment?.title) return false;
     const isUnique = !seenPaths.has(segment?.path);
     if (isUnique) {
       seenPaths.add(segment?.path);
