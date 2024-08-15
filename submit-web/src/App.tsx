@@ -7,7 +7,6 @@ import { theme } from "@/styles/theme";
 import RouterProviderWithAuthContext from "@/router";
 import ModalProvider from "./components/Shared/Modals/ModalProvider";
 import SnackBarProvider from "./components/Shared/Snackbar/SnackBarProvider";
-import DrawerProvider from "./components/Shared/Drawers/DrawerProvider";
 
 const queryClient = new QueryClient();
 

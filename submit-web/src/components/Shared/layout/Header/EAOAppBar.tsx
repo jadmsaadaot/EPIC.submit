@@ -1,14 +1,12 @@
 import { AppBar, Grid, Typography } from "@mui/material";
 import EAO_Logo from "@/assets/images/EAO_Logo.png";
 import { AppConfig } from "@/utils/config";
-import { useAuth } from "react-oidc-context";
 import AppBarActions from "./AppBarActions";
 import { useIsMobile } from "@/hooks/common";
 import MobileNav from "./MobileNav";
 import { theme } from "@/styles/theme";
 
 export default function EAOAppBar() {
-  const auth = useAuth();
   const isMobile = useIsMobile();
   return (
     <>

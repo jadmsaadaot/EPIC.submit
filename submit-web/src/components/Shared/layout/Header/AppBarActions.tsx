@@ -1,4 +1,3 @@
-import { useIsMobile } from "@/hooks/common";
 import {
   Box,
   Typography,
