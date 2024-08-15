@@ -3,12 +3,20 @@ import EAO_Logo from "@/assets/images/EAO_Logo.png";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { AppConfig, OidcConfig } from "@/utils/config";
 import { useAuth } from "react-oidc-context";
+import { theme } from "@/styles/theme";
 
 export default function EAOAppBar() {
   const auth = useAuth();
   return (
     <>
-      <AppBar position="static" color="inherit" elevation={2}>
+      <AppBar
+        position="static"
+        color="inherit"
+        sx={{
+          borderBottom: `1px solid ${theme.palette.grey[300]}`,
+          boxShadow: "none",
+        }}
+      >
         <Grid
           container
           padding={"0.5rem"}

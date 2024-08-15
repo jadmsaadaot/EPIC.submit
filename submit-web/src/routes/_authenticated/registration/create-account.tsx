@@ -114,7 +114,7 @@ function CreateAccount() {
                   label="Your Given Name"
                   fullWidth
                   InputLabelProps={{
-                    sx: { marginBottom: "0", color: "red", fontWeight: "bold" },
+                    sx: { marginBottom: "0", color: "red" },
                   }}
                 />
                 <ControlledTextField

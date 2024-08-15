@@ -4,8 +4,8 @@ export const Routes: RouteType[] = [
     path: "/aboutpage",
   },
   {
-    name: "Lazy Loaded Page",
-    path: "/newpage",
+    name: "All Projects",
+    path: "/projects",
   },
   {
     name: "Plans",
