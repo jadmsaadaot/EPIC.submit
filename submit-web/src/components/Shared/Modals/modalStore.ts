@@ -10,7 +10,6 @@ interface ModalStore {
 
 // Create the Zustand store
 export const useModal = create<ModalStore>((set) => ({
-  data: {},
   isOpen: false,
   modalContent: null,
 
