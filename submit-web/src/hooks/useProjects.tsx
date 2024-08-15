@@ -1,10 +1,13 @@
+import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
+import { Project } from "@/models/Project";
 import { useQuery } from "@tanstack/react-query";
 
-const dummyProjects = [
+const dummyProjects: Project[] = [
   {
-    id: "1",
+    id: 1,
     name: "Project 1",
     description: "Description 1",
+    status: PROJECT_STATUS.POST_DECISION,
   },
 ];
 const loadProjectsByProponentId = (proponentId?: string) => {

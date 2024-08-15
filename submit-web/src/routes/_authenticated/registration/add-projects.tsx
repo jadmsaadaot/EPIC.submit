@@ -1,10 +1,16 @@
-import { ProjectCard } from "@/components/registration/addProjects/ProjectCard";
-import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
+import {
+  ProjectListSkeleton,
+  ProjectsList,
+} from "@/components/registration/addProjects/ProjectsList";
 import { Banner } from "@/components/registration/Banner";
 import { GridContainer } from "@/components/registration/GridContainer";
+import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { Caption2 } from "@/components/Shared/Typographies";
+import { useLoadProjectsByProponentId } from "@/hooks/useProjects";
 import { Button, Grid, Link, Stack, Typography } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect } from "react";
+import { Else, If } from "react-if";
 
 export const Route = createFileRoute(
   "/_authenticated/registration/add-projects",
@@ -13,6 +19,19 @@ export const Route = createFileRoute(
 });
 
 function AddProjects() {
+  const { proponent_id } = Route.useSearch<{ proponent_id: string }>();
+  const {
+    data: projects,
+    isFetching: isFetchingProjects,
+    isError: isLoadingProjectsError,
+  } = useLoadProjectsByProponentId(proponent_id);
+
+  useEffect(() => {
+    if (isLoadingProjectsError) {
+      notify.error("Failed to load projects");
+    }
+  }, [isLoadingProjectsError]);
+
   const navigate = useNavigate();
   return (
     <>
@@ -37,7 +56,12 @@ function AddProjects() {
           </Typography>
         </Grid>
         <Grid item xs={12} mt={"20px"}>
-          <ProjectCard status={PROJECT_STATUS.POST_DECISION} />
+          <If condition={isFetchingProjects}>
+            <ProjectListSkeleton />
+          </If>
+          <Else>
+            <ProjectsList projects={projects} />
+          </Else>
         </Grid>
 
         <Stack direction="row" spacing={2} mt={"3em"} alignItems={"center"}>

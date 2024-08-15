@@ -16,11 +16,14 @@
 from http import HTTPStatus
 
 from flask_restx import Namespace, Resource, cors
+
+from submit_api.exceptions import ResourceNotFoundError
+from submit_api.schemas.account import AccountCreateSchema, AccountSchema
 from submit_api.services.account_service import AccountService
 from submit_api.utils.util import cors_preflight
-from submit_api.schemas.account import AccountSchema, AccountCreateSchema
-from submit_api.exceptions import ResourceNotFoundError
+
 from .apihelper import Api as ApiHelper
+
 
 API = Namespace("accounts", description="Endpoints for Account Management")
 """Custom exception messages

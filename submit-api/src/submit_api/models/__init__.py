@@ -14,11 +14,11 @@
 
 """This exports all of the models and schemas used by the application."""
 
-from .db import db, ma, migrate
+from .account import Account
+from .account_project import AccountProject
 from .account_role import AccountRole
 from .account_user import AccountUser
-from .role import Role
-from .account import Account
 from .base_model import BaseModel
-from .account_project import AccountProject
+from .db import db, ma, migrate
 from .project_team import ProjectTeam
+from .role import Role
