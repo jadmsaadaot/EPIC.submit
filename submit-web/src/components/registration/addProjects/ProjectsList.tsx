@@ -17,6 +17,7 @@ export const ProjectListSkeleton = () => {
   );
 };
 export const ProjectsList = ({ projects }: ProjectsListProps) => {
+  console.log("projects", projects);
   return (
     <Stack spacing={2} direction="row">
       {projects?.map((project) => (

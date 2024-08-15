@@ -1,5 +1,6 @@
 import { OnErrorType, OnSuccessType, request } from "@/utils/axiosUtils";
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { Options } from "./types";
 
 const defaultOnSuccess: OnSuccessType = () => {
   return;
@@ -7,7 +8,7 @@ const defaultOnSuccess: OnSuccessType = () => {
 const defaultOnError: OnErrorType = () => {
   return;
 };
-type CreateAccount = {
+type CreateAccountRequest = {
   first_name: string;
   last_name: string;
   position: string;
@@ -16,8 +17,16 @@ type CreateAccount = {
   proponent_id: string;
   auth_guid: string;
 };
-const createAccount = (account: CreateAccount) => {
-  return request({ url: "/accounts", method: "post", data: account });
+export type CreateAccountResponse = {
+  id: number;
+  proponent_id: string;
+};
+const createAccount = (account: CreateAccountRequest) => {
+  return request<CreateAccountResponse>({
+    url: "/accounts",
+    method: "post",
+    data: account,
+  });
 };
 
 type GetUserResponse = {
@@ -37,14 +46,14 @@ const getUserByGuid = (guid?: string) => {
   return request<GetUserResponse>({ url: `/users/guid/${guid}` });
 };
 
-export const useCreateAccount = (
-  onSuccess = defaultOnSuccess,
-  onError = defaultOnError,
-) => {
+type CreateAccountOptions = {
+  onSuccess?: (data: CreateAccountResponse) => void;
+  onError?: OnErrorType;
+};
+export const useCreateAccount = (options: CreateAccountOptions) => {
   return useMutation({
     mutationFn: createAccount,
-    onSuccess,
-    onError,
+    ...options,
   });
 };
 

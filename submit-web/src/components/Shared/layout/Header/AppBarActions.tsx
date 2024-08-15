@@ -60,7 +60,13 @@ export default function AppBarActions() {
             }}
           >
             <MenuItem onClick={handleClose}>My Profile</MenuItem>
-            <MenuItem onClick={handleClose}>Sign Out</MenuItem>
+            <MenuItem
+              onClick={() => {
+                auth.signoutRedirect();
+              }}
+            >
+              Sign Out
+            </MenuItem>
           </Menu>
         </>
       ) : (

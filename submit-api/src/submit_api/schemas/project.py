@@ -29,5 +29,5 @@ class AddProjectSchema(Schema):
         unknown = EXCLUDE
 
     name = fields.Str(data_key="name")
-    project_id = fields.Str(data_key="project_id")
-    account_id = fields.Str(data_key="account_id")
+    project_id = fields.Int(data_key="project_id")
+    account_id = fields.Int(data_key="account_id")

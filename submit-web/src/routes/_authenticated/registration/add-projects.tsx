@@ -10,6 +10,7 @@ import {
   useAddProjects,
   useLoadProjectsByProponentId,
 } from "@/hooks/api/useProjects";
+import { useAccount } from "@/store/accountStore";
 import {
   Button,
   CircularProgress,
@@ -20,7 +21,7 @@ import {
 } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Else, If } from "react-if";
+import { Else, If, Then } from "react-if";
 
 export const Route = createFileRoute(
   "/_authenticated/registration/add-projects",
@@ -30,12 +31,12 @@ export const Route = createFileRoute(
 
 function AddProjects() {
   const navigate = useNavigate();
-  const { proponent_id } = Route.useSearch<{ proponent_id: string }>();
+  const { accountId, proponentId } = useAccount();
   const {
     data: projects,
-    isFetching: isFetchingProjects,
+    isPending: isFetchingProjects,
     isError: isLoadingProjectsError,
-  } = useLoadProjectsByProponentId(proponent_id);
+  } = useLoadProjectsByProponentId(proponentId);
   useEffect(() => {
     if (isLoadingProjectsError) {
       notify.error("Failed to load projects");
@@ -61,7 +62,7 @@ function AddProjects() {
 
     const projectsToAdd = projects?.map((project) => ({
       name: project.name,
-      account_id: 1,
+      account_id: accountId,
       project_id: project.id,
     }));
     addProjects(projectsToAdd);
@@ -91,11 +92,13 @@ function AddProjects() {
         </Grid>
         <Grid item xs={12} mt={"20px"}>
           <If condition={isFetchingProjects}>
-            <ProjectListSkeleton />
+            <Then>
+              <ProjectListSkeleton />
+            </Then>
+            <Else>
+              <ProjectsList projects={projects} />
+            </Else>
           </If>
-          <Else>
-            <ProjectsList projects={projects} />
-          </Else>
         </Grid>
 
         <Stack direction="row" spacing={2} mt={"3em"} alignItems={"center"}>
