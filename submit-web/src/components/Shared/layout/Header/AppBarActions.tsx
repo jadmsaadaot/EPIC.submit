@@ -12,6 +12,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { theme } from "@/styles/theme";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useState } from "react";
+import { OidcConfig } from "@/utils/config";
 
 export default function AppBarActions() {
   const auth = useAuth();
@@ -26,11 +27,11 @@ export default function AppBarActions() {
 
   return (
     <>
-      {!auth.isAuthenticated ? (
+      {auth.isAuthenticated ? (
         <>
           <Box id="menu-appbar" display={"flex"} onClick={handleClick}>
             <Typography variant="body2" color="primary">
-              Hi, Johnny Sins
+              Hi, <b>{auth.user?.profile.name}</b>
             </Typography>
             <IconButton size="small" sx={{ m: 0, p: 0 }}>
               <KeyboardArrowDownIcon
@@ -64,16 +65,18 @@ export default function AppBarActions() {
           </Menu>
         </>
       ) : (
-        <>
-          <Button
-            variant="text"
-            color="primary"
-            onClick={() => auth.signinRedirect()}
-            sx={{ border: `2px solid ${theme.palette.grey[700]}` }}
-          >
-            Sign In
-          </Button>
-        </>
+        <Button
+          variant="text"
+          color="primary"
+          onClick={() =>
+            auth.signinRedirect({
+              redirect_uri: `${OidcConfig.redirect_uri}${window.location.search}`,
+            })
+          }
+          sx={{ border: `2px solid ${theme.palette.grey[700]}` }}
+        >
+          Sign In
+        </Button>
       )}
     </>
   );

@@ -5,13 +5,21 @@ import { useAuth } from "react-oidc-context";
 import AppBarActions from "./AppBarActions";
 import { useIsMobile } from "@/hooks/common";
 import MobileNav from "./MobileNav";
+import { theme } from "@/styles/theme";
 
 export default function EAOAppBar() {
   const auth = useAuth();
   const isMobile = useIsMobile();
   return (
     <>
-      <AppBar position="static" color="inherit" elevation={2}>
+      <AppBar
+        position="static"
+        color="inherit"
+        sx={{
+          borderBottom: `1px solid ${theme.palette.grey[300]}`,
+          boxShadow: "none",
+        }}
+      >
         <Grid
           container
           padding={"0.5rem"}

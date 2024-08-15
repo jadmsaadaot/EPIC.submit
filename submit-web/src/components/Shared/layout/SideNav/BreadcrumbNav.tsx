@@ -40,7 +40,7 @@ const BreadcrumbNav: React.FC = () => {
         <Box
           sx={{
             p: 1,
-            paddingLeft: 5,
+            paddingLeft: theme.spacing(4),
             borderBottom: "1px solid #0000001A",
           }}
         >
