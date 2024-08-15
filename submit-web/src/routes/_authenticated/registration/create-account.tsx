@@ -1,4 +1,4 @@
-import { useCreateAccount } from "@/hooks/useAccounts";
+import { useCreateAccount } from "@/hooks/api/useAccounts";
 import { Save } from "@mui/icons-material";
 import { CircularProgress, Divider, Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";

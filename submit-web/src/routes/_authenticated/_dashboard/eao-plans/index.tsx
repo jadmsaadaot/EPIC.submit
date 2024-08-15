@@ -9,7 +9,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { usePlansData } from "@/hooks/usePlans";
+import { usePlansData } from "@/hooks/api/usePlans";
 import { Plan } from "@/models/Plan";
 import { Link } from "@tanstack/react-router";
 import { OpenInNew } from "@mui/icons-material";

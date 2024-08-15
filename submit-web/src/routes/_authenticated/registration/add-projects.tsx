@@ -6,8 +6,18 @@ import { Banner } from "@/components/registration/Banner";
 import { GridContainer } from "@/components/registration/GridContainer";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { Caption2 } from "@/components/Shared/Typographies";
-import { useLoadProjectsByProponentId } from "@/hooks/useProjects";
-import { Button, Grid, Link, Stack, Typography } from "@mui/material";
+import {
+  useAddProjects,
+  useLoadProjectsByProponentId,
+} from "@/hooks/api/useProjects";
+import {
+  Button,
+  CircularProgress,
+  Grid,
+  Link,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { Else, If } from "react-if";
@@ -19,20 +29,44 @@ export const Route = createFileRoute(
 });
 
 function AddProjects() {
+  const navigate = useNavigate();
   const { proponent_id } = Route.useSearch<{ proponent_id: string }>();
   const {
     data: projects,
     isFetching: isFetchingProjects,
     isError: isLoadingProjectsError,
   } = useLoadProjectsByProponentId(proponent_id);
-
   useEffect(() => {
     if (isLoadingProjectsError) {
       notify.error("Failed to load projects");
     }
   }, [isLoadingProjectsError]);
 
-  const navigate = useNavigate();
+  const onAddProjectsSuccess = () => {
+    navigate({ to: "/registration/complete" });
+  };
+  const onAddProjectsError = () => {
+    notify.error("Failed to add projects");
+  };
+  const { mutate: addProjects, isPending: isAddingProjectsPending } =
+    useAddProjects({
+      onSuccess: onAddProjectsSuccess,
+      onError: onAddProjectsError,
+    });
+
+  const onConfirmProjectsClick = () => {
+    if (!projects) {
+      return;
+    }
+
+    const projectsToAdd = projects?.map((project) => ({
+      name: project.name,
+      account_id: 1,
+      project_id: project.id,
+    }));
+    addProjects(projectsToAdd);
+  };
+
   return (
     <>
       <Banner>CGI Mines Inc.</Banner>
@@ -68,11 +102,14 @@ function AddProjects() {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => {
-              navigate({ to: "/registration/complete" });
-            }}
+            onClick={onConfirmProjectsClick}
+            disabled={!projects}
           >
-            Confirm Project
+            {isAddingProjectsPending ? (
+              <CircularProgress />
+            ) : (
+              "Confirm Projects"
+            )}
           </Button>
           <Caption2>
             <Link href="#">No, this is incorrect</Link>

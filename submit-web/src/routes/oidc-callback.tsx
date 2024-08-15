@@ -1,5 +1,5 @@
 import { Loader } from "@/components/Shared/Loader";
-import { useGetUserByGuid } from "@/hooks/useAccounts";
+import { useGetUserByGuid } from "@/hooks/api/useAccounts";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useAuth } from "react-oidc-context";
