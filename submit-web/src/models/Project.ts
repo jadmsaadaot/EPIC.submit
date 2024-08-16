@@ -1,5 +1,6 @@
 export type Project = {
   id: number;
   status: string;
-  [key: string]: any;
+  name: string;
+  [key: string]: unknown;
 };

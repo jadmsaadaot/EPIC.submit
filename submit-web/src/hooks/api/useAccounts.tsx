@@ -1,13 +1,6 @@
-import { OnErrorType, OnSuccessType, request } from "@/utils/axiosUtils";
+import { OnErrorType, request } from "@/utils/axiosUtils";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { Options } from "./types";
 
-const defaultOnSuccess: OnSuccessType = () => {
-  return;
-};
-const defaultOnError: OnErrorType = () => {
-  return;
-};
 type CreateAccountRequest = {
   first_name: string;
   last_name: string;
