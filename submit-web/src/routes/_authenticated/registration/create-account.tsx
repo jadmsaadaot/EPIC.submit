@@ -1,4 +1,7 @@
-import { useCreateAccount } from "@/hooks/useAccounts";
+import {
+  CreateAccountResponse,
+  useCreateAccount,
+} from "@/hooks/api/useAccounts";
 import { Save } from "@mui/icons-material";
 import { CircularProgress, Divider, Grid, Typography } from "@mui/material";
 import Button from "@mui/material/Button";
@@ -11,6 +14,7 @@ import { useAuth } from "react-oidc-context";
 import { Banner } from "@/components/registration/Banner";
 import { GridContainer } from "@/components/registration/GridContainer";
 import { BCDesignTokens } from "epic.theme";
+import { useAccount } from "@/store/accountStore";
 
 const queryParamSchema = yup.object().shape({
   proponent_id: yup.number(),
@@ -38,14 +42,16 @@ function CreateAccount() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { proponent_id } = Route.useSearch<QueryParamsSchema>();
+  const { setAccount } = useAccount();
 
+  const onCreateAccountSuccess = (data: CreateAccountResponse) => {
+    setAccount({ proponentId: data.proponent_id, accountId: data.id });
+    navigate({ to: "/registration/add-projects" });
+  };
   const { mutate: doCreateAccount, isPending: isCreatingAccount } =
-    useCreateAccount(
-      () => navigate({ to: "/registration/add-projects" }),
-      () => {
-        return;
-      },
-    );
+    useCreateAccount({
+      onSuccess: onCreateAccountSuccess,
+    });
 
   const methods = useForm({
     resolver: yupResolver(createAccountSchema),

@@ -16,6 +16,7 @@ from submit_api.models import db, ma, migrate
 from submit_api.utils.cache import cache
 from submit_api.utils.util import allowedorigins
 
+
 # Security Response headers
 csp = (
     secure.ContentSecurityPolicy()

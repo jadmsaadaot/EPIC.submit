@@ -1,5 +1,5 @@
 import { useModal } from "@/components/Shared/Modals/modalStore";
-import { useAddUser, useUpdateUser } from "@/hooks/useUsers";
+import { useAddUser, useUpdateUser } from "@/hooks/api/useUsers";
 import { User } from "@/models/User";
 import { Save } from "@mui/icons-material";
 import {
@@ -28,7 +28,7 @@ const initFormData: Omit<User, "id"> = {
 
 const UserModal: React.FC<AddUserModalProps> = ({ onSubmit, user }) => {
   const [formData, setFormData] = useState<Omit<User, "id">>(initFormData);
-  const {setClose} = useModal();
+  const { setClose } = useModal();
 
   useEffect(() => {
     if (user) {
@@ -145,7 +145,7 @@ const UserModal: React.FC<AddUserModalProps> = ({ onSubmit, user }) => {
           </Button>
         </DialogActions>
       </form>
-      </>
+    </>
   );
 };
 

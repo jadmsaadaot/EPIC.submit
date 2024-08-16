@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { usePlanById } from "@/hooks/usePlans";
+import { usePlanById } from "@/hooks/api/usePlans";
 import { Plan } from "@/models/Plan";
 import { Box, Button, Chip } from "@mui/material";
 import { Link, useParams } from "@tanstack/react-router";
 
-export const Route = createFileRoute("/_authenticated/_dashboard/eao-plans/$planId")({
+export const Route = createFileRoute(
+  "/_authenticated/_dashboard/eao-plans/$planId",
+)({
   component: PlanPage,
   meta: () => [{ title: "Plan" }],
   notFoundComponent: () => {

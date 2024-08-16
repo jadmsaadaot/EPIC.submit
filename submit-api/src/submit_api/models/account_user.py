@@ -4,7 +4,7 @@ Manages the account user
 """
 from __future__ import annotations
 
-from sqlalchemy import Column, ForeignKey
+from sqlalchemy import Column, ForeignKey, Index
 from sqlalchemy.orm import column_property
 
 from .base_model import BaseModel
@@ -24,7 +24,11 @@ class AccountUser(BaseModel):
     position = Column(db.String(100), nullable=False)
     work_email_address = Column(db.String(100), nullable=False)
     work_contact_number = Column(db.String(50), nullable=False)
-    auth_guid = Column(db.String(), nullable=False)
+    auth_guid = Column(db.String(), nullable=False, unique=True)
+
+    __table_args__ = (
+        Index('ix_account_users_auth_guid', 'auth_guid', unique=True),
+    )
 
     @classmethod
     def create_account_user(cls, data, session=None) -> AccountUser:

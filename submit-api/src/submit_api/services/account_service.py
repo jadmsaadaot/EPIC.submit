@@ -1,5 +1,7 @@
 """Service for account management."""
-from submit_api.models import AccountRole as AccountRoleModel, AccountUser as AccountUserModel, Role as RoleModel
+from submit_api.models import AccountRole as AccountRoleModel
+from submit_api.models import AccountUser as AccountUserModel
+from submit_api.models import Role as RoleModel
 from submit_api.models.account import Account as AccountModel
 from submit_api.models.db import session_scope
 from submit_api.models.role import RoleEnum

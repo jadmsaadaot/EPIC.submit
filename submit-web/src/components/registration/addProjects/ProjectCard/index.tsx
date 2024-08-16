@@ -1,14 +1,15 @@
 import { Case, Switch } from "react-if";
 import { ManagementPlan } from "./ManagementPlan";
 import { PROJECT_STATUS } from "./constants";
+import { Project } from "@/models/Project";
 
 type ProjectCardProps = {
-  status: string;
+  project: Project;
 };
-export const ProjectCard = ({ status }: ProjectCardProps) => {
+export const ProjectCard = ({ project }: ProjectCardProps) => {
   return (
     <Switch>
-      <Case condition={status === PROJECT_STATUS.POST_DECISION}>
+      <Case condition={project.status === PROJECT_STATUS.POST_DECISION}>
         <ManagementPlan />
       </Case>
     </Switch>

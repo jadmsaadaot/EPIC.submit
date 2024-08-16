@@ -15,7 +15,7 @@ import {
 import { Delete, Edit } from "@mui/icons-material";
 import { AxiosError, AxiosResponse } from "axios";
 import { User } from "@/models/User";
-import { useDeleteUser, useUsersData } from "@/hooks/useUsers";
+import { useDeleteUser, useUsersData } from "@/hooks/api/useUsers";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import UserModal from "@/components/App/Users/UserModal";
@@ -79,7 +79,7 @@ function UsersPage() {
         title="Delete User"
         description="Are you sure you want to delete this user?"
         onConfirm={handleDeleteUser}
-      />
+      />,
     );
   };
 
