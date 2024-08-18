@@ -12,9 +12,11 @@ import { theme } from "@/styles/theme";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useState } from "react";
 import { OidcConfig } from "@/utils/config";
+import { useNavigate } from "@tanstack/react-router";
 
 export default function AppBarActions() {
   const auth = useAuth();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -59,7 +61,13 @@ export default function AppBarActions() {
               horizontal: "right",
             }}
           >
-            <MenuItem onClick={handleClose}>My Profile</MenuItem>
+            <MenuItem
+              onClick={() => {
+                navigate({ to: "/profile" });
+              }}
+            >
+              My Profile
+            </MenuItem>
             <MenuItem
               onClick={() => {
                 auth.signoutRedirect();

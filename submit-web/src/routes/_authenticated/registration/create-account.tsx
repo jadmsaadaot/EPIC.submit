@@ -23,17 +23,20 @@ const queryParamSchema = yup.object().shape({
 type QueryParamsSchema = yup.InferType<typeof queryParamSchema>;
 
 export const Route = createFileRoute(
-  "/_authenticated/registration/create-account",
+  "/_authenticated/registration/create-account"
 )({
   component: CreateAccount,
 });
 
 const createAccountSchema = yup.object().shape({
-  givenName: yup.string().required("Name is required"),
-  surname: yup.string().required("Surname is required"),
-  position: yup.string().required("Position is required"),
-  phone: yup.string().required("Phone number is required"),
-  email: yup.string().email("Invalid email").required("Email is required"),
+  givenName: yup.string().required("Please enter your given name."),
+  surname: yup.string().required("Please enter your surname."),
+  position: yup.string().required("Please enter your position."),
+  phone: yup.string().required("Please enter your phone number."),
+  email: yup
+    .string()
+    .email("Invalid email")
+    .required("Please enter your email."),
 });
 
 type CreateAccountForm = yup.InferType<typeof createAccountSchema>;
@@ -56,6 +59,9 @@ function CreateAccount() {
   const methods = useForm({
     resolver: yupResolver(createAccountSchema),
     mode: "onBlur",
+    defaultValues: {
+      phone: "(000) 000-0000",
+    },
   });
 
   const { handleSubmit } = methods;
@@ -90,7 +96,7 @@ function CreateAccount() {
             an Adminstrator of EPIC.submit for CGI Mines Inc.
             <br />
             <br />
-            Account Administrators have access to all the projects associated
+            Account Administrators have access to all the rojects associated
             with your account in EPIC.submit and can manage user access, such as
             assign users to be Project Account Administrators, and assigning
             users who can upload or submit documents on behalf of CGI Mines Inc.{" "}
@@ -99,7 +105,8 @@ function CreateAccount() {
 
         <Grid
           item
-          xs={3}
+          xs={12}
+          md={4}
           justifyContent="center"
           alignItems="flex-start"
           marginTop="0.75rem"
