@@ -3,7 +3,6 @@ import { Case, Default, Switch } from "react-if";
 import ModeStandbyIcon from "@mui/icons-material/ModeStandby";
 import { Stack } from "@mui/material";
 import { PROJECT_STATUS } from "./ProjectCard/constants";
-import { BCDesignTokens } from "epic.theme";
 
 type ProjectStatusProps = {
   status: string;
