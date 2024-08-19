@@ -59,9 +59,6 @@ function CreateAccount() {
   const methods = useForm({
     resolver: yupResolver(createAccountSchema),
     mode: "onBlur",
-    defaultValues: {
-      phone: "(000) 000-0000",
-    },
   });
 
   const { handleSubmit } = methods;
@@ -143,6 +140,7 @@ function CreateAccount() {
                 <ControlledTextField
                   name="phone"
                   label="Your Work Phone Number"
+                  placeholder="(000) 000-0000"
                   fullWidth
                 />
                 <ControlledTextField

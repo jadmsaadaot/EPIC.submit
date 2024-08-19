@@ -46,11 +46,10 @@ const ControlledTextField: FC<IFormInputProps> = ({
             field.onChange(e.target.value);
           }}
           error={!!errors[name]}
-          helperText={
-            <span style={{ color: BCDesignTokens.typographyColorDanger }}>
-              {String(errors[name]?.message ?? "")}
-            </span>
-          }
+          FormHelperTextProps={{
+            sx: { color: BCDesignTokens.typographyColorDanger },
+          }}
+          helperText={String(errors[name]?.message ?? "")}
           {...otherProps}
         />
       )}
