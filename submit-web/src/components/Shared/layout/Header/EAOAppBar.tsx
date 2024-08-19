@@ -4,7 +4,6 @@ import { AppConfig } from "@/utils/config";
 import AppBarActions from "./AppBarActions";
 import { useIsMobile } from "@/hooks/common";
 import MobileNav from "./MobileNav";
-import { theme } from "@/styles/theme";
 import { BCDesignTokens } from "epic.theme";
 
 export default function EAOAppBar() {
