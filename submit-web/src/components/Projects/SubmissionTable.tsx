@@ -1,8 +1,11 @@
 import { Plan } from "@/models/Plan";
 import {
+  Box,
   Link,
+  styled,
   TableBody,
   TableCell,
+  TableContainer,
   TableRow,
   Typography,
 } from "@mui/material";
@@ -12,11 +15,17 @@ import { PROJECT_STATUS } from "../registration/addProjects/ProjectCard/constant
 import { BCDesignTokens } from "epic.theme";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
+const StyledTableBody = styled(TableBody)({
+  border: "2px solid red",
+  maxHeight: "200px",
+});
+
 export default function SubmissionTable({ plans }: { plans: Array<Plan> }) {
   return (
-    <TableBody>
+    <StyledTableBody sx={{ border: "2px solid red" }}>
       {plans?.map((row) => (
         <TableRow
+          component={Box}
           sx={{
             border: "2px solid #F2F2F2",
           }}
@@ -52,6 +61,6 @@ export default function SubmissionTable({ plans }: { plans: Array<Plan> }) {
           </TableCell>
         </TableRow>
       ))}
-    </TableBody>
+    </StyledTableBody>
   );
 }

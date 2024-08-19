@@ -146,107 +146,106 @@ function ProjectsPage() {
             Copper Mine
           </Typography>
         </Box>
-        <Box height={BODY_HEIGHT}>
+
+        <Box
+          sx={{
+            padding: "36px 12px 12px 12px",
+          }}
+        >
           <Box
             sx={{
-              padding: "36px 12px 12px 12px",
+              borderRadius: "3px",
+              border: `1px solid #F2F2F2`,
+              boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.1)",
             }}
           >
             <Box
-              sx={{
-                borderRadius: "3px",
-                border: `1px solid #F2F2F2`,
-                boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.1)",
-              }}
+              display={"flex"}
+              justifyContent={"space-between"}
+              sx={{ py: BCDesignTokens.layoutPaddingXlarge }}
             >
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
-                sx={{ py: BCDesignTokens.layoutPaddingXlarge }}
+              <CardInnerBox>
+                <Typography variant="h4" fontWeight={400}>
+                  Management Plans
+                </Typography>
+                <ProjectStatus bold status={PROJECT_STATUS.POST_DECISION} />
+              </CardInnerBox>
+              <CardInnerBox>
+                <Button>
+                  <AddIcon sx={{ p: 0, mr: 0.5 }} />
+                  New Submission
+                </Button>
+              </CardInnerBox>
+            </Box>
+            <Box height={"100%"} px={BCDesignTokens.layoutPaddingXsmall}>
+              <Divider sx={{ mb: 0.5 }} />
+              <Typography
+                variant="body1"
+                sx={{
+                  fontWeight: "bold",
+                  backgroundColor: BCDesignTokens.themeGold10,
+                }}
               >
-                <CardInnerBox>
-                  <Typography variant="h4" fontWeight={400}>
-                    Management Plans
-                  </Typography>
-                  <ProjectStatus bold status={PROJECT_STATUS.POST_DECISION} />
-                </CardInnerBox>
-                <CardInnerBox>
-                  <Button>
-                    <AddIcon sx={{ p: 0, mr: 0.5 }} />
-                    New Submission
-                  </Button>
-                </CardInnerBox>
-              </Box>
-              <Box height={"100%"} px={BCDesignTokens.layoutPaddingXsmall}>
-                <Divider sx={{ mb: 0.5 }} />
-                <Typography
-                  variant="body1"
-                  sx={{
-                    fontWeight: "bold",
-                    backgroundColor: BCDesignTokens.themeGold10,
-                  }}
-                >
-                  Active Submissions
-                </Typography>
-                <CardInnerBox sx={{ height: "100%" }}>
-                  <TableContainer component={Box} sx={{ height: "100%" }}>
-                    <Table
-                      width={"100%"}
-                      sx={{ tableLayout: "fixed" }}
-                      aria-label="simple table"
-                      stickyHeader
-                    >
-                      <TableHead>
-                        <TableRow>
-                          <TableCell sx={{ color: BCDesignTokens.themeGray70 }}>
-                            Submission Name
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            sx={{ color: BCDesignTokens.themeGray70 }}
-                          >
-                            Submitted On
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            sx={{ color: BCDesignTokens.themeGray70 }}
-                          >
-                            Submitted By
-                          </TableCell>
-                          <TableCell
-                            align="center"
-                            sx={{ color: BCDesignTokens.themeGray70 }}
-                          >
-                            Status
-                          </TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <SubmissionTable plans={plans} />
-                    </Table>
-                  </TableContainer>
-                </CardInnerBox>
-                <Typography
-                  variant="body1"
-                  sx={{
-                    fontWeight: "bold",
-                    backgroundColor: BCDesignTokens.themeGold10,
-                  }}
-                >
-                  Past Submissions
-                </Typography>
-                <CardInnerBox sx={{ height: "100%" }}>
-                  <TableContainer component={Box} sx={{ height: "100%" }}>
-                    <Table
-                      width={"100%"}
-                      sx={{ tableLayout: "fixed" }}
-                      aria-label="simple table"
-                      stickyHeader
-                    >
-                      <SubmissionTable plans={plans} />
-                    </Table>
-                  </TableContainer>
-                </CardInnerBox>
-              </Box>
+                Active Submissions
+              </Typography>
+              <CardInnerBox sx={{ height: "100%" }}>
+                <TableContainer component={Box} sx={{ height: "100%" }}>
+                  <Table
+                    width={"100%"}
+                    sx={{ tableLayout: "fixed" }}
+                    aria-label="simple table"
+                    stickyHeader
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell sx={{ color: BCDesignTokens.themeGray70 }}>
+                          Submission Name
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{ color: BCDesignTokens.themeGray70 }}
+                        >
+                          Submitted On
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{ color: BCDesignTokens.themeGray70 }}
+                        >
+                          Submitted By
+                        </TableCell>
+                        <TableCell
+                          align="center"
+                          sx={{ color: BCDesignTokens.themeGray70 }}
+                        >
+                          Status
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <SubmissionTable plans={plans} />
+                  </Table>
+                </TableContainer>
+              </CardInnerBox>
+              <Typography
+                variant="body1"
+                sx={{
+                  fontWeight: "bold",
+                  backgroundColor: BCDesignTokens.themeGold10,
+                }}
+              >
+                Past Submissions
+              </Typography>
+              <CardInnerBox sx={{ height: "100%" }}>
+                <TableContainer component={Box} sx={{ height: "100%" }}>
+                  <Table
+                    width={"100%"}
+                    sx={{ tableLayout: "fixed" }}
+                    aria-label="simple table"
+                    stickyHeader
+                  >
+                    <SubmissionTable plans={plans} />
+                  </Table>
+                </TableContainer>
+              </CardInnerBox>
             </Box>
           </Box>
         </Box>
