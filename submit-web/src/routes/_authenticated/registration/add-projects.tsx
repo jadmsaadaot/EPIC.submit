@@ -24,7 +24,7 @@ import { useEffect } from "react";
 import { Else, If, Then } from "react-if";
 
 export const Route = createFileRoute(
-  "/_authenticated/registration/add-projects",
+  "/_authenticated/registration/add-projects"
 )({
   component: AddProjects,
 });
@@ -87,7 +87,7 @@ function AddProjects() {
 
         <Grid item xs={12} mt={"20px"}>
           <Typography variant="body1">
-            We found the following projects associated with CGI Mines Inc.
+            We found the following project(s) associated with CGI Mines Inc.
           </Typography>
         </Grid>
         <Grid item xs={12} mt={"20px"}>
@@ -111,7 +111,7 @@ function AddProjects() {
             {isAddingProjectsPending ? (
               <CircularProgress />
             ) : (
-              "Confirm Projects"
+              "Confirm Project(s)"
             )}
           </Button>
           <Caption2>

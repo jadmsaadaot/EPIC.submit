@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { TextField, TextFieldProps } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
+import { BCDesignTokens } from "epic.theme";
 
 type IFormInputProps = {
   name: string;
@@ -33,6 +34,7 @@ const ControlledTextField: FC<IFormInputProps> = ({
           {...field}
           inputProps={{
             maxLength: maxLength,
+            height: "32px",
           }}
           onChange={(e) => {
             if (onInputChange) {
@@ -44,7 +46,11 @@ const ControlledTextField: FC<IFormInputProps> = ({
             field.onChange(e.target.value);
           }}
           error={!!errors[name]}
-          helperText={String(errors[name]?.message ?? "")}
+          helperText={
+            <span style={{ color: BCDesignTokens.typographyColorDanger }}>
+              {String(errors[name]?.message ?? "")}
+            </span>
+          }
           {...otherProps}
         />
       )}

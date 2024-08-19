@@ -92,11 +92,11 @@ function CreateAccount() {
         <Grid item xs={12}>
           <Typography variant="body1">
             Welcome to EPIC.submit and thank you for taking a few minutes to set
-            up the BC Hydro account. First of all, please create your Account as
-            an Adminstrator of EPIC.submit for CGI Mines Inc.
+            up the CGI Mines Inc account. First of all, please create your
+            Account as an Adminstrator of EPIC.submit for CGI Mines Inc.
             <br />
             <br />
-            Account Administrators have access to all the rojects associated
+            Account Administrators have access to all the projects associated
             with your account in EPIC.submit and can manage user access, such as
             assign users to be Project Account Administrators, and assigning
             users who can upload or submit documents on behalf of CGI Mines Inc.{" "}
