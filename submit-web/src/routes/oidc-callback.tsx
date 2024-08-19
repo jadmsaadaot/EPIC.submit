@@ -1,4 +1,4 @@
-import { Loader } from "@/components/Shared/Loader";
+import { PageLoader } from "@/components/Shared/PageLoader";
 import { useGetUserByGuid } from "@/hooks/api/useAccounts";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
@@ -45,5 +45,5 @@ function OidcCallback() {
     );
   }
 
-  return <Loader />;
+  return <PageLoader />;
 }

@@ -32,6 +32,7 @@ export const AppConfig = {
   environment: APP_ENVIRONMENT,
   version: APP_VERSION,
   appTitle: APP_TITLE,
+  appUrl: APP_URL,
 };
 
 export const OidcConfig = {
