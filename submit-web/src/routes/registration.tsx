@@ -23,7 +23,7 @@ function Registration() {
         redirect_uri: `${OidcConfig.redirect_uri}?proponent_id=${proponent_id}`,
       });
     }
-  }, [proponent_id, isAuthenticated]);
+  }, [proponent_id, isAuthenticated, signinRedirect, notify]);
 
   if (isAuthenticated || !proponent_id) {
     return <Navigate to={"/error"} />;
