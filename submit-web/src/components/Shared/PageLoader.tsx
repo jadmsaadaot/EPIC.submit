@@ -1,7 +1,6 @@
 import { CircularProgress } from "@mui/material";
-import React from "react";
 
-export const Loader = () => {
+export const PageLoader = () => {
   return (
     <div
       style={{

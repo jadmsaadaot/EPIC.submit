@@ -1,4 +1,4 @@
-import { Loader } from "@/components/Shared/Loader";
+import { PageLoader } from "@/components/Shared/PageLoader";
 import { useAccount } from "@/store/accountStore";
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";
 import { useEffect } from "react";
@@ -23,7 +23,7 @@ function Auth() {
   }, [isAuthenticated, isLoading, signinRedirect, setAccount, proponent_id]);
 
   if (isLoading) {
-    return <Loader />;
+    return <PageLoader />;
   }
 
   if (!isAuthenticated) {

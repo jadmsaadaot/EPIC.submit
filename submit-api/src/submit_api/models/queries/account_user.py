@@ -22,7 +22,6 @@ class UserQueries:
     @classmethod
     def get_by_guid(cls, guid: str):
         """Find user by guid"""
-        print(guid)
         result = (db.session.query(AccountUser)
                   .filter(AccountUser.auth_guid == guid)
                   .first())
