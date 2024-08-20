@@ -140,7 +140,6 @@ function CreateAccount() {
                 <ControlledTextField
                   name="phone"
                   label="Your Work Phone Number"
-                  placeholder="(000) 000-0000"
                   fullWidth
                 />
                 <ControlledTextField
