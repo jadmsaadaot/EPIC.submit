@@ -34,7 +34,6 @@ const ControlledTextField: FC<IFormInputProps> = ({
           {...field}
           inputProps={{
             maxLength: maxLength,
-            height: "32px",
           }}
           onChange={(e) => {
             if (onInputChange) {
