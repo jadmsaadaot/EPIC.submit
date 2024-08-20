@@ -1,4 +1,4 @@
-"""
+"""Create staff_users table
 
 Revision ID: 20bcb68bc2ac
 Revises: 

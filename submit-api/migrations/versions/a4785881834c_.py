@@ -1,4 +1,4 @@
-"""empty message
+"""Add projects table
 
 Revision ID: a4785881834c
 Revises: 5a6eda61c0c4

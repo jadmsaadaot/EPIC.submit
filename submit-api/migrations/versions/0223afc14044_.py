@@ -1,4 +1,4 @@
-"""empty message
+"""Create account, role, account_project, account_user, account_role, project_team tables
 
 Revision ID: 0223afc14044
 Revises: 20bcb68bc2ac

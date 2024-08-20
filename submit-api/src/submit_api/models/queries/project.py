@@ -32,6 +32,5 @@ class ProjectQueries:
     def get_projects_by_proponent_id(cls, proponent_id: int):
         """Find projects by proponent_id"""
         result = (db.session.query(Project)
-                  .filter(Project.proponent_id == proponent_id)
-                  .first())
+                  .filter(Project.proponent_id == proponent_id))
         return result

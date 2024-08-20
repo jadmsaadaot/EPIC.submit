@@ -3,7 +3,7 @@ import { request } from "@/utils/axiosUtils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Options } from "./types";
 
-const loadProjectsByProponentId = (proponentId?: string) => {
+const loadProjectsByProponentId = (proponentId?: number) => {
   if (!proponentId) {
     return Promise.reject(new Error("Proponent ID is required"));
   }
@@ -26,7 +26,7 @@ const addProjects = ({
   });
 };
 
-export const useLoadProjectsByProponentId = (proponentId?: string) => {
+export const useLoadProjectsByProponentId = (proponentId?: number) => {
   return useQuery({
     queryKey: ["projects", proponentId],
     queryFn: () => loadProjectsByProponentId(proponentId),

@@ -46,7 +46,7 @@ function CreateAccount() {
 
   const onCreateAccountSuccess = (data: CreateAccountResponse) => {
     setAccount({ proponentId: data.proponent_id, accountId: data.id });
-    navigate({ to: "/registration/add-projects" });
+    navigate({ to: "/registration/add-projects", search: { proponent_id } });
   };
   const { mutate: doCreateAccount, isPending: isCreatingAccount } =
     useCreateAccount({
@@ -69,7 +69,7 @@ function CreateAccount() {
       work_contact_number: data.phone,
       work_email_address: data.email,
       auth_guid: user?.profile.sub,
-      proponent_id: String(proponent_id),
+      proponent_id: proponent_id,
     };
     doCreateAccount(accountData);
   };

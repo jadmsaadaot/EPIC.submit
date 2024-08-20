@@ -25,9 +25,6 @@ class Project(db.Model):
     def __init__(self, **kwargs):
         raise ArgumentError("Project is read-only, cannot create new instances.")
 
-    def __setattr__(self, key, value):
-        raise AttributeError("This table is read-only")
-
     @classmethod
     def get_all_projects_in_ids(cls, project_ids):
         """Get all projects in the given project ids."""

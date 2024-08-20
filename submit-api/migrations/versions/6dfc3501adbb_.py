@@ -1,4 +1,4 @@
-"""empty message
+"""Add description column to roles table
 
 Revision ID: 6dfc3501adbb
 Revises: 0223afc14044

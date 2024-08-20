@@ -5,6 +5,8 @@ Manages the engagement
 
 from marshmallow import EXCLUDE, Schema, fields
 
+from submit_api.schemas.account import AccountSchema
+
 
 class UserSchema(Schema):
     """User schema."""
@@ -20,3 +22,4 @@ class UserSchema(Schema):
     work_email_address = fields.Str(data_key="email_address")
     work_contact_number = fields.Str(data_key="contact_number")
     account_id = fields.Int(data_key="account_id")
+    account = fields.Nested(AccountSchema, data_key="account", dump_only=True)

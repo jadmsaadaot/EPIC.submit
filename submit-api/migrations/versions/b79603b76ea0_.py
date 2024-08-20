@@ -1,4 +1,4 @@
-"""empty message
+"""Change proponent_id column type to integer
 
 Revision ID: b79603b76ea0
 Revises: a4785881834c

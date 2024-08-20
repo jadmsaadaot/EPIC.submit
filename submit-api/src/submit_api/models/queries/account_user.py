@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Model to handle all complex operations related to User."""
-from submit_api.models import AccountUser, db
+from submit_api.models import AccountUser, db, Account
 
 
 # pylint: disable=too-few-public-methods
@@ -24,5 +24,6 @@ class UserQueries:
         """Find user by guid"""
         result = (db.session.query(AccountUser)
                   .filter(AccountUser.auth_guid == guid)
+                  .join(Account)
                   .first())
         return result
