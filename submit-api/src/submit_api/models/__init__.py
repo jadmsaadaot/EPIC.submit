@@ -20,6 +20,6 @@ from .account_role import AccountRole
 from .account_user import AccountUser
 from .base_model import BaseModel
 from .db import db, ma, migrate
+from .project import Project
 from .project_team import ProjectTeam
 from .role import Role
-from .project import Project

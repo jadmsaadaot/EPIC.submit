@@ -4,13 +4,15 @@ Manages the account project
 """
 from __future__ import annotations
 
-from sqlalchemy import Column
+from sqlalchemy import Column, event
+from sqlalchemy.exc import ArgumentError, IntegrityError
 
-from .base_model import BaseModel
+from submit_api.exceptions import PermissionDeniedError
+
 from .db import db
 
 
-class Project(BaseModel):
+class Project(db.Model):
     """Definition of the Project entity."""
 
     __tablename__ = 'projects'
@@ -20,7 +22,40 @@ class Project(BaseModel):
     proponent_id = Column(db.String(), nullable=False, unique=True)
     proponent_name = Column(db.String(), nullable=False)
 
+    def __init__(self, **kwargs):
+        raise ArgumentError("Project is read-only, cannot create new instances.")
+
+    def __setattr__(self, key, value):
+        raise AttributeError("This table is read-only")
+
     @classmethod
     def get_all_projects_in_ids(cls, project_ids):
         """Get all projects in the given project ids."""
         return cls.query.filter(cls.id.in_(project_ids)).all()
+
+
+@event.listens_for(Project, 'before_insert')
+def before_insert():
+    raise IntegrityError(
+        "Insertions are not allowed on this table",
+        params=None,
+        orig=PermissionDeniedError('Insertions are not allowed on this table')
+    )
+
+
+@event.listens_for(Project, 'before_update')
+def before_update():
+    raise IntegrityError(
+        "Updates are not allowed on this table",
+        params=None,
+        orig=PermissionDeniedError('Updates are not allowed on this table')
+    )
+
+
+@event.listens_for(Project, 'before_delete')
+def before_delete():
+    raise IntegrityError(
+        "Deletions are not allowed on this table",
+        params=None,
+        orig=PermissionDeniedError('Deletions are not allowed on this table')
+    )
