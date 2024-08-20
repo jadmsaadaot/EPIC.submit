@@ -2,28 +2,20 @@ import { Plan } from "@/models/Plan";
 import {
   Box,
   Link,
-  styled,
   TableBody,
   TableCell,
-  TableContainer,
   TableRow,
   Typography,
 } from "@mui/material";
-import React from "react";
 import ProjectStatusChip from "../Shared/ProjectStatusChip";
 import { PROJECT_STATUS } from "../registration/addProjects/ProjectCard/constants";
 import { BCDesignTokens } from "epic.theme";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
-const StyledTableBody = styled(TableBody)({
-  border: "2px solid red",
-  maxHeight: "200px",
-});
-
 export default function SubmissionTable({ plans }: { plans: Array<Plan> }) {
   return (
-    <StyledTableBody sx={{ border: "2px solid red" }}>
-      {plans?.map((row) => (
+    <TableBody>
+      {plans?.map((plan) => (
         <TableRow
           component={Box}
           sx={{
@@ -50,10 +42,10 @@ export default function SubmissionTable({ plans }: { plans: Array<Plan> }) {
               <ArrowForwardIosIcon fontSize="small" />
             </Link>
           </TableCell>
-          <TableCell align="center">{row.submittedDate || "--"}</TableCell>
-          <TableCell align="center">{row.submittedBy || "--"}</TableCell>
+          <TableCell align="center">{plan.submittedDate || "--"}</TableCell>
+          <TableCell align="center">{plan.submittedBy || "--"}</TableCell>
           <TableCell align="right">
-            {!true ? (
+            {plan.isCompleted ? (
               <ProjectStatusChip status={PROJECT_STATUS.APPROVAL} />
             ) : (
               <ProjectStatusChip status={PROJECT_STATUS.IN_REVIEW} />
@@ -61,6 +53,6 @@ export default function SubmissionTable({ plans }: { plans: Array<Plan> }) {
           </TableCell>
         </TableRow>
       ))}
-    </StyledTableBody>
+    </TableBody>
   );
 }

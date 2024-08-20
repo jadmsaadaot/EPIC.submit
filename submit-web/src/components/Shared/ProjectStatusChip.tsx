@@ -1,4 +1,3 @@
-import { theme } from "@/styles/theme";
 import { Chip } from "@mui/material";
 import { PROJECT_STATUS } from "../registration/addProjects/ProjectCard/constants";
 import { BCDesignTokens } from "epic.theme";
@@ -23,7 +22,7 @@ export default function ProjectStatusChip({ status }: { status: string }) {
         sx={{
           borderRadius: 0.5,
           border: `2px solid ${BCDesignTokens.themeBlue100}`,
-          background: BCDesignTokens.themeBlue30,
+          background: BCDesignTokens.themeBlue20,
         }}
         label="In Review"
       />

@@ -19,15 +19,10 @@ import { BCDesignTokens } from "epic.theme";
 import { ProjectStatus } from "@/components/registration/addProjects/ProjectStatus";
 import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
 import AddIcon from "@mui/icons-material/Add";
-import { Caption2 } from "@/components/Shared/Typographies";
-import { OpenInNew } from "@mui/icons-material";
-import ProjectStatusChip from "@/components/Shared/ProjectStatusChip";
 import SubmissionTable from "@/components/Projects/SubmissionTable";
+import { Plan } from "@/models/Plan";
 
-const CARD_HEIGHT = 301;
-const CARD_WIDTH = 380;
 const HEADER_HEIGHT = 54;
-const BODY_HEIGHT = 247;
 
 const CardInnerBox = styled(Box)({
   display: "flex",
@@ -46,74 +41,60 @@ export const Route = createFileRoute("/_authenticated/_dashboard/projects/")({
 function ProjectsPage() {
   const plans: Array<Plan> = [
     {
-      id: "1",
+      id: 1,
       name: "Management Plan 123",
       submittedDate: "2021-10-10",
       submittedBy: "John Doe",
-      status: "Approved",
+      isCompleted: true,
     },
     {
-      id: "2",
+      id: 2,
       name: "Management Plan 456",
       submittedDate: "2021-10-11",
       submittedBy: "Jane Doe",
-      status: "In Review",
+      isCompleted: false,
     },
     {
-      id: "1",
+      id: 3,
       name: "Management Plan 123",
       submittedDate: "2021-10-10",
       submittedBy: "John Doe",
-      status: "Approved",
+      isCompleted: false,
     },
     {
-      id: "2",
+      id: 4,
       name: "Management Plan 456",
       submittedDate: "2021-10-11",
       submittedBy: "Jane Doe",
-      status: "In Review",
+      isCompleted: false,
     },
     {
-      id: "1",
+      id: 5,
       name: "Management Plan 123",
       submittedDate: "2021-10-10",
       submittedBy: "John Doe",
-      status: "Approved",
+      isCompleted: true,
     },
     {
-      id: "2",
+      id: 6,
       name: "Management Plan 456",
       submittedDate: "2021-10-11",
       submittedBy: "Jane Doe",
-      status: "In Review",
+      isCompleted: true,
     },
     {
-      id: "1",
+      id: 7,
       name: "Management Plan 123",
       submittedDate: "2021-10-10",
       submittedBy: "John Doe",
-      status: "Approved",
+      isCompleted: true,
     },
     {
-      id: "2",
+      id: 8,
       name: "Management Plan 456",
       submittedDate: "2021-10-11",
       submittedBy: "Jane Doe",
-      status: "In Review",
-    },
-    {
-      id: "1",
-      name: "Management Plan 123",
-      submittedDate: "2021-10-10",
-      submittedBy: "John Doe",
-      status: "Approved",
-    },
-    {
-      id: "2",
-      name: "Management Plan 456",
-      submittedDate: "2021-10-11",
-      submittedBy: "Jane Doe",
-      status: "In Review",
+      isCompleted: false,
     },
   ];
 
