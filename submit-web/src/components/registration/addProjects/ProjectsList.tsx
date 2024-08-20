@@ -17,6 +17,9 @@ export const ProjectListSkeleton = () => {
   );
 };
 export const ProjectsList = ({ projects }: ProjectsListProps) => {
+  if (!projects?.length) {
+    return <p>No projects found</p>;
+  }
   return (
     <Stack spacing={2} direction="row">
       {projects?.map((project) => (

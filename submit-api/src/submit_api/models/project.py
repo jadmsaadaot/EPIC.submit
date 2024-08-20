@@ -19,7 +19,7 @@ class Project(db.Model):
 
     id = Column(db.Integer, primary_key=True, autoincrement=True)
     name = Column(db.String(), nullable=False)
-    proponent_id = Column(db.String(), nullable=False, unique=True)
+    proponent_id = Column(db.Integer(), nullable=False, unique=True)
     proponent_name = Column(db.String(), nullable=False)
 
     def __init__(self, **kwargs):

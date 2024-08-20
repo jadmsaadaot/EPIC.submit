@@ -15,7 +15,7 @@ class AccountSchema(Schema):
         unknown = EXCLUDE
 
     id = fields.Int(data_key="id")
-    proponent_id = fields.Str(data_key="proponent_id")
+    proponent_id = fields.Int(data_key="proponent_id")
 
 
 class AccountCreateSchema(Schema):
@@ -31,5 +31,5 @@ class AccountCreateSchema(Schema):
     work_email_address = fields.Str(data_key="work_email_address")
     work_contact_number = fields.Str(data_key="work_contact_number")
     position = fields.Str(data_key="position")
-    proponent_id = fields.Str(data_key="proponent_id")
+    proponent_id = fields.Int(data_key="proponent_id")
     auth_guid = fields.Str(data_key="auth_guid")

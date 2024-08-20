@@ -16,7 +16,7 @@ class ProjectSchema(Schema):
 
     id = fields.Int(data_key="id")
     name = fields.Str(data_key="name")
-    proponent_id = fields.Str(data_key="proponent_id")
+    proponent_id = fields.Int(data_key="proponent_id")
     proponent_name = fields.Str(data_key="proponent_name")
 
 

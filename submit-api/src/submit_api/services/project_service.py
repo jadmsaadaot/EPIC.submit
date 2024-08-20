@@ -1,6 +1,7 @@
 """Service for project management."""
 from submit_api.models.account_project import AccountProject as AccountProjectModel
 from submit_api.models.project import Project as ProjectModel
+from submit_api.models.queries.project import ProjectQueries
 
 
 class ProjectService:
@@ -11,6 +12,16 @@ class ProjectService:
         """Get project by id."""
         db_project = ProjectModel.find_by_id(_project_id)
         return db_project
+
+    @classmethod
+    def get_projects_by_account_id(cls, account_id):
+        """Get projects by account id."""
+        return ProjectQueries.get_projects_by_account_id(account_id)
+
+    @classmethod
+    def get_projects_by_proponent_id(cls, proponent_id):
+        """Get projects by proponent id."""
+        return ProjectQueries.get_projects_by_proponent_id(proponent_id)
 
     @classmethod
     def bulk_add_projects(cls, account_id: int, project_ids: list):

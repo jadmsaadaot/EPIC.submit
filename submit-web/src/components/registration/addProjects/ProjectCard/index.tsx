@@ -7,9 +7,11 @@ type ProjectCardProps = {
   project: Project;
 };
 export const ProjectCard = ({ project }: ProjectCardProps) => {
+  //TODO: Get project status from the project object
+  const projectStatus = PROJECT_STATUS.POST_DECISION;
   return (
     <Switch>
-      <Case condition={project.status === PROJECT_STATUS.POST_DECISION}>
+      <Case condition={projectStatus === PROJECT_STATUS.POST_DECISION}>
         <ManagementPlan project={project} />
       </Case>
     </Switch>

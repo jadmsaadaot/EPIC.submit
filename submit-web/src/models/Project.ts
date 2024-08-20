@@ -1,6 +1,6 @@
 export type Project = {
   id: number;
-  status: string;
   name: string;
-  [key: string]: unknown;
+  proponent_id: string;
+  proponent_name: string;
 };
