@@ -3,14 +3,4 @@ import { createAppTheme } from "epic.theme";
 
 // Any theme overrides should be passed into the createAppTheme.
 
-export const theme = createAppTheme({
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        root: {
-          height: "40px",
-        },
-      },
-    },
-  },
-});
+export const theme = createAppTheme();

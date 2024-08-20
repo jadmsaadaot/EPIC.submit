@@ -14,7 +14,7 @@ export default function EAOAppBar() {
         position="static"
         color="inherit"
         sx={{
-          borderBottom: `1px solid #d8d8d8`,
+          borderBottom: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
           boxShadow: "none",
         }}
       >
