@@ -23,17 +23,20 @@ const queryParamSchema = yup.object().shape({
 type QueryParamsSchema = yup.InferType<typeof queryParamSchema>;
 
 export const Route = createFileRoute(
-  "/_authenticated/registration/create-account",
+  "/_authenticated/registration/create-account"
 )({
   component: CreateAccount,
 });
 
 const createAccountSchema = yup.object().shape({
-  givenName: yup.string().required("Name is required"),
-  surname: yup.string().required("Surname is required"),
-  position: yup.string().required("Position is required"),
-  phone: yup.string().required("Phone number is required"),
-  email: yup.string().email("Invalid email").required("Email is required"),
+  givenName: yup.string().required("Please enter your given name."),
+  surname: yup.string().required("Please enter your surname."),
+  position: yup.string().required("Please enter your position."),
+  phone: yup.string().required("Please enter your phone number."),
+  email: yup
+    .string()
+    .email("Invalid email")
+    .required("Please enter your email."),
 });
 
 type CreateAccountForm = yup.InferType<typeof createAccountSchema>;
@@ -86,8 +89,8 @@ function CreateAccount() {
         <Grid item xs={12}>
           <Typography variant="body1">
             Welcome to EPIC.submit and thank you for taking a few minutes to set
-            up the BC Hydro account. First of all, please create your Account as
-            an Adminstrator of EPIC.submit for CGI Mines Inc.
+            up the CGI Mines Inc account. First of all, please create your
+            Account as an Adminstrator of EPIC.submit for CGI Mines Inc.
             <br />
             <br />
             Account Administrators have access to all the projects associated
@@ -99,7 +102,8 @@ function CreateAccount() {
 
         <Grid
           item
-          xs={3}
+          xs={12}
+          md={4}
           justifyContent="center"
           alignItems="flex-start"
           marginTop="0.75rem"
