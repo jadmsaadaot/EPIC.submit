@@ -13,6 +13,7 @@ import { createFileRoute } from '@tanstack/react-router'
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as RegistrationImport } from './routes/registration'
 import { Route as OidcCallbackImport } from './routes/oidc-callback'
 import { Route as ErrorImport } from './routes/error'
 import { Route as AuthenticatedImport } from './routes/_authenticated'
@@ -38,6 +39,11 @@ const AuthenticatedDashboardAboutpageLazyImport = createFileRoute(
 )()
 
 // Create/Update Routes
+
+const RegistrationRoute = RegistrationImport.update({
+  path: '/registration',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const OidcCallbackRoute = OidcCallbackImport.update({
   path: '/oidc-callback',
@@ -169,6 +175,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof OidcCallbackImport
       parentRoute: typeof rootRoute
     }
+    '/registration': {
+      id: '/registration'
+      path: '/registration'
+      fullPath: '/registration'
+      preLoaderRoute: typeof RegistrationImport
+      parentRoute: typeof rootRoute
+    }
     '/_authenticated/_dashboard': {
       id: '/_authenticated/_dashboard'
       path: ''
@@ -279,6 +292,7 @@ export const routeTree = rootRoute.addChildren({
   }),
   ErrorRoute,
   OidcCallbackRoute,
+  RegistrationRoute,
 })
 
 /* prettier-ignore-end */
@@ -292,7 +306,8 @@ export const routeTree = rootRoute.addChildren({
         "/",
         "/_authenticated",
         "/error",
-        "/oidc-callback"
+        "/oidc-callback",
+        "/registration"
       ]
     },
     "/": {
@@ -313,6 +328,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/oidc-callback": {
       "filePath": "oidc-callback.tsx"
+    },
+    "/registration": {
+      "filePath": "registration.tsx"
     },
     "/_authenticated/_dashboard": {
       "filePath": "_authenticated/_dashboard.tsx",
