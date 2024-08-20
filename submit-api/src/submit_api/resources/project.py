@@ -37,7 +37,7 @@ project_list_model = ApiHelper.convert_ma_schema_to_restx_model(
 
 
 @cors_preflight("GET, OPTIONS, POST")
-@API.route("", methods=["POST", "GET", "OPTIONS"])
+@API.route("/accounts/<int:account_id>", methods=["POST", "GET", "OPTIONS"])
 class Projects(Resource):
     """Resource for managing projects."""
 
@@ -47,8 +47,8 @@ class Projects(Resource):
     @API.response(code=HTTPStatus.CREATED, model=project_list_model, description="Added projects")
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
     @cors.crossdomain(origin="*")
-    def post():
+    def post(account_id):
         """Add projects in bulk."""
-        projects_data = AddProjectSchema(many=True).load(API.payload)
-        added_projects = ProjectService.bulk_add_projects(projects_data)
+        projects_data = AddProjectSchema().load(API.payload)
+        added_projects = ProjectService.bulk_add_projects(account_id, projects_data.get("project_ids"))
         return ProjectSchema(many=True).dump(added_projects), HTTPStatus.CREATED

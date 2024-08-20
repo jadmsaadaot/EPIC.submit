@@ -22,3 +22,4 @@ from .base_model import BaseModel
 from .db import db, ma, migrate
 from .project_team import ProjectTeam
 from .role import Role
+from .project import Project

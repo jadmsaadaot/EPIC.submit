@@ -10,7 +10,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
   return (
     <Switch>
       <Case condition={project.status === PROJECT_STATUS.POST_DECISION}>
-        <ManagementPlan />
+        <ManagementPlan project={project} />
       </Case>
     </Switch>
   );

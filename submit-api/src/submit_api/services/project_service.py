@@ -1,5 +1,6 @@
 """Service for project management."""
-from submit_api.models.account_project import AccountProject as ProjectModel
+from submit_api.models.account_project import AccountProject as AccountProjectModel
+from submit_api.models.project import Project as ProjectModel
 
 
 class ProjectService:
@@ -12,7 +13,12 @@ class ProjectService:
         return db_project
 
     @classmethod
-    def bulk_add_projects(cls, projects):
+    def bulk_add_projects(cls, account_id: int, project_ids: list):
         """Add projects in bulk."""
-        ProjectModel.add_projects_bulk(projects)
+        projects = ProjectModel.get_all_projects_in_ids(project_ids)
+        projects_to_add = [{
+            'account_id': account_id,
+            'project_id': project.id
+        } for project in projects]
+        AccountProjectModel.add_projects_bulk(projects_to_add)
         return projects

@@ -60,12 +60,8 @@ function AddProjects() {
       return;
     }
 
-    const projectsToAdd = projects?.map((project) => ({
-      name: project.name,
-      account_id: accountId,
-      project_id: project.id,
-    }));
-    addProjects(projectsToAdd);
+    const projectIds = projects.map((project) => project.id);
+    addProjects({ accountId, projectIds });
   };
 
   return (

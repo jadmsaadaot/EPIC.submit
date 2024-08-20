@@ -19,16 +19,19 @@ const loadProjectsByProponentId = (proponentId?: string) => {
   return Promise.resolve(dummyProjects);
 };
 
-type AddProject = {
-  name: string;
-  account_id: number;
-  project_id: number;
-};
-const addProjects = (projects: AddProject[]) => {
-  return request<AddProject[]>({
-    url: "/projects",
+const addProjects = ({
+  accountId,
+  projectIds,
+}: {
+  accountId: number;
+  projectIds: number[];
+}) => {
+  return request({
+    url: `/projects/accounts/${accountId}`,
     method: "post",
-    data: projects,
+    data: {
+      project_ids: projectIds,
+    },
   });
 };
 
