@@ -12,6 +12,7 @@ import { theme } from "@/styles/theme";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { useState } from "react";
 import { OidcConfig } from "@/utils/config";
+import { BCDesignTokens } from "epic.theme";
 
 export default function AppBarActions() {
   const auth = useAuth();
@@ -72,13 +73,15 @@ export default function AppBarActions() {
       ) : (
         <Button
           variant="text"
-          color="primary"
           onClick={() =>
             auth.signinRedirect({
               redirect_uri: `${OidcConfig.redirect_uri}${window.location.search}`,
             })
           }
-          sx={{ border: `2px solid ${theme.palette.grey[700]}` }}
+          sx={{
+            color: BCDesignTokens.themeGray100,
+            border: `2px solid ${theme.palette.grey[700]}`,
+          }}
         >
           Sign In
         </Button>

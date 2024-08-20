@@ -1,10 +1,10 @@
-import { AppBar, Grid, Typography } from "@mui/material";
+import { AppBar, Divider, Grid, Typography } from "@mui/material";
 import EAO_Logo from "@/assets/images/EAO_Logo.png";
 import { AppConfig } from "@/utils/config";
 import AppBarActions from "./AppBarActions";
 import { useIsMobile } from "@/hooks/common";
 import MobileNav from "./MobileNav";
-import { theme } from "@/styles/theme";
+import { BCDesignTokens } from "epic.theme";
 
 export default function EAOAppBar() {
   const isMobile = useIsMobile();
@@ -14,29 +14,31 @@ export default function EAOAppBar() {
         position="static"
         color="inherit"
         sx={{
-          borderBottom: `1px solid ${theme.palette.grey[300]}`,
+          borderBottom: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
           boxShadow: "none",
         }}
       >
         <Grid
           container
-          padding={"0.5rem"}
+          marginY={BCDesignTokens.layoutMarginSmall}
           paddingX={isMobile ? 0 : "0.5rem"}
-          margin={0}
           justifyContent="space-between"
         >
           <Grid display="flex" justifyContent="start" alignItems="center">
-            <img src={EAO_Logo} height={isMobile ? 40 : 72} />
+            <img src={EAO_Logo} height={isMobile ? 40 : 56} />
             {!isMobile && (
-              <Typography
-                variant="h2"
-                color="inherit"
-                component="div"
-                paddingLeft={"0.5rem"}
-                fontWeight={"bold"}
-              >
-                {AppConfig.appTitle}
-              </Typography>
+              <>
+                <Divider orientation="vertical" flexItem sx={{ m: 1 }} />
+                <Typography
+                  variant="h2"
+                  color="inherit"
+                  component="div"
+                  paddingLeft={"0.5rem"}
+                  fontWeight={"bold"}
+                >
+                  {AppConfig.appTitle || "EPIC.submit"}
+                </Typography>
+              </>
             )}
           </Grid>
           <Grid
