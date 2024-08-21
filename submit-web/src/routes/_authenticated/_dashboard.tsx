@@ -15,7 +15,7 @@ function DashboardLayout() {
   return (
     <div>
       <BreadcrumbNav />
-      <Box flexDirection={"row"} display={"flex"} sx={{ mb: 2 }}>
+      <Box flexDirection={"row"} display={"flex"}>
         {!isMobile && <SideNavBar />}
         <Outlet />
       </Box>

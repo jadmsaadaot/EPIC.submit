@@ -1,17 +1,10 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import {
   Box,
   Button,
-  Chip,
   Container,
   Divider,
   Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/system";
@@ -20,6 +13,8 @@ import { ProjectStatus } from "@/components/registration/addProjects/ProjectStat
 import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
 import AddIcon from "@mui/icons-material/Add";
 import SubmissionTable from "@/components/Projects/SubmissionTable";
+import { defaultPlans } from "@/components/Projects/constants";
+import { usePlansData } from "@/hooks/api/usePlans";
 import { Plan } from "@/models/Plan";
 
 const HEADER_HEIGHT = 54;
@@ -39,64 +34,9 @@ export const Route = createFileRoute("/_authenticated/_dashboard/projects/")({
 });
 
 function ProjectsPage() {
-  const plans: Array<Plan> = [
-    {
-      id: 1,
-      name: "Management Plan 123",
-      submittedDate: "2021-10-10",
-      submittedBy: "John Doe",
-      isCompleted: true,
-    },
-    {
-      id: 2,
-      name: "Management Plan 456",
-      submittedDate: "2021-10-11",
-      submittedBy: "Jane Doe",
-      isCompleted: false,
-    },
-    {
-      id: 3,
-      name: "Management Plan 123",
-      submittedDate: "2021-10-10",
-      submittedBy: "John Doe",
-      isCompleted: false,
-    },
-    {
-      id: 4,
-      name: "Management Plan 456",
-      submittedDate: "2021-10-11",
-      submittedBy: "Jane Doe",
-      isCompleted: false,
-    },
-    {
-      id: 5,
-      name: "Management Plan 123",
-      submittedDate: "2021-10-10",
-      submittedBy: "John Doe",
-      isCompleted: true,
-    },
-    {
-      id: 6,
-      name: "Management Plan 456",
-      submittedDate: "2021-10-11",
-      submittedBy: "Jane Doe",
-      isCompleted: true,
-    },
-    {
-      id: 7,
-      name: "Management Plan 123",
-      submittedDate: "2021-10-10",
-      submittedBy: "John Doe",
-      isCompleted: true,
-    },
-    {
-      id: 8,
-      name: "Management Plan 456",
-      submittedDate: "2021-10-11",
-      submittedBy: "Jane Doe",
-      isCompleted: false,
-    },
-  ];
+  const { data: plansData } = usePlansData();
+
+  const plans = (plansData as Plan[]) || defaultPlans;
 
   return (
     <Container maxWidth="xl" sx={{ mt: 2 }}>
@@ -169,42 +109,8 @@ function ProjectsPage() {
               >
                 Active Submissions
               </Typography>
-              <CardInnerBox sx={{ height: "100%" }}>
-                <TableContainer component={Box} sx={{ height: "100%" }}>
-                  <Table
-                    width={"100%"}
-                    sx={{ tableLayout: "fixed" }}
-                    aria-label="simple table"
-                    stickyHeader
-                  >
-                    <TableHead>
-                      <TableRow>
-                        <TableCell sx={{ color: BCDesignTokens.themeGray70 }}>
-                          Submission Name
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={{ color: BCDesignTokens.themeGray70 }}
-                        >
-                          Submitted On
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={{ color: BCDesignTokens.themeGray70 }}
-                        >
-                          Submitted By
-                        </TableCell>
-                        <TableCell
-                          align="center"
-                          sx={{ color: BCDesignTokens.themeGray70 }}
-                        >
-                          Status
-                        </TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <SubmissionTable plans={plans} />
-                  </Table>
-                </TableContainer>
+              <CardInnerBox sx={{ height: "100%", py: 2 }}>
+                <SubmissionTable plans={plans} />
               </CardInnerBox>
               <Typography
                 variant="body1"
@@ -215,17 +121,8 @@ function ProjectsPage() {
               >
                 Past Submissions
               </Typography>
-              <CardInnerBox sx={{ height: "100%" }}>
-                <TableContainer component={Box} sx={{ height: "100%" }}>
-                  <Table
-                    width={"100%"}
-                    sx={{ tableLayout: "fixed" }}
-                    aria-label="simple table"
-                    stickyHeader
-                  >
-                    <SubmissionTable plans={plans} />
-                  </Table>
-                </TableContainer>
+              <CardInnerBox sx={{ height: "100%", my: 2 }}>
+                <SubmissionTable headless plans={plans} />
               </CardInnerBox>
             </Box>
           </Box>
