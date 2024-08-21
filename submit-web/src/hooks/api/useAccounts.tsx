@@ -7,12 +7,12 @@ type CreateAccountRequest = {
   position: string;
   work_contact_number: string;
   work_email_address: string;
-  proponent_id: string;
+  proponent_id: number;
   auth_guid: string;
 };
 export type CreateAccountResponse = {
   id: number;
-  proponent_id: string;
+  proponent_id: number;
 };
 const createAccount = (account: CreateAccountRequest) => {
   return request<CreateAccountResponse>({
@@ -29,11 +29,14 @@ type GetUserResponse = {
   position: string;
   work_contact_number: string;
   work_email_address: string;
-  proponent_id: string;
   auth_guid: string;
   created_at: string;
   updated_at: string;
   account_id: number;
+  account: {
+    id: number;
+    proponent_id: number;
+  };
 };
 const getUserByGuid = (guid?: string) => {
   return request<GetUserResponse>({ url: `/users/guid/${guid}` });

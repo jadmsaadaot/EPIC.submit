@@ -12,7 +12,7 @@ export const Route = createFileRoute("/registration")({
 function Registration() {
   const { isAuthenticated, signinRedirect } = useAuth();
   const { proponent_id } = Route.useSearch<{
-    proponent_id: string;
+    proponent_id: number;
   }>();
 
   useEffect(() => {

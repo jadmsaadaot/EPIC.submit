@@ -1,4 +1,4 @@
-"""empty message
+"""Add ACCOUNT_PRIMARY_ADMIN role
 
 Revision ID: 97de805275ec
 Revises: 6dfc3501adbb

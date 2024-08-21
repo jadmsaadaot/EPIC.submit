@@ -65,7 +65,7 @@ class Accounts(Resource):
 
 
 @cors_preflight("GET, OPTIONS")
-@API.route("/proponent/<proponent_id>", methods=["GET", "OPTIONS"])
+@API.route("/proponent/<int:proponent_id>", methods=["GET", "OPTIONS"])
 @API.doc(params={"proponent_id": "The account identifier"})
 class User(Resource):
     """Resource for managing a single account"""

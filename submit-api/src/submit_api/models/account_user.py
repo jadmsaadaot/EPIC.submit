@@ -25,6 +25,7 @@ class AccountUser(BaseModel):
     work_email_address = Column(db.String(100), nullable=False)
     work_contact_number = Column(db.String(50), nullable=False)
     auth_guid = Column(db.String(), nullable=False, unique=True)
+    account = db.relationship('Account', foreign_keys=[account_id], lazy='joined')
 
     __table_args__ = (
         Index('ix_account_users_auth_guid', 'auth_guid', unique=True),

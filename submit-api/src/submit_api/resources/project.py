@@ -37,9 +37,20 @@ project_list_model = ApiHelper.convert_ma_schema_to_restx_model(
 
 
 @cors_preflight("GET, OPTIONS, POST")
-@API.route("", methods=["POST", "GET", "OPTIONS"])
-class Projects(Resource):
+@API.route("/accounts/<int:account_id>", methods=["POST", "GET", "OPTIONS"])
+class ProjectsByAccount(Resource):
     """Resource for managing projects."""
+
+    @staticmethod
+    @ApiHelper.swagger_decorators(API, endpoint_description="Get projects by account id")
+    @API.expect(project_add_list)
+    @API.response(code=HTTPStatus.CREATED, model=project_list_model, description="Get projects")
+    @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
+    @cors.crossdomain(origin="*")
+    def get(account_id):
+        """Get projects by account id."""
+        projects = ProjectService.get_projects_by_account_id(account_id)
+        return ProjectSchema(many=True).dump(projects), HTTPStatus.OK
 
     @staticmethod
     @ApiHelper.swagger_decorators(API, endpoint_description="Add projects in bulk")
@@ -47,8 +58,25 @@ class Projects(Resource):
     @API.response(code=HTTPStatus.CREATED, model=project_list_model, description="Added projects")
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
     @cors.crossdomain(origin="*")
-    def post():
+    def post(account_id):
         """Add projects in bulk."""
-        projects_data = AddProjectSchema(many=True).load(API.payload)
-        added_projects = ProjectService.bulk_add_projects(projects_data)
+        projects_data = AddProjectSchema().load(API.payload)
+        added_projects = ProjectService.bulk_add_projects(account_id, projects_data.get("project_ids"))
         return ProjectSchema(many=True).dump(added_projects), HTTPStatus.CREATED
+
+
+@cors_preflight("GET, OPTIONS, POST")
+@API.route("/proponents/<int:proponent_id>", methods=["POST", "GET", "OPTIONS"])
+class Projects(Resource):
+    """Resource for managing projects."""
+
+    @staticmethod
+    @ApiHelper.swagger_decorators(API, endpoint_description="Get projects by proponent id")
+    @API.expect(project_add_list)
+    @API.response(code=HTTPStatus.CREATED, model=project_list_model, description="Get projects")
+    @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
+    @cors.crossdomain(origin="*")
+    def get(proponent_id):
+        """Get projects by proponent id."""
+        projects = ProjectService.get_projects_by_proponent_id(proponent_id)
+        return ProjectSchema(many=True).dump(projects), HTTPStatus.OK

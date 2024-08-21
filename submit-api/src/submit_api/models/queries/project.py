@@ -12,18 +12,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Model to handle all complex operations related to User."""
-from submit_api.models import AccountUser, db, Account
+from submit_api.models import db, AccountProject, Project
 
 
 # pylint: disable=too-few-public-methods
-class UserQueries:
-    """Query module for complex user queries"""
+class ProjectQueries:
+    """Query module for complex projects queries"""
 
     @classmethod
-    def get_by_guid(cls, guid: str):
-        """Find user by guid"""
-        result = (db.session.query(AccountUser)
-                  .filter(AccountUser.auth_guid == guid)
-                  .join(Account)
+    def get_projects_by_account_id(cls, account_id: int):
+        """Find projects by account_id"""
+        result = (db.session.query(AccountProject)
+                  .filter(AccountProject.account_id == account_id)
+                  .join(Project)
                   .first())
+        return result
+
+    @classmethod
+    def get_projects_by_proponent_id(cls, proponent_id: int):
+        """Find projects by proponent_id"""
+        result = (db.session.query(Project)
+                  .filter(Project.proponent_id == proponent_id))
         return result

@@ -3,6 +3,7 @@ import { styled } from "@mui/system";
 import { BCDesignTokens } from "epic.theme";
 import { ProjectStatus } from "../ProjectStatus";
 import { PROJECT_STATUS } from "./constants";
+import { Project } from "@/models/Project";
 
 const CARD_HEIGHT = 301;
 const CARD_WIDTH = 380;
@@ -18,7 +19,7 @@ const CardInnerBox = styled(Box)({
   padding: "0 12px",
 });
 
-export const ManagementPlan = () => {
+export const ManagementPlan = ({ project }: { project: Project }) => {
   return (
     <Paper
       sx={{
@@ -44,7 +45,7 @@ export const ManagementPlan = () => {
           px={2}
           color={BCDesignTokens.typographyColorPrimaryInvert}
         >
-          Project Name
+          {project.name}
         </Typography>
       </Box>
       <Box height={BODY_HEIGHT}>

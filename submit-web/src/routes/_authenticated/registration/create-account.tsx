@@ -72,7 +72,7 @@ function CreateAccount() {
       work_contact_number: data.phone,
       work_email_address: data.email,
       auth_guid: user?.profile.sub,
-      proponent_id: String(proponent_id),
+      proponent_id: proponent_id,
     };
     doCreateAccount(accountData);
   };

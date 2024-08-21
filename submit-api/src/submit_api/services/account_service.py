@@ -1,4 +1,5 @@
 """Service for account management."""
+from submit_api.exceptions import ResourceExistsError, ResourceNotFoundError
 from submit_api.models import AccountRole as AccountRoleModel
 from submit_api.models import AccountUser as AccountUserModel
 from submit_api.models import Role as RoleModel
@@ -33,7 +34,7 @@ class AccountService:
         """Validate create account data."""
         proponent_id = data.get("proponent_id")
         if AccountModel.get_by_proponent_id(proponent_id):
-            raise Exception(f'Account with proponent id {proponent_id} already exists.')
+            raise ResourceExistsError(f'Account with proponent id {proponent_id} already exists.')
 
     @classmethod
     def create_account(cls, data):
@@ -57,7 +58,7 @@ class AccountService:
 
             account_admin_role = RoleModel.get_by_name(RoleEnum.ACCOUNT_PRIMARY_ADMIN.value)
             if not account_admin_role:
-                raise Exception("Account admin role not found")
+                raise ResourceNotFoundError("Account admin role not found")
 
             account_role_data = {
                 "account_user_id": account_user.id,

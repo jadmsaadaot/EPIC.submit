@@ -4,6 +4,7 @@ import {
 } from "@/components/registration/addProjects/ProjectsList";
 import { Banner } from "@/components/registration/Banner";
 import { GridContainer } from "@/components/registration/GridContainer";
+import { PageLoader } from "@/components/Shared/PageLoader";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { Caption2 } from "@/components/Shared/Typographies";
 import {
@@ -31,7 +32,7 @@ export const Route = createFileRoute(
 
 function AddProjects() {
   const navigate = useNavigate();
-  const { accountId, proponentId } = useAccount();
+  const { accountId, proponentId, isLoading: isAccountLoading } = useAccount();
   const {
     data: projects,
     isPending: isFetchingProjects,
@@ -60,13 +61,13 @@ function AddProjects() {
       return;
     }
 
-    const projectsToAdd = projects?.map((project) => ({
-      name: project.name,
-      account_id: accountId,
-      project_id: project.id,
-    }));
-    addProjects(projectsToAdd);
+    const projectIds = projects.map((project) => project.id);
+    addProjects({ accountId, projectIds });
   };
+
+  if (isAccountLoading) {
+    return <PageLoader />;
+  }
 
   return (
     <>

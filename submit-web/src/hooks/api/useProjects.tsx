@@ -1,38 +1,32 @@
-import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
 import { Project } from "@/models/Project";
 import { request } from "@/utils/axiosUtils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Options } from "./types";
 
-const dummyProjects: Project[] = [
-  {
-    id: 1,
-    name: "Project 1",
-    description: "Description 1",
-    status: PROJECT_STATUS.POST_DECISION,
-  },
-];
-const loadProjectsByProponentId = (proponentId?: string) => {
+const loadProjectsByProponentId = (proponentId?: number) => {
   if (!proponentId) {
     return Promise.reject(new Error("Proponent ID is required"));
   }
-  return Promise.resolve(dummyProjects);
+  return request<Project[]>({ url: `/projects/proponents/${proponentId}` });
 };
 
-type AddProject = {
-  name: string;
-  account_id: number;
-  project_id: number;
-};
-const addProjects = (projects: AddProject[]) => {
-  return request<AddProject[]>({
-    url: "/projects",
+const addProjects = ({
+  accountId,
+  projectIds,
+}: {
+  accountId: number;
+  projectIds: number[];
+}) => {
+  return request({
+    url: `/projects/accounts/${accountId}`,
     method: "post",
-    data: projects,
+    data: {
+      project_ids: projectIds,
+    },
   });
 };
 
-export const useLoadProjectsByProponentId = (proponentId?: string) => {
+export const useLoadProjectsByProponentId = (proponentId?: number) => {
   return useQuery({
     queryKey: ["projects", proponentId],
     queryFn: () => loadProjectsByProponentId(proponentId),

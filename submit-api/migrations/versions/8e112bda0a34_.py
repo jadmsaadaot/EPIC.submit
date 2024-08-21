@@ -1,4 +1,4 @@
-"""empty message
+"""Add unique constraint to account proponent_id
 
 Revision ID: 8e112bda0a34
 Revises: 97de805275ec
