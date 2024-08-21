@@ -122,6 +122,7 @@ function ProjectsPage() {
               <CardInnerBox sx={{ height: "100%", py: 2 }}>
                 <SubmissionTable plans={plans} />
               </CardInnerBox>
+              <Divider sx={{ mb: 0.5 }} />
               <Typography
                 variant="body1"
                 sx={{
