@@ -46,7 +46,7 @@ function CreateAccount() {
 
   const onCreateAccountSuccess = (data: CreateAccountResponse) => {
     setAccount({ proponentId: data.proponent_id, accountId: data.id });
-    navigate({ to: "/registration/add-projects", search: { proponent_id } });
+    navigate({ to: "/registration/add-projects" });
   };
   const { mutate: doCreateAccount, isPending: isCreatingAccount } =
     useCreateAccount({
