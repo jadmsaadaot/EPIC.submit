@@ -38,7 +38,7 @@ project_list_model = ApiHelper.convert_ma_schema_to_restx_model(
 
 @cors_preflight("GET, OPTIONS, POST")
 @API.route("/accounts/<int:account_id>", methods=["POST", "GET", "OPTIONS"])
-class Projects(Resource):
+class ProjectsByAccount(Resource):
     """Resource for managing projects."""
 
     @staticmethod

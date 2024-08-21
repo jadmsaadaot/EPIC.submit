@@ -23,6 +23,7 @@ class Project(db.Model):
     proponent_name = Column(db.String(), nullable=False)
 
     def __init__(self, **kwargs):
+        """Initialize the Project entity."""
         raise ArgumentError("Project is read-only, cannot create new instances.")
 
     @classmethod
@@ -33,6 +34,7 @@ class Project(db.Model):
 
 @event.listens_for(Project, 'before_insert')
 def before_insert():
+    """Raise an error when trying to insert into the Project table."""
     raise IntegrityError(
         "Insertions are not allowed on this table",
         params=None,
@@ -42,6 +44,7 @@ def before_insert():
 
 @event.listens_for(Project, 'before_update')
 def before_update():
+    """Raise an error when trying to update the Project table."""
     raise IntegrityError(
         "Updates are not allowed on this table",
         params=None,
@@ -51,6 +54,7 @@ def before_update():
 
 @event.listens_for(Project, 'before_delete')
 def before_delete():
+    """Raise an error when trying to delete from the Project table."""
     raise IntegrityError(
         "Deletions are not allowed on this table",
         params=None,
