@@ -21,13 +21,13 @@ class Account(BaseModel):
     @classmethod
     def get_by_proponent_id(cls, proponent_id) -> Account:
         """Fetch account by proponent id."""
-        return cls.query.filter_by(proponent_id=str(proponent_id)).first()
+        return cls.query.filter_by(proponent_id=proponent_id).first()
 
     @classmethod
     def create_account(cls, account_data, session=None) -> Account:
         """Create account."""
         account = Account(
-            proponent_id=str(account_data.get('proponent_id', None)),
+            proponent_id=account_data.get('proponent_id', None),
         )
         if session:
             session.add(account)
