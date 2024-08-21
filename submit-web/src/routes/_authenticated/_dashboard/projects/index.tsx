@@ -53,7 +53,7 @@ function ProjectsPage() {
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "flex-start",
+            justifyContent: "space-between",
             borderRadius: "3px 3px 0 0",
           }}
           height={HEADER_HEIGHT}
@@ -65,6 +65,16 @@ function ProjectsPage() {
             color={BCDesignTokens.typographyColorPrimary}
           >
             Copper Mine
+          </Typography>
+          <Typography
+            variant="h4"
+            color={BCDesignTokens.themeGray70}
+            sx={{
+              mr: 2,
+              fontWeight: 400,
+            }}
+          >
+            EAC #1234567
           </Typography>
         </Box>
 
