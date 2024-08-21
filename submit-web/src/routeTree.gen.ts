@@ -31,9 +31,6 @@ import { Route as AuthenticatedDashboardEaoPlansPlanIdImport } from './routes/_a
 
 // Create Virtual Routes
 
-const AuthenticatedDashboardProjectsLazyImport = createFileRoute(
-  '/_authenticated/_dashboard/projects',
-)()
 const AuthenticatedDashboardAboutpageLazyImport = createFileRoute(
   '/_authenticated/_dashboard/aboutpage',
 )()
@@ -74,16 +71,6 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
   id: '/_dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-
-const AuthenticatedDashboardProjectsLazyRoute =
-  AuthenticatedDashboardProjectsLazyImport.update({
-    path: '/projects',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any).lazy(() =>
-    import('./routes/_authenticated/_dashboard/projects.lazy').then(
-      (d) => d.Route,
-    ),
-  )
 
 const AuthenticatedDashboardAboutpageLazyRoute =
   AuthenticatedDashboardAboutpageLazyImport.update({
@@ -127,8 +114,8 @@ const AuthenticatedDashboardUsersIndexRoute =
 
 const AuthenticatedDashboardProjectsIndexRoute =
   AuthenticatedDashboardProjectsIndexImport.update({
-    path: '/',
-    getParentRoute: () => AuthenticatedDashboardProjectsLazyRoute,
+    path: '/projects/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 
 const AuthenticatedDashboardEaoPlansIndexRoute =
@@ -231,13 +218,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAboutpageLazyImport
       parentRoute: typeof AuthenticatedDashboardImport
     }
-    '/_authenticated/_dashboard/projects': {
-      id: '/_authenticated/_dashboard/projects'
-      path: '/projects'
-      fullPath: '/projects'
-      preLoaderRoute: typeof AuthenticatedDashboardProjectsLazyImport
-      parentRoute: typeof AuthenticatedDashboardImport
-    }
     '/_authenticated/_dashboard/eao-plans/$planId': {
       id: '/_authenticated/_dashboard/eao-plans/$planId'
       path: '/eao-plans/$planId'
@@ -254,10 +234,10 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/_dashboard/projects/': {
       id: '/_authenticated/_dashboard/projects/'
-      path: '/'
-      fullPath: '/projects/'
+      path: '/projects'
+      fullPath: '/projects'
       preLoaderRoute: typeof AuthenticatedDashboardProjectsIndexImport
-      parentRoute: typeof AuthenticatedDashboardProjectsLazyImport
+      parentRoute: typeof AuthenticatedDashboardImport
     }
     '/_authenticated/_dashboard/users/': {
       id: '/_authenticated/_dashboard/users/'
@@ -277,12 +257,9 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedDashboardRoute: AuthenticatedDashboardRoute.addChildren({
       AuthenticatedDashboardProfileRoute,
       AuthenticatedDashboardAboutpageLazyRoute,
-      AuthenticatedDashboardProjectsLazyRoute:
-        AuthenticatedDashboardProjectsLazyRoute.addChildren({
-          AuthenticatedDashboardProjectsIndexRoute,
-        }),
       AuthenticatedDashboardEaoPlansPlanIdRoute,
       AuthenticatedDashboardEaoPlansIndexRoute,
+      AuthenticatedDashboardProjectsIndexRoute,
       AuthenticatedDashboardUsersIndexRoute,
     }),
     AuthenticatedAdminLoginRoute,
@@ -338,9 +315,9 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_authenticated/_dashboard/profile",
         "/_authenticated/_dashboard/aboutpage",
-        "/_authenticated/_dashboard/projects",
         "/_authenticated/_dashboard/eao-plans/$planId",
         "/_authenticated/_dashboard/eao-plans/",
+        "/_authenticated/_dashboard/projects/",
         "/_authenticated/_dashboard/users/"
       ]
     },
@@ -368,13 +345,6 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/_dashboard/aboutpage.lazy.tsx",
       "parent": "/_authenticated/_dashboard"
     },
-    "/_authenticated/_dashboard/projects": {
-      "filePath": "_authenticated/_dashboard/projects.lazy.tsx",
-      "parent": "/_authenticated/_dashboard",
-      "children": [
-        "/_authenticated/_dashboard/projects/"
-      ]
-    },
     "/_authenticated/_dashboard/eao-plans/$planId": {
       "filePath": "_authenticated/_dashboard/eao-plans/$planId.tsx",
       "parent": "/_authenticated/_dashboard"
@@ -385,7 +355,7 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/_dashboard/projects/": {
       "filePath": "_authenticated/_dashboard/projects/index.tsx",
-      "parent": "/_authenticated/_dashboard/projects"
+      "parent": "/_authenticated/_dashboard"
     },
     "/_authenticated/_dashboard/users/": {
       "filePath": "_authenticated/_dashboard/users/index.tsx",
