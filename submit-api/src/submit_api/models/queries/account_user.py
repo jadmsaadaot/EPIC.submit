@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """Model to handle all complex operations related to User."""
-from submit_api.models import AccountUser, db, Account
+from submit_api.models import Account, AccountUser, db
 
 
 # pylint: disable=too-few-public-methods

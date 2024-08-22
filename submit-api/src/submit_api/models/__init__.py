@@ -20,6 +20,11 @@ from .account_role import AccountRole
 from .account_user import AccountUser
 from .base_model import BaseModel
 from .db import db, ma, migrate
+from .item import Item
+from .item_type import ItemType
+from .package import Package
+from .package_item_type import PackageItemType
+from .package_type import PackageType
 from .project import Project
 from .project_team import ProjectTeam
 from .role import Role
