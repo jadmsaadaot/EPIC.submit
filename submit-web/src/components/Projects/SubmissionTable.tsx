@@ -53,7 +53,7 @@ export default function SubmissionTable({
         )}
         <TableBody>
           {plans?.map((plan) => (
-            <TableRow component={Box} sx={{ my: 1 }}>
+            <TableRow key={`row-${plan.id}`} component={Box} sx={{ my: 1 }}>
               <TableCell
                 component="th"
                 scope="row"

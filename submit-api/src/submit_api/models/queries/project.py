@@ -24,8 +24,7 @@ class ProjectQueries:
         """Find projects by account_id"""
         result = (db.session.query(AccountProject)
                   .filter(AccountProject.account_id == account_id)
-                  .join(Project)
-                  .first())
+                  .join(Project))
         return result
 
     @classmethod

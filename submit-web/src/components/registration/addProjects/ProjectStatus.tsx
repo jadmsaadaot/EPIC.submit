@@ -3,6 +3,7 @@ import { Case, Default, Switch } from "react-if";
 import ModeStandbyIcon from "@mui/icons-material/ModeStandby";
 import { Stack } from "@mui/material";
 import { PROJECT_STATUS } from "./ProjectCard/constants";
+import { EAOColors } from "epic.theme";
 
 type ProjectStatusProps = {
   status: string;
@@ -16,10 +17,10 @@ export const ProjectStatus = ({ status, bold = false }: ProjectStatusProps) => {
           spacing={1}
           direction="row"
           alignItems={"center"}
-          color={"#947BB6"}
+          color={EAOColors.DecisionMain}
         >
           <ModeStandbyIcon />
-          <Caption2 color={"#947BB6"} bold={bold}>
+          <Caption2 color={EAOColors.DecisionMain} bold={bold}>
             Post-Decision
           </Caption2>
         </Stack>

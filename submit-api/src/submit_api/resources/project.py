@@ -17,7 +17,7 @@ from http import HTTPStatus
 
 from flask_restx import Namespace, Resource, cors
 
-from submit_api.schemas.project import AddProjectSchema, ProjectSchema
+from submit_api.schemas.project import AddProjectSchema, ProjectSchema, AccountProjectSchema
 from submit_api.services.project_service import ProjectService
 from submit_api.utils.util import cors_preflight
 
@@ -50,7 +50,7 @@ class ProjectsByAccount(Resource):
     def get(account_id):
         """Get projects by account id."""
         projects = ProjectService.get_projects_by_account_id(account_id)
-        return ProjectSchema(many=True).dump(projects), HTTPStatus.OK
+        return AccountProjectSchema(many=True).dump(projects), HTTPStatus.OK
 
     @staticmethod
     @ApiHelper.swagger_decorators(API, endpoint_description="Add projects in bulk")

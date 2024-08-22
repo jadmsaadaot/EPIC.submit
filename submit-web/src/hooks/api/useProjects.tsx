@@ -35,9 +35,29 @@ export const useLoadProjectsByProponentId = (proponentId?: number) => {
   });
 };
 
+type GetProjectsByAccountParams = {
+  accountId?: number;
+};
+const getProjectsByAccount = ({ accountId }: GetProjectsByAccountParams) => {
+  return request({ url: `/projects/accounts/${accountId}` });
+};
+
 export const useAddProjects = (options?: Options) => {
   return useMutation({
     mutationFn: addProjects,
     ...options,
+  });
+};
+
+type UseGetProjectsByAccountParams = {
+  accountId?: number;
+};
+export const useGetProjects = ({
+  accountId,
+}: UseGetProjectsByAccountParams) => {
+  return useQuery({
+    queryKey: ["projects"],
+    queryFn: () => getProjectsByAccount({ accountId }),
+    enabled: Boolean(accountId),
   });
 };

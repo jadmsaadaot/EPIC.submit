@@ -18,6 +18,7 @@ class AccountProject(BaseModel):
     id = Column(db.Integer, primary_key=True, autoincrement=True)
     account_id = Column(db.Integer, ForeignKey('accounts.id'), nullable=False)
     project_id = Column(db.Integer, ForeignKey('projects.id'), nullable=False)
+    project = db.relationship('Project', foreign_keys=[project_id], lazy='joined')
 
     @classmethod
     def add_projects_bulk(cls, projects):

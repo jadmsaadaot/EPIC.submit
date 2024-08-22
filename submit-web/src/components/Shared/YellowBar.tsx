@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import React from "react";
+import { BCDesignTokens } from "epic.theme";
 
 export const YellowBar = () => {
   return (
@@ -7,7 +7,7 @@ export const YellowBar = () => {
       sx={{
         height: "5px",
         width: "50px",
-        backgroundColor: "#FCBA19",
+        backgroundColor: BCDesignTokens.themeGold100,
       }}
     />
   );
