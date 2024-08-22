@@ -5,12 +5,7 @@ import { theme } from "@/styles/theme";
 
 const Footer = () => {
   return (
-    <Grid
-      container
-      justifyContent="center"
-      alignItems="center"
-      spacing={0}
-    >
+    <Grid container justifyContent="center" alignItems="center" spacing={0}>
       <Grid
         item
         xs={12}

@@ -29,7 +29,7 @@ export default function SideNavBar() {
   };
 
   return (
-    <div>
+    <div style={{ height: "100%" }}>
       <Box
         sx={{
           overflow: "auto",

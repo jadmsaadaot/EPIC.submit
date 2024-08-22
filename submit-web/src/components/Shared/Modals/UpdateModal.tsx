@@ -28,7 +28,7 @@ const UpdateModal = ({ header, subText }: UpdateModalProps) => {
       </Grid>
       <Grid container direction="row" item xs={12}>
         {subText.map((subtext) => (
-          <Grid item xs={12}>
+          <Grid key={subtext.text} item xs={12}>
             <Typography variant="body1" sx={{ mb: 1 }}>
               {subtext.text}
             </Typography>
