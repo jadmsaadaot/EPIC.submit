@@ -14,6 +14,7 @@ from .db import db
 
 class PackageStatus(Enum):
     """Enum for package statuses."""
+
     IN_REVIEW = 'in_review'
     APPROVED = 'approved'
     REJECTED = 'rejected'

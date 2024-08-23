@@ -14,6 +14,7 @@ from .db import db
 
 class ItemStatus(Enum):
     """Enum for item statuses."""
+
     PENDING = 'pending'
     COMPLETED = 'completed'
 
