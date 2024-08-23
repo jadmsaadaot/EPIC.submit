@@ -21,6 +21,7 @@ class Project(db.Model):
     name = Column(db.String(), nullable=False)
     proponent_id = Column(db.Integer(), nullable=False, unique=True)
     proponent_name = Column(db.String(), nullable=False)
+    ea_certificate = Column(db.String(255), nullable=True, default=None)
 
     def __init__(self, **kwargs):
         """Initialize the Project entity."""
