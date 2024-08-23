@@ -1,3 +1,5 @@
+import { SubmissionPackage } from "./Package";
+
 export type Project = {
   id: number;
   name: string;
@@ -11,4 +13,5 @@ export type AccountProject = {
   project_id: number;
   account_id: number;
   project: Project;
+  packages: SubmissionPackage[];
 };

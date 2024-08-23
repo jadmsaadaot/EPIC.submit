@@ -4,19 +4,19 @@ Manages the item
 """
 from __future__ import annotations
 
-from enum import Enum
+import enum
 
-from sqlalchemy import Column, ForeignKey
+from sqlalchemy import Column, ForeignKey, Enum
 
 from .base_model import BaseModel
 from .db import db
 
 
-class ItemStatus(Enum):
+class ItemStatus(enum.Enum):
     """Enum for item statuses."""
 
-    PENDING = 'pending'
-    COMPLETED = 'completed'
+    PENDING = 'PENDING'
+    COMPLETED = 'COMPLETED'
 
 
 class Item(BaseModel):
@@ -28,7 +28,7 @@ class Item(BaseModel):
     package_id = Column(db.Integer, ForeignKey('packages.id'), nullable=False)
     type_id = Column(db.Integer, ForeignKey('item_types.id'), nullable=False)
     type = db.relationship('ItemType', foreign_keys=[type_id], lazy='joined')
-    status = Column(db.Enum(ItemStatus), nullable=False, default=ItemStatus.PENDING)
+    status = Column(Enum(ItemStatus), nullable=False, default=ItemStatus.PENDING)
     version = Column(db.Integer, nullable=False)
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
