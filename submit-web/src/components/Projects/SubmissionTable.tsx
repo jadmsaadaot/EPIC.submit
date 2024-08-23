@@ -28,26 +28,29 @@ export default function SubmissionTable({
           <TableHead sx={{ border: 0 }}>
             <TableRow>
               <TableCell
+                colSpan={6}
                 sx={{
                   color: BCDesignTokens.themeGray70,
-                  width: "30%",
                 }}
               >
                 Submission Name
               </TableCell>
               <TableCell
+                colSpan={2}
                 align="right"
                 sx={{ color: BCDesignTokens.themeGray70 }}
               >
                 Submitted On
               </TableCell>
               <TableCell
+                colSpan={2}
                 align="right"
                 sx={{ color: BCDesignTokens.themeGray70 }}
               >
                 Submitted By
               </TableCell>
               <TableCell
+                colSpan={2}
                 align="center"
                 sx={{ color: BCDesignTokens.themeGray70 }}
               >
@@ -62,6 +65,7 @@ export default function SubmissionTable({
               <TableCell
                 component="th"
                 scope="row"
+                colSpan={6}
                 sx={{
                   borderTop: "2px solid #F2F2F2",
                   borderBottom: "2px solid #F2F2F2",
@@ -69,7 +73,6 @@ export default function SubmissionTable({
                   borderTopLeftRadius: 5,
                   borderBottomLeftRadius: 5,
                   py: BCDesignTokens.layoutPaddingSmall,
-                  width: "30%",
                 }}
               >
                 <Link
@@ -92,6 +95,7 @@ export default function SubmissionTable({
                 </Link>
               </TableCell>
               <TableCell
+                colSpan={2}
                 align="right"
                 sx={{
                   borderTop: "2px solid #F2F2F2",
@@ -102,6 +106,7 @@ export default function SubmissionTable({
                 {plan.submittedDate || "--"}
               </TableCell>
               <TableCell
+                colSpan={2}
                 align="right"
                 sx={{
                   borderTop: "2px solid #F2F2F2",
@@ -112,6 +117,7 @@ export default function SubmissionTable({
                 {plan.submittedBy || "--"}
               </TableCell>
               <TableCell
+                colSpan={2}
                 align="right"
                 sx={{
                   borderTop: "2px solid #F2F2F2",
