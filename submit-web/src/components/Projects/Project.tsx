@@ -112,7 +112,12 @@ export const Project = ({ accountProject }: ProjectParam) => {
             >
               <SubmissionTable plans={plans} />
             </CardInnerBox>
-            <Divider sx={{ mb: 0.5 }} />
+            <Divider
+              sx={{
+                mb: BCDesignTokens.layoutPaddingXsmall,
+                mt: BCDesignTokens.layoutPaddingSmall,
+              }}
+            />
             <Typography
               variant="body1"
               sx={{
@@ -122,7 +127,9 @@ export const Project = ({ accountProject }: ProjectParam) => {
             >
               Past Submissions
             </Typography>
-            <CardInnerBox sx={{ height: "100%", my: 2 }}>
+            <CardInnerBox
+              sx={{ height: "100%", py: BCDesignTokens.layoutPaddingMedium }}
+            >
               <SubmissionTable headless plans={plans} />
             </CardInnerBox>
           </Box>

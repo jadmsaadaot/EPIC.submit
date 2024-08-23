@@ -48,7 +48,7 @@ export default function SubmissionTable({
                 Submitted By
               </TableCell>
               <TableCell
-                align="right"
+                align="center"
                 sx={{ color: BCDesignTokens.themeGray70 }}
               >
                 Status
