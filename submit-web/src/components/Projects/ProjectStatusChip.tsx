@@ -2,7 +2,13 @@ import { PackageStatus } from "@/models/Package";
 import { Chip } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 
-const statusStyles: Record<PackageStatus, Record<string, any>> = {
+type StyleProps = {
+  borderRadius?: number;
+  border?: string;
+  background?: string;
+  label?: string;
+};
+const statusStyles: Record<PackageStatus, StyleProps> = {
   APPROVED: {
     borderRadius: 1,
     border: `2px solid ${BCDesignTokens.supportBorderColorSuccess}`,
