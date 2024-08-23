@@ -3,9 +3,9 @@ import { BCDesignTokens } from "epic.theme";
 import AddIcon from "@mui/icons-material/Add";
 import { ProjectStatus } from "../registration/addProjects/ProjectStatus";
 import { PROJECT_STATUS } from "../registration/addProjects/ProjectCard/constants";
-import SubmissionTable from "./SubmissionTable";
-import { defaultPlans } from "./constants";
+import SubmissionPackageTable from "./ProjectTable";
 import { AccountProject } from "@/models/Project";
+import { PACKAGE_STATUS } from "@/models/Package";
 
 const HEADER_HEIGHT = 54;
 
@@ -23,7 +23,13 @@ type ProjectParam = {
 };
 
 export const Project = ({ accountProject }: ProjectParam) => {
-  const plans = defaultPlans;
+  const activeSubmissionPackages = accountProject.packages.filter(
+    (subPackage) => subPackage.status === PACKAGE_STATUS.IN_REVIEW.value,
+  );
+  const pastSubmissionPackages = accountProject.packages.filter(
+    (subPackage) => subPackage.status !== PACKAGE_STATUS.IN_REVIEW.value,
+  );
+
   return (
     <Paper
       sx={{
@@ -110,7 +116,9 @@ export const Project = ({ accountProject }: ProjectParam) => {
             <CardInnerBox
               sx={{ height: "100%", py: BCDesignTokens.layoutPaddingSmall }}
             >
-              <SubmissionTable plans={plans} />
+              <SubmissionPackageTable
+                submissionPackages={activeSubmissionPackages}
+              />
             </CardInnerBox>
             <Divider
               sx={{
@@ -130,7 +138,10 @@ export const Project = ({ accountProject }: ProjectParam) => {
             <CardInnerBox
               sx={{ height: "100%", py: BCDesignTokens.layoutPaddingMedium }}
             >
-              <SubmissionTable headless plans={plans} />
+              <SubmissionPackageTable
+                headless
+                submissionPackages={pastSubmissionPackages}
+              />
             </CardInnerBox>
           </Box>
         </Box>

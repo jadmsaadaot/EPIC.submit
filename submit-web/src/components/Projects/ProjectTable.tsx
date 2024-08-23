@@ -1,4 +1,3 @@
-import { Plan } from "@/models/Plan";
 import {
   Box,
   Link,
@@ -10,15 +9,16 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import ProjectStatusChip from "../Shared/ProjectStatusChip";
+import PackageStatusChip from "./ProjectStatusChip";
 import { BCDesignTokens } from "epic.theme";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { SubmissionPackage } from "@/models/Package";
 
-export default function SubmissionTable({
-  plans,
+export default function SubmissionPackageTable({
+  submissionPackages,
   headless,
 }: {
-  plans: Array<Plan>;
+  submissionPackages: Array<SubmissionPackage>;
   headless?: boolean;
 }) {
   return (
@@ -60,8 +60,12 @@ export default function SubmissionTable({
           </TableHead>
         )}
         <TableBody>
-          {plans?.map((plan) => (
-            <TableRow key={`row-${plan.id}`} component={Box} sx={{ my: 1 }}>
+          {submissionPackages?.map((subPackage) => (
+            <TableRow
+              key={`row-${subPackage.id}`}
+              component={Box}
+              sx={{ my: 1 }}
+            >
               <TableCell
                 component="th"
                 scope="row"
@@ -89,7 +93,7 @@ export default function SubmissionTable({
                     fontWeight={"500"}
                     sx={{ mr: 0.5 }}
                   >
-                    Management Plan 123
+                    {subPackage.name}
                   </Typography>
                   <ArrowForwardIosIcon fontSize="small" />
                 </Link>
@@ -103,7 +107,7 @@ export default function SubmissionTable({
                   py: BCDesignTokens.layoutPaddingSmall,
                 }}
               >
-                {plan.submittedDate || "--"}
+                {subPackage.submitted_on ?? "--"}
               </TableCell>
               <TableCell
                 colSpan={2}
@@ -114,7 +118,7 @@ export default function SubmissionTable({
                   py: BCDesignTokens.layoutPaddingSmall,
                 }}
               >
-                {plan.submittedBy || "--"}
+                {subPackage.submitted_by ?? "--"}
               </TableCell>
               <TableCell
                 colSpan={2}
@@ -128,7 +132,7 @@ export default function SubmissionTable({
                   py: BCDesignTokens.layoutPaddingSmall,
                 }}
               >
-                <ProjectStatusChip isCompleted={plan.isCompleted} />
+                <PackageStatusChip status={subPackage.status} />
               </TableCell>
             </TableRow>
           ))}

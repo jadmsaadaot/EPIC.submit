@@ -4,20 +4,20 @@ Manages the package
 """
 from __future__ import annotations
 
-from enum import Enum
+import enum
 
-from sqlalchemy import Column, ForeignKey
+from sqlalchemy import Column, ForeignKey, Enum
 
 from .base_model import BaseModel
 from .db import db
 
 
-class PackageStatus(Enum):
+class PackageStatus(enum.Enum):
     """Enum for package statuses."""
 
-    IN_REVIEW = 'in_review'
-    APPROVED = 'approved'
-    REJECTED = 'rejected'
+    IN_REVIEW = 'IN_REVIEW'
+    APPROVED = 'APPROVED'
+    REJECTED = 'REJECTED'
 
 
 class Package(BaseModel):
@@ -30,6 +30,6 @@ class Package(BaseModel):
     name = Column(db.String(255), nullable=False)
     type_id = Column(db.Integer, ForeignKey('package_types.id'), nullable=False)
     type = db.relationship('PackageType', foreign_keys=[type_id], lazy='joined')
-    status = Column(db.Enum(PackageStatus), nullable=False, default=PackageStatus.IN_REVIEW)
+    status = Column(Enum(PackageStatus), nullable=False, default=PackageStatus.IN_REVIEW)
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
