@@ -19,6 +19,7 @@ class AccountProject(BaseModel):
     account_id = Column(db.Integer, ForeignKey('accounts.id'), nullable=False)
     project_id = Column(db.Integer, ForeignKey('projects.id'), nullable=False)
     project = db.relationship('Project', foreign_keys=[project_id], lazy='joined')
+    packages = db.relationship('Package', backref='account_project', lazy='select')
 
     @classmethod
     def add_projects_bulk(cls, projects):
