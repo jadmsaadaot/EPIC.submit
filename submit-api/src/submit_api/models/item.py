@@ -30,5 +30,5 @@ class Item(BaseModel):
     type = db.relationship('ItemType', foreign_keys=[type_id], lazy='joined')
     status = Column(db.Enum(ItemStatus), nullable=False, default=ItemStatus.PENDING)
     version = Column(db.Integer, nullable=False)
-    submitted_on = Column(db.DateTime, nullable=False)
-    submitted_by = Column(db.String(255), nullable=False)
+    submitted_on = Column(db.DateTime, nullable=True)
+    submitted_by = Column(db.String(255), nullable=True)
