@@ -78,7 +78,10 @@ export const Project = ({ accountProject }: ProjectParam) => {
           <Box
             display={"flex"}
             justifyContent={"space-between"}
-            sx={{ py: BCDesignTokens.layoutPaddingXlarge }}
+            sx={{
+              pt: BCDesignTokens.layoutPaddingMedium,
+              pb: BCDesignTokens.layoutPaddingXlarge,
+            }}
           >
             <CardInnerBox>
               <Typography variant="h4" fontWeight={400}>
@@ -104,10 +107,17 @@ export const Project = ({ accountProject }: ProjectParam) => {
             >
               Active Submissions
             </Typography>
-            <CardInnerBox sx={{ height: "100%", py: 2 }}>
+            <CardInnerBox
+              sx={{ height: "100%", py: BCDesignTokens.layoutPaddingSmall }}
+            >
               <SubmissionTable plans={plans} />
             </CardInnerBox>
-            <Divider sx={{ mb: 0.5 }} />
+            <Divider
+              sx={{
+                mb: BCDesignTokens.layoutPaddingXsmall,
+                mt: BCDesignTokens.layoutPaddingSmall,
+              }}
+            />
             <Typography
               variant="body1"
               sx={{
@@ -117,7 +127,9 @@ export const Project = ({ accountProject }: ProjectParam) => {
             >
               Past Submissions
             </Typography>
-            <CardInnerBox sx={{ height: "100%", my: 2 }}>
+            <CardInnerBox
+              sx={{ height: "100%", py: BCDesignTokens.layoutPaddingMedium }}
+            >
               <SubmissionTable headless plans={plans} />
             </CardInnerBox>
           </Box>
