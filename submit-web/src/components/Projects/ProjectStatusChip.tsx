@@ -3,25 +3,32 @@ import { Chip } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 
 type StyleProps = {
-  borderRadius?: number;
-  border?: string;
-  background?: string;
-  label?: string;
+  sx: Record<string, string | number>;
+  label: string;
 };
 const statusStyles: Record<PackageStatus, StyleProps> = {
   APPROVED: {
-    borderRadius: 1,
-    border: `2px solid ${BCDesignTokens.supportBorderColorSuccess}`,
-    background: BCDesignTokens.supportSurfaceColorSuccess,
+    sx: {
+      borderRadius: 1,
+      border: `2px solid ${BCDesignTokens.supportBorderColorSuccess}`,
+      background: BCDesignTokens.supportSurfaceColorSuccess,
+    },
     label: "Approved",
   },
   IN_REVIEW: {
-    borderRadius: 0.5,
-    border: `2px solid ${BCDesignTokens.themeBlue100}`,
-    background: BCDesignTokens.themeBlue20,
+    sx: {
+      borderRadius: 0.5,
+      border: `2px solid ${BCDesignTokens.themeBlue100}`,
+      background: BCDesignTokens.themeBlue20,
+    },
     label: "In Review",
   },
-  REJECTED: {},
+  REJECTED: {
+    label: "Rejected",
+    sx: {
+      //TODO - Add styles for rejected status
+    },
+  },
 };
 
 export default function PackageStatusChip({
@@ -34,9 +41,7 @@ export default function PackageStatusChip({
   return (
     <Chip
       sx={{
-        borderRadius: style.borderRadius,
-        border: style.border,
-        background: style.background,
+        ...style.sx,
       }}
       label={style.label}
     />
