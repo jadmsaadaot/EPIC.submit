@@ -107,7 +107,9 @@ export const Project = ({ accountProject }: ProjectParam) => {
             >
               Active Submissions
             </Typography>
-            <CardInnerBox sx={{ height: "100%", py: 2 }}>
+            <CardInnerBox
+              sx={{ height: "100%", py: BCDesignTokens.layoutPaddingSmall }}
+            >
               <SubmissionTable plans={plans} />
             </CardInnerBox>
             <Divider sx={{ mb: 0.5 }} />
