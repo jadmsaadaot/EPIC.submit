@@ -69,7 +69,6 @@ export default function SubmissionTable({
                   borderTopLeftRadius: 5,
                   borderBottomLeftRadius: 5,
                   py: BCDesignTokens.layoutPaddingSmall,
-                  mb: 2,
                   width: "30%",
                 }}
               >
