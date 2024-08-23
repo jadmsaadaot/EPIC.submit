@@ -30,6 +30,8 @@ export const Project = ({ accountProject }: ProjectParam) => {
     (subPackage) => subPackage.status !== PACKAGE_STATUS.IN_REVIEW.value,
   );
 
+  const { name, ea_certificate } = accountProject.project;
+
   return (
     <Paper
       sx={{
@@ -55,7 +57,7 @@ export const Project = ({ accountProject }: ProjectParam) => {
           px={2}
           color={BCDesignTokens.typographyColorPrimary}
         >
-          {accountProject.project.name}
+          {name}
         </Typography>
         <Typography
           variant="h4"
@@ -65,7 +67,7 @@ export const Project = ({ accountProject }: ProjectParam) => {
             fontWeight: 400,
           }}
         >
-          EAC #1234567
+          {ea_certificate ? `EAC #${ea_certificate}` : ""}
         </Typography>
       </Box>
 
