@@ -78,7 +78,10 @@ export const Project = ({ accountProject }: ProjectParam) => {
           <Box
             display={"flex"}
             justifyContent={"space-between"}
-            sx={{ py: BCDesignTokens.layoutPaddingXlarge }}
+            sx={{
+              pt: BCDesignTokens.layoutPaddingMedium,
+              pb: BCDesignTokens.layoutPaddingXlarge,
+            }}
           >
             <CardInnerBox>
               <Typography variant="h4" fontWeight={400}>

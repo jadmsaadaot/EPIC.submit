@@ -27,23 +27,28 @@ export default function SubmissionTable({
         {!headless && (
           <TableHead sx={{ border: 0 }}>
             <TableRow>
-              <TableCell sx={{ color: BCDesignTokens.themeGray70 }}>
+              <TableCell
+                sx={{
+                  color: BCDesignTokens.themeGray70,
+                  width: "30%",
+                }}
+              >
                 Submission Name
               </TableCell>
               <TableCell
-                align="center"
+                align="right"
                 sx={{ color: BCDesignTokens.themeGray70 }}
               >
                 Submitted On
               </TableCell>
               <TableCell
-                align="center"
+                align="right"
                 sx={{ color: BCDesignTokens.themeGray70 }}
               >
                 Submitted By
               </TableCell>
               <TableCell
-                align="center"
+                align="right"
                 sx={{ color: BCDesignTokens.themeGray70 }}
               >
                 Status
@@ -63,6 +68,9 @@ export default function SubmissionTable({
                   borderLeft: "2px solid #F2F2F2",
                   borderTopLeftRadius: 5,
                   borderBottomLeftRadius: 5,
+                  py: BCDesignTokens.layoutPaddingSmall,
+                  mb: 2,
+                  width: "30%",
                 }}
               >
                 <Link
@@ -85,19 +93,21 @@ export default function SubmissionTable({
                 </Link>
               </TableCell>
               <TableCell
-                align="center"
+                align="right"
                 sx={{
                   borderTop: "2px solid #F2F2F2",
                   borderBottom: "2px solid #F2F2F2",
+                  py: BCDesignTokens.layoutPaddingSmall,
                 }}
               >
                 {plan.submittedDate || "--"}
               </TableCell>
               <TableCell
-                align="center"
+                align="right"
                 sx={{
                   borderTop: "2px solid #F2F2F2",
                   borderBottom: "2px solid #F2F2F2",
+                  py: BCDesignTokens.layoutPaddingSmall,
                 }}
               >
                 {plan.submittedBy || "--"}
@@ -110,6 +120,7 @@ export default function SubmissionTable({
                   borderBottomRightRadius: 5,
                   borderBottom: "2px solid #F2F2F2",
                   borderRight: "2px solid #F2F2F2",
+                  py: BCDesignTokens.layoutPaddingSmall,
                 }}
               >
                 <ProjectStatusChip isCompleted={plan.isCompleted} />
