@@ -6,7 +6,6 @@ import { Outlet, createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_authenticated/_dashboard")({
   component: DashboardLayout,
-  meta: () => [{ title: "Dashboard" }],
 });
 
 function DashboardLayout() {

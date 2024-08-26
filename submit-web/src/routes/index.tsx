@@ -4,7 +4,6 @@ import { useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: Index,
-  meta: () => [{ title: "Home" }],
 });
 
 function Index() {
@@ -29,7 +28,7 @@ function Index() {
         <Button
           variant="outlined"
           color="primary"
-          onClick={() => navigate({ to: "/eao-plans" })}
+          onClick={() => navigate({ to: "/projects" })}
         >
           See Plans
         </Button>

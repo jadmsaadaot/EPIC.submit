@@ -1,21 +1,22 @@
-export const Routes: RouteType[] = [
-  {
-    name: "All Projects",
-    path: "/projects",
-  },
-  {
-    name: "Plans",
-    path: "/eao-plans",
-  },
-  {
-    name: "Users",
-    path: "/users",
-  },
-];
+import { Project } from "@/models/Project";
+
+export const createProjectRoutes = (projects: Project[]): RouteType[] => {
+  const projectRoutes = projects?.map((project) => ({
+    name: project.name,
+    path: `/projects/${project.id}`,
+  }));
+  return [
+    {
+      name: "All Projects",
+      path: "/projects",
+      routes: projectRoutes,
+    },
+  ];
+};
 
 export const AuthenticatedRoutes: RouteType[] = [
   {
-    name: "Profile",
+    name: "Admin",
     path: "/profile",
   },
 ];
