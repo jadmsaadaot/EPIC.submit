@@ -32,11 +32,9 @@ const BreadcrumbNav: React.FC = () => {
   });
 
   const uniqueBreadcrumbs = filterUniqueRoutes(breadcrumbs as RouteSegment[]);
-  const isRoot = uniqueBreadcrumbs.length === 1;
-
   return (
     <>
-      {!isRoot && (
+      {
         <Box
           sx={{
             p: 1,
@@ -69,7 +67,7 @@ const BreadcrumbNav: React.FC = () => {
             )}
           </Breadcrumbs>
         </Box>
-      )}
+      }
     </>
   );
 };

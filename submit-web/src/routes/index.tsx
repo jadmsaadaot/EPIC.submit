@@ -4,7 +4,6 @@ import { useNavigate } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/")({
   component: Index,
-  meta: () => [{ title: "Home" }],
 });
 
 function Index() {
