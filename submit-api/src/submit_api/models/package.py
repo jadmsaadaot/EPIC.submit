@@ -6,7 +6,7 @@ from __future__ import annotations
 
 import enum
 
-from sqlalchemy import Column, ForeignKey, Enum
+from sqlalchemy import Column, Enum, ForeignKey
 
 from .base_model import BaseModel
 from .db import db
