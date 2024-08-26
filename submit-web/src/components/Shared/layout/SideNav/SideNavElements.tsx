@@ -1,6 +1,6 @@
 import { Project } from "@/models/Project";
 
-export const createRoutes = (projects: Project[]): RouteType[] => {
+export const createProjectRoutes = (projects: Project[]): RouteType[] => {
   const projectRoutes = projects?.map((project) => ({
     name: project.name,
     path: `/projects/${project.id}`,

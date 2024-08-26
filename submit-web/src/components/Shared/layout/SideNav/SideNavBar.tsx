@@ -9,7 +9,11 @@ import {
 import { Link } from "@tanstack/react-router";
 import { theme } from "@/styles/theme";
 import { useAuth } from "react-oidc-context";
-import { AuthenticatedRoutes, createRoutes } from "./SideNavElements";
+import {
+  AuthenticatedRoutes,
+  createProjectRoutes,
+  createRoutes,
+} from "./SideNavElements";
 import { alpha } from "@mui/system";
 import { useDrawer } from "../../Drawers/DrawerStore";
 import { useGetProjects } from "@/hooks/api/useProjects";
@@ -23,11 +27,8 @@ export default function SideNavBar() {
   const { data: projects } = useGetProjects({
     accountId,
   });
-  let routeMenuItems = createRoutes(projects);
-
-  if (isAuthenticated) {
-    routeMenuItems = routeMenuItems.concat(AuthenticatedRoutes);
-  }
+  const projectRoutes = createProjectRoutes(projects);
+  const routeMenuItems = projectRoutes.concat(AuthenticatedRoutes);
 
   const handleRouteChange = (path: string) => {
     setCurrentPath(path);
