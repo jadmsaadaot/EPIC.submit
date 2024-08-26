@@ -44,14 +44,9 @@ const BreadcrumbNav: React.FC = () => {
         >
           <Breadcrumbs aria-label="breadcrumb">
             {uniqueBreadcrumbs.map(
-              (segment: { title: string; path?: string }, index: number) => {
+              (segment: { title: string; path?: string }) => {
                 const { title, path } = segment;
-                const isLast = index === uniqueBreadcrumbs.length - 1;
-                return isLast ? (
-                  <Typography key={path} color="text.primary">
-                    {title}
-                  </Typography>
-                ) : (
+                return (
                   <Link
                     key={path}
                     style={{

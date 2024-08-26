@@ -2,20 +2,13 @@ export const Routes: RouteType[] = [
   {
     name: "All Projects",
     path: "/projects",
-  },
-  {
-    name: "Plans",
-    path: "/eao-plans",
-  },
-  {
-    name: "Users",
-    path: "/users",
+    routes: [],
   },
 ];
 
 export const AuthenticatedRoutes: RouteType[] = [
   {
-    name: "Profile",
+    name: "Admin",
     path: "/profile",
   },
 ];

@@ -10,7 +10,7 @@ import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 
 export const Route = createFileRoute("/_authenticated/_dashboard/projects/")({
   component: ProjectsPage,
-  meta: () => [{ title: "Projects" }],
+  meta: () => [{ title: "All Projects" }],
 });
 
 function ProjectsPage() {
