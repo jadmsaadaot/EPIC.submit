@@ -1,5 +1,4 @@
 import { Box, Typography } from "@mui/material";
-import React from "react";
 import { AppConfig } from "@/utils/config";
 import MenuIcon from "@mui/icons-material/Menu";
 import { theme } from "@/styles/theme";

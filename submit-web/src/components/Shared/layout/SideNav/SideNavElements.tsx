@@ -1,19 +1,3 @@
-import { Project } from "@/models/Project";
-
-export const createProjectRoutes = (projects: Project[]): RouteType[] => {
-  const projectRoutes = projects?.map((project) => ({
-    name: project.name,
-    path: `/projects/${project.id}`,
-  }));
-  return [
-    {
-      name: "All Projects",
-      path: "/projects",
-      routes: projectRoutes,
-    },
-  ];
-};
-
 export const AuthenticatedRoutes: RouteType[] = [
   {
     name: "Admin",
@@ -21,9 +5,17 @@ export const AuthenticatedRoutes: RouteType[] = [
   },
 ];
 
+export const AdminRoute: RouteType = {
+  name: "Admin",
+  path: "/admin",
+};
+
+export const ProjectRoute: RouteType = {
+  name: "All Projects",
+  path: "/projects",
+};
+
 export interface RouteType {
   name: string;
   path: string;
-  group?: string;
-  routes?: RouteType[];
 }

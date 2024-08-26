@@ -3,9 +3,10 @@ import { Skeleton, Stack } from "@mui/material";
 import { Project } from "./Project";
 
 type ProjectsParams = {
-  accountProjects: AccountProject[];
+  accountProjects?: AccountProject[];
 };
 export const Projects = ({ accountProjects }: ProjectsParams) => {
+  if (!accountProjects) return null;
   return (
     <Stack spacing={2} direction={"column"}>
       {accountProjects.map((accountProject) => (

@@ -60,6 +60,7 @@ class AccountProjectSchema(Schema):
 
         unknown = EXCLUDE
 
+    id = fields.Int(data_key="id")
     account_id = fields.Int(data_key="account_id")
     project_id = fields.Int(data_key="project_id")
     project = fields.Nested(ProjectSchema, data_key="project")
