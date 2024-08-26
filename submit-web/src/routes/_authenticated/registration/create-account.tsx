@@ -23,7 +23,7 @@ const queryParamSchema = yup.object().shape({
 type QueryParamsSchema = yup.InferType<typeof queryParamSchema>;
 
 export const Route = createFileRoute(
-  "/_authenticated/registration/create-account"
+  "/_authenticated/registration/create-account",
 )({
   component: CreateAccount,
 });
@@ -58,7 +58,7 @@ function CreateAccount() {
 
   const methods = useForm({
     resolver: yupResolver(createAccountSchema),
-    mode: "onBlur",
+    mode: "onSubmit",
   });
 
   const { handleSubmit } = methods;
