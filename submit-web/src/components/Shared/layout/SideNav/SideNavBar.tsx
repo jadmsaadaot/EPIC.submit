@@ -8,11 +8,9 @@ import {
 } from "@mui/material";
 import { Link } from "@tanstack/react-router";
 import { theme } from "@/styles/theme";
-import { useAuth } from "react-oidc-context";
 import {
   AuthenticatedRoutes,
   createProjectRoutes,
-  createRoutes,
 } from "./SideNavElements";
 import { alpha } from "@mui/system";
 import { useDrawer } from "../../Drawers/DrawerStore";
@@ -20,7 +18,6 @@ import { useGetProjects } from "@/hooks/api/useProjects";
 import { useAccount } from "@/store/accountStore";
 
 export default function SideNavBar() {
-  const { isAuthenticated } = useAuth();
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
   const { isOpen, setClose } = useDrawer();
   const { accountId } = useAccount();
