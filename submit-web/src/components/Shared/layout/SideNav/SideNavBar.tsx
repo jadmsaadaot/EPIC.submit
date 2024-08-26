@@ -9,15 +9,21 @@ import {
 import { Link } from "@tanstack/react-router";
 import { theme } from "@/styles/theme";
 import { useAuth } from "react-oidc-context";
-import { AuthenticatedRoutes, Routes } from "./SideNavElements";
+import { AuthenticatedRoutes, createRoutes } from "./SideNavElements";
 import { alpha } from "@mui/system";
 import { useDrawer } from "../../Drawers/DrawerStore";
+import { useGetProjects } from "@/hooks/api/useProjects";
+import { useAccount } from "@/store/accountStore";
 
 export default function SideNavBar() {
   const { isAuthenticated } = useAuth();
   const [currentPath, setCurrentPath] = useState(window.location.pathname);
   const { isOpen, setClose } = useDrawer();
-  let routeMenuItems = Routes;
+  const { accountId } = useAccount();
+  const { data: projects } = useGetProjects({
+    accountId,
+  });
+  let routeMenuItems = createRoutes(projects);
 
   if (isAuthenticated) {
     routeMenuItems = routeMenuItems.concat(AuthenticatedRoutes);

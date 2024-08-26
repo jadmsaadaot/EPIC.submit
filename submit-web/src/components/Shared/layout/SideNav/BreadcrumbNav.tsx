@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Breadcrumbs, Typography } from "@mui/material";
+import { Box, Breadcrumbs } from "@mui/material";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { theme } from "@/styles/theme";
 
