@@ -1,4 +1,4 @@
-import { Project } from "@/models/Project";
+import { AccountProject, Project } from "@/models/Project";
 import { request } from "@/utils/axiosUtils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Options } from "./types";
@@ -39,7 +39,7 @@ type GetProjectsByAccountParams = {
   accountId?: number;
 };
 const getProjectsByAccount = ({ accountId }: GetProjectsByAccountParams) => {
-  return request({ url: `/projects/accounts/${accountId}` });
+  return request<AccountProject[]>({ url: `/projects/accounts/${accountId}` });
 };
 
 export const useAddProjects = (options?: Options) => {
@@ -50,13 +50,13 @@ export const useAddProjects = (options?: Options) => {
 };
 
 type UseGetProjectsByAccountParams = {
-  accountId?: number;
+  accountId: number;
 };
 export const useGetProjects = ({
   accountId,
 }: UseGetProjectsByAccountParams) => {
   return useQuery({
-    queryKey: ["projects"],
+    queryKey: ["projects", accountId],
     queryFn: () => getProjectsByAccount({ accountId }),
     enabled: Boolean(accountId),
   });
