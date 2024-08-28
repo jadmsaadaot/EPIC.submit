@@ -2,8 +2,9 @@ import React from "react";
 import { mount } from "cypress/react18";
 import { ProjectsPage } from "../../../src/routes/_authenticated/_dashboard/projects";
 import { useAccount } from "../../../src/store/accountStore";
-import { mockZustandStore, setupTokenStorage, TestWrapper } from "../utils";
+import { mockZustandStore, setupTokenStorage } from "../utils";
 import { AppConfig } from "../../../src/utils/config";
+import { TestWrapper } from "../utils/TestWrapper";
 
 describe("<Project />", () => {
   beforeEach(() => {
