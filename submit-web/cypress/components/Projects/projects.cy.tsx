@@ -6,7 +6,7 @@ import { mockZustandStore, setupTokenStorage } from "../utils";
 import { AppConfig } from "../../../src/utils/config";
 import { TestWrapper } from "../utils/TestWrapper";
 
-describe("<Project />", () => {
+describe("<ProjectsPage />", () => {
   beforeEach(() => {
     mockZustandStore(useAccount, {
       proponentId: 201,

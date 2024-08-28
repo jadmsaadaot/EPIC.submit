@@ -19,5 +19,6 @@ const MockProjectComponent = () => {
 describe("<Project />", () => {
   it("renders", () => {
     mount(<TestWrapper component={MockProjectComponent} />);
+    cy.contains("Test Project");
   });
 });
