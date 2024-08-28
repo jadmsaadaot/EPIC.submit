@@ -12,17 +12,15 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        <ThemeProvider theme={theme}>
-          <AuthProvider {...OidcConfig}>
-            <ModalProvider />
-            <SnackBarProvider />
-            <RouterProviderWithAuthContext />
-          </AuthProvider>
-        </ThemeProvider>
-      </QueryClientProvider>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <AuthProvider {...OidcConfig}>
+          <ModalProvider />
+          <SnackBarProvider />
+          <RouterProviderWithAuthContext />
+        </AuthProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

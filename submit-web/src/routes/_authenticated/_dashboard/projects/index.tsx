@@ -13,7 +13,7 @@ export const Route = createFileRoute("/_authenticated/_dashboard/projects/")({
   meta: () => [{ title: "All Projects" }],
 });
 
-function ProjectsPage() {
+export function ProjectsPage() {
   const { accountId } = useAccount();
   const {
     data: projectsData,
