@@ -25,6 +25,7 @@ import { Route as AuthenticatedRegistrationCompleteImport } from './routes/_auth
 import { Route as AuthenticatedRegistrationAddProjectsImport } from './routes/_authenticated/registration/add-projects'
 import { Route as AuthenticatedDashboardProfileImport } from './routes/_authenticated/_dashboard/profile'
 import { Route as AuthenticatedDashboardProjectsIndexImport } from './routes/_authenticated/_dashboard/projects/index'
+import { Route as AuthenticatedDashboardProjectsSubmissionPackagesNewManagementPlanIndexImport } from './routes/_authenticated/_dashboard/projects/submission-packages/new-management-plan/index'
 
 // Create Virtual Routes
 
@@ -108,6 +109,14 @@ const AuthenticatedDashboardProjectsIndexRoute =
     path: '/projects/',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
+
+const AuthenticatedDashboardProjectsSubmissionPackagesNewManagementPlanIndexRoute =
+  AuthenticatedDashboardProjectsSubmissionPackagesNewManagementPlanIndexImport.update(
+    {
+      path: '/projects/submission-packages/new-management-plan/',
+      getParentRoute: () => AuthenticatedDashboardRoute,
+    } as any,
+  )
 
 // Populate the FileRoutesByPath interface
 
@@ -204,6 +213,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardProjectsIndexImport
       parentRoute: typeof AuthenticatedDashboardImport
     }
+    '/_authenticated/_dashboard/projects/submission-packages/new-management-plan/': {
+      id: '/_authenticated/_dashboard/projects/submission-packages/new-management-plan/'
+      path: '/projects/submission-packages/new-management-plan'
+      fullPath: '/projects/submission-packages/new-management-plan'
+      preLoaderRoute: typeof AuthenticatedDashboardProjectsSubmissionPackagesNewManagementPlanIndexImport
+      parentRoute: typeof AuthenticatedDashboardImport
+    }
   }
 }
 
@@ -216,6 +232,7 @@ export const routeTree = rootRoute.addChildren({
       AuthenticatedDashboardProfileRoute,
       AuthenticatedDashboardAboutpageLazyRoute,
       AuthenticatedDashboardProjectsIndexRoute,
+      AuthenticatedDashboardProjectsSubmissionPackagesNewManagementPlanIndexRoute,
     }),
     AuthenticatedAdminLoginRoute,
     AuthenticatedRegistrationAddProjectsRoute,
@@ -270,7 +287,8 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_authenticated/_dashboard/profile",
         "/_authenticated/_dashboard/aboutpage",
-        "/_authenticated/_dashboard/projects/"
+        "/_authenticated/_dashboard/projects/",
+        "/_authenticated/_dashboard/projects/submission-packages/new-management-plan/"
       ]
     },
     "/_authenticated/admin-login": {
@@ -299,6 +317,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/_dashboard/projects/": {
       "filePath": "_authenticated/_dashboard/projects/index.tsx",
+      "parent": "/_authenticated/_dashboard"
+    },
+    "/_authenticated/_dashboard/projects/submission-packages/new-management-plan/": {
+      "filePath": "_authenticated/_dashboard/projects/submission-packages/new-management-plan/index.tsx",
       "parent": "/_authenticated/_dashboard"
     }
   }

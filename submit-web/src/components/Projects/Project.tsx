@@ -95,7 +95,7 @@ export const Project = ({ accountProject }: ProjectParam) => {
               <Typography variant="h4" fontWeight={400}>
                 Management Plans
               </Typography>
-              <ProjectStatus bold status={PROJECT_STATUS.POST_DECISION} />
+              <ProjectStatus status={PROJECT_STATUS.POST_DECISION} />
             </CardInnerBox>
             <CardInnerBox>
               <Button>
