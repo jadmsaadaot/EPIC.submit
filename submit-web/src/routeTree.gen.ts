@@ -27,6 +27,7 @@ import { Route as AuthenticatedDashboardProfileImport } from './routes/_authenti
 import { Route as AuthenticatedDashboardUsersIndexImport } from './routes/_authenticated/_dashboard/users/index'
 import { Route as AuthenticatedDashboardProjectsIndexImport } from './routes/_authenticated/_dashboard/projects/index'
 import { Route as AuthenticatedDashboardEaoPlansIndexImport } from './routes/_authenticated/_dashboard/eao-plans/index'
+import { Route as AuthenticatedDashboardProjectsProjectIdImport } from './routes/_authenticated/_dashboard/projects/$projectId'
 import { Route as AuthenticatedDashboardEaoPlansPlanIdImport } from './routes/_authenticated/_dashboard/eao-plans/$planId'
 
 // Create Virtual Routes
@@ -121,6 +122,12 @@ const AuthenticatedDashboardProjectsIndexRoute =
 const AuthenticatedDashboardEaoPlansIndexRoute =
   AuthenticatedDashboardEaoPlansIndexImport.update({
     path: '/eao-plans/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+
+const AuthenticatedDashboardProjectsProjectIdRoute =
+  AuthenticatedDashboardProjectsProjectIdImport.update({
+    path: '/projects/$projectId',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 
@@ -225,6 +232,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardEaoPlansPlanIdImport
       parentRoute: typeof AuthenticatedDashboardImport
     }
+    '/_authenticated/_dashboard/projects/$projectId': {
+      id: '/_authenticated/_dashboard/projects/$projectId'
+      path: '/projects/$projectId'
+      fullPath: '/projects/$projectId'
+      preLoaderRoute: typeof AuthenticatedDashboardProjectsProjectIdImport
+      parentRoute: typeof AuthenticatedDashboardImport
+    }
     '/_authenticated/_dashboard/eao-plans/': {
       id: '/_authenticated/_dashboard/eao-plans/'
       path: '/eao-plans'
@@ -258,6 +272,7 @@ export const routeTree = rootRoute.addChildren({
       AuthenticatedDashboardProfileRoute,
       AuthenticatedDashboardAboutpageLazyRoute,
       AuthenticatedDashboardEaoPlansPlanIdRoute,
+      AuthenticatedDashboardProjectsProjectIdRoute,
       AuthenticatedDashboardEaoPlansIndexRoute,
       AuthenticatedDashboardProjectsIndexRoute,
       AuthenticatedDashboardUsersIndexRoute,
@@ -316,6 +331,7 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/_dashboard/profile",
         "/_authenticated/_dashboard/aboutpage",
         "/_authenticated/_dashboard/eao-plans/$planId",
+        "/_authenticated/_dashboard/projects/$projectId",
         "/_authenticated/_dashboard/eao-plans/",
         "/_authenticated/_dashboard/projects/",
         "/_authenticated/_dashboard/users/"
@@ -347,6 +363,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/_dashboard/eao-plans/$planId": {
       "filePath": "_authenticated/_dashboard/eao-plans/$planId.tsx",
+      "parent": "/_authenticated/_dashboard"
+    },
+    "/_authenticated/_dashboard/projects/$projectId": {
+      "filePath": "_authenticated/_dashboard/projects/$projectId.tsx",
       "parent": "/_authenticated/_dashboard"
     },
     "/_authenticated/_dashboard/eao-plans/": {
