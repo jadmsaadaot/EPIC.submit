@@ -4,7 +4,10 @@ import { MANAGEMENT_PLAN_FORM_STEPS } from "./constants";
 import { Box } from "@mui/material";
 import { Conditions } from "./Conditions";
 
-export const TabPanel = () => {
+type TabPanelProps = {
+  handleSubmit?: () => void;
+};
+export const TabPanel: React.FC<TabPanelProps> = () => {
   const { step } = useManagementPlanForm();
   return (
     <Box mt={"2em"}>

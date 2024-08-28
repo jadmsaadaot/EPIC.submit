@@ -11,3 +11,26 @@ export const stepLabels = [
   "Requirements",
   "Contact Information",
 ];
+
+export const dummyConditions = [
+  {
+    id: 1,
+    name: "Condition 1",
+  },
+  {
+    id: 2,
+    name: "Condition 2",
+  },
+  {
+    id: 3,
+    name: "Condition 3",
+  },
+  {
+    id: 4,
+    name: "Condition 4",
+  },
+  {
+    id: 5,
+    name: "Condition 5",
+  },
+];
