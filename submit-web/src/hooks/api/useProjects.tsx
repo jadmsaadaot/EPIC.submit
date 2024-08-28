@@ -66,14 +66,14 @@ type GetProjectsByIdParams = {
   projectId?: number;
 };
 const getProjectById = ({ projectId }: GetProjectsByIdParams) => {
-  return request<AccountProject[]>({ url: `/projects/${projectId}` });
+  return request<AccountProject>({ url: `/projects/${projectId}` });
 };
 
-type UseGetProjectsByIdParams = {
+type UseGetProjectByIdParams = {
   projectId: number;
 };
 
-export const useGetProject = ({ projectId }: UseGetProjectsByIdParams) => {
+export const useGetProject = ({ projectId }: UseGetProjectByIdParams) => {
   return useQuery({
     queryKey: ["project", projectId],
     queryFn: () => getProjectById({ projectId }),

@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useProjectById } from "@/hooks/api/useProjects";
-import { Project } from "@/models/Project";
-import { Link, useParams } from "@tanstack/react-router";
+import { useGetProject } from "@/hooks/api/useProjects";
+import { AccountProject } from "@/models/Project";
+import { useParams } from "@tanstack/react-router";
 import { Project as ProjectComponent } from "@/components/Projects/Project";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId"
 )({
   component: ProjectPage,
-  meta: () => [{ title: "Project Name" }],
+  meta: () => [{ title: "Project" }],
   notFoundComponent: () => {
     return <p>Project not found!</p>;
   },
@@ -17,9 +17,9 @@ export const Route = createFileRoute(
 function ProjectPage() {
   const { projectId: projectIdParam } = useParams({ strict: false });
   const projectId = Number(projectIdParam);
-  const { data, isError, error, isLoading } = useProjectById(projectId);
+  const { data, isError, error, isLoading } = useGetProject({ projectId });
 
-  const project: Project = data as Project;
+  const project = data as AccountProject;
 
   if (isLoading) {
     return <h2>Loading...</h2>;
