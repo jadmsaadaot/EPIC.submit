@@ -1,3 +1,4 @@
+import { Form } from "@/components/NewManagementPlan/Form";
 import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
 import { ProjectStatus } from "@/components/registration/addProjects/ProjectStatus";
 import { ContentBox } from "@/components/Shared/ContentBox";
@@ -45,23 +46,7 @@ export function NewManagementPlan() {
             >
               <YellowBar />
               <Typography variant="h5">New Submission</Typography>
-              <Grid container width={"100%"}>
-                <Grid
-                  item
-                  xl={8}
-                  lg={10}
-                  md={12}
-                  sx={{
-                    backgroundColor: "lavender",
-                    padding: "24px 0px 12px 0px",
-                  }}
-                >
-                  <Typography variant="body1">
-                    A new management plan submission has been created for the
-                    Copper Mine project.
-                  </Typography>
-                </Grid>
-              </Grid>
+              <Form />
             </Box>
           </Box>
         </ContentBox>
