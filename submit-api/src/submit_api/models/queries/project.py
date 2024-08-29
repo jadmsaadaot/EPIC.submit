@@ -22,14 +22,29 @@ class ProjectQueries:
     @classmethod
     def get_projects_by_account_id(cls, account_id: int):
         """Find projects by account_id"""
-        result = (db.session.query(AccountProject)
-                  .filter(AccountProject.account_id == account_id)
-                  .join(Project))
+        result = (
+            db.session.query(AccountProject)
+            .filter(AccountProject.account_id == account_id)
+            .join(Project)
+        )
         return result
 
     @classmethod
     def get_projects_by_proponent_id(cls, proponent_id: int):
         """Find projects by proponent_id"""
-        result = (db.session.query(Project)
-                  .filter(Project.proponent_id == proponent_id))
+        result = db.session.query(Project).filter(Project.proponent_id == proponent_id)
+        return result
+
+    @classmethod
+    def get_project_by_id(cls, account_id: int, project_id: int):
+        """Find account project by account_id and project_id"""
+        result = (
+            db.session.query(AccountProject)
+            .filter(
+                AccountProject.account_id == account_id,
+                AccountProject.project_id == project_id,
+            )
+            .join(Project)
+            .first()
+        )
         return result

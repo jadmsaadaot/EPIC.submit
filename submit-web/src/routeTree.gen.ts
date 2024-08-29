@@ -25,6 +25,7 @@ import { Route as AuthenticatedRegistrationCompleteImport } from './routes/_auth
 import { Route as AuthenticatedRegistrationAddProjectsImport } from './routes/_authenticated/registration/add-projects'
 import { Route as AuthenticatedDashboardProfileImport } from './routes/_authenticated/_dashboard/profile'
 import { Route as AuthenticatedDashboardProjectsIndexImport } from './routes/_authenticated/_dashboard/projects/index'
+import { Route as AuthenticatedDashboardProjectsProjectIdImport } from './routes/_authenticated/_dashboard/projects/$projectId'
 import { Route as AuthenticatedDashboardProjectsSubmissionPackagesNewManagementPlanIndexImport } from './routes/_authenticated/_dashboard/projects/submission-packages/new-management-plan/index'
 
 // Create Virtual Routes
@@ -107,6 +108,12 @@ const AuthenticatedDashboardProfileRoute =
 const AuthenticatedDashboardProjectsIndexRoute =
   AuthenticatedDashboardProjectsIndexImport.update({
     path: '/projects/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+
+const AuthenticatedDashboardProjectsProjectIdRoute =
+  AuthenticatedDashboardProjectsProjectIdImport.update({
+    path: '/projects/$projectId',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 
@@ -206,6 +213,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAboutpageLazyImport
       parentRoute: typeof AuthenticatedDashboardImport
     }
+    '/_authenticated/_dashboard/projects/$projectId': {
+      id: '/_authenticated/_dashboard/projects/$projectId'
+      path: '/projects/$projectId'
+      fullPath: '/projects/$projectId'
+      preLoaderRoute: typeof AuthenticatedDashboardProjectsProjectIdImport
+      parentRoute: typeof AuthenticatedDashboardImport
+    }
     '/_authenticated/_dashboard/projects/': {
       id: '/_authenticated/_dashboard/projects/'
       path: '/projects'
@@ -231,6 +245,7 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedDashboardRoute: AuthenticatedDashboardRoute.addChildren({
       AuthenticatedDashboardProfileRoute,
       AuthenticatedDashboardAboutpageLazyRoute,
+      AuthenticatedDashboardProjectsProjectIdRoute,
       AuthenticatedDashboardProjectsIndexRoute,
       AuthenticatedDashboardProjectsSubmissionPackagesNewManagementPlanIndexRoute,
     }),
@@ -287,6 +302,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_authenticated/_dashboard/profile",
         "/_authenticated/_dashboard/aboutpage",
+        "/_authenticated/_dashboard/projects/$projectId",
         "/_authenticated/_dashboard/projects/",
         "/_authenticated/_dashboard/projects/submission-packages/new-management-plan/"
       ]
@@ -313,6 +329,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_authenticated/_dashboard/aboutpage": {
       "filePath": "_authenticated/_dashboard/aboutpage.lazy.tsx",
+      "parent": "/_authenticated/_dashboard"
+    },
+    "/_authenticated/_dashboard/projects/$projectId": {
+      "filePath": "_authenticated/_dashboard/projects/$projectId.tsx",
       "parent": "/_authenticated/_dashboard"
     },
     "/_authenticated/_dashboard/projects/": {

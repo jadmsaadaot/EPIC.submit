@@ -24,10 +24,10 @@ type ProjectParam = {
 
 export const Project = ({ accountProject }: ProjectParam) => {
   const activeSubmissionPackages = accountProject.packages.filter(
-    (subPackage) => subPackage.status === PACKAGE_STATUS.IN_REVIEW.value,
+    (subPackage) => subPackage.status === PACKAGE_STATUS.IN_REVIEW.value
   );
   const pastSubmissionPackages = accountProject.packages.filter(
-    (subPackage) => subPackage.status !== PACKAGE_STATUS.IN_REVIEW.value,
+    (subPackage) => subPackage.status !== PACKAGE_STATUS.IN_REVIEW.value
   );
 
   const { name, ea_certificate } = accountProject.project;
