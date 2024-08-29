@@ -12,7 +12,12 @@ export const stepLabels = [
   "Contact Information",
 ];
 
-export const dummyConditions = [
+export type Condition = {
+  id: number;
+  name: string;
+};
+
+export const dummyConditions: Condition[] = [
   {
     id: 1,
     name: "Condition 1",
