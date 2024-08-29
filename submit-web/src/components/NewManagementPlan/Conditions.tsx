@@ -14,6 +14,7 @@ import { BCDesignTokens } from "epic.theme";
 import { useManagementPlanForm } from "./formStore";
 import { dummyConditions, stepLabels } from "./constants";
 import CloseIcon from "@mui/icons-material/Close";
+import { Unless } from "react-if";
 
 const MAX_CONDITIONS = 5;
 export const Conditions = () => {
@@ -46,9 +47,6 @@ export const Conditions = () => {
   };
 
   const handleAnotherCondition = () => {
-    if (conditionInputes.length === MAX_CONDITIONS) {
-      return;
-    }
     setConditionInputs([
       ...conditionInputes,
       Math.max(...conditionInputes) + 1,
@@ -137,16 +135,18 @@ export const Conditions = () => {
             )}
           </Grid>
         ))}
-        <Grid item xs={12}>
-          <MuiLink
-            sx={{
-              cursor: "pointer",
-            }}
-            onClick={handleAnotherCondition}
-          >
-            + Add another condition
-          </MuiLink>
-        </Grid>
+        <Unless condition={conditionInputes.length >= MAX_CONDITIONS}>
+          <Grid item xs={12}>
+            <MuiLink
+              sx={{
+                cursor: "pointer",
+              }}
+              onClick={handleAnotherCondition}
+            >
+              + Add another condition
+            </MuiLink>
+          </Grid>
+        </Unless>
       </Grid>
       {errorText && (
         <Grid item xs={12}>
