@@ -3,28 +3,18 @@ import { useManagementPlanForm } from "./formStore";
 import { MANAGEMENT_PLAN_FORM_STEPS } from "./constants";
 import { Box } from "@mui/material";
 import { Conditions } from "./Conditions";
+import { PlanDetails } from "./PlanDetails";
 
-type TabPanelProps = {
-  handleSubmit?: () => void;
-};
-export const TabPanel: React.FC<TabPanelProps> = () => {
+export const TabPanel = () => {
   const { step } = useManagementPlanForm();
   return (
-    <Box mt={"2em"}>
+    <Box>
       <Switch>
         <Case condition={step === MANAGEMENT_PLAN_FORM_STEPS.CONDITIONS}>
           <Conditions />
         </Case>
         <Case condition={step === MANAGEMENT_PLAN_FORM_STEPS.PLAN_DETAILS}>
-          <div>Plan Details</div>
-        </Case>
-        <Case condition={step === MANAGEMENT_PLAN_FORM_STEPS.REQUIREMENTS}>
-          <div>Requirements</div>
-        </Case>
-        <Case
-          condition={step === MANAGEMENT_PLAN_FORM_STEPS.CONTACT_INFORMATION}
-        >
-          <div>Contact Information</div>
+          <PlanDetails />
         </Case>
       </Switch>
     </Box>

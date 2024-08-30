@@ -12,11 +12,12 @@ import {
 } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import { useManagementPlanForm } from "./formStore";
-import { dummyConditions, stepLabels } from "./constants";
+import { dummyConditions, MANAGEMENT_PLAN_FORM_STEPS } from "./constants";
 import CloseIcon from "@mui/icons-material/Close";
 import { Unless } from "react-if";
 
 const MAX_CONDITIONS = 5;
+const NUM_STEPS = Object.keys(MANAGEMENT_PLAN_FORM_STEPS).length;
 export const Conditions = () => {
   const { step, setStep, reset, setFormData, formData } =
     useManagementPlanForm();
@@ -34,12 +35,12 @@ export const Conditions = () => {
     }
     const data = {
       conditions: {
-        label: "Condition(s)",
+        label: "Conditions",
         value: conditions.map((c) => c.value),
       },
     };
     setFormData({ ...formData, ...data });
-    setStep(Math.min(step + 1, stepLabels.length - 1));
+    setStep(Math.min(step + 1, NUM_STEPS - 1));
   };
 
   const handleCancel = () => {
@@ -90,7 +91,7 @@ export const Conditions = () => {
           </Typography>
         </Grid>
         {conditionInputes.map((input) => (
-          <Grid item xs={12} container spacing={1}>
+          <Grid key={`input-${input}`} item xs={12} container spacing={1}>
             <Grid item xs md={6} lg={4} key={input}>
               <TextField
                 select

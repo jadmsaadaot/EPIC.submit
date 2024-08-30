@@ -46,7 +46,7 @@ export function NewManagementPlan() {
             >
               <YellowBar />
               <Typography variant="h5">New Submission</Typography>
-              <Form handleSubmit={() => {}} />
+              <Form />
             </Box>
           </Box>
         </ContentBox>

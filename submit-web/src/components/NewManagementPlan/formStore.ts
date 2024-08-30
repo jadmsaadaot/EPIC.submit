@@ -1,14 +1,14 @@
 import { create } from "zustand";
 
-type FormData = {
+export type NewMPFormData = {
   [x: string]: {
     label: string;
     value: number | number[] | string;
   };
 };
 interface ManagementPlanFormState {
-  formData: FormData;
-  setFormData: (formData: FormData) => void;
+  formData: NewMPFormData;
+  setFormData: (formData: NewMPFormData) => void;
   step: number;
   setStep: (step: number) => void;
   reset: () => void;
@@ -16,7 +16,7 @@ interface ManagementPlanFormState {
 
 export const useManagementPlanForm = create<ManagementPlanFormState>((set) => ({
   formData: {},
-  setFormData: (formData: FormData) => set(() => ({ formData })),
+  setFormData: (formData: NewMPFormData) => set(() => ({ formData })),
   step: 0,
   setStep: (step: number) => set(() => ({ step })),
   reset: () => set(() => ({ formData: {}, step: 0 })),
