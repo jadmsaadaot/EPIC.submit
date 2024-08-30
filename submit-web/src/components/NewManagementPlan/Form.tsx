@@ -1,0 +1,30 @@
+import { Grid } from "@mui/material";
+import TabStepper from "./TabStepper";
+import { TabPanel } from "./TabPanel";
+
+type FormProps = {
+  handleSubmit?: () => void;
+};
+export const Form: React.FC<FormProps> = () => {
+  return (
+    <Grid container width={"100%"}>
+      <Grid
+        item
+        xl={8}
+        lg={10}
+        md={12}
+        sx={{
+          padding: "24px 0px 12px 0px",
+        }}
+        container
+      >
+        <Grid item xs={12}>
+          <TabStepper />
+        </Grid>
+        <Grid item xs={12}>
+          <TabPanel />
+        </Grid>
+      </Grid>
+    </Grid>
+  );
+};

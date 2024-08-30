@@ -7,9 +7,8 @@ import { EAOColors } from "epic.theme";
 
 type ProjectStatusProps = {
   status: string;
-  bold?: boolean;
 };
-export const ProjectStatus = ({ status, bold = false }: ProjectStatusProps) => {
+export const ProjectStatus = ({ status }: ProjectStatusProps) => {
   return (
     <Switch>
       <Case condition={status === PROJECT_STATUS.POST_DECISION}>
@@ -17,10 +16,10 @@ export const ProjectStatus = ({ status, bold = false }: ProjectStatusProps) => {
           spacing={1}
           direction="row"
           alignItems={"center"}
-          color={EAOColors.DecisionMain}
+          color={EAOColors.DecisionDark}
         >
           <ModeStandbyIcon />
-          <Caption2 color={EAOColors.DecisionMain} bold={bold}>
+          <Caption2 color={EAOColors.DecisionDark} bold>
             Post-Decision
           </Caption2>
         </Stack>

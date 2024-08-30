@@ -24,11 +24,9 @@ import { Route as AuthenticatedRegistrationCreateAccountImport } from './routes/
 import { Route as AuthenticatedRegistrationCompleteImport } from './routes/_authenticated/registration/complete'
 import { Route as AuthenticatedRegistrationAddProjectsImport } from './routes/_authenticated/registration/add-projects'
 import { Route as AuthenticatedDashboardProfileImport } from './routes/_authenticated/_dashboard/profile'
-import { Route as AuthenticatedDashboardUsersIndexImport } from './routes/_authenticated/_dashboard/users/index'
 import { Route as AuthenticatedDashboardProjectsIndexImport } from './routes/_authenticated/_dashboard/projects/index'
-import { Route as AuthenticatedDashboardEaoPlansIndexImport } from './routes/_authenticated/_dashboard/eao-plans/index'
 import { Route as AuthenticatedDashboardProjectsProjectIdImport } from './routes/_authenticated/_dashboard/projects/$projectId'
-import { Route as AuthenticatedDashboardEaoPlansPlanIdImport } from './routes/_authenticated/_dashboard/eao-plans/$planId'
+import { Route as AuthenticatedDashboardProjectsSubmissionPackagesNewManagementPlanIndexImport } from './routes/_authenticated/_dashboard/projects/submission-packages/new-management-plan/index'
 
 // Create Virtual Routes
 
@@ -107,21 +105,9 @@ const AuthenticatedDashboardProfileRoute =
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 
-const AuthenticatedDashboardUsersIndexRoute =
-  AuthenticatedDashboardUsersIndexImport.update({
-    path: '/users/',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-
 const AuthenticatedDashboardProjectsIndexRoute =
   AuthenticatedDashboardProjectsIndexImport.update({
     path: '/projects/',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
-
-const AuthenticatedDashboardEaoPlansIndexRoute =
-  AuthenticatedDashboardEaoPlansIndexImport.update({
-    path: '/eao-plans/',
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 
@@ -131,11 +117,13 @@ const AuthenticatedDashboardProjectsProjectIdRoute =
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 
-const AuthenticatedDashboardEaoPlansPlanIdRoute =
-  AuthenticatedDashboardEaoPlansPlanIdImport.update({
-    path: '/eao-plans/$planId',
-    getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
+const AuthenticatedDashboardProjectsSubmissionPackagesNewManagementPlanIndexRoute =
+  AuthenticatedDashboardProjectsSubmissionPackagesNewManagementPlanIndexImport.update(
+    {
+      path: '/projects/submission-packages/new-management-plan/',
+      getParentRoute: () => AuthenticatedDashboardRoute,
+    } as any,
+  )
 
 // Populate the FileRoutesByPath interface
 
@@ -225,25 +213,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardAboutpageLazyImport
       parentRoute: typeof AuthenticatedDashboardImport
     }
-    '/_authenticated/_dashboard/eao-plans/$planId': {
-      id: '/_authenticated/_dashboard/eao-plans/$planId'
-      path: '/eao-plans/$planId'
-      fullPath: '/eao-plans/$planId'
-      preLoaderRoute: typeof AuthenticatedDashboardEaoPlansPlanIdImport
-      parentRoute: typeof AuthenticatedDashboardImport
-    }
     '/_authenticated/_dashboard/projects/$projectId': {
       id: '/_authenticated/_dashboard/projects/$projectId'
       path: '/projects/$projectId'
       fullPath: '/projects/$projectId'
       preLoaderRoute: typeof AuthenticatedDashboardProjectsProjectIdImport
-      parentRoute: typeof AuthenticatedDashboardImport
-    }
-    '/_authenticated/_dashboard/eao-plans/': {
-      id: '/_authenticated/_dashboard/eao-plans/'
-      path: '/eao-plans'
-      fullPath: '/eao-plans'
-      preLoaderRoute: typeof AuthenticatedDashboardEaoPlansIndexImport
       parentRoute: typeof AuthenticatedDashboardImport
     }
     '/_authenticated/_dashboard/projects/': {
@@ -253,11 +227,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardProjectsIndexImport
       parentRoute: typeof AuthenticatedDashboardImport
     }
-    '/_authenticated/_dashboard/users/': {
-      id: '/_authenticated/_dashboard/users/'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof AuthenticatedDashboardUsersIndexImport
+    '/_authenticated/_dashboard/projects/submission-packages/new-management-plan/': {
+      id: '/_authenticated/_dashboard/projects/submission-packages/new-management-plan/'
+      path: '/projects/submission-packages/new-management-plan'
+      fullPath: '/projects/submission-packages/new-management-plan'
+      preLoaderRoute: typeof AuthenticatedDashboardProjectsSubmissionPackagesNewManagementPlanIndexImport
       parentRoute: typeof AuthenticatedDashboardImport
     }
   }
@@ -271,11 +245,9 @@ export const routeTree = rootRoute.addChildren({
     AuthenticatedDashboardRoute: AuthenticatedDashboardRoute.addChildren({
       AuthenticatedDashboardProfileRoute,
       AuthenticatedDashboardAboutpageLazyRoute,
-      AuthenticatedDashboardEaoPlansPlanIdRoute,
       AuthenticatedDashboardProjectsProjectIdRoute,
-      AuthenticatedDashboardEaoPlansIndexRoute,
       AuthenticatedDashboardProjectsIndexRoute,
-      AuthenticatedDashboardUsersIndexRoute,
+      AuthenticatedDashboardProjectsSubmissionPackagesNewManagementPlanIndexRoute,
     }),
     AuthenticatedAdminLoginRoute,
     AuthenticatedRegistrationAddProjectsRoute,
@@ -330,11 +302,9 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_authenticated/_dashboard/profile",
         "/_authenticated/_dashboard/aboutpage",
-        "/_authenticated/_dashboard/eao-plans/$planId",
         "/_authenticated/_dashboard/projects/$projectId",
-        "/_authenticated/_dashboard/eao-plans/",
         "/_authenticated/_dashboard/projects/",
-        "/_authenticated/_dashboard/users/"
+        "/_authenticated/_dashboard/projects/submission-packages/new-management-plan/"
       ]
     },
     "/_authenticated/admin-login": {
@@ -361,24 +331,16 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/_dashboard/aboutpage.lazy.tsx",
       "parent": "/_authenticated/_dashboard"
     },
-    "/_authenticated/_dashboard/eao-plans/$planId": {
-      "filePath": "_authenticated/_dashboard/eao-plans/$planId.tsx",
-      "parent": "/_authenticated/_dashboard"
-    },
     "/_authenticated/_dashboard/projects/$projectId": {
       "filePath": "_authenticated/_dashboard/projects/$projectId.tsx",
-      "parent": "/_authenticated/_dashboard"
-    },
-    "/_authenticated/_dashboard/eao-plans/": {
-      "filePath": "_authenticated/_dashboard/eao-plans/index.tsx",
       "parent": "/_authenticated/_dashboard"
     },
     "/_authenticated/_dashboard/projects/": {
       "filePath": "_authenticated/_dashboard/projects/index.tsx",
       "parent": "/_authenticated/_dashboard"
     },
-    "/_authenticated/_dashboard/users/": {
-      "filePath": "_authenticated/_dashboard/users/index.tsx",
+    "/_authenticated/_dashboard/projects/submission-packages/new-management-plan/": {
+      "filePath": "_authenticated/_dashboard/projects/submission-packages/new-management-plan/index.tsx",
       "parent": "/_authenticated/_dashboard"
     }
   }
