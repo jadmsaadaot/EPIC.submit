@@ -3,7 +3,7 @@ import { create } from "zustand";
 type FormData = {
   [x: string]: {
     label: string;
-    value: any;
+    value: number | number[] | string;
   };
 };
 interface ManagementPlanFormState {

@@ -34,7 +34,7 @@ export const Conditions = () => {
     }
     const data = {
       conditions: {
-        label: "Conditions",
+        label: "Condition(s)",
         value: conditions.map((c) => c.value),
       },
     };
