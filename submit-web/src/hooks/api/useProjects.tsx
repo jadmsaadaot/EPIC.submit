@@ -63,27 +63,22 @@ export const useGetProjects = ({
 };
 
 type GetProjectsByIdParams = {
-  accountId?: number;
-  projectId?: number;
+  projectId: number;
 };
-const getProjectById = ({ accountId, projectId }: GetProjectsByIdParams) => {
+const getProjectById = ({ projectId }: GetProjectsByIdParams) => {
   return request<AccountProject>({
-    url: `projects/${projectId}/accounts/${accountId}`,
+    url: `projects/${projectId}`,
   });
 };
 
 type UseGetProjectByIdParams = {
-  accountId: number;
   projectId: number;
 };
 
-export const useGetProject = ({
-  accountId,
-  projectId,
-}: UseGetProjectByIdParams) => {
+export const useGetProject = ({ projectId }: UseGetProjectByIdParams) => {
   return useQuery({
     queryKey: ["project", projectId],
-    queryFn: () => getProjectById({ accountId, projectId }),
+    queryFn: () => getProjectById({ projectId }),
     enabled: Boolean(projectId),
   });
 };

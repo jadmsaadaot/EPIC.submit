@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Container } from "@mui/material";
+import { Grid } from "@mui/material";
 
 import { useGetProjects } from "@/hooks/api/useProjects";
 import { useAccount } from "@/store/accountStore";
@@ -7,6 +7,7 @@ import { Else, If, Then } from "react-if";
 import { Projects, ProjectsSkeleton } from "@/components/Projects";
 import { useEffect } from "react";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
+import { PageGrid } from "@/components/Shared/PageGrid";
 
 export const Route = createFileRoute("/_authenticated/_dashboard/projects/")({
   component: ProjectsPage,
@@ -34,15 +35,17 @@ export function ProjectsPage() {
   }
 
   return (
-    <Container maxWidth="xl" sx={{ mt: 2 }}>
-      <If condition={isProjectsLoading}>
-        <Then>
-          <ProjectsSkeleton />
-        </Then>
-        <Else>
-          <Projects accountProjects={projectsData} />
-        </Else>
-      </If>
-    </Container>
+    <PageGrid>
+      <Grid item xs={12} lg={10}>
+        <If condition={isProjectsLoading}>
+          <Then>
+            <ProjectsSkeleton />
+          </Then>
+          <Else>
+            <Projects accountProjects={projectsData} />
+          </Else>
+        </If>
+      </Grid>
+    </PageGrid>
   );
 }

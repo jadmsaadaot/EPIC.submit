@@ -100,7 +100,7 @@ class Project(Resource):
 
 @cors_preflight("GET, OPTIONS, POST")
 @API.route(
-    "/<int:project_id>/accounts/<int:account_id>",
+    "/<int:project_id>",
     methods=["POST", "GET", "OPTIONS"],
 )
 class Projects(Resource):
@@ -114,7 +114,7 @@ class Projects(Resource):
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
     @cors.crossdomain(origin="*")
-    def get(account_id, project_id):
+    def get(project_id):
         """Get projects by proponent id."""
-        project = ProjectService.get_project_by_id(account_id, project_id)
+        project = ProjectService.get_project_by_id(project_id)
         return AccountProjectSchema().dump(project), HTTPStatus.OK
