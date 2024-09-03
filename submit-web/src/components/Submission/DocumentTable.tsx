@@ -11,7 +11,6 @@ import {
 } from "@mui/material";
 import PackageStatusChip from "../Projects/ProjectStatusChip";
 import { BCDesignTokens } from "epic.theme";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { PackageStatus } from "@/models/Package";
 
 export interface Document {

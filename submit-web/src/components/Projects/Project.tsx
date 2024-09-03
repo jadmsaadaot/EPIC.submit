@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Paper, styled, Typography } from "@mui/material";
+import { Box, Button, Divider, styled, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import AddIcon from "@mui/icons-material/Add";
 import { ProjectStatus } from "../registration/addProjects/ProjectStatus";
