@@ -17,9 +17,11 @@ import { SubmissionPackage } from "@/models/Package";
 export default function SubmissionPackageTable({
   submissionPackages,
   headless,
+  onSubmissionClick,
 }: {
   submissionPackages: Array<SubmissionPackage>;
   headless?: boolean;
+  onSubmissionClick: (submissionId: number) => void;
 }) {
   return (
     <TableContainer component={Box} sx={{ height: "100%" }}>
@@ -86,6 +88,8 @@ export default function SubmissionPackageTable({
                     display: "flex",
                     alignItems: "center",
                   }}
+                  component={"button"}
+                  onClick={() => onSubmissionClick(subPackage.id)}
                 >
                   <Typography
                     variant="h5"
