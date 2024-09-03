@@ -9,7 +9,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/submission-packages/new-management-plan/",
+  "/_authenticated/_dashboard/projects/$projectId/new-submission",
 )({
   component: NewManagementPlan,
 });
@@ -46,7 +46,7 @@ export function NewManagementPlan() {
             >
               <YellowBar />
               <Typography variant="h5">New Submission</Typography>
-              <Form handleSubmit={() => {}} />
+              <Form />
             </Box>
           </Box>
         </ContentBox>

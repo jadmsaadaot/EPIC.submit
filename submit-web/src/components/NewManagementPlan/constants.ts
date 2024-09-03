@@ -1,20 +1,14 @@
 export const MANAGEMENT_PLAN_FORM_STEPS = {
   CONDITIONS: 0,
   PLAN_DETAILS: 1,
-  REQUIREMENTS: 2,
-  CONTACT_INFORMATION: 3,
 };
-
-export const stepLabels = [
-  "Conditions(s)",
-  "Plan Details",
-  "Requirements",
-  "Contact Information",
-];
 
 export type Condition = {
   id: number;
   name: string;
+  deliverable_name?: string;
+  stakeholders_to_consult?: string[];
+  fn_consultation_required?: boolean;
 };
 
 export const dummyConditions: Condition[] = [
@@ -39,3 +33,15 @@ export const dummyConditions: Condition[] = [
     name: "Condition 5",
   },
 ];
+
+export const dummyFullCondition: Condition = {
+  id: 1,
+  name: "1",
+  deliverable_name: "Wildlife plan",
+  stakeholders_to_consult: [
+    "BC Ministry of Forests",
+    "Fort Nelson First Nation",
+    "Oil and Gas Commission",
+  ],
+  fn_consultation_required: true,
+};

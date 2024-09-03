@@ -9,9 +9,9 @@ class ProjectService:
     """Project management service."""
 
     @classmethod
-    def get_project_by_id(cls, account_id, project_id):
+    def get_project_by_id(cls, project_id):
         """Get project by id."""
-        db_project = ProjectQueries.get_project_by_id(account_id, project_id)
+        db_project = AccountProjectModel.find_by_id(project_id)
         return db_project
 
     @classmethod
