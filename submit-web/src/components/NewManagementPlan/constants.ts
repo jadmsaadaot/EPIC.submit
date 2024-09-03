@@ -1,14 +1,8 @@
+import { Condition } from "./types";
+
 export const MANAGEMENT_PLAN_FORM_STEPS = {
   CONDITIONS: 0,
   PLAN_DETAILS: 1,
-};
-
-export type Condition = {
-  id: number;
-  name: string;
-  deliverable_name?: string;
-  stakeholders_to_consult?: string[];
-  fn_consultation_required?: boolean;
 };
 
 export const dummyConditions: Condition[] = [

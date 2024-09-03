@@ -22,20 +22,22 @@ export const Conditions = () => {
   const { step, setStep, reset, setFormData, formData } =
     useManagementPlanForm();
 
-  const [conditionInputes, setConditionInputs] = useState([0]);
+  const [conditionInputs, setConditionInputs] = useState(
+    Array.from(formData.conditions?.value || [0], (_, i) => i),
+  );
   const [conditions, setConditions] = useState<
     { key: number; value: number }[]
-  >([]);
+  >(formData.conditions?.value.map((c, i) => ({ key: i, value: c })) || []);
   const [errorText, setErrorText] = useState<string | null>(null);
 
   const handleNext = () => {
-    if (conditions.length !== conditionInputes.length) {
+    if (conditions.length !== conditionInputs.length) {
       setErrorText("Please select a condition for each input");
       return;
     }
     const data = {
       conditions: {
-        label: "Conditions",
+        label: "Condition(s)",
         value: conditions.map((c) => c.value),
       },
     };
@@ -48,10 +50,7 @@ export const Conditions = () => {
   };
 
   const handleAnotherCondition = () => {
-    setConditionInputs([
-      ...conditionInputes,
-      Math.max(...conditionInputes) + 1,
-    ]);
+    setConditionInputs([...conditionInputs, Math.max(...conditionInputs) + 1]);
   };
 
   return (
@@ -90,7 +89,7 @@ export const Conditions = () => {
             Please note: you can only submit one Management Plan per submission
           </Typography>
         </Grid>
-        {conditionInputes.map((input) => (
+        {conditionInputs.map((input) => (
           <Grid key={`input-${input}`} item xs={12} container spacing={1}>
             <Grid item xs md={6} lg={4} key={input}>
               <TextField
@@ -125,7 +124,7 @@ export const Conditions = () => {
                 <IconButton
                   onClick={() => {
                     setConditionInputs(
-                      conditionInputes.filter((c) => c !== input),
+                      conditionInputs.filter((c) => c !== input),
                     );
                     setConditions(conditions.filter((c) => c.key !== input));
                   }}
@@ -136,7 +135,7 @@ export const Conditions = () => {
             )}
           </Grid>
         ))}
-        <Unless condition={conditionInputes.length >= MAX_CONDITIONS}>
+        <Unless condition={conditionInputs.length >= MAX_CONDITIONS}>
           <Grid item xs={12}>
             <MuiLink
               sx={{

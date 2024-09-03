@@ -1,8 +1,10 @@
 import { Form } from "@/components/NewManagementPlan/Form";
+import { NewManagementPlanForm } from "@/components/NewManagementPlan/types";
 import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
 import { ProjectStatus } from "@/components/registration/addProjects/ProjectStatus";
 import { ContentBox } from "@/components/Shared/ContentBox";
 import { PageGrid } from "@/components/Shared/PageGrid";
+import { SUBMISSION_PACKAGE_TYPE } from "@/components/Shared/types";
 import { YellowBar } from "@/components/Shared/YellowBar";
 import { Box, Grid, Typography } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
@@ -15,6 +17,15 @@ export const Route = createFileRoute(
 });
 
 export function NewManagementPlan() {
+  const onCreateSubmissionPackage = (metadata: NewManagementPlanForm) => {
+    const { name, ...restMetadata } = metadata;
+    const newSubmissionPackageRequest = {
+      name: metadata.name?.value,
+      metadata: restMetadata,
+      type: SUBMISSION_PACKAGE_TYPE.MANAGEMENT_PLAN,
+    };
+    return newSubmissionPackageRequest;
+  };
   return (
     <PageGrid>
       <Grid item xs={12}>
@@ -46,7 +57,7 @@ export function NewManagementPlan() {
             >
               <YellowBar />
               <Typography variant="h5">New Submission</Typography>
-              <Form />
+              <Form onSubmit={onCreateSubmissionPackage} />
             </Box>
           </Box>
         </ContentBox>

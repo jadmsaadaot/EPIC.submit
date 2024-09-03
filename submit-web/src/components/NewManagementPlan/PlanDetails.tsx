@@ -15,12 +15,16 @@ import { When } from "react-if";
 import { useState } from "react";
 import { useManagementPlanForm } from "./formStore";
 import { theme } from "@/styles/theme";
+import { NewManagementPlanForm } from "./types";
 
 const YES = "yes";
 const NO = "no";
 
-export const PlanDetails = () => {
-  const { step, setStep, reset } = useManagementPlanForm();
+type PlanDetailsProps = {
+  onSubmit: (formData: NewManagementPlanForm) => void;
+};
+export const PlanDetails = ({ onSubmit }: PlanDetailsProps) => {
+  const { step, setStep, reset, formData } = useManagementPlanForm();
   const [isCorrect, setIsCorrect] = useState<string>(YES);
 
   const handleIsCorrectChange = (
@@ -38,7 +42,14 @@ export const PlanDetails = () => {
   };
 
   const handleCreateSubmission = () => {
-    // create submission
+    const managementPlanName = dummyFullCondition.deliverable_name || "";
+    onSubmit({
+      name: {
+        label: managementPlanName,
+        value: managementPlanName,
+      },
+      ...formData,
+    });
   };
   return (
     <TabBox title="Plan Details">
