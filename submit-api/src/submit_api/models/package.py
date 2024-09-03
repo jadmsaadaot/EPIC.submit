@@ -33,3 +33,4 @@ class Package(BaseModel):
     status = Column(Enum(PackageStatus), nullable=False, default=PackageStatus.IN_REVIEW)
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
+    meta = db.relationship('PackageMetadata', backref='package', lazy='joined')

@@ -19,3 +19,10 @@ class PackageType(BaseModel):
     id = Column(db.Integer, primary_key=True, autoincrement=True)
     name = Column(db.String(255), nullable=False)
     item_types = relationship('ItemType', secondary='package_item_types', back_populates='package_types')
+
+    __table_args__ = (db.Index('idx_package_types_name', 'name'),)
+
+    @classmethod
+    def find_by_name(cls, name: str):
+        """Return model by name."""
+        return cls.query.filter_by(name=name).first()
