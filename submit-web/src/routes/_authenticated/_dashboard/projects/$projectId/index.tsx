@@ -7,7 +7,7 @@ import { Project as ProjectComponent } from "@/components/Projects/Project";
 import { useGetProject } from "@/hooks/api/useProjects";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/$projectId/_projectLayout"
+  "/_authenticated/_dashboard/projects/$projectId/",
 )({
   component: ProjectPage,
   meta: () => [{ title: "Project" }],
