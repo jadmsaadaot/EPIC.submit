@@ -115,7 +115,7 @@ export default function SubmissionPage() {
               mb: BCDesignTokens.layoutPaddingSmall,
             }}
           >
-            <Typography variant="h5">{accountProject?.project.name}</Typography>
+            <Typography variant="h5">{submissionPackage.name}</Typography>
             <Box flexDirection={"row"} sx={{ display: "flex" }}>
               <Typography
                 color={BCDesignTokens.themeGray70}
