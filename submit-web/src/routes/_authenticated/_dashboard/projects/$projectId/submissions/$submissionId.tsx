@@ -8,6 +8,7 @@ import { PACKAGE_STATUS } from "@/models/Package";
 import { Box, Chip, Grid, Typography } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
+import { Document } from "@/components/Submission/DocumentTable";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/submissions/$submissionId"

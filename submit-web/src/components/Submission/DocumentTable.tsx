@@ -92,8 +92,8 @@ export default function DocumentTable({
                 }}
               >
                 <Link
+                  color="inherit"
                   sx={{
-                    color: BCDesignTokens.themeBlue90,
                     textDecoration: "none",
                     display: "flex",
                     alignItems: "center",
@@ -101,13 +101,12 @@ export default function DocumentTable({
                 >
                   <Typography
                     variant="h5"
-                    color={BCDesignTokens.themeBlue90}
-                    fontWeight={"500"}
+                    color="inherit"
+                    fontWeight={900}
                     sx={{ mr: 0.5 }}
                   >
                     {document.name}
                   </Typography>
-                  <ArrowForwardIosIcon fontSize="small" />
                 </Link>
               </TableCell>
               <TableCell
@@ -155,18 +154,7 @@ export default function DocumentTable({
                   py: BCDesignTokens.layoutPaddingSmall,
                 }}
               >
-                {documents?.actions.map((action) => (
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      color: BCDesignTokens.themeBlue90,
-                      cursor: "pointer",
-                      mr: 1,
-                    }}
-                  >
-                    {action}
-                  </Typography>
-                ))}
+                {documents?.actions?.map((action) => <Link>{action}</Link>)}
               </TableCell>
             </TableRow>
           ))}
