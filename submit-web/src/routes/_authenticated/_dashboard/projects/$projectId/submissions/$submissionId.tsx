@@ -96,7 +96,7 @@ export default function SubmissionPage() {
         <Box
           sx={{
             py: BCDesignTokens.layoutPaddingLarge,
-            px: BCDesignTokens.layoutPaddingSmall,
+            px: BCDesignTokens.layoutPaddingMedium,
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-start",
@@ -115,7 +115,7 @@ export default function SubmissionPage() {
               mb: BCDesignTokens.layoutPaddingSmall,
             }}
           >
-            <Typography variant="h5">{submissionPackage.name}</Typography>
+            <Typography variant="h5">{submissionPackage?.name}</Typography>
             <Box flexDirection={"row"} sx={{ display: "flex" }}>
               <Typography
                 color={BCDesignTokens.themeGray70}
@@ -124,7 +124,9 @@ export default function SubmissionPage() {
               >
                 Status:
               </Typography>
-              <PackageStatusChip status={submissionPackage?.status} />
+              <PackageStatusChip
+                status={submissionPackage?.status || "APPROVED"}
+              />
             </Box>
           </Box>
           <Grid
