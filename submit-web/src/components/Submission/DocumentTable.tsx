@@ -76,7 +76,7 @@ export default function DocumentTable({
             <TableRow
               key={`row-${document.id}`}
               component={Box}
-              sx={{ my: 1, backgroundColor: BCDesignTokens.themeBlue10 }}
+              sx={{ mb: 1, backgroundColor: BCDesignTokens.themeBlue10 }}
             >
               <TableCell
                 component="th"

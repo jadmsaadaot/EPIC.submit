@@ -1,14 +1,16 @@
-import { CardInnerBox } from "@/components/Projects/Project";
 import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
 import { ProjectStatus } from "@/components/registration/addProjects/ProjectStatus";
 import { ContentBox } from "@/components/Shared/ContentBox";
 import { YellowBar } from "@/components/Shared/YellowBar";
 import DocumentTable from "@/components/Submission/DocumentTable";
 import { PACKAGE_STATUS } from "@/models/Package";
-import { Box, Chip, Grid, Typography } from "@mui/material";
-import { createFileRoute } from "@tanstack/react-router";
+import { Box, Button, Grid, Typography } from "@mui/material";
+import { createFileRoute, useParams } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
 import { Document } from "@/components/Submission/DocumentTable";
+import { useGetProject } from "@/hooks/api/useProjects";
+import { AccountProject } from "@/models/Project";
+import PackageStatusChip from "@/components/Projects/ProjectStatusChip";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/submissions/$submissionId"
@@ -60,9 +62,23 @@ export default function SubmissionPage() {
       actions: ["Edit", "Delete"],
     },
   ];
+  const { projectId: projectIdParam, submissionId: submissionIdParam } =
+    useParams({ strict: false });
+  const projectId = Number(projectIdParam);
+  const submissionId = Number(submissionIdParam);
+  const { data } = useGetProject({
+    projectId,
+  });
+  const accountProject = data as AccountProject;
+  const submissionPackage = accountProject?.packages.find(
+    (p) => p.id === submissionId
+  );
 
   return (
-    <ContentBox title={"Copper Mine"} label={"#EAOC123213"}>
+    <ContentBox
+      title={accountProject?.project?.name}
+      label={accountProject?.project?.ea_certificate}
+    >
       <Box
         sx={{
           padding: "16px",
@@ -79,7 +95,8 @@ export default function SubmissionPage() {
         <ProjectStatus status={PROJECT_STATUS.POST_DECISION} />
         <Box
           sx={{
-            padding: "24px 16px 16px 16px",
+            py: BCDesignTokens.layoutPaddingLarge,
+            px: BCDesignTokens.layoutPaddingSmall,
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-start",
@@ -95,42 +112,74 @@ export default function SubmissionPage() {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
+              mb: BCDesignTokens.layoutPaddingSmall,
             }}
           >
-            <Typography variant="h5">WildLife management plan</Typography>
-            <Box>
-              Status: <Chip label="In Review" />
+            <Typography variant="h5">{accountProject?.project.name}</Typography>
+            <Box flexDirection={"row"} sx={{ display: "flex" }}>
+              <Typography
+                color={BCDesignTokens.themeGray70}
+                fontWeight={900}
+                sx={{ mr: 1 }}
+              >
+                Status:
+              </Typography>
+              <PackageStatusChip status={submissionPackage?.status} />
             </Box>
           </Box>
           <Grid
             container
             xs={12}
-            spacing={2}
             sx={{
               borderRadius: "4px",
               border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
+              p: 2,
             }}
+            rowSpacing={2}
           >
-            <Grid item xs={4}>
-              Container
+            <Grid item xs={4} container>
+              <Typography color={BCDesignTokens.themeGray70}>
+                Condition:
+              </Typography>
             </Grid>
-            <Grid item xs={4}>
-              Date Submitted
+            <Grid item xs={4} container>
+              <Typography color={BCDesignTokens.themeGray70}>
+                Date Submitted:
+              </Typography>{" "}
+              <Typography color={"inherit"}>
+                {submissionPackage?.submitted_on}
+              </Typography>
             </Grid>
-            <Grid item xs={4}>
-              Date Review Completed
+            <Grid item xs={4} container>
+              <Typography color={BCDesignTokens.themeGray70}>
+                Date Review Completed:
+              </Typography>
             </Grid>
-            <Grid item xs={4}>
-              Supporting Conditions:
+            <Grid item xs={4} container>
+              <Typography color={BCDesignTokens.themeGray70}>
+                Supporting Conditions:
+              </Typography>
             </Grid>
-            <Grid item xs={4}>
-              Submitted by:
+            <Grid item xs={4} container>
+              <Typography color={BCDesignTokens.themeGray70}>
+                Submitted by:
+              </Typography>
+              <Typography color={"inherit"}>
+                {submissionPackage?.submitted_by}
+              </Typography>
             </Grid>
           </Grid>
         </Box>
+        <DocumentTable documents={mockDocuments} />
+        <Box
+          sx={{
+            p: 2,
+          }}
+        >
+          <Button sx={{ mr: 1 }}>Save & Close</Button>
+          <Button>Submit Management Plan</Button>
+        </Box>
       </Box>
-      <CardInnerBox />
-      <DocumentTable documents={mockDocuments} />
     </ContentBox>
   );
 }
