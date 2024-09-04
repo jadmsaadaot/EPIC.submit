@@ -81,7 +81,7 @@ export default function SubmissionPage() {
     >
       <Box
         sx={{
-          padding: "16px",
+          padding: BCDesignTokens.layoutPaddingMedium,
           display: "flex",
           flexDirection: "column",
           borderRadius: "4px",
@@ -89,20 +89,22 @@ export default function SubmissionPage() {
           gap: BCDesignTokens.layoutPaddingSmall,
         }}
       >
-        <Typography variant="h4" fontWeight={400}>
-          Management Plans
-        </Typography>
-        <ProjectStatus status={PROJECT_STATUS.POST_DECISION} />
+        <Box sx={{ pb: BCDesignTokens.layoutPaddingSmall }}>
+          <Typography variant="h4" fontWeight={400}>
+            Management Plans
+          </Typography>
+          <ProjectStatus status={PROJECT_STATUS.POST_DECISION} />
+        </Box>
         <Box
           sx={{
-            py: BCDesignTokens.layoutPaddingLarge,
+            pt: BCDesignTokens.layoutPaddingSmall,
+            pb: BCDesignTokens.layoutPaddingMedium,
             px: BCDesignTokens.layoutPaddingMedium,
             display: "flex",
             flexDirection: "column",
             alignItems: "flex-start",
             borderRadius: "4px",
             border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
-            gap: BCDesignTokens.layoutPaddingSmall,
           }}
         >
           <YellowBar />
@@ -112,7 +114,7 @@ export default function SubmissionPage() {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              mb: BCDesignTokens.layoutPaddingSmall,
+              mb: BCDesignTokens.layoutMarginXlarge,
             }}
           >
             <Typography variant="h5">{submissionPackage?.name}</Typography>
@@ -135,7 +137,8 @@ export default function SubmissionPage() {
             sx={{
               borderRadius: "4px",
               border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
-              p: 2,
+              p: BCDesignTokens.layoutPaddingMedium,
+              pt: 0,
             }}
             rowSpacing={2}
           >
@@ -171,15 +174,15 @@ export default function SubmissionPage() {
               </Typography>
             </Grid>
           </Grid>
-        </Box>
-        <DocumentTable documents={mockDocuments} />
-        <Box
-          sx={{
-            p: 2,
-          }}
-        >
-          <Button sx={{ mr: 1 }}>Save & Close</Button>
-          <Button>Submit Management Plan</Button>
+          <DocumentTable documents={mockDocuments} />
+          <Box
+            sx={{
+              p: 2,
+            }}
+          >
+            <Button sx={{ mr: 1 }}>Save & Close</Button>
+            <Button>Submit Management Plan</Button>
+          </Box>
         </Box>
       </Box>
     </ContentBox>
