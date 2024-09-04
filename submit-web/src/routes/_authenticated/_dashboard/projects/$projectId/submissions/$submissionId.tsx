@@ -125,7 +125,7 @@ export default function SubmissionPage() {
                   <Typography
                     color={BCDesignTokens.themeGray70}
                     fontWeight={900}
-                    sx={{ mr: 1 }}
+                    sx={{ mr: BCDesignTokens.layoutMarginMedium }}
                   >
                     Status:
                   </Typography>
