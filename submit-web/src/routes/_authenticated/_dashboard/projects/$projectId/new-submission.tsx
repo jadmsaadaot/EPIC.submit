@@ -44,7 +44,7 @@ export function NewManagementPlan() {
   useEffect(() => {
     setIsOpen(isCreatingSubmissionPackagePending);
     return () => setIsOpen(false);
-  }, [isCreatingSubmissionPackagePending]);
+  }, [isCreatingSubmissionPackagePending, setIsOpen]);
 
   const onCreateSubmissionPackage = (metadata: NewManagementPlanForm) => {
     const { name, ...restMetadata } = metadata;
