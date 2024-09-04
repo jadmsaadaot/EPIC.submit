@@ -49,8 +49,8 @@ class PackageByAccountProject(Resource):
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
     @cors.crossdomain(origin="*")
-    def post(account_id):
+    def post(account_project_id):
         """Create a submission package."""
         create_package_data = PostPackageRequestSchema().load(API.payload)
-        created_package = PackageService.create_package(account_id, create_package_data)
+        created_package = PackageService.create_package(account_project_id, create_package_data)
         return PackageSchema().dump(created_package), HTTPStatus.CREATED

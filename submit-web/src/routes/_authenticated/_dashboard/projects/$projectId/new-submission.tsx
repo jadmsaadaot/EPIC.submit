@@ -3,12 +3,16 @@ import { NewManagementPlanForm } from "@/components/NewManagementPlan/types";
 import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
 import { ProjectStatus } from "@/components/registration/addProjects/ProjectStatus";
 import { ContentBox } from "@/components/Shared/ContentBox";
+import { useLoaderBackdrop } from "@/components/Shared/Overlays/loaderBackdropStore";
 import { PageGrid } from "@/components/Shared/PageGrid";
+import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { SUBMISSION_PACKAGE_TYPE } from "@/components/Shared/types";
 import { YellowBar } from "@/components/Shared/YellowBar";
+import { useCreateSubmissionPackage } from "@/hooks/api/usePackages";
 import { Box, Grid, Typography } from "@mui/material";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
+import { useEffect } from "react";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/new-submission",
@@ -17,6 +21,31 @@ export const Route = createFileRoute(
 });
 
 export function NewManagementPlan() {
+  // get the projectId from the route
+  const { projectId } = Route.useParams();
+  const { setIsOpen } = useLoaderBackdrop();
+  const navigate = useNavigate();
+
+  const onCreateFailure = () =>
+    notify.error("Failed to create submission package");
+
+  const onCreateSuccess = () => {
+    notify.success("Submission package created successfully");
+    navigate({ to: `/projects/${projectId}` });
+  };
+  const {
+    mutate: createSubmissionPackage,
+    isPending: isCreatingSubmissionPackagePending,
+  } = useCreateSubmissionPackage({
+    onError: onCreateFailure,
+    onSuccess: onCreateSuccess,
+  });
+
+  useEffect(() => {
+    setIsOpen(isCreatingSubmissionPackagePending);
+    return () => setIsOpen(false);
+  }, [isCreatingSubmissionPackagePending]);
+
   const onCreateSubmissionPackage = (metadata: NewManagementPlanForm) => {
     const { name, ...restMetadata } = metadata;
     const newSubmissionPackageRequest = {
@@ -24,8 +53,13 @@ export function NewManagementPlan() {
       metadata: restMetadata,
       type: SUBMISSION_PACKAGE_TYPE.MANAGEMENT_PLAN,
     };
+    createSubmissionPackage({
+      accountProjectId: Number(projectId),
+      data: newSubmissionPackageRequest,
+    });
     return newSubmissionPackageRequest;
   };
+
   return (
     <PageGrid>
       <Grid item xs={12}>
