@@ -1,6 +1,7 @@
 import { AccountProject } from "@/models/Project";
-import { Skeleton, Stack } from "@mui/material";
+import { Stack } from "@mui/material";
 import { Project } from "./Project";
+import { ContentBoxSkeleton } from "../Shared/ContentBox/ContentBoxSkeleton";
 
 type ProjectsParams = {
   accountProjects?: AccountProject[];
@@ -19,9 +20,9 @@ export const Projects = ({ accountProjects }: ProjectsParams) => {
 export const ProjectsSkeleton = () => {
   return (
     <Stack spacing={2} direction={"column"}>
-      <Skeleton variant="rectangular" height={690} width={1334} />
-      <Skeleton variant="rectangular" height={690} width={1334} />
-      <Skeleton variant="rectangular" height={690} width={1334} />
+      <ContentBoxSkeleton />
+      <ContentBoxSkeleton />
+      <ContentBoxSkeleton />
     </Stack>
   );
 };

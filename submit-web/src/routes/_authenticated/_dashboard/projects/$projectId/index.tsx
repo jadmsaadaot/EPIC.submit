@@ -1,6 +1,5 @@
 import { ProjectsSkeleton } from "@/components/Projects";
 import { PageGrid } from "@/components/Shared/PageGrid";
-import { AccountProject } from "@/models/Project";
 import { Grid } from "@mui/material";
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { Project as ProjectComponent } from "@/components/Projects/Project";
@@ -19,10 +18,15 @@ export const Route = createFileRoute(
 function ProjectPage() {
   const { projectId: projectIdParam } = useParams({ strict: false });
   const projectId = Number(projectIdParam);
-  const { data, isError, error, isLoading } = useGetProject({
+  const {
+    data: project,
+    isError,
+    error,
+    isLoading,
+  } = useGetProject({
     projectId,
   });
-  const project = data as AccountProject;
+
   if (isLoading) {
     return (
       <PageGrid>
@@ -34,6 +38,8 @@ function ProjectPage() {
   if (isError) {
     return <h2>{error.message}</h2>;
   }
+
+  if (!project) return null;
 
   return (
     <PageGrid>
