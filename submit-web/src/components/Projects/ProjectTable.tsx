@@ -88,6 +88,7 @@ export default function SubmissionPackageTable({
                     display: "flex",
                     alignItems: "center",
                   }}
+                  component={"button"}
                   onClick={() => onSubmissionClick(subPackage.id)}
                 >
                   <Typography

@@ -1,4 +1,4 @@
-import { Box, Container, Paper, PaperProps, Typography } from "@mui/material";
+import { Box, Paper, PaperProps, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 
 type ContentBoxProps = {
@@ -12,48 +12,46 @@ export const ContentBox = ({
   ...rest
 }: ContentBoxProps) => {
   return (
-    <Container maxWidth="xl">
-      <Paper {...rest}>
-        <Box
+    <Paper {...rest}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          width: "auto",
+          padding: "12px 24px",
+          backgroundColor: BCDesignTokens.surfaceColorBackgroundLightBlue,
+        }}
+      >
+        <Typography
+          variant="h3"
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            width: "auto",
-            padding: "12px 24px",
-            backgroundColor: BCDesignTokens.surfaceColorBackgroundLightBlue,
+            fontWeight: "bold",
           }}
         >
+          {title}
+        </Typography>
+        {label && (
           <Typography
-            variant="h3"
+            variant="h4"
+            color={BCDesignTokens.themeGray70}
             sx={{
-              fontWeight: "bold",
+              mr: 2,
+              fontWeight: 400,
             }}
           >
-            {title}
+            {label}
           </Typography>
-          {label && (
-            <Typography
-              variant="h4"
-              color={BCDesignTokens.themeGray70}
-              sx={{
-                mr: 2,
-                fontWeight: 400,
-              }}
-            >
-              {label}
-            </Typography>
-          )}
-        </Box>
-        <Box
-          sx={{
-            padding: "24px 16px 16px 16px",
-            alignSelf: "stretch",
-          }}
-        >
-          {children}
-        </Box>
-      </Paper>
-    </Container>
+        )}
+      </Box>
+      <Box
+        sx={{
+          padding: "24px 16px 16px 16px",
+          alignSelf: "stretch",
+        }}
+      >
+        {children}
+      </Box>
+    </Paper>
   );
 };

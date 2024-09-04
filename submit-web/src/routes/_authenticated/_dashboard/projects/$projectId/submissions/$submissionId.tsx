@@ -11,6 +11,7 @@ import { Document } from "@/components/Submission/DocumentTable";
 import { useGetProject } from "@/hooks/api/useProjects";
 import { AccountProject } from "@/models/Project";
 import PackageStatusChip from "@/components/Projects/ProjectStatusChip";
+import { PageGrid } from "@/components/Shared/PageGrid";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/submissions/$submissionId"
@@ -75,116 +76,120 @@ export default function SubmissionPage() {
   );
 
   return (
-    <ContentBox
-      title={accountProject?.project?.name}
-      label={accountProject?.project?.ea_certificate}
-    >
-      <Box
-        sx={{
-          padding: BCDesignTokens.layoutPaddingMedium,
-          display: "flex",
-          flexDirection: "column",
-          borderRadius: "4px",
-          border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
-          gap: BCDesignTokens.layoutPaddingSmall,
-        }}
-      >
-        <Box sx={{ pb: BCDesignTokens.layoutPaddingSmall }}>
-          <Typography variant="h4" fontWeight={400}>
-            Management Plans
-          </Typography>
-          <ProjectStatus status={PROJECT_STATUS.POST_DECISION} />
-        </Box>
-        <Box
-          sx={{
-            pt: BCDesignTokens.layoutPaddingSmall,
-            pb: BCDesignTokens.layoutPaddingMedium,
-            px: BCDesignTokens.layoutPaddingMedium,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "flex-start",
-            borderRadius: "4px",
-            border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
-          }}
+    <PageGrid>
+      <Grid item xs={12} lg={10}>
+        <ContentBox
+          title={accountProject?.project?.name}
+          label={accountProject?.project?.ea_certificate}
         >
-          <YellowBar />
           <Box
             sx={{
-              width: "100%",
+              padding: BCDesignTokens.layoutPaddingMedium,
               display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              mb: BCDesignTokens.layoutMarginXlarge,
-            }}
-          >
-            <Typography variant="h5">{submissionPackage?.name}</Typography>
-            <Box flexDirection={"row"} sx={{ display: "flex" }}>
-              <Typography
-                color={BCDesignTokens.themeGray70}
-                fontWeight={900}
-                sx={{ mr: 1 }}
-              >
-                Status:
-              </Typography>
-              <PackageStatusChip
-                status={submissionPackage?.status || "APPROVED"}
-              />
-            </Box>
-          </Box>
-          <Grid
-            container
-            xs={12}
-            sx={{
+              flexDirection: "column",
               borderRadius: "4px",
               border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
-              p: BCDesignTokens.layoutPaddingMedium,
-              pt: 0,
-            }}
-            rowSpacing={2}
-          >
-            <Grid item xs={4} container>
-              <Typography color={BCDesignTokens.themeGray70}>
-                Condition:
-              </Typography>
-            </Grid>
-            <Grid item xs={4} container>
-              <Typography color={BCDesignTokens.themeGray70}>
-                Date Submitted:
-              </Typography>{" "}
-              <Typography color={"inherit"}>
-                {submissionPackage?.submitted_on}
-              </Typography>
-            </Grid>
-            <Grid item xs={4} container>
-              <Typography color={BCDesignTokens.themeGray70}>
-                Date Review Completed:
-              </Typography>
-            </Grid>
-            <Grid item xs={4} container>
-              <Typography color={BCDesignTokens.themeGray70}>
-                Supporting Conditions:
-              </Typography>
-            </Grid>
-            <Grid item xs={4} container>
-              <Typography color={BCDesignTokens.themeGray70}>
-                Submitted by:
-              </Typography>
-              <Typography color={"inherit"}>
-                {submissionPackage?.submitted_by}
-              </Typography>
-            </Grid>
-          </Grid>
-          <DocumentTable documents={mockDocuments} />
-          <Box
-            sx={{
-              p: 2,
+              gap: BCDesignTokens.layoutPaddingSmall,
             }}
           >
-            <Button sx={{ mr: 1 }}>Save & Close</Button>
-            <Button>Submit Management Plan</Button>
+            <Box sx={{ pb: BCDesignTokens.layoutPaddingSmall }}>
+              <Typography variant="h4" fontWeight={400}>
+                Management Plans
+              </Typography>
+              <ProjectStatus status={PROJECT_STATUS.POST_DECISION} />
+            </Box>
+            <Box
+              sx={{
+                pt: BCDesignTokens.layoutPaddingSmall,
+                pb: BCDesignTokens.layoutPaddingMedium,
+                px: BCDesignTokens.layoutPaddingMedium,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                borderRadius: "4px",
+                border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
+              }}
+            >
+              <YellowBar />
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  mb: BCDesignTokens.layoutMarginXlarge,
+                }}
+              >
+                <Typography variant="h5">{submissionPackage?.name}</Typography>
+                <Box flexDirection={"row"} sx={{ display: "flex" }}>
+                  <Typography
+                    color={BCDesignTokens.themeGray70}
+                    fontWeight={900}
+                    sx={{ mr: 1 }}
+                  >
+                    Status:
+                  </Typography>
+                  <PackageStatusChip
+                    status={submissionPackage?.status || "APPROVED"}
+                  />
+                </Box>
+              </Box>
+              <Grid
+                container
+                xs={12}
+                sx={{
+                  borderRadius: "4px",
+                  border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
+                  p: BCDesignTokens.layoutPaddingMedium,
+                  pt: 0,
+                }}
+                rowSpacing={2}
+              >
+                <Grid item xs={4} container>
+                  <Typography color={BCDesignTokens.themeGray70}>
+                    Condition:
+                  </Typography>
+                </Grid>
+                <Grid item xs={4} container>
+                  <Typography color={BCDesignTokens.themeGray70}>
+                    Date Submitted:
+                  </Typography>{" "}
+                  <Typography color={"inherit"}>
+                    {submissionPackage?.submitted_on}
+                  </Typography>
+                </Grid>
+                <Grid item xs={4} container>
+                  <Typography color={BCDesignTokens.themeGray70}>
+                    Date Review Completed:
+                  </Typography>
+                </Grid>
+                <Grid item xs={4} container>
+                  <Typography color={BCDesignTokens.themeGray70}>
+                    Supporting Conditions:
+                  </Typography>
+                </Grid>
+                <Grid item xs={4} container>
+                  <Typography color={BCDesignTokens.themeGray70}>
+                    Submitted by:
+                  </Typography>
+                  <Typography color={"inherit"}>
+                    {submissionPackage?.submitted_by}
+                  </Typography>
+                </Grid>
+              </Grid>
+              <DocumentTable documents={mockDocuments} />
+              <Box
+                sx={{
+                  p: 2,
+                }}
+              >
+                <Button sx={{ mr: 1 }}>Save & Close</Button>
+                <Button>Submit Management Plan</Button>
+              </Box>
+            </Box>
           </Box>
-        </Box>
-      </Box>
-    </ContentBox>
+        </ContentBox>
+      </Grid>
+    </PageGrid>
   );
 }
