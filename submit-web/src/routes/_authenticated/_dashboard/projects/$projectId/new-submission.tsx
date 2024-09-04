@@ -49,7 +49,7 @@ export function NewManagementPlan() {
   const onCreateSubmissionPackage = (metadata: NewManagementPlanForm) => {
     const { name, ...restMetadata } = metadata;
     const newSubmissionPackageRequest = {
-      name: metadata.name?.value,
+      name: name?.value ?? SUBMISSION_PACKAGE_TYPE.MANAGEMENT_PLAN,
       metadata: restMetadata,
       type: SUBMISSION_PACKAGE_TYPE.MANAGEMENT_PLAN,
     };
