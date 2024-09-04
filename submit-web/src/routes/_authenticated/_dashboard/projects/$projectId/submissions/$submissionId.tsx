@@ -177,13 +177,17 @@ export default function SubmissionPage() {
                   </Typography>
                 </Grid>
               </Grid>
-              <DocumentTable documents={mockDocuments} />
+              <Box sx={{ mb: BCDesignTokens.layoutMarginXlarge }}>
+                <DocumentTable documents={mockDocuments} />
+              </Box>
               <Box
                 sx={{
-                  p: 2,
+                  pt: BCDesignTokens.layoutPaddingXlarge,
                 }}
               >
-                <Button sx={{ mr: 1 }}>Save & Close</Button>
+                <Button color="secondary" sx={{ mr: 1 }}>
+                  Save & Close
+                </Button>
                 <Button>Submit Management Plan</Button>
               </Box>
             </Box>
