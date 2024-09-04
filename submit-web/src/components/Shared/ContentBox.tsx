@@ -3,20 +3,21 @@ import { BCDesignTokens } from "epic.theme";
 
 type ContentBoxProps = {
   title: string;
+  label?: string;
 } & PaperProps;
-export const ContentBox = ({ children, title, ...rest }: ContentBoxProps) => {
+export const ContentBox = ({
+  children,
+  title,
+  label,
+  ...rest
+}: ContentBoxProps) => {
   return (
-    <Paper
-      sx={{
-        disply: "flex",
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        alignItems: "flex-start",
-      }}
-      {...rest}
-    >
+    <Paper {...rest}>
       <Box
         sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
           width: "auto",
           padding: "12px 24px",
           backgroundColor: BCDesignTokens.surfaceColorBackgroundLightBlue,
@@ -30,6 +31,18 @@ export const ContentBox = ({ children, title, ...rest }: ContentBoxProps) => {
         >
           {title}
         </Typography>
+        {label && (
+          <Typography
+            variant="h4"
+            color={BCDesignTokens.themeGray70}
+            sx={{
+              mr: 2,
+              fontWeight: 400,
+            }}
+          >
+            {label}
+          </Typography>
+        )}
       </Box>
       <Box
         sx={{
