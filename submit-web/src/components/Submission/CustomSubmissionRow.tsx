@@ -3,7 +3,11 @@ import { BCDesignTokens } from "epic.theme";
 import SubmissionStatusChip from "./SubmissionStatusChip";
 import { Document } from "./DocumentTable";
 
-export default function CustomRow({ document }: { document: Document }) {
+export default function CustomSubmissionRow({
+  document,
+}: {
+  document: Document;
+}) {
   return (
     <>
       <TableRow

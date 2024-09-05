@@ -13,8 +13,8 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState } from "react";
 import { Order, tableSort } from "../Shared/Table/utils";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
-import CustomRow from "./CustomRow";
 import { SubmissionStatus } from "@/models/Submission";
+import CustomSubmissionRow from "./CustomSubmissionRow";
 export interface Document {
   id: number;
   name: string;
@@ -88,7 +88,10 @@ export default function DocumentTable({
         </TableHead>
         <TableBody>
           {sortedDocuments?.map((document) => (
-            <CustomRow key={`custom-row-${document.id}`} document={document} />
+            <CustomSubmissionRow
+              key={`custom-row-${document.id}`}
+              document={document}
+            />
           ))}
           {sortedDocuments.length === 0 && (
             <TableRow>
