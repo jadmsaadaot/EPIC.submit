@@ -17,7 +17,7 @@ const statusStyles: Record<PackageStatus, StyleProps> = {
   },
   IN_REVIEW: {
     sx: {
-      borderRadius: 0.5,
+      borderRadius: 1,
       border: `2px solid ${BCDesignTokens.themeBlue100}`,
       background: BCDesignTokens.themeBlue20,
     },
