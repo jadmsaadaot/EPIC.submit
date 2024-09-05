@@ -6,8 +6,10 @@ import { theme } from "@/styles/theme";
 export const MainListItem = ({ route }: { route: RouteType }) => {
   const router = useRouterState();
   const currentPath = router.location.pathname;
+  const isActive =
+    currentPath === route.path || currentPath.includes(route.path);
   return (
-    <ListItem key={route.name}>
+    <ListItem key={route.name} sx={{ py: 0, pr: 0 }}>
       <Link
         to={route.path}
         style={{
@@ -20,10 +22,9 @@ export const MainListItem = ({ route }: { route: RouteType }) => {
         <ListItemButton
           sx={{
             pl: "2rem",
-            backgroundColor:
-              currentPath === route.path
-                ? alpha(theme.palette.secondary.main, 0.1)
-                : theme.palette.primary.light,
+            backgroundColor: isActive
+              ? alpha(theme.palette.secondary.main, 0.1)
+              : theme.palette.primary.light,
             borderLeft: `4px solid ${theme.palette.primary.main}`,
           }}
         >
