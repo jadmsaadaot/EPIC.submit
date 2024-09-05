@@ -1,7 +1,21 @@
 import { Grid } from "@mui/material";
 import { TabPanel } from "./TabPanel";
+import { useManagementPlanForm } from "./formStore";
+import { useEffect } from "react";
+import { NewManagementPlanForm } from "./types";
 
-export const Form = () => {
+type FormProps = {
+  onSubmit: (formData: NewManagementPlanForm) => void;
+};
+export const Form = ({ onSubmit }: FormProps) => {
+  const { reset } = useManagementPlanForm();
+
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+  }, [reset]);
+
   return (
     <Grid container width={"100%"}>
       <Grid
@@ -15,7 +29,7 @@ export const Form = () => {
         container
       >
         <Grid item xs={12}>
-          <TabPanel />
+          <TabPanel onSubmit={onSubmit} />
         </Grid>
       </Grid>
     </Grid>

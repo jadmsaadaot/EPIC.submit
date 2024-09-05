@@ -4,8 +4,12 @@ import { MANAGEMENT_PLAN_FORM_STEPS } from "./constants";
 import { Box } from "@mui/material";
 import { Conditions } from "./Conditions";
 import { PlanDetails } from "./PlanDetails";
+import { NewManagementPlanForm } from "./types";
 
-export const TabPanel = () => {
+type TabPanelProps = {
+  onSubmit: (formData: NewManagementPlanForm) => void;
+};
+export const TabPanel = ({ onSubmit }: TabPanelProps) => {
   const { step } = useManagementPlanForm();
   return (
     <Box>
@@ -14,7 +18,7 @@ export const TabPanel = () => {
           <Conditions />
         </Case>
         <Case condition={step === MANAGEMENT_PLAN_FORM_STEPS.PLAN_DETAILS}>
-          <PlanDetails />
+          <PlanDetails onSubmit={onSubmit} />
         </Case>
       </Switch>
     </Box>

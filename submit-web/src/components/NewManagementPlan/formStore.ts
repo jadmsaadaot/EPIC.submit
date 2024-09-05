@@ -1,11 +1,6 @@
 import { create } from "zustand";
+import { NewMPFormData } from "./types";
 
-export type NewMPFormData = {
-  [x: string]: {
-    label: string;
-    value: number | number[] | string;
-  };
-};
 interface ManagementPlanFormState {
   formData: NewMPFormData;
   setFormData: (formData: NewMPFormData) => void;

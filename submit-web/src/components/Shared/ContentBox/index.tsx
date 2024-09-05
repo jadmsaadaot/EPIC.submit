@@ -2,13 +2,13 @@ import { Box, Paper, PaperProps, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 
 type ContentBoxProps = {
-  title: string;
+  title?: string;
   label?: string;
 } & PaperProps;
 export const ContentBox = ({
   children,
-  title,
-  label,
+  title = "",
+  label = "",
   ...rest
 }: ContentBoxProps) => {
   return (
