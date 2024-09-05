@@ -1,4 +1,4 @@
-import { Box, Link, TableCell, TableRow, Typography } from "@mui/material";
+import { Link, TableCell, TableRow, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import SubmissionStatusChip from "./SubmissionStatusChip";
 import { Document } from "./DocumentTable";
@@ -8,7 +8,6 @@ export default function CustomRow({ document }: { document: Document }) {
     <>
       <TableRow
         key={`row-${document.id}`}
-        component={Box}
         sx={{ backgroundColor: BCDesignTokens.themeBlue10 }}
       >
         <TableCell
@@ -89,6 +88,7 @@ export default function CustomRow({ document }: { document: Document }) {
         >
           {document?.actions?.map((action) => (
             <Link
+              key={action}
               sx={{
                 mx: BCDesignTokens.layoutPaddingXsmall,
                 textDecoration: "none",
@@ -100,7 +100,7 @@ export default function CustomRow({ document }: { document: Document }) {
           ))}
         </TableCell>
       </TableRow>
-      <TableRow component={Box} sx={{ py: 1 }}>
+      <TableRow key={`empty-row-${document.id}`} sx={{ py: 1 }}>
         <TableCell
           component="th"
           scope="row"

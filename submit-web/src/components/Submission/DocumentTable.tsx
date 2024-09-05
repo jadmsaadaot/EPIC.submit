@@ -88,7 +88,7 @@ export default function DocumentTable({
         </TableHead>
         <TableBody>
           {sortedDocuments?.map((document) => (
-            <CustomRow key={document.id} document={document} />
+            <CustomRow key={`custom-row-${document.id}`} document={document} />
           ))}
           {sortedDocuments.length === 0 && (
             <TableRow>
