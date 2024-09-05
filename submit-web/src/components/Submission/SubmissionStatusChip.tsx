@@ -1,33 +1,8 @@
+import { SubmissionStatus } from "@/models/Submission";
 import { Chip } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import { EAOColors } from "epic.theme";
 
-export type SubmissionStatus =
-  | "NEW_SUBMISSION"
-  | "COMPLETED"
-  | "PARTIALLY_COMPLETE"
-  | "SUBMITTED";
-export const SUBMISSION_STATUS: Record<
-  SubmissionStatus,
-  { value: SubmissionStatus; label: string }
-> = {
-  NEW_SUBMISSION: {
-    value: "NEW_SUBMISSION",
-    label: "New Submission",
-  },
-  COMPLETED: {
-    value: "COMPLETED",
-    label: "Completed",
-  },
-  PARTIALLY_COMPLETE: {
-    value: "PARTIALLY_COMPLETE",
-    label: "Partially Complete",
-  },
-  SUBMITTED: {
-    value: "SUBMITTED",
-    label: "Submitted",
-  },
-};
 type StyleProps = {
   sx: Record<string, string | number>;
   label: string;

@@ -3,7 +3,6 @@ import { ProjectStatus } from "@/components/registration/addProjects/ProjectStat
 import { ContentBox } from "@/components/Shared/ContentBox";
 import { YellowBar } from "@/components/Shared/YellowBar";
 import DocumentTable from "@/components/Submission/DocumentTable";
-import { PACKAGE_STATUS } from "@/models/Package";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
