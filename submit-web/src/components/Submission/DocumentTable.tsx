@@ -44,7 +44,7 @@ export default function DocumentTable({
       <Table sx={{ tableLayout: "fixed" }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell colSpan={6} sx={{ color: BCDesignTokens.themeGray70 }}>
+            <TableCell colSpan={3} sx={{ color: BCDesignTokens.themeGray70 }}>
               <TableSortLabel
                 active={orderBy === "name"}
                 direction={orderBy === "name" ? order : "asc"}
@@ -57,7 +57,7 @@ export default function DocumentTable({
               </TableSortLabel>
             </TableCell>
             <TableCell
-              colSpan={2}
+              colSpan={3}
               align="right"
               sx={{ color: BCDesignTokens.themeGray70 }}
             >
@@ -195,6 +195,11 @@ export default function DocumentTable({
               </TableRow>
             </>
           ))}
+          {sortedDocuments.length === 0 && (
+            <TableRow>
+              <TableCell colSpan={12} align="center"></TableCell>
+            </TableRow>
+          )}
         </TableBody>
       </Table>
     </TableContainer>

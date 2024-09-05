@@ -23,48 +23,7 @@ export const Route = createFileRoute(
 });
 
 export default function SubmissionPage() {
-  const mockDocuments: Document[] = [
-    {
-      id: 1,
-      name: "Document 1",
-      created_by: "User A",
-      version: "1.0",
-      status: SUBMISSION_STATUS.COMPLETED.value,
-      actions: ["Edit", "Delete"],
-    },
-    {
-      id: 2,
-      name: "Document 2",
-      created_by: "User B",
-      version: "1.1",
-      status: SUBMISSION_STATUS.SUBMITTED.value,
-      actions: ["Edit", "Delete"],
-    },
-    {
-      id: 3,
-      name: "Document 3",
-      created_by: "User C",
-      version: "2.0",
-      status: SUBMISSION_STATUS.SUBMITTED.value,
-      actions: ["Edit", "Delete"],
-    },
-    {
-      id: 4,
-      name: "Document 4",
-      created_by: "User D",
-      version: "2.1",
-      status: SUBMISSION_STATUS.COMPLETED.value,
-      actions: ["Edit", "Delete"],
-    },
-    {
-      id: 5,
-      name: "Document 5",
-      created_by: "User E",
-      version: "3.0",
-      status: SUBMISSION_STATUS.SUBMITTED.value,
-      actions: ["Edit", "Delete"],
-    },
-  ];
+  const mockDocuments: Document[] = [];
   const { projectId: projectIdParam, submissionId: submissionIdParam } =
     useParams({ strict: false });
   const projectId = Number(projectIdParam);
