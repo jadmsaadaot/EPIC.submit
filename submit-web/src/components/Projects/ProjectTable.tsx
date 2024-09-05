@@ -63,82 +63,98 @@ export default function SubmissionPackageTable({
         )}
         <TableBody>
           {submissionPackages?.map((subPackage) => (
-            <TableRow
-              key={`row-${subPackage.id}`}
-              component={Box}
-              sx={{ my: 1 }}
-            >
-              <TableCell
-                component="th"
-                scope="row"
-                colSpan={6}
-                sx={{
-                  borderTop: "2px solid #F2F2F2",
-                  borderBottom: "2px solid #F2F2F2",
-                  borderLeft: "2px solid #F2F2F2",
-                  borderTopLeftRadius: 5,
-                  borderBottomLeftRadius: 5,
-                  py: BCDesignTokens.layoutPaddingSmall,
-                }}
+            <>
+              <TableRow
+                key={`row-${subPackage.id}`}
+                component={Box}
+                sx={{ my: 1 }}
               >
-                <Link
+                <TableCell
+                  component="th"
+                  scope="row"
+                  colSpan={6}
                   sx={{
-                    color: BCDesignTokens.themeBlue90,
-                    textDecoration: "none",
-                    display: "flex",
-                    alignItems: "center",
+                    borderTop: "2px solid #F2F2F2",
+                    borderBottom: "2px solid #F2F2F2",
+                    borderLeft: "2px solid #F2F2F2",
+                    borderTopLeftRadius: 5,
+                    borderBottomLeftRadius: 5,
+                    py: BCDesignTokens.layoutPaddingSmall,
                   }}
-                  component={"button"}
-                  onClick={() => onSubmissionClick(subPackage.id)}
                 >
-                  <Typography
-                    variant="h5"
-                    color={BCDesignTokens.themeBlue90}
-                    fontWeight={"500"}
-                    sx={{ mr: 0.5 }}
+                  <Link
+                    sx={{
+                      color: BCDesignTokens.themeBlue90,
+                      textDecoration: "none",
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                    component={"button"}
+                    onClick={() => onSubmissionClick(subPackage.id)}
                   >
-                    {subPackage.name}
-                  </Typography>
-                  <ArrowForwardIosIcon fontSize="small" />
-                </Link>
-              </TableCell>
-              <TableCell
-                colSpan={2}
-                align="right"
-                sx={{
-                  borderTop: "2px solid #F2F2F2",
-                  borderBottom: "2px solid #F2F2F2",
-                  py: BCDesignTokens.layoutPaddingSmall,
-                }}
+                    <Typography
+                      variant="h5"
+                      color={BCDesignTokens.themeBlue90}
+                      fontWeight={"500"}
+                      sx={{ mr: 0.5 }}
+                    >
+                      {subPackage.name}
+                    </Typography>
+                    <ArrowForwardIosIcon fontSize="small" />
+                  </Link>
+                </TableCell>
+                <TableCell
+                  colSpan={2}
+                  align="right"
+                  sx={{
+                    borderTop: "2px solid #F2F2F2",
+                    borderBottom: "2px solid #F2F2F2",
+                    py: BCDesignTokens.layoutPaddingSmall,
+                  }}
+                >
+                  {subPackage.submitted_on ?? "--"}
+                </TableCell>
+                <TableCell
+                  colSpan={2}
+                  align="right"
+                  sx={{
+                    borderTop: "2px solid #F2F2F2",
+                    borderBottom: "2px solid #F2F2F2",
+                    py: BCDesignTokens.layoutPaddingSmall,
+                  }}
+                >
+                  {subPackage.submitted_by ?? "--"}
+                </TableCell>
+                <TableCell
+                  colSpan={2}
+                  align="right"
+                  sx={{
+                    borderTop: "2px solid #F2F2F2",
+                    borderTopRightRadius: 5,
+                    borderBottomRightRadius: 5,
+                    borderBottom: "2px solid #F2F2F2",
+                    borderRight: "2px solid #F2F2F2",
+                    py: BCDesignTokens.layoutPaddingSmall,
+                  }}
+                >
+                  <PackageStatusChip status={subPackage.status} />
+                </TableCell>
+              </TableRow>
+              <TableRow
+                key={`row-${document.id}`}
+                component={Box}
+                sx={{ py: 1 }}
               >
-                {subPackage.submitted_on ?? "--"}
-              </TableCell>
-              <TableCell
-                colSpan={2}
-                align="right"
-                sx={{
-                  borderTop: "2px solid #F2F2F2",
-                  borderBottom: "2px solid #F2F2F2",
-                  py: BCDesignTokens.layoutPaddingSmall,
-                }}
-              >
-                {subPackage.submitted_by ?? "--"}
-              </TableCell>
-              <TableCell
-                colSpan={2}
-                align="right"
-                sx={{
-                  borderTop: "2px solid #F2F2F2",
-                  borderTopRightRadius: 5,
-                  borderBottomRightRadius: 5,
-                  borderBottom: "2px solid #F2F2F2",
-                  borderRight: "2px solid #F2F2F2",
-                  py: BCDesignTokens.layoutPaddingSmall,
-                }}
-              >
-                <PackageStatusChip status={subPackage.status} />
-              </TableCell>
-            </TableRow>
+                <TableCell
+                  component="th"
+                  scope="row"
+                  colSpan={12}
+                  sx={{
+                    py: BCDesignTokens.layoutPaddingXsmall,
+                  }}
+                />
+              </TableRow>
+            </>
           ))}
         </TableBody>
       </Table>

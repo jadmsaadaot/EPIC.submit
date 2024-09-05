@@ -10,8 +10,10 @@ import { BCDesignTokens } from "epic.theme";
 import { Document } from "@/components/Submission/DocumentTable";
 import { useGetProject } from "@/hooks/api/useProjects";
 import { AccountProject } from "@/models/Project";
-import PackageStatusChip from "@/components/Projects/ProjectStatusChip";
 import { PageGrid } from "@/components/Shared/PageGrid";
+import SubmissionStatusChip, {
+  SUBMISSION_STATUS,
+} from "@/components/Submission/SubmissionStatusChip";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/submissions/$submissionId"
@@ -27,7 +29,7 @@ export default function SubmissionPage() {
       name: "Document 1",
       created_by: "User A",
       version: "1.0",
-      status: PACKAGE_STATUS.IN_REVIEW.value,
+      status: SUBMISSION_STATUS.COMPLETED.value,
       actions: ["Edit", "Delete"],
     },
     {
@@ -35,7 +37,7 @@ export default function SubmissionPage() {
       name: "Document 2",
       created_by: "User B",
       version: "1.1",
-      status: PACKAGE_STATUS.APPROVED.value,
+      status: SUBMISSION_STATUS.SUBMITTED.value,
       actions: ["Edit", "Delete"],
     },
     {
@@ -43,7 +45,7 @@ export default function SubmissionPage() {
       name: "Document 3",
       created_by: "User C",
       version: "2.0",
-      status: PACKAGE_STATUS.REJECTED.value,
+      status: SUBMISSION_STATUS.SUBMITTED.value,
       actions: ["Edit", "Delete"],
     },
     {
@@ -51,7 +53,7 @@ export default function SubmissionPage() {
       name: "Document 4",
       created_by: "User D",
       version: "2.1",
-      status: PACKAGE_STATUS.IN_REVIEW.value,
+      status: SUBMISSION_STATUS.COMPLETED.value,
       actions: ["Edit", "Delete"],
     },
     {
@@ -59,7 +61,7 @@ export default function SubmissionPage() {
       name: "Document 5",
       created_by: "User E",
       version: "3.0",
-      status: PACKAGE_STATUS.APPROVED.value,
+      status: SUBMISSION_STATUS.SUBMITTED.value,
       actions: ["Edit", "Delete"],
     },
   ];
@@ -80,7 +82,7 @@ export default function SubmissionPage() {
       <Grid item xs={12} lg={10}>
         <ContentBox
           title={accountProject?.project?.name}
-          label={accountProject?.project?.ea_certificate}
+          label={`EAC# ${accountProject?.project?.ea_certificate}`}
         >
           <Box
             sx={{
@@ -127,10 +129,10 @@ export default function SubmissionPage() {
                     fontWeight={900}
                     sx={{ mr: BCDesignTokens.layoutMarginMedium }}
                   >
-                    Status:
+                    Submission Status:
                   </Typography>
-                  <PackageStatusChip
-                    status={submissionPackage?.status || "APPROVED"}
+                  <SubmissionStatusChip
+                    status={SUBMISSION_STATUS.PARTIALLY_COMPLETE.value}
                   />
                 </Box>
               </Box>
