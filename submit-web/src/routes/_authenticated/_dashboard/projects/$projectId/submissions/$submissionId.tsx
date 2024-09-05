@@ -3,6 +3,7 @@ import { ProjectStatus } from "@/components/registration/addProjects/ProjectStat
 import { ContentBox } from "@/components/Shared/ContentBox";
 import { YellowBar } from "@/components/Shared/YellowBar";
 import DocumentTable from "@/components/Submission/DocumentTable";
+import { PACKAGE_STATUS } from "@/models/Package";
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { createFileRoute, useParams } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
@@ -10,9 +11,8 @@ import { Document } from "@/components/Submission/DocumentTable";
 import { useGetProject } from "@/hooks/api/useProjects";
 import { AccountProject } from "@/models/Project";
 import { PageGrid } from "@/components/Shared/PageGrid";
-import SubmissionStatusChip, {
-  SUBMISSION_STATUS,
-} from "@/components/Submission/SubmissionStatusChip";
+import SubmissionStatusChip from "@/components/Submission/SubmissionStatusChip";
+import { SUBMISSION_STATUS } from "@/models/Submission";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/submissions/$submissionId"
@@ -22,7 +22,48 @@ export const Route = createFileRoute(
 });
 
 export default function SubmissionPage() {
-  const mockDocuments: Document[] = [];
+  const mockDocuments: Document[] = [
+    {
+      id: 1,
+      name: "Document 1",
+      created_by: "User A",
+      version: "1.0",
+      status: SUBMISSION_STATUS.COMPLETED.value,
+      actions: ["Edit", "Delete"],
+    },
+    {
+      id: 2,
+      name: "Document 2",
+      created_by: "User B",
+      version: "1.1",
+      status: SUBMISSION_STATUS.SUBMITTED.value,
+      actions: ["Edit", "Delete"],
+    },
+    {
+      id: 3,
+      name: "Document 3",
+      created_by: "User C",
+      version: "2.0",
+      status: SUBMISSION_STATUS.SUBMITTED.value,
+      actions: ["Edit", "Delete"],
+    },
+    {
+      id: 4,
+      name: "Document 4",
+      created_by: "User D",
+      version: "2.1",
+      status: SUBMISSION_STATUS.COMPLETED.value,
+      actions: ["Edit", "Delete"],
+    },
+    {
+      id: 5,
+      name: "Document 5",
+      created_by: "User E",
+      version: "3.0",
+      status: SUBMISSION_STATUS.SUBMITTED.value,
+      actions: ["Edit", "Delete"],
+    },
+  ];
   const { projectId: projectIdParam, submissionId: submissionIdParam } =
     useParams({ strict: false });
   const projectId = Number(projectIdParam);
