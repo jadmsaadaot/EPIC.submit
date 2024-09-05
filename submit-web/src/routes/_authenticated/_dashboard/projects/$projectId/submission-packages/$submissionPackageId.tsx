@@ -4,7 +4,7 @@ import { ContentBox } from "@/components/Shared/ContentBox";
 import { YellowBar } from "@/components/Shared/YellowBar";
 import ItemsTable from "@/components/Submission/ItemsTable";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { createFileRoute, useParams } from "@tanstack/react-router";
+import { createFileRoute, Navigate, useParams } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
 import { useGetProject } from "@/hooks/api/useProjects";
 import { PageGrid } from "@/components/Shared/PageGrid";
@@ -13,6 +13,7 @@ import { SUBMISSION_STATUS } from "@/models/Submission";
 import { InfoBox } from "@/components/Submission/InfoBox";
 import { useGetSubmissionPackage } from "@/hooks/api/usePackages";
 import { ContentBoxSkeleton } from "@/components/Shared/ContentBox/ContentBoxSkeleton";
+import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId",
@@ -49,7 +50,7 @@ export default function SubmissionPage() {
   }
 
   if (!accountProject || !submissionPackage) {
-    return null;
+    return <Navigate to={"/error"} />;
   }
 
   return (
