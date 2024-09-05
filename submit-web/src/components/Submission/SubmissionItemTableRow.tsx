@@ -24,17 +24,16 @@ const StyledTableCell = styled(TableCell)(() => ({
   },
 }));
 
+const StyledTableRow = styled(TableRow)(() => ({
+  backgroundColor: BCDesignTokens.themeBlue10,
+}));
+
 export default function SubmissionItemTableRow({
   item,
 }: SubmissionItemTableRowProps) {
   return (
     <>
-      <TableRow
-        key={`row-${item.name}`}
-        sx={{
-          backgroundColor: BCDesignTokens.themeBlue10,
-        }}
-      >
+      <StyledTableRow key={`row-${item.name}`}>
         <StyledTableCell colSpan={2}>
           <Link
             color="inherit"
@@ -54,9 +53,7 @@ export default function SubmissionItemTableRow({
             </Typography>
           </Link>
         </StyledTableCell>
-        <StyledTableCell align="right">
-          {item.created_by ?? "--"}
-        </StyledTableCell>
+        <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right">{item.version ?? "--"}</StyledTableCell>
         <StyledTableCell
           align="right"
@@ -80,14 +77,13 @@ export default function SubmissionItemTableRow({
             Edit
           </Link>
         </StyledTableCell>
-      </TableRow>
-      <TableRow key={`empty-row-${item.name}`}>
+      </StyledTableRow>
+      <TableRow key={`row-${item.name}-divider`}>
         <TableCell
-          component="th"
-          scope="row"
           colSpan={Object.keys(item).length + 1}
           sx={{
             py: BCDesignTokens.layoutPaddingXsmall,
+            border: 0,
           }}
         />
       </TableRow>

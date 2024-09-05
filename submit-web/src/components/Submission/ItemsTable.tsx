@@ -35,7 +35,7 @@ export default function ItemsTable({
     .map((subItem) => ({
       name: subItem.type.name,
       status: subItem.status,
-      created_by: "SOmeone",
+      submitted_by: subItem.submitted_by,
       version: subItem.version,
     }))
     .sort(tableSort(order, orderBy));
