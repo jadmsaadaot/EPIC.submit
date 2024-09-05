@@ -1,6 +1,5 @@
 import {
   Box,
-  Link,
   Table,
   TableBody,
   TableCell,
@@ -11,11 +10,11 @@ import {
 } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import TableSortLabel from "@mui/material/TableSortLabel";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Order, tableSort } from "../Shared/Table/utils";
-import SubmissionStatusChip, { SubmissionStatus } from "./SubmissionStatusChip";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import CustomRow from "./CustomRow";
+import { SubmissionStatus } from "@/models/Submission";
 export interface Document {
   id: number;
   name: string;
