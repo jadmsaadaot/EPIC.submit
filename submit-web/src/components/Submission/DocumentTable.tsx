@@ -42,7 +42,7 @@ export default function DocumentTable({
   return (
     <TableContainer component={Box} sx={{ height: "100%" }}>
       <Table sx={{ tableLayout: "fixed" }} aria-label="simple table">
-        <TableHead sx={{ border: 0 }}>
+        <TableHead>
           <TableRow>
             <TableCell colSpan={6} sx={{ color: BCDesignTokens.themeGray70 }}>
               <TableSortLabel
