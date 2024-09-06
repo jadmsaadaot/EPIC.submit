@@ -1,3 +1,5 @@
+import { SubmissionItem } from "./SubmissionItem";
+
 export type PackageType = {
   id: number;
   name: string;
@@ -30,4 +32,5 @@ export type SubmissionPackage = {
   submitted_by?: string;
   type_id: number;
   type: PackageType;
+  items: Array<SubmissionItem>;
 };

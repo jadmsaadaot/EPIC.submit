@@ -45,11 +45,11 @@ class AccountProjectPackageSchema(Schema):
 
     id = fields.Int(data_key="id")
     name = fields.Str(data_key="name")
-    type_id = fields.Int(data_key="type_id")
     type = fields.Nested(PackageTypeSchema, data_key="type")
     status = fields.Enum(data_key="status", enum=PackageStatus)
     submitted_on = fields.DateTime(data_key="submitted_on")
     submitted_by = fields.Str(data_key="submitted_by")
+    items = fields.Function(lambda obj: [])
 
 
 class AccountProjectSchema(Schema):

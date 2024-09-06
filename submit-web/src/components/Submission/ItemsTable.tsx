@@ -13,38 +13,39 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState } from "react";
 import { Order, tableSort } from "../Shared/Table/utils";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
-import { SubmissionStatus } from "@/models/Submission";
-import CustomSubmissionRow from "./CustomSubmissionRow";
-export interface Document {
-  id: number;
-  name: string;
-  created_by: string;
-  version: string;
-  status: SubmissionStatus;
-  actions: Array<string>;
-}
+import SubmissionItemTableRow from "./SubmissionItemTableRow";
+import { SubmissionItem } from "@/models/SubmissionItem";
+import { SubmissionItemTableRow as SubmissionItemTableRowType } from "./types";
 
-export default function DocumentTable({
-  documents,
+export default function ItemsTable({
+  submissionItems,
 }: {
-  documents: Array<Document>;
+  submissionItems: Array<SubmissionItem>;
 }) {
   const [order, setOrder] = useState<Order>("asc");
-  const [orderBy, setOrderBy] = useState<keyof Document>("name");
+  const [orderBy, setOrderBy] =
+    useState<keyof SubmissionItemTableRowType>("name");
 
-  const handleRequestSort = (property: keyof Document) => {
+  const handleRequestSort = (property: keyof SubmissionItemTableRowType) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
-  const sortedDocuments = [...documents].sort(tableSort(order, orderBy));
+  const sortedSubmissionItems = submissionItems
+    .map((subItem) => ({
+      name: subItem.type.name,
+      status: subItem.status,
+      submitted_by: subItem.submitted_by,
+      version: subItem.version,
+    }))
+    .sort(tableSort(order, orderBy));
 
   return (
     <TableContainer component={Box} sx={{ height: "100%" }}>
-      <Table sx={{ tableLayout: "fixed" }} aria-label="simple table">
+      <Table sx={{ tableLayout: "fixed" }}>
         <TableHead>
           <TableRow>
-            <TableCell colSpan={3} sx={{ color: BCDesignTokens.themeGray70 }}>
+            <TableCell sx={{ color: BCDesignTokens.themeGray70 }} colSpan={2}>
               <TableSortLabel
                 active={orderBy === "name"}
                 direction={orderBy === "name" ? order : "asc"}
@@ -56,29 +57,19 @@ export default function DocumentTable({
                 </Typography>
               </TableSortLabel>
             </TableCell>
-            <TableCell
-              colSpan={3}
-              align="right"
-              sx={{ color: BCDesignTokens.themeGray70 }}
-            >
+            <TableCell align="right" sx={{ color: BCDesignTokens.themeGray70 }}>
               Uploaded by
             </TableCell>
-            <TableCell
-              colSpan={2}
-              align="right"
-              sx={{ color: BCDesignTokens.themeGray70 }}
-            >
+            <TableCell align="right" sx={{ color: BCDesignTokens.themeGray70 }}>
               Version
             </TableCell>
             <TableCell
-              colSpan={2}
               align="center"
               sx={{ color: BCDesignTokens.themeGray70 }}
             >
               Status
             </TableCell>
             <TableCell
-              colSpan={2}
               align="center"
               sx={{ color: BCDesignTokens.themeGray70 }}
             >
@@ -87,17 +78,12 @@ export default function DocumentTable({
           </TableRow>
         </TableHead>
         <TableBody>
-          {sortedDocuments?.map((document) => (
-            <CustomSubmissionRow
-              key={`custom-row-${document.id}`}
-              document={document}
+          {sortedSubmissionItems?.map((subItem) => (
+            <SubmissionItemTableRow
+              key={`custom-row-${subItem.name}`}
+              item={subItem}
             />
           ))}
-          {sortedDocuments.length === 0 && (
-            <TableRow>
-              <TableCell colSpan={12} align="center"></TableCell>
-            </TableRow>
-          )}
         </TableBody>
       </Table>
     </TableContainer>

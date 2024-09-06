@@ -11,6 +11,7 @@ import { SUBMISSION_PACKAGE_TYPE } from "@/components/Shared/types";
 import { YellowBar } from "@/components/Shared/YellowBar";
 import { useCreateSubmissionPackage } from "@/hooks/api/usePackages";
 import { useGetProject } from "@/hooks/api/useProjects";
+import { SubmissionPackage } from "@/models/Package";
 import { Box, Grid, Typography } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
@@ -35,9 +36,11 @@ export function NewManagementPlan() {
   const onCreateFailure = () =>
     notify.error("Failed to create submission package");
 
-  const onCreateSuccess = () => {
+  const onCreateSuccess = (createdSubmissionPackage: SubmissionPackage) => {
     notify.success("Submission package created successfully");
-    navigate({ to: `/projects/${projectId}` });
+    navigate({
+      to: `/projects/${projectId}/submission-packages/${createdSubmissionPackage.id}`,
+    });
   };
   const {
     mutate: createSubmissionPackage,
