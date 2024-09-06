@@ -2,78 +2,55 @@ import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCar
 import { ProjectStatus } from "@/components/registration/addProjects/ProjectStatus";
 import { ContentBox } from "@/components/Shared/ContentBox";
 import { YellowBar } from "@/components/Shared/YellowBar";
-import DocumentTable from "@/components/Submission/DocumentTable";
+import ItemsTable from "@/components/Submission/ItemsTable";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { createFileRoute, useParams } from "@tanstack/react-router";
+import { createFileRoute, Navigate, useParams } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
-import { Document } from "@/components/Submission/DocumentTable";
 import { useGetProject } from "@/hooks/api/useProjects";
-import { AccountProject } from "@/models/Project";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import SubmissionStatusChip from "@/components/Submission/SubmissionStatusChip";
 import { SUBMISSION_STATUS } from "@/models/Submission";
+import { InfoBox } from "@/components/Submission/InfoBox";
+import { useGetSubmissionPackage } from "@/hooks/api/usePackages";
+import { ContentBoxSkeleton } from "@/components/Shared/ContentBox/ContentBoxSkeleton";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/$projectId/submissions/$submissionId"
+  "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId",
 )({
   component: SubmissionPage,
   meta: () => [{ title: "Submission" }],
 });
 
 export default function SubmissionPage() {
-  const mockDocuments: Document[] = [
-    {
-      id: 1,
-      name: "Document 1",
-      created_by: "User A",
-      version: "1.0",
-      status: SUBMISSION_STATUS.COMPLETED.value,
-      actions: ["Edit", "Delete"],
-    },
-    {
-      id: 2,
-      name: "Document 2",
-      created_by: "User B",
-      version: "1.1",
-      status: SUBMISSION_STATUS.SUBMITTED.value,
-      actions: ["Edit", "Delete"],
-    },
-    {
-      id: 3,
-      name: "Document 3",
-      created_by: "User C",
-      version: "2.0",
-      status: SUBMISSION_STATUS.SUBMITTED.value,
-      actions: ["Edit", "Delete"],
-    },
-    {
-      id: 4,
-      name: "Document 4",
-      created_by: "User D",
-      version: "2.1",
-      status: SUBMISSION_STATUS.COMPLETED.value,
-      actions: ["Edit", "Delete"],
-    },
-    {
-      id: 5,
-      name: "Document 5",
-      created_by: "User E",
-      version: "3.0",
-      status: SUBMISSION_STATUS.SUBMITTED.value,
-      actions: ["Edit", "Delete"],
-    },
-  ];
-  const { projectId: projectIdParam, submissionId: submissionIdParam } =
-    useParams({ strict: false });
+  const {
+    projectId: projectIdParam,
+    submissionPackageId: submissionPackageIdParam,
+  } = useParams({ strict: false });
   const projectId = Number(projectIdParam);
-  const submissionId = Number(submissionIdParam);
-  const { data } = useGetProject({
+  const submissionPackageId = Number(submissionPackageIdParam);
+  const { data: accountProject } = useGetProject({
     projectId,
   });
-  const accountProject = data as AccountProject;
-  const submissionPackage = accountProject?.packages.find(
-    (p) => p.id === submissionId
-  );
+
+  const { data: submissionPackage, isPending: isSubPackageLoading } =
+    useGetSubmissionPackage({
+      packageId: submissionPackageId,
+      enabled: Boolean(accountProject?.id),
+    });
+
+  if (isSubPackageLoading) {
+    return (
+      <PageGrid>
+        <Grid item xs={12} lg={10}>
+          <ContentBoxSkeleton />
+        </Grid>
+      </PageGrid>
+    );
+  }
+
+  if (!accountProject || !submissionPackage) {
+    return <Navigate to={"/error"} />;
+  }
 
   return (
     <PageGrid>
@@ -134,51 +111,9 @@ export default function SubmissionPage() {
                   />
                 </Box>
               </Box>
-              <Grid
-                container
-                xs={12}
-                sx={{
-                  borderRadius: "4px",
-                  border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
-                  p: BCDesignTokens.layoutPaddingMedium,
-                  pt: 0,
-                }}
-                rowSpacing={2}
-              >
-                <Grid item xs={4} container>
-                  <Typography color={BCDesignTokens.themeGray70}>
-                    Condition:
-                  </Typography>
-                </Grid>
-                <Grid item xs={4} container>
-                  <Typography color={BCDesignTokens.themeGray70}>
-                    Date Submitted:
-                  </Typography>{" "}
-                  <Typography color={"inherit"}>
-                    {submissionPackage?.submitted_on}
-                  </Typography>
-                </Grid>
-                <Grid item xs={4} container>
-                  <Typography color={BCDesignTokens.themeGray70}>
-                    Date Review Completed:
-                  </Typography>
-                </Grid>
-                <Grid item xs={4} container>
-                  <Typography color={BCDesignTokens.themeGray70}>
-                    Supporting Conditions:
-                  </Typography>
-                </Grid>
-                <Grid item xs={4} container>
-                  <Typography color={BCDesignTokens.themeGray70}>
-                    Submitted by:
-                  </Typography>
-                  <Typography color={"inherit"}>
-                    {submissionPackage?.submitted_by}
-                  </Typography>
-                </Grid>
-              </Grid>
+              <InfoBox submissionPackage={submissionPackage} />
               <Box sx={{ mb: BCDesignTokens.layoutMarginXlarge }}>
-                <DocumentTable documents={mockDocuments} />
+                <ItemsTable submissionItems={submissionPackage.items} />
               </Box>
               <Box
                 sx={{

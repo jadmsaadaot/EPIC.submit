@@ -26,10 +26,10 @@ export const Project = ({ accountProject }: ProjectParam) => {
   const navigate = useNavigate();
 
   const activeSubmissionPackages = accountProject.packages.filter(
-    (subPackage) => subPackage.status === PACKAGE_STATUS.IN_REVIEW.value
+    (subPackage) => subPackage.status === PACKAGE_STATUS.IN_REVIEW.value,
   );
   const pastSubmissionPackages = accountProject.packages.filter(
-    (subPackage) => subPackage.status !== PACKAGE_STATUS.IN_REVIEW.value
+    (subPackage) => subPackage.status !== PACKAGE_STATUS.IN_REVIEW.value,
   );
 
   const { name, ea_certificate } = accountProject.project;
@@ -38,9 +38,9 @@ export const Project = ({ accountProject }: ProjectParam) => {
     navigate({ to: `/projects/${accountProject.id}/new-submission` });
   };
 
-  const handleOnSubmissionClick = (submissionId: number) => {
+  const handleOnSubmissionClick = (submissionPackageId: number) => {
     navigate({
-      to: `/projects/${accountProject.id}/submissions/${submissionId}`,
+      to: `/projects/${accountProject.id}/submission-packages/${submissionPackageId}`,
     });
   };
 

@@ -9,7 +9,7 @@ interface ProjectRowProps {
   onSubmissionClick: (submissionId: number) => void;
 }
 
-export default function CustomProjectRow({
+export default function ProjectTableRow({
   subPackage,
   onSubmissionClick,
 }: ProjectRowProps) {

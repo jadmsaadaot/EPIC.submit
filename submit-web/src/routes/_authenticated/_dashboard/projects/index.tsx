@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Grid } from "@mui/material";
 
 import { useGetProjects } from "@/hooks/api/useProjects";
@@ -31,7 +31,7 @@ export function ProjectsPage() {
   }, [isProjectsError]);
 
   if (isProjectsError) {
-    return null;
+    return <Navigate to={"/error"} />;
   }
 
   return (

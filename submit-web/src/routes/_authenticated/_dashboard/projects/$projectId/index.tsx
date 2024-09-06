@@ -1,7 +1,7 @@
 import { ProjectsSkeleton } from "@/components/Projects";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import { Grid } from "@mui/material";
-import { createFileRoute, useParams } from "@tanstack/react-router";
+import { createFileRoute, Navigate, useParams } from "@tanstack/react-router";
 import { Project as ProjectComponent } from "@/components/Projects/Project";
 import { useGetProject } from "@/hooks/api/useProjects";
 
@@ -39,7 +39,7 @@ function ProjectPage() {
     return <h2>{error.message}</h2>;
   }
 
-  if (!project) return null;
+  if (!project) return <Navigate to="/error" />;
 
   return (
     <PageGrid>

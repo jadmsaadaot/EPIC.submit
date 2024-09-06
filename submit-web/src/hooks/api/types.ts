@@ -1,4 +1,5 @@
-export type Options = {
-  onSuccess?: () => void;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Options<TData = any> = {
+  onSuccess?: (data?: TData) => void;
   onError?: () => void;
 };

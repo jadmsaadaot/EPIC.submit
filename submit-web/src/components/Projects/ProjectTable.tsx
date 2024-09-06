@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import { SubmissionPackage } from "@/models/Package";
-import CustomProjectRow from "./CustomProjectRow";
+import ProjectTableRow from "./ProjectTableRow";
 
 export default function SubmissionPackageTable({
   submissionPackages,
@@ -60,7 +60,7 @@ export default function SubmissionPackageTable({
         )}
         <TableBody>
           {submissionPackages?.map((subPackage) => (
-            <CustomProjectRow
+            <ProjectTableRow
               key={subPackage.id}
               subPackage={subPackage}
               onSubmissionClick={onSubmissionClick}
