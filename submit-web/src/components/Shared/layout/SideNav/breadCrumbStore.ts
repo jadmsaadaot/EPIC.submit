@@ -19,10 +19,10 @@ export const useBreadCrumb = create<BreadCrumbStore>((set) => ({
       breadcrumbs,
     }));
   },
-  replaceBreadcrumb: (oldTitle, newTitle) => {
+  replaceBreadcrumb: (path, newTitle) => {
     set((state) => ({
       breadcrumbs: state.breadcrumbs.map((breadcrumb) =>
-        breadcrumb.title === oldTitle
+        breadcrumb.path === path
           ? { ...breadcrumb, title: newTitle }
           : breadcrumb,
       ),

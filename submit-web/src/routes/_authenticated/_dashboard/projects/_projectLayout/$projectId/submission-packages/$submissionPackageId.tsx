@@ -4,20 +4,13 @@ import { ContentBox } from "@/components/Shared/ContentBox";
 import { YellowBar } from "@/components/Shared/YellowBar";
 import ItemsTable from "@/components/Submission/ItemsTable";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { createFileRoute, Navigate, useParams } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Navigate,
+  useParams,
+  useRouterState,
+} from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
-<<<<<<<< HEAD:submit-web/src/routes/_authenticated/_dashboard/projects/$projectId/_projectLayout/submissions/$submissionId.tsx
-import { Document } from "@/components/Submission/DocumentTable";
-import { PageGrid } from "@/components/Shared/PageGrid";
-import SubmissionStatusChip from "@/components/Submission/SubmissionStatusChip";
-import { SUBMISSION_STATUS } from "@/models/Submission";
-import { useBreadCrumb } from "@/components/Shared/layout/SideNav/breadCrumbStore";
-import { useEffect } from "react";
-import { useAccountProject } from "@/components/Projects/projectStore";
-
-export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submissions/$submissionId"
-========
 import { useGetProject } from "@/hooks/api/useProjects";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import SubmissionStatusChip from "@/components/Submission/SubmissionStatusChip";
@@ -25,76 +18,31 @@ import { SUBMISSION_STATUS } from "@/models/Submission";
 import { InfoBox } from "@/components/Submission/InfoBox";
 import { useGetSubmissionPackage } from "@/hooks/api/usePackages";
 import { ContentBoxSkeleton } from "@/components/Shared/ContentBox/ContentBoxSkeleton";
+import { useUpdateBreadcrumb } from "@/hooks/common";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId",
->>>>>>>> upstream/develop:submit-web/src/routes/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId.tsx
+  "/_authenticated/_dashboard/projects/_projectLayout/$projectId/submission-packages/$submissionPackageId"
 )({
   component: SubmissionPage,
-  meta: () => [{ title: "Submission Name" }],
+  meta: () => [{ title: "Submission" }],
 });
 
 export default function SubmissionPage() {
-<<<<<<<< HEAD:submit-web/src/routes/_authenticated/_dashboard/projects/$projectId/_projectLayout/submissions/$submissionId.tsx
-  const mockDocuments: Document[] = [
-    {
-      id: 1,
-      name: "Document 1",
-      created_by: "User A",
-      version: "1.0",
-      status: SUBMISSION_STATUS.COMPLETED.value,
-      actions: ["Edit", "Delete"],
-    },
-    {
-      id: 2,
-      name: "Document 2",
-      created_by: "User B",
-      version: "1.1",
-      status: SUBMISSION_STATUS.SUBMITTED.value,
-      actions: ["Edit", "Delete"],
-    },
-    {
-      id: 3,
-      name: "Document 3",
-      created_by: "User C",
-      version: "2.0",
-      status: SUBMISSION_STATUS.SUBMITTED.value,
-      actions: ["Edit", "Delete"],
-    },
-    {
-      id: 4,
-      name: "Document 4",
-      created_by: "User D",
-      version: "2.1",
-      status: SUBMISSION_STATUS.COMPLETED.value,
-      actions: ["Edit", "Delete"],
-    },
-    {
-      id: 5,
-      name: "Document 5",
-      created_by: "User E",
-      version: "3.0",
-      status: SUBMISSION_STATUS.SUBMITTED.value,
-      actions: ["Edit", "Delete"],
-    },
-  ];
-  const { submissionId: submissionIdParam } = useParams({ strict: false });
-  const { replaceBreadcrumb } = useBreadCrumb();
-  const { accountProject } = useAccountProject();
-  const submissionId = Number(submissionIdParam);
-  const submissionPackage = accountProject?.packages.find(
-    (p) => p.id === submissionId
-  );
-========
   const {
     projectId: projectIdParam,
     submissionPackageId: submissionPackageIdParam,
   } = useParams({ strict: false });
+  const router = useRouterState();
   const projectId = Number(projectIdParam);
   const submissionPackageId = Number(submissionPackageIdParam);
   const { data: accountProject } = useGetProject({
     projectId,
   });
+
+  useUpdateBreadcrumb(
+    router.location.pathname,
+    accountProject?.project?.name || ""
+  );
 
   const { data: submissionPackage, isPending: isSubPackageLoading } =
     useGetSubmissionPackage({
@@ -115,13 +63,6 @@ export default function SubmissionPage() {
   if (!accountProject || !submissionPackage) {
     return <Navigate to={"/error"} />;
   }
->>>>>>>> upstream/develop:submit-web/src/routes/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId.tsx
-
-  useEffect(() => {
-    if (submissionPackage?.name) {
-      replaceBreadcrumb("Submission Name", submissionPackage.name);
-    }
-  }, [submissionPackage, replaceBreadcrumb]);
 
   return (
     <PageGrid>
