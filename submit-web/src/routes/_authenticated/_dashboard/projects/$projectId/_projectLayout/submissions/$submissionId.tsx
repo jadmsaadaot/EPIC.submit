@@ -76,7 +76,7 @@ export default function SubmissionPage() {
     if (submissionPackage?.name) {
       replaceBreadcrumb("Submission Name", submissionPackage.name);
     }
-  }, [submissionPackage]);
+  }, [submissionPackage, replaceBreadcrumb]);
 
   return (
     <PageGrid>

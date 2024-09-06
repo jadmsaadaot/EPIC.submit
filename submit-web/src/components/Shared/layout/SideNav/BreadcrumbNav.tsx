@@ -9,18 +9,6 @@ interface RouteSegment {
   path?: string;
 }
 
-const filterUniqueRoutes = (breadcrumbs: RouteSegment[]) => {
-  const seenPaths = new Set();
-  return breadcrumbs.filter((segment) => {
-    if (!segment?.path || !segment?.title) return false;
-    const isUnique = !seenPaths.has(segment?.path);
-    if (isUnique) {
-      seenPaths.add(segment?.path);
-    }
-    return isUnique;
-  });
-};
-
 const BreadcrumbNav: React.FC = () => {
   const { breadcrumbs, setBreadcrumbs } = useBreadCrumb();
   const matches = useRouterState({ select: (s) => s.matches });

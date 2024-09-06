@@ -35,7 +35,7 @@ function ProjectLayout() {
       replaceBreadcrumb("Project Name", accountProject?.project.name);
       setAccountProject(accountProject);
     }
-  }, [accountProject, matches]);
+  }, [accountProject, matches, replaceBreadcrumb, setAccountProject]);
 
   if (isLoading) {
     return (
