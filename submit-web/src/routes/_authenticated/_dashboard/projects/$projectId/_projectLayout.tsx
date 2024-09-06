@@ -8,7 +8,6 @@ import {
   createFileRoute,
   Outlet,
   useParams,
-  useRouter,
   useRouterState,
 } from "@tanstack/react-router";
 import { useEffect } from "react";
