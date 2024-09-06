@@ -13,7 +13,6 @@ import { SUBMISSION_STATUS } from "@/models/Submission";
 import { InfoBox } from "@/components/Submission/InfoBox";
 import { useGetSubmissionPackage } from "@/hooks/api/usePackages";
 import { ContentBoxSkeleton } from "@/components/Shared/ContentBox/ContentBoxSkeleton";
-import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId",

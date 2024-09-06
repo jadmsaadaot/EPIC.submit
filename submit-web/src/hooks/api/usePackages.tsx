@@ -10,7 +10,7 @@ const createSubmissionPackage = ({
   accountProjectId: number;
   data: Record<string, unknown>;
 }) => {
-  return request({
+  return request<SubmissionPackage>({
     url: `/packages/account-projects/${accountProjectId}`,
     method: "post",
     data,
