@@ -46,7 +46,7 @@ export const Project = ({ accountProject }: ProjectParam) => {
 
   return (
     <ContentBox
-      title={name}
+      mainLabel={name}
       label={ea_certificate ? `EAC #${ea_certificate}` : ""}
     >
       <Box

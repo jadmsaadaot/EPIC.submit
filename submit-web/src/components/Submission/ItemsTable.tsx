@@ -33,6 +33,7 @@ export default function ItemsTable({
   };
   const sortedSubmissionItems = submissionItems
     .map((subItem) => ({
+      id: subItem.id,
       name: subItem.type.name,
       status: subItem.status,
       submitted_by: subItem.submitted_by,

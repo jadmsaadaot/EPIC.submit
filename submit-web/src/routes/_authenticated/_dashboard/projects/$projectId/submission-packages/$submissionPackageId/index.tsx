@@ -13,9 +13,10 @@ import { SUBMISSION_STATUS } from "@/models/Submission";
 import { InfoBox } from "@/components/Submission/InfoBox";
 import { useGetSubmissionPackage } from "@/hooks/api/usePackages";
 import { ContentBoxSkeleton } from "@/components/Shared/ContentBox/ContentBoxSkeleton";
+import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId",
+  "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/",
 )({
   component: SubmissionPage,
   meta: () => [{ title: "Submission" }],
@@ -49,6 +50,7 @@ export default function SubmissionPage() {
   }
 
   if (!accountProject || !submissionPackage) {
+    notify.error("Failed to load submission package");
     return <Navigate to={"/error"} />;
   }
 
@@ -56,7 +58,7 @@ export default function SubmissionPage() {
     <PageGrid>
       <Grid item xs={12} lg={10}>
         <ContentBox
-          title={accountProject?.project?.name}
+          mainLabel={accountProject?.project?.name}
           label={`EAC# ${accountProject?.project?.ea_certificate}`}
         >
           <Box

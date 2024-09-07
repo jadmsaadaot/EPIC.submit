@@ -27,8 +27,8 @@ import { Route as AuthenticatedDashboardProfileImport } from './routes/_authenti
 import { Route as AuthenticatedDashboardProjectsIndexImport } from './routes/_authenticated/_dashboard/projects/index'
 import { Route as AuthenticatedDashboardProjectsProjectIdIndexImport } from './routes/_authenticated/_dashboard/projects/$projectId/index'
 import { Route as AuthenticatedDashboardProjectsProjectIdNewSubmissionImport } from './routes/_authenticated/_dashboard/projects/$projectId/new-submission'
-import { Route as AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdImport } from './routes/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId'
-import { Route as AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionsSubmissionIdImport } from './routes/_authenticated/_dashboard/projects/$projectId/submission-packages/submissions/$submissionId'
+import { Route as AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdIndexImport } from './routes/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/index'
+import { Route as AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdSubmissionsSubmissionIdImport } from './routes/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/submissions/$submissionId'
 
 // Create Virtual Routes
 
@@ -125,18 +125,18 @@ const AuthenticatedDashboardProjectsProjectIdNewSubmissionRoute =
     getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 
-const AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdRoute =
-  AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdImport.update(
+const AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdIndexRoute =
+  AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdIndexImport.update(
     {
-      path: '/projects/$projectId/submission-packages/$submissionPackageId',
+      path: '/projects/$projectId/submission-packages/$submissionPackageId/',
       getParentRoute: () => AuthenticatedDashboardRoute,
     } as any,
   )
 
-const AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionsSubmissionIdRoute =
-  AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionsSubmissionIdImport.update(
+const AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdSubmissionsSubmissionIdRoute =
+  AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdSubmissionsSubmissionIdImport.update(
     {
-      path: '/projects/$projectId/submission-packages/submissions/$submissionId',
+      path: '/projects/$projectId/submission-packages/$submissionPackageId/submissions/$submissionId',
       getParentRoute: () => AuthenticatedDashboardRoute,
     } as any,
   )
@@ -250,18 +250,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardProjectsProjectIdIndexImport
       parentRoute: typeof AuthenticatedDashboardImport
     }
-    '/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId': {
-      id: '/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId'
+    '/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/': {
+      id: '/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/'
       path: '/projects/$projectId/submission-packages/$submissionPackageId'
       fullPath: '/projects/$projectId/submission-packages/$submissionPackageId'
-      preLoaderRoute: typeof AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdImport
+      preLoaderRoute: typeof AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdIndexImport
       parentRoute: typeof AuthenticatedDashboardImport
     }
-    '/_authenticated/_dashboard/projects/$projectId/submission-packages/submissions/$submissionId': {
-      id: '/_authenticated/_dashboard/projects/$projectId/submission-packages/submissions/$submissionId'
-      path: '/projects/$projectId/submission-packages/submissions/$submissionId'
-      fullPath: '/projects/$projectId/submission-packages/submissions/$submissionId'
-      preLoaderRoute: typeof AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionsSubmissionIdImport
+    '/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/submissions/$submissionId': {
+      id: '/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/submissions/$submissionId'
+      path: '/projects/$projectId/submission-packages/$submissionPackageId/submissions/$submissionId'
+      fullPath: '/projects/$projectId/submission-packages/$submissionPackageId/submissions/$submissionId'
+      preLoaderRoute: typeof AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdSubmissionsSubmissionIdImport
       parentRoute: typeof AuthenticatedDashboardImport
     }
   }
@@ -278,8 +278,8 @@ export const routeTree = rootRoute.addChildren({
       AuthenticatedDashboardProjectsIndexRoute,
       AuthenticatedDashboardProjectsProjectIdNewSubmissionRoute,
       AuthenticatedDashboardProjectsProjectIdIndexRoute,
-      AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdRoute,
-      AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionsSubmissionIdRoute,
+      AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdIndexRoute,
+      AuthenticatedDashboardProjectsProjectIdSubmissionPackagesSubmissionPackageIdSubmissionsSubmissionIdRoute,
     }),
     AuthenticatedAdminLoginRoute,
     AuthenticatedRegistrationAddProjectsRoute,
@@ -337,8 +337,8 @@ export const routeTree = rootRoute.addChildren({
         "/_authenticated/_dashboard/projects/",
         "/_authenticated/_dashboard/projects/$projectId/new-submission",
         "/_authenticated/_dashboard/projects/$projectId/",
-        "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId",
-        "/_authenticated/_dashboard/projects/$projectId/submission-packages/submissions/$submissionId"
+        "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/",
+        "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/submissions/$submissionId"
       ]
     },
     "/_authenticated/admin-login": {
@@ -377,12 +377,12 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_authenticated/_dashboard/projects/$projectId/index.tsx",
       "parent": "/_authenticated/_dashboard"
     },
-    "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId": {
-      "filePath": "_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId.tsx",
+    "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/": {
+      "filePath": "_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/index.tsx",
       "parent": "/_authenticated/_dashboard"
     },
-    "/_authenticated/_dashboard/projects/$projectId/submission-packages/submissions/$submissionId": {
-      "filePath": "_authenticated/_dashboard/projects/$projectId/submission-packages/submissions/$submissionId.tsx",
+    "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/submissions/$submissionId": {
+      "filePath": "_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/submissions/$submissionId.tsx",
       "parent": "/_authenticated/_dashboard"
     }
   }

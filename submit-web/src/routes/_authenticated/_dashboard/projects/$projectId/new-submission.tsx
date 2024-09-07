@@ -82,7 +82,7 @@ export function NewManagementPlan() {
     <PageGrid>
       <Grid item xs={12}>
         <ContentBox
-          title={accountProject?.project.name}
+          mainLabel={accountProject?.project.name}
           label={accountProject?.project.ea_certificate}
         >
           <Box
