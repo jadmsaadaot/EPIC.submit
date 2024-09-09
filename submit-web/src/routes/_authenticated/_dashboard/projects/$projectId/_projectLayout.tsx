@@ -1,6 +1,5 @@
 import { ProjectsSkeleton } from "@/components/Projects";
 import { useAccountProject } from "@/components/Projects/projectStore";
-import { useBreadCrumb } from "@/components/Shared/layout/SideNav/breadCrumbStore";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import { useGetProject } from "@/hooks/api/useProjects";
 import { useUpdateBreadcrumb } from "@/hooks/common";

@@ -26,7 +26,6 @@ export default function SubmissionLayout() {
   const submissionPackageId = Number(submissionPackageIdParam);
   const { accountProject, setSubmissionPackage } = useAccountProject();
   const META_TITLE = `Submission ${submissionPackageId}`;
-  console.log("submissionPackageId", submissionPackageId);
   const { data: submissionPackage, isPending: isSubPackageLoading } =
     useGetSubmissionPackage({
       packageId: submissionPackageId,

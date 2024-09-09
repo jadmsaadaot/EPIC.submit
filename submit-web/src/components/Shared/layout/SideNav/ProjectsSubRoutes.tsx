@@ -6,7 +6,7 @@ import { SubListItemSkeleton } from "./SubListItemSkeleton";
 export default function ProjectsSubRoutes() {
   const { accountId } = useAccount();
   const { data: accountProjects, isPending } = useGetProjects({
-    accountId: 1,
+    accountId,
   });
 
   if (isPending) return <SubListItemSkeleton />;
