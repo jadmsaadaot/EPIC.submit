@@ -12,15 +12,15 @@ export const InfoBox = ({ submissionPackage }: InfoBoxProps) => {
       sx={{
         borderRadius: "4px",
         border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
-        p: BCDesignTokens.layoutPaddingMedium,
+        p: BCDesignTokens.layoutPaddingSmall,
         pt: 0,
       }}
-      rowSpacing={2}
+      rowSpacing={1}
     >
-      <Grid item xs={4} container>
+      <Grid item xs={12} md={4} container>
         <Typography color={BCDesignTokens.themeGray70}>Condition:</Typography>
       </Grid>
-      <Grid item xs={4} container>
+      <Grid item xs={12} md={4} container>
         <Typography color={BCDesignTokens.themeGray70}>
           Date Submitted:
         </Typography>{" "}
@@ -28,17 +28,17 @@ export const InfoBox = ({ submissionPackage }: InfoBoxProps) => {
           {submissionPackage?.submitted_on}
         </Typography>
       </Grid>
-      <Grid item xs={4} container>
+      <Grid item xs={12} md={4} container>
         <Typography color={BCDesignTokens.themeGray70}>
           Date Review Completed:
         </Typography>
       </Grid>
-      <Grid item xs={4} container>
+      <Grid item xs={12} md={4} container>
         <Typography color={BCDesignTokens.themeGray70}>
           Supporting Conditions:
         </Typography>
       </Grid>
-      <Grid item xs={4} container>
+      <Grid item xs={12} md={4} container>
         <Typography color={BCDesignTokens.themeGray70}>
           Submitted by:
         </Typography>
