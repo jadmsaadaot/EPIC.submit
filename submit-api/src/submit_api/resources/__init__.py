@@ -25,11 +25,11 @@ from flask import Blueprint
 
 from .account import API as ACCOUNT_API
 from .apihelper import Api
+from .item import API as ITEM_API
 from .ops import API as OPS_API
 from .package import API as PACKAGE_API
 from .project import API as PROJECT_API
 from .user import API as USER_API
-from .item import API as ITEM_API
 
 
 __all__ = ('API_BLUEPRINT', 'OPS_BLUEPRINT')

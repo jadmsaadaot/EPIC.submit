@@ -4,6 +4,7 @@ from submit_api.models import Package as PackageModel
 from submit_api.models import PackageType as PackageTypeModel
 from submit_api.models.db import session_scope
 from submit_api.models.package_metadata import PackageMetadata as PackageMetadataModel
+from submit_api.models.queries.package import PackageQueries
 
 
 class PackageService:
@@ -12,7 +13,7 @@ class PackageService:
     @classmethod
     def get_package_by_id(cls, package_id):
         """Get package by id."""
-        package = PackageModel.find_by_id(package_id)
+        package = PackageQueries.get_package_by_id(package_id)
         return package
 
     @classmethod

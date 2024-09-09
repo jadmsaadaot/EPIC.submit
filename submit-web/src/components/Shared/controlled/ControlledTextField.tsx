@@ -2,12 +2,13 @@ import React, { FC } from "react";
 import { TextField, TextFieldProps } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 import { BCDesignTokens } from "epic.theme";
+import get from "lodash/get";
 
 type IFormInputProps = {
   name: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   inputEffects?: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => string;
   maxLength?: number;
 } & TextFieldProps;
@@ -24,11 +25,13 @@ const ControlledTextField: FC<IFormInputProps> = ({
     formState: { errors, defaultValues },
   } = useFormContext();
 
+  const error = get(errors, name);
+  const helperText = error?.message ?? "";
   return (
     <Controller
       control={control}
       name={name}
-      defaultValue={defaultValues?.[name] || ""}
+      defaultValue={get(defaultValues, `${name}`) ?? ""}
       render={({ field }) => (
         <TextField
           {...field}
@@ -44,11 +47,11 @@ const ControlledTextField: FC<IFormInputProps> = ({
             }
             field.onChange(e.target.value);
           }}
-          error={!!errors[name]}
+          error={!!error}
           FormHelperTextProps={{
             sx: { color: BCDesignTokens.typographyColorDanger },
           }}
-          helperText={String(errors[name]?.message ?? "")}
+          helperText={String(helperText)}
           {...otherProps}
         />
       )}

@@ -24,3 +24,23 @@ export const SUBMISSION_STATUS: Record<
     label: "Submitted",
   },
 };
+
+export type SubmittedForm = {
+  id: number;
+  form_json: any;
+};
+
+export type SubmissionType = "FORM" | "DOCUMENT" | "BUSINESS_DATA";
+export const SUBMISSION_TYPE: Record<SubmissionType, SubmissionType> = {
+  FORM: "FORM",
+  DOCUMENT: "DOCUMENT",
+  BUSINESS_DATA: "BUSINESS_DATA",
+};
+
+export type Submission = {
+  id: number;
+  item_id: number;
+  version: number;
+  data_type: string;
+  data: any | SubmittedForm;
+};

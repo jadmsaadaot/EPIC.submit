@@ -1,26 +1,95 @@
-import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
-import { ProjectStatus } from "@/components/registration/addProjects/ProjectStatus";
 import { ContentBox } from "@/components/Shared/ContentBox";
 import { YellowBar } from "@/components/Shared/YellowBar";
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import { useSubmissionItemStore } from "../submissionItemStore";
 import * as yup from "yup";
+import { FormProvider, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import ControlledTextField from "@/components/Shared/controlled/ControlledTextField";
+import { useCreateSubmission } from "@/hooks/api/useSubmissions";
+import { notify } from "@/components/Shared/Snackbar/snackbarStore";
+import { useEffect } from "react";
+import { useLoaderBackdrop } from "@/components/Shared/Overlays/loaderBackdropStore";
+import { useNavigate, useParams } from "@tanstack/react-router";
+import { SUBMISSION_TYPE } from "@/models/Submission";
 
 const contactInformationSchema = yup.object().shape({
-  givenName: yup.string().required("Please enter your given name."),
-  surname: yup.string().required("Please enter your surname."),
-  position: yup.string().required("Please enter your position."),
-  phone: yup.string().required("Please enter your phone number."),
-  email: yup
-    .string()
-    .email("Invalid email")
-    .required("Please enter your email."),
+  primaryContact: yup.object().shape({
+    givenName: yup.string().required("Please enter given name."),
+    surname: yup.string().required("Please enter surname."),
+    position: yup.string().required("Please enter position."),
+    company: yup.string().required("Please enter company."),
+    workPhoneNumber: yup.string().required("Please enter work phone number."),
+    workEmailAddress: yup
+      .string()
+      .email("Invalid email")
+      .required("Please enter work email."),
+  }),
+  secondaryContact: yup.object().shape({
+    givenName: yup.string().required("Please enter given name."),
+    surname: yup.string().required("Please enter surname."),
+    position: yup.string().required("Please enter position."),
+    company: yup.string().required("Please enter company."),
+    workPhoneNumber: yup.string().required("Please enter work phone number."),
+    workEmailAddress: yup
+      .string()
+      .email("Invalid email")
+      .required("Please enter work email."),
+  }),
 });
 
 type ContactInformationForm = yup.InferType<typeof contactInformationSchema>;
 export const ContactInformation = () => {
   const { submissionItem } = useSubmissionItemStore();
+  const { projectId, submissionPackageId } = useParams({
+    strict: false,
+  });
+  const { setIsOpen } = useLoaderBackdrop();
+  const navigate = useNavigate();
+
+  const methods = useForm<ContactInformationForm>({
+    resolver: yupResolver(contactInformationSchema),
+    mode: "onSubmit",
+  });
+
+  const { handleSubmit } = methods;
+
+  const onCreateFailure = () => {
+    notify.error("Failed to create submission");
+  };
+
+  const onCreateSuccess = () => {
+    notify.success("Submission created successfully");
+    navigate({
+      to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
+    });
+  };
+  const { mutate: createSubmission, isPending: isCreatingSubmissionPending } =
+    useCreateSubmission({
+      onError: onCreateFailure,
+      onSuccess: onCreateSuccess,
+    });
+
+  const onSubmitHandler = async (formData: ContactInformationForm) => {
+    if (!submissionItem) {
+      notify.error("Failed to load submission item");
+      return;
+    }
+    createSubmission({
+      itemId: submissionItem.id,
+      data: {
+        type: SUBMISSION_TYPE.FORM,
+        data: formData,
+      },
+    });
+  };
+
+  useEffect(() => {
+    setIsOpen(isCreatingSubmissionPending);
+    return () => setIsOpen(false);
+  }, [isCreatingSubmissionPending, setIsOpen]);
+
   return (
     <Grid item xs={12}>
       <ContentBox
@@ -40,18 +109,119 @@ export const ContactInformation = () => {
         >
           <YellowBar />
           <Typography variant="h5">Contact Information</Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <Typography
-                variant="body1"
-                sx={{
-                  fontWeight: "bold",
-                }}
-              >
-                Primary Contact
-              </Typography>
-            </Grid>
-          </Grid>
+
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmitHandler)}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Primary Contact
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} container>
+                  <Grid item xs={12}>
+                    <ControlledTextField
+                      name="primaryContact.givenName"
+                      label="Given Name"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ControlledTextField
+                      name="primaryContact.surname"
+                      label="Surname"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ControlledTextField
+                      name="primaryContact.company"
+                      label="Company"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ControlledTextField
+                      name="primaryContact.position"
+                      label="Position/Role"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ControlledTextField
+                      name="primaryContact.workPhoneNumber"
+                      label="Work Phone Number"
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <ControlledTextField
+                      name="primaryContact.workEmailAddress"
+                      label="Work Email Address"
+                    />
+                  </Grid>
+                </Grid>
+                <Grid item xs={12}>
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontWeight: "bold",
+                    }}
+                  >
+                    Secondary Contact
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} container>
+                  <Grid item xs={12} container>
+                    <Grid item xs={12}>
+                      <ControlledTextField
+                        name="secondaryContact.givenName"
+                        label="Given Name"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <ControlledTextField
+                        name="secondaryContact.surname"
+                        label="Surname"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <ControlledTextField
+                        name="secondaryContact.company"
+                        label="Company"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <ControlledTextField
+                        name="secondaryContact.position"
+                        label="Position/Role"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <ControlledTextField
+                        name="secondaryContact.workPhoneNumber"
+                        label="Work Phone Number"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <ControlledTextField
+                        name="secondaryContact.workEmailAddress"
+                        label="Work Email Address"
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} container spacing={2}>
+                  <Grid item xs={12} sm="auto">
+                    <Button color="secondary">Close</Button>
+                  </Grid>
+                  <Grid item xs={12} sm="auto">
+                    <Button type="submit">Save</Button>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </form>
+          </FormProvider>
         </Box>
       </ContentBox>
     </Grid>
