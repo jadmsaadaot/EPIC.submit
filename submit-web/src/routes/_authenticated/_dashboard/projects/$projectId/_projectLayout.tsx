@@ -10,16 +10,15 @@ import {
   Navigate,
   Outlet,
   useParams,
-  useRouterState,
 } from "@tanstack/react-router";
 import { useEffect } from "react";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/_projectLayout"
+  "/_authenticated/_dashboard/projects/$projectId/_projectLayout"
 )({
   loader: () => useGetProject,
   component: ProjectLayout,
-  meta: () => [{ title: "Project Name" }],
+  meta: ({ params }) => [{ title: `Project ${params.projectId}` }],
 });
 
 function ProjectLayout() {
@@ -30,20 +29,13 @@ function ProjectLayout() {
     projectId,
   });
   const accountProject = data as AccountProject;
-  const router = useRouterState();
-
-  useUpdateBreadcrumb(
-    router.location.pathname,
-    accountProject?.project?.name || ""
-  );
-
+  const META_TITLE = `Project ${projectId}`;
+  useUpdateBreadcrumb(META_TITLE, accountProject?.project?.name || "");
   useEffect(() => {
     if (accountProject) {
       setAccountProject(accountProject);
     }
   }, [accountProject]);
-
-  if (!accountProject) return <Navigate to="/error" />;
 
   if (isLoading) {
     return (
@@ -52,6 +44,8 @@ function ProjectLayout() {
       </PageGrid>
     );
   }
+
+  if (!accountProject) return <Navigate to="/error" />;
 
   if (isError) {
     return <h2>{error.message}</h2>;

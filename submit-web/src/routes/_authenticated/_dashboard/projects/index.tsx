@@ -21,7 +21,7 @@ export function ProjectsPage() {
     isPending: isProjectsLoading,
     isError: isProjectsError,
   } = useGetProjects({
-    accountId,
+    accountId: 1,
   });
 
   useEffect(() => {
