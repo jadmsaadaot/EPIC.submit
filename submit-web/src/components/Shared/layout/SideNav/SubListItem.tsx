@@ -39,8 +39,12 @@ export const SubListItem = ({ route }: { route: RouteType }) => {
               : "inherit",
           }}
         >
-          <ListItemText key={`sub-list-text-${route?.name}`}>
+          <ListItemText
+            key={`sub-list-text-${route?.name}`}
+            sx={{ m: 0, p: 0 }}
+          >
             <span
+              key={`sub-list-text-${route?.name}`}
               style={{
                 color: "inherit",
                 fontWeight: isActive ? "bold" : "normal",

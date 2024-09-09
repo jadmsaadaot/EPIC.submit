@@ -40,7 +40,7 @@ export default function ProjectTableRow({
             onClick={() => onSubmissionClick(subPackage.id)}
           >
             <Typography
-              variant="h5"
+              variant="h6"
               color={BCDesignTokens.themeBlue90}
               fontWeight={"500"}
               sx={{ mr: 0.5 }}
@@ -93,6 +93,7 @@ export default function ProjectTableRow({
           scope="row"
           colSpan={12}
           sx={{
+            border: 0,
             py: BCDesignTokens.layoutPaddingXsmall,
           }}
         />
