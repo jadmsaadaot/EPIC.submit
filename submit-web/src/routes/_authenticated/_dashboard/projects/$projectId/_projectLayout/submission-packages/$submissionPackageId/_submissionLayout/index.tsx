@@ -13,7 +13,7 @@ import { InfoBox } from "@/components/Submission/InfoBox";
 import { useAccountProject } from "@/components/Projects/projectStore";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/$submissionPackageId"
+  "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/"
 )({
   component: SubmissionPage,
 });
