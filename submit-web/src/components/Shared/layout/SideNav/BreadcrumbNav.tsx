@@ -10,8 +10,9 @@ interface RouteSegment {
 }
 
 const BreadcrumbNav: React.FC = () => {
-  const { breadcrumbs, setBreadcrumbs } = useBreadCrumb();
+  const { breadcrumbs, setBreadcrumbs, replaceBreadcrumb } = useBreadCrumb();
   const matches = useRouterState({ select: (s) => s.matches });
+
   const routeMatches = useMemo(() => {
     return matches
       .map((match) => {
@@ -25,7 +26,7 @@ const BreadcrumbNav: React.FC = () => {
         return null;
       })
       .filter(Boolean) as RouteSegment[];
-  }, [matches]);
+  }, [matches, replaceBreadcrumb]);
 
   useEffect(() => {
     setBreadcrumbs(routeMatches);
