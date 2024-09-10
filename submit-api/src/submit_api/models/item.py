@@ -6,8 +6,10 @@ from __future__ import annotations
 
 import enum
 
-from sqlalchemy import Column, Enum, ForeignKey
+from sqlalchemy import Column, Enum, ForeignKey, orm, desc, select, and_, func
+from sqlalchemy.ext.hybrid import hybrid_property
 
+from .submission import Submission
 from .base_model import BaseModel
 from .db import db
 
@@ -31,4 +33,30 @@ class Item(BaseModel):
     status = Column(Enum(ItemStatus), nullable=False, default=ItemStatus.PENDING)
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
-    submissions = db.relationship('Submission', backref='item', lazy='select')
+
+    @property
+    def submissions(self):
+        """Get the latest submission for each type."""
+        subquery = (
+            select(
+                Submission.item_id,
+                Submission.type,
+                func.max(Submission.version).label('latest_version')
+            )
+            .group_by(Submission.item_id, Submission.type)
+            .alias()
+        )
+
+        # get the latest submission for each type
+        latest_submissions = (
+            select(Submission.id)
+            .where(
+                and_(
+                    Submission.item_id == self.id,
+                    Submission.type == subquery.c.type,
+                    Submission.version == subquery.c.latest_version
+                )
+            )
+            .alias()
+        )
+        return db.session.query(Submission).filter(Submission.id.in_(latest_submissions)).all()

@@ -47,7 +47,7 @@ class SubmissionSchema(Schema):
     document_id = fields.Int(data_key="document_id")
     submitted_form_id = fields.Int(data_key="submitted_form_id")
     submitted_form = fields.Nested(SubmittedFormSchema, data_key="submitted_form")
-    submitted_document = fields.Nested(SubmittedDocumentSchema, data_key="document")
+    submitted_document = fields.Nested(SubmittedDocumentSchema, data_key="submitted_document")
 
 
 class CreateSubmissionRequestSchema(Schema):

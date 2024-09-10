@@ -34,13 +34,7 @@ class Submission(BaseModel):
     submitted_document_id = Column(db.Integer, ForeignKey('submitted_documents.id'), nullable=True)
 
     submitted_form = db.relationship('SubmittedForm', foreign_keys=[submitted_form_id], lazy='select')
-    submitted_document = db.relationship('Document', foreign_keys=[submitted_document_id], lazy='select')
-
-    __table_args__ = (
-        Index('idx_submission_type', type),
-        Index('idx_submission_item_id', item_id),
-        Index('idx_submission_version', version),
-    )
+    submitted_document = db.relationship('SubmittedDocument', foreign_keys=[submitted_document_id], lazy='select')
 
     @classmethod
     def find_latest_by_type(cls, submission_type: SubmissionTypeStatus):

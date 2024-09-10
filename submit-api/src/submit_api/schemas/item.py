@@ -25,3 +25,4 @@ class ItemSchema(Schema):
     version = fields.Int(data_key="version")
     submitted_on = fields.DateTime(data_key="submitted_on")
     submitted_by = fields.Str(data_key="submitted_by")
+    submissions = fields.List(fields.Dict(), data_key="submissions")
