@@ -2,6 +2,7 @@ import { alpha, ListItem, ListItemButton, ListItemText } from "@mui/material";
 import { RouteType } from "./SideNavElements";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { theme } from "@/styles/theme";
+import { BCDesignTokens } from "epic.theme";
 
 export const SubListItem = ({ route }: { route: RouteType }) => {
   const router = useRouterState();
@@ -39,20 +40,15 @@ export const SubListItem = ({ route }: { route: RouteType }) => {
               : "inherit",
           }}
         >
-          <ListItemText
+          <span
             key={`sub-list-text-${route?.name}`}
-            sx={{ m: 0, p: 0 }}
+            style={{
+              color: BCDesignTokens.themeGray100,
+              fontWeight: isActive ? "bold" : "normal",
+            }}
           >
-            <span
-              key={`sub-list-text-${route?.name}`}
-              style={{
-                color: "inherit",
-                fontWeight: isActive ? "bold" : "normal",
-              }}
-            >
-              {route.name}
-            </span>
-          </ListItemText>
+            {route.name}
+          </span>
         </ListItemButton>
       </Link>
     </ListItem>
