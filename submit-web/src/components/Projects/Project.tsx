@@ -45,7 +45,10 @@ export const Project = ({ accountProject }: ProjectParam) => {
   };
 
   return (
-    <ContentBox mainLabel={name} label={`EAC #${ea_certificate || ""}`}>
+    <ContentBox
+      mainLabel={name}
+      label={ea_certificate ? `EAC #${ea_certificate || ""}` : ""}
+    >
       <Box
         sx={{
           borderRadius: "3px",
