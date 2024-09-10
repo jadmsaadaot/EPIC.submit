@@ -36,6 +36,10 @@ class Submission(BaseModel):
     submitted_form = db.relationship('SubmittedForm', foreign_keys=[submitted_form_id], lazy='select')
     submitted_document = db.relationship('SubmittedDocument', foreign_keys=[submitted_document_id], lazy='select')
 
+    __table_args__ = (
+        Index('submission_item_type_version', 'item_id', 'type', 'version', unique=True),
+    )
+
     @classmethod
     def find_latest_by_type(cls, submission_type: SubmissionTypeStatus):
         """Return model by item id."""

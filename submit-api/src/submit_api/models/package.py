@@ -7,6 +7,7 @@ from __future__ import annotations
 import enum
 
 from sqlalchemy import Column, Enum, ForeignKey
+from sqlalchemy.orm import joinedload
 
 from .base_model import BaseModel
 from .db import db
@@ -35,3 +36,8 @@ class Package(BaseModel):
     submitted_by = Column(db.String(255), nullable=True)
     meta = db.relationship('PackageMetadata', backref='package', lazy='select')
     items = db.relationship('Item', backref='package', lazy='select')
+
+    @classmethod
+    def get_package_by_id_with_items(cls, package_id: int):
+        """Return model by package id."""
+        return cls.query.filter_by(id=package_id).options(joinedload(Package.items)).first()

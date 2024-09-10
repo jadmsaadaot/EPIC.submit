@@ -12,7 +12,7 @@ class PackageService:
     @classmethod
     def get_package_by_id(cls, package_id):
         """Get package by id."""
-        package = PackageModel.find_by_id(package_id)
+        package = PackageModel.get_package_by_id_with_items(package_id)
         return package
 
     @classmethod
