@@ -90,6 +90,12 @@ export const ContactInformation = () => {
     return () => setIsOpen(false);
   }, [isCreatingSubmissionPending, setIsOpen]);
 
+  const handleCancel = () => {
+    navigate({
+      to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
+    });
+  };
+
   return (
     <Grid item xs={12}>
       <ContentBox
@@ -213,7 +219,9 @@ export const ContactInformation = () => {
                 </Grid>
                 <Grid item xs={12} container spacing={2}>
                   <Grid item xs={12} sm="auto">
-                    <Button color="secondary">Close</Button>
+                    <Button color="secondary" onClick={handleCancel}>
+                      Close
+                    </Button>
                   </Grid>
                   <Grid item xs={12} sm="auto">
                     <Button type="submit">Save</Button>
