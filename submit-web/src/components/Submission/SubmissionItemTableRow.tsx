@@ -1,8 +1,15 @@
-import { Link, styled, TableCell, TableRow, Typography } from "@mui/material";
+import {
+  Link as MuiLink,
+  styled,
+  TableCell,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import SubmissionStatusChip from "./SubmissionStatusChip";
 import { SubmissionItemTableRow as SubmissionItemTableRowType } from "./types";
 import { SUBMISSION_STATUS } from "@/models/Submission";
+import { Link, useParams } from "@tanstack/react-router";
 
 type SubmissionItemTableRowProps = {
   item: SubmissionItemTableRowType;
@@ -31,11 +38,14 @@ const StyledTableRow = styled(TableRow)(() => ({
 export default function SubmissionItemTableRow({
   item,
 }: SubmissionItemTableRowProps) {
+  const { projectId, submissionPackageId } = useParams({
+    strict: false,
+  });
   return (
     <>
       <StyledTableRow key={`row-${item.name}`}>
         <StyledTableCell colSpan={2}>
-          <Link
+          <MuiLink
             color="inherit"
             sx={{
               textDecoration: "none",
@@ -51,7 +61,7 @@ export default function SubmissionItemTableRow({
             >
               {item.name}
             </Typography>
-          </Link>
+          </MuiLink>
         </StyledTableCell>
         <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right">{item.version ?? "--"}</StyledTableCell>
@@ -68,11 +78,11 @@ export default function SubmissionItemTableRow({
           sx={{ py: BCDesignTokens.layoutPaddingSmall }}
         >
           <Link
-            sx={{
-              mx: BCDesignTokens.layoutPaddingXsmall,
+            style={{
+              color: BCDesignTokens.typographyColorLink,
               textDecoration: "none",
             }}
-            component={"button"}
+            to={`/projects/${projectId}/submission-packages/${submissionPackageId}/submissions/${item.id}`}
           >
             Edit
           </Link>
@@ -80,7 +90,7 @@ export default function SubmissionItemTableRow({
       </StyledTableRow>
       <TableRow key={`row-${item.name}-divider`}>
         <TableCell
-          colSpan={Object.keys(item).length + 1}
+          colSpan={5}
           sx={{
             py: BCDesignTokens.layoutPaddingXsmall,
             border: 0,

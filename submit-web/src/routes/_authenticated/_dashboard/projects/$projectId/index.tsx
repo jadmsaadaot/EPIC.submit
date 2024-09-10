@@ -4,6 +4,7 @@ import { Grid } from "@mui/material";
 import { createFileRoute, Navigate, useParams } from "@tanstack/react-router";
 import { Project as ProjectComponent } from "@/components/Projects/Project";
 import { useGetProject } from "@/hooks/api/useProjects";
+import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/",
@@ -39,7 +40,10 @@ function ProjectPage() {
     return <h2>{error.message}</h2>;
   }
 
-  if (!project) return <Navigate to="/error" />;
+  if (!project) {
+    notify.error("Failed to load project");
+    return <Navigate to="/error" />;
+  }
 
   return (
     <PageGrid>

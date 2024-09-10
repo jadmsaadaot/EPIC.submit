@@ -38,15 +38,15 @@ package_model = ApiHelper.convert_ma_schema_to_restx_model(
 
 @cors_preflight("GET, OPTIONS, POST")
 @API.route("/<int:package_id>", methods=["POST", "GET", "OPTIONS"])
-class ProjectsByAccount(Resource):
+class Package(Resource):
     """Resource for managing projects."""
 
     @staticmethod
     @ApiHelper.swagger_decorators(
-        API, endpoint_description="Get projects by account id"
+        API, endpoint_description="Get package by id"
     )
     @API.response(
-        code=HTTPStatus.CREATED, model=package_model, description="Submission Package"
+        code=HTTPStatus.OK, model=package_model, description="Submission Package"
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
     @cors.crossdomain(origin="*")

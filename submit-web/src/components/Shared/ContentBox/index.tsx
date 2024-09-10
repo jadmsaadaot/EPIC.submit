@@ -1,13 +1,15 @@
 import { Box, Paper, PaperProps, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
+import React from "react";
 
 type ContentBoxProps = {
-  title?: string;
+  mainLabel: React.ReactNode;
   label?: string;
+  children: React.ReactNode;
 } & PaperProps;
 export const ContentBox = ({
   children,
-  title = "",
+  mainLabel = "",
   label = "",
   ...rest
 }: ContentBoxProps) => {
@@ -29,7 +31,7 @@ export const ContentBox = ({
             fontWeight: "bold",
           }}
         >
-          {title}
+          {mainLabel || ""}
         </Typography>
         {label && (
           <Typography

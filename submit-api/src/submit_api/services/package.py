@@ -11,9 +11,9 @@ class PackageService:
 
     @classmethod
     def get_package_by_id(cls, package_id):
-        """Get project by id."""
-        db_project = PackageModel.find_by_id(package_id)
-        return db_project
+        """Get package by id."""
+        package = PackageModel.get_package_by_id_with_items(package_id)
+        return package
 
     @classmethod
     def create_package(cls, account_project_id, request_data):
