@@ -30,6 +30,7 @@ from .ops import API as OPS_API
 from .package import API as PACKAGE_API
 from .project import API as PROJECT_API
 from .user import API as USER_API
+from .submission import API as SUBMISSION_API
 
 
 __all__ = ('API_BLUEPRINT', 'OPS_BLUEPRINT')
@@ -61,3 +62,4 @@ API.add_namespace(USER_API)
 API.add_namespace(PROJECT_API)
 API.add_namespace(PACKAGE_API)
 API.add_namespace(ITEM_API)
+API.add_namespace(SUBMISSION_API)
