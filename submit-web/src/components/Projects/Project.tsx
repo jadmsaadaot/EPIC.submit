@@ -84,7 +84,7 @@ export const Project = ({ accountProject }: ProjectParam) => {
             sx={{
               fontWeight: "bold",
               backgroundColor: BCDesignTokens.themeGold10,
-              pl: BCDesignTokens.layoutPaddingXsmall,
+              pl: BCDesignTokens.layoutPaddingSmall,
             }}
           >
             Active Submissions
@@ -108,7 +108,7 @@ export const Project = ({ accountProject }: ProjectParam) => {
             sx={{
               fontWeight: "bold",
               backgroundColor: BCDesignTokens.themeGold10,
-              ml: BCDesignTokens.layoutPaddingXsmall,
+              ml: BCDesignTokens.layoutPaddingSmall,
             }}
           >
             Past Submissions
