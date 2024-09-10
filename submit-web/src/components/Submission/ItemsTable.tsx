@@ -43,7 +43,13 @@ export default function ItemsTable({
   return (
     <TableContainer component={Box} sx={{ height: "100%" }}>
       <Table sx={{ tableLayout: "fixed" }}>
-        <TableHead>
+        <TableHead
+          sx={{
+            ".MuiTableCell-root": {
+              p: BCDesignTokens.layoutPaddingXsmall,
+            },
+          }}
+        >
           <TableRow>
             <TableCell sx={{ color: BCDesignTokens.themeGray70 }} colSpan={2}>
               <TableSortLabel
@@ -51,6 +57,11 @@ export default function ItemsTable({
                 direction={orderBy === "name" ? order : "asc"}
                 onClick={() => handleRequestSort("name")}
                 IconComponent={SwapVertIcon}
+                sx={{
+                  ".MuiTableSortLabel-icon": {
+                    color: `${BCDesignTokens.themeGray70} !important`,
+                  },
+                }}
               >
                 <Typography sx={{ color: BCDesignTokens.themeGray70 }}>
                   Form/Document
