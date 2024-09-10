@@ -21,12 +21,12 @@ export default function ProjectTableRow({
           scope="row"
           colSpan={6}
           sx={{
-            borderTop: "2px solid #F2F2F2",
-            borderBottom: "2px solid #F2F2F2",
-            borderLeft: "2px solid #F2F2F2",
+            borderTop: "1px solid #F2F2F2",
+            borderBottom: "1px solid #F2F2F2",
+            borderLeft: "1px solid #F2F2F2",
             borderTopLeftRadius: 5,
             borderBottomLeftRadius: 5,
-            py: BCDesignTokens.layoutPaddingSmall,
+            py: BCDesignTokens.layoutPaddingXsmall,
           }}
         >
           <Link
@@ -40,7 +40,7 @@ export default function ProjectTableRow({
             onClick={() => onSubmissionClick(subPackage.id)}
           >
             <Typography
-              variant="h5"
+              variant="h6"
               color={BCDesignTokens.themeBlue90}
               fontWeight={"500"}
               sx={{ mr: 0.5 }}
@@ -54,9 +54,9 @@ export default function ProjectTableRow({
           colSpan={2}
           align="right"
           sx={{
-            borderTop: "2px solid #F2F2F2",
-            borderBottom: "2px solid #F2F2F2",
-            py: BCDesignTokens.layoutPaddingSmall,
+            borderTop: "1px solid #F2F2F2",
+            borderBottom: "1px solid #F2F2F2",
+            py: BCDesignTokens.layoutPaddingXsmall,
           }}
         >
           {subPackage.submitted_on ?? "--"}
@@ -65,9 +65,9 @@ export default function ProjectTableRow({
           colSpan={2}
           align="right"
           sx={{
-            borderTop: "2px solid #F2F2F2",
-            borderBottom: "2px solid #F2F2F2",
-            py: BCDesignTokens.layoutPaddingSmall,
+            borderTop: "1px solid #F2F2F2",
+            borderBottom: "1px solid #F2F2F2",
+            py: BCDesignTokens.layoutPaddingXsmall,
           }}
         >
           {subPackage.submitted_by ?? "--"}
@@ -76,12 +76,12 @@ export default function ProjectTableRow({
           colSpan={2}
           align="right"
           sx={{
-            borderTop: "2px solid #F2F2F2",
+            borderTop: "1px solid #F2F2F2",
             borderTopRightRadius: 5,
             borderBottomRightRadius: 5,
-            borderBottom: "2px solid #F2F2F2",
-            borderRight: "2px solid #F2F2F2",
-            py: BCDesignTokens.layoutPaddingSmall,
+            borderBottom: "1px solid #F2F2F2",
+            borderRight: "1px solid #F2F2F2",
+            py: BCDesignTokens.layoutPaddingXsmall,
           }}
         >
           <PackageStatusChip status={subPackage.status} />
@@ -93,6 +93,7 @@ export default function ProjectTableRow({
           scope="row"
           colSpan={12}
           sx={{
+            border: 0,
             py: BCDesignTokens.layoutPaddingXsmall,
           }}
         />

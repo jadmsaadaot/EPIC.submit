@@ -14,7 +14,7 @@ export const ContentBox = ({
   ...rest
 }: ContentBoxProps) => {
   return (
-    <Paper {...rest}>
+    <Paper elevation={2} {...rest}>
       <Box
         sx={{
           display: "flex",

@@ -18,7 +18,7 @@ import { BCDesignTokens } from "epic.theme";
 import { useEffect } from "react";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/$projectId/new-submission",
+  "/_authenticated/_dashboard/projects/$projectId/new-submission"
 )({
   component: NewManagementPlan,
   meta: () => [{ title: "New Submission Package" }],
@@ -82,8 +82,8 @@ export function NewManagementPlan() {
     <PageGrid>
       <Grid item xs={12}>
         <ContentBox
-          mainLabel={accountProject?.project.name}
-          label={accountProject?.project.ea_certificate}
+          title={accountProject?.project.name}
+          label={`EAC #${accountProject?.project.ea_certificate}`}
         >
           <Box
             sx={{

@@ -16,16 +16,16 @@ type SubmissionItemTableRowProps = {
 };
 
 const StyledTableCell = styled(TableCell)(() => ({
-  borderTop: `2px solid ${BCDesignTokens.themeBlue20}`,
-  borderBottom: `2px solid ${BCDesignTokens.themeBlue20}`,
+  borderTop: `1px solid ${BCDesignTokens.themeBlue20}`,
+  borderBottom: `1px solid ${BCDesignTokens.themeBlue20}`,
   py: BCDesignTokens.layoutPaddingXsmall,
   "&:first-of-type": {
-    borderLeft: `2px solid ${BCDesignTokens.themeBlue20}`,
+    borderLeft: `1px solid ${BCDesignTokens.themeBlue20}`,
     borderTopLeftRadius: 5,
     borderBottomLeftRadius: 5,
   },
   "&:last-of-type": {
-    borderRight: `2px solid ${BCDesignTokens.themeBlue20}`,
+    borderRight: `1px solid ${BCDesignTokens.themeBlue20}`,
     borderTopRightRadius: 5,
     borderBottomRightRadius: 5,
   },

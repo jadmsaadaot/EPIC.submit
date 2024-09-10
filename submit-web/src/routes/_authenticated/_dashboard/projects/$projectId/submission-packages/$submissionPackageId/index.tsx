@@ -4,7 +4,12 @@ import { ContentBox } from "@/components/Shared/ContentBox";
 import { YellowBar } from "@/components/Shared/YellowBar";
 import ItemsTable from "@/components/Submission/ItemsTable";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { createFileRoute, Navigate, useParams } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Navigate,
+  useNavigate,
+  useParams,
+} from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
 import { useGetProject } from "@/hooks/api/useProjects";
 import { PageGrid } from "@/components/Shared/PageGrid";
@@ -32,6 +37,7 @@ export default function SubmissionPage() {
   const { data: accountProject } = useGetProject({
     projectId,
   });
+  const navigate = useNavigate();
 
   const { data: submissionPackage, isPending: isSubPackageLoading } =
     useGetSubmissionPackage({
@@ -114,7 +120,12 @@ export default function SubmissionPage() {
                 </Box>
               </Box>
               <InfoBox submissionPackage={submissionPackage} />
-              <Box sx={{ mb: BCDesignTokens.layoutMarginXlarge }}>
+              <Box
+                sx={{
+                  mb: BCDesignTokens.layoutMarginXlarge,
+                  pt: BCDesignTokens.layoutPaddingSmall,
+                }}
+              >
                 <ItemsTable submissionItems={submissionPackage.items} />
               </Box>
               <Box
@@ -122,7 +133,13 @@ export default function SubmissionPage() {
                   pt: BCDesignTokens.layoutPaddingXlarge,
                 }}
               >
-                <Button color="secondary" sx={{ mr: 1 }}>
+                <Button
+                  color="secondary"
+                  sx={{ mr: 1 }}
+                  onClick={() =>
+                    navigate({ to: `/projects/${accountProject.id}` })
+                  }
+                >
                   Save & Close
                 </Button>
                 <Button>Submit Management Plan</Button>
