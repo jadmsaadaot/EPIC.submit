@@ -8,7 +8,10 @@ from submit_api.models.submitted_form import SubmittedForm as SubmittedFormModel
 
 
 class SubmissionCreatorFactory(Protocol):
+    """Submission creator factory protocol."""
+
     def create(self, item_id, request_data) -> SubmissionModel:
+        """Create a new submission."""
         return SubmissionModel()
 
 
@@ -16,6 +19,7 @@ class FormSubmissionCreator(SubmissionCreatorFactory):
     """Form submission creator."""
 
     def create(self, item_id, request_data):
+        """Create a new form submission."""
         with session_scope() as session:
             submitted_form = self._create_submitted_form(session, request_data)
             submission = self._create_submission(session, item_id, submitted_form.id)

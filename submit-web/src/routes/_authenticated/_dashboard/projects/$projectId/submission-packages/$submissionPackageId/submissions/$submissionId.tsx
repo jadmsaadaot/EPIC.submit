@@ -27,7 +27,13 @@ export function Submission() {
       setSubmissionItem(submissionItem);
     }
     return () => reset();
-  }, [isSuccess, setSubmissionItem, reset, isSubmissionPending]);
+  }, [
+    isSuccess,
+    setSubmissionItem,
+    reset,
+    isSubmissionPending,
+    submissionItem,
+  ]);
 
   if (isSubmissionPending) {
     return (
