@@ -57,6 +57,11 @@ export default function ItemsTable({
                 direction={orderBy === "name" ? order : "asc"}
                 onClick={() => handleRequestSort("name")}
                 IconComponent={SwapVertIcon}
+                sx={{
+                  ".MuiTableSortLabel-icon": {
+                    color: `${BCDesignTokens.themeGray70} !important`,
+                  },
+                }}
               >
                 <Typography sx={{ color: BCDesignTokens.themeGray70 }}>
                   Form/Document

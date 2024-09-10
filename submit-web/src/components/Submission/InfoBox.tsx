@@ -13,7 +13,6 @@ export const InfoBox = ({ submissionPackage }: InfoBoxProps) => {
         borderRadius: "4px",
         border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
         p: BCDesignTokens.layoutPaddingSmall,
-        pt: 0,
       }}
       rowSpacing={1}
     >
