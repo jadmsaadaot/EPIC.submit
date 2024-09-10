@@ -26,7 +26,7 @@ export default function ProjectTableRow({
             borderLeft: "1px solid #F2F2F2",
             borderTopLeftRadius: 5,
             borderBottomLeftRadius: 5,
-            py: BCDesignTokens.layoutPaddingSmall,
+            py: BCDesignTokens.layoutPaddingXsmall,
           }}
         >
           <Link
@@ -56,7 +56,7 @@ export default function ProjectTableRow({
           sx={{
             borderTop: "1px solid #F2F2F2",
             borderBottom: "1px solid #F2F2F2",
-            py: BCDesignTokens.layoutPaddingSmall,
+            py: BCDesignTokens.layoutPaddingXsmall,
           }}
         >
           {subPackage.submitted_on ?? "--"}
@@ -67,7 +67,7 @@ export default function ProjectTableRow({
           sx={{
             borderTop: "1px solid #F2F2F2",
             borderBottom: "1px solid #F2F2F2",
-            py: BCDesignTokens.layoutPaddingSmall,
+            py: BCDesignTokens.layoutPaddingXsmall,
           }}
         >
           {subPackage.submitted_by ?? "--"}
@@ -81,7 +81,7 @@ export default function ProjectTableRow({
             borderBottomRightRadius: 5,
             borderBottom: "1px solid #F2F2F2",
             borderRight: "1px solid #F2F2F2",
-            py: BCDesignTokens.layoutPaddingSmall,
+            py: BCDesignTokens.layoutPaddingXsmall,
           }}
         >
           <PackageStatusChip status={subPackage.status} />
