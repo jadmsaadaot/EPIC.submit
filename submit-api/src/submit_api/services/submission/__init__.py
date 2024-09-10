@@ -15,7 +15,7 @@ class SubmissionService:
             raise ValueError("Submission type is required.")
 
         submission_creators = {
-            SubmissionTypeStatus.FORM: FormSubmissionCreator()
+            SubmissionTypeStatus.FORM.value: FormSubmissionCreator()
         }
         submission_creator = submission_creators.get(submission_type)
         if not submission_creator:
