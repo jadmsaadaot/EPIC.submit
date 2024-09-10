@@ -21,9 +21,9 @@ export default function ProjectTableRow({
           scope="row"
           colSpan={6}
           sx={{
-            borderTop: "2px solid #F2F2F2",
-            borderBottom: "2px solid #F2F2F2",
-            borderLeft: "2px solid #F2F2F2",
+            borderTop: "1px solid #F2F2F2",
+            borderBottom: "1px solid #F2F2F2",
+            borderLeft: "1px solid #F2F2F2",
             borderTopLeftRadius: 5,
             borderBottomLeftRadius: 5,
             py: BCDesignTokens.layoutPaddingSmall,
@@ -54,8 +54,8 @@ export default function ProjectTableRow({
           colSpan={2}
           align="right"
           sx={{
-            borderTop: "2px solid #F2F2F2",
-            borderBottom: "2px solid #F2F2F2",
+            borderTop: "1px solid #F2F2F2",
+            borderBottom: "1px solid #F2F2F2",
             py: BCDesignTokens.layoutPaddingSmall,
           }}
         >
@@ -65,8 +65,8 @@ export default function ProjectTableRow({
           colSpan={2}
           align="right"
           sx={{
-            borderTop: "2px solid #F2F2F2",
-            borderBottom: "2px solid #F2F2F2",
+            borderTop: "1px solid #F2F2F2",
+            borderBottom: "1px solid #F2F2F2",
             py: BCDesignTokens.layoutPaddingSmall,
           }}
         >
@@ -76,11 +76,11 @@ export default function ProjectTableRow({
           colSpan={2}
           align="right"
           sx={{
-            borderTop: "2px solid #F2F2F2",
+            borderTop: "1px solid #F2F2F2",
             borderTopRightRadius: 5,
             borderBottomRightRadius: 5,
-            borderBottom: "2px solid #F2F2F2",
-            borderRight: "2px solid #F2F2F2",
+            borderBottom: "1px solid #F2F2F2",
+            borderRight: "1px solid #F2F2F2",
             py: BCDesignTokens.layoutPaddingSmall,
           }}
         >

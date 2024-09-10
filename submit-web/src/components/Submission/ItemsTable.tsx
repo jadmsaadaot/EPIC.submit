@@ -43,7 +43,13 @@ export default function ItemsTable({
   return (
     <TableContainer component={Box} sx={{ height: "100%" }}>
       <Table sx={{ tableLayout: "fixed" }}>
-        <TableHead>
+        <TableHead
+          sx={{
+            ".MuiTableCell-root": {
+              p: BCDesignTokens.layoutPaddingXsmall,
+            },
+          }}
+        >
           <TableRow>
             <TableCell sx={{ color: BCDesignTokens.themeGray70 }} colSpan={2}>
               <TableSortLabel

@@ -24,7 +24,14 @@ export default function SubmissionPackageTable({
     <TableContainer component={Box} sx={{ height: "100%" }}>
       <Table sx={{ tableLayout: "fixed", border: 0 }} aria-label="simple table">
         {!headless && (
-          <TableHead sx={{ border: 0 }}>
+          <TableHead
+            sx={{
+              border: 0,
+              ".MuiTableCell-root": {
+                p: BCDesignTokens.layoutPaddingXsmall,
+              },
+            }}
+          >
             <TableRow>
               <TableCell
                 colSpan={6}
