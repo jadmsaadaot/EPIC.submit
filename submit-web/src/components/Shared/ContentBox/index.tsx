@@ -35,7 +35,7 @@ export const ContentBox = ({
         </Typography>
         {label && (
           <Typography
-            variant="h4"
+            variant="h5"
             color={BCDesignTokens.themeGray70}
             sx={{
               mr: 2,

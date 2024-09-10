@@ -21,7 +21,7 @@ import { ContentBoxSkeleton } from "@/components/Shared/ContentBox/ContentBoxSke
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/",
+  "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/"
 )({
   component: SubmissionPage,
   meta: () => [{ title: "Submission" }],
@@ -65,7 +65,11 @@ export default function SubmissionPage() {
       <Grid item xs={12} lg={10}>
         <ContentBox
           mainLabel={accountProject?.project?.name}
-          label={`EAC# ${accountProject?.project?.ea_certificate}`}
+          label={
+            accountProject?.project.ea_certificate
+              ? `EAC #${accountProject?.project?.ea_certificate}`
+              : ""
+          }
         >
           <Box
             sx={{

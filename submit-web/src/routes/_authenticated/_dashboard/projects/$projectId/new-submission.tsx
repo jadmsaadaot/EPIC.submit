@@ -82,8 +82,12 @@ export function NewManagementPlan() {
     <PageGrid>
       <Grid item xs={12}>
         <ContentBox
-          title={accountProject?.project.name}
-          label={`EAC #${accountProject?.project.ea_certificate}`}
+          mainLabel={accountProject?.project.name}
+          label={
+            accountProject?.project.ea_certificate
+              ? `EAC #${accountProject?.project.ea_certificate}`
+              : ""
+          }
         >
           <Box
             sx={{
