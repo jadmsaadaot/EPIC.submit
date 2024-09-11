@@ -32,6 +32,7 @@ class Item(BaseModel):
     status = Column(Enum(ItemStatus), nullable=False, default=ItemStatus.PENDING)
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
+    version = Column(db.Integer, nullable=False, default=1)
 
     @property
     def submissions(self):
