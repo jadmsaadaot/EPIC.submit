@@ -1,5 +1,6 @@
 import { ProjectsSkeleton } from "@/components/Projects";
 import { useAccountProject } from "@/components/Projects/projectStore";
+import { useBreadCrumb } from "@/components/Shared/layout/SideNav/breadCrumbStore";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import { useGetProject } from "@/hooks/api/useProjects";
 import { useUpdateBreadcrumb } from "@/hooks/common";
@@ -9,6 +10,7 @@ import {
   Navigate,
   Outlet,
   useParams,
+  useRouterState,
 } from "@tanstack/react-router";
 import { useEffect } from "react";
 
@@ -29,12 +31,14 @@ function ProjectLayout() {
   });
   const accountProject = data as AccountProject;
   const META_TITLE = `Project ${projectId}`;
-  useUpdateBreadcrumb(META_TITLE, accountProject?.project?.name || "");
+  const matches = useRouterState({ select: (s) => s.matches });
+  const { replaceBreadcrumb } = useBreadCrumb();
   useEffect(() => {
     if (accountProject) {
       setAccountProject(accountProject);
+      replaceBreadcrumb(META_TITLE, accountProject?.project.name || "");
     }
-  }, [accountProject]);
+  }, [accountProject, matches]);
 
   if (isLoading) {
     return (

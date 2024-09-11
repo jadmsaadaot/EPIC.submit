@@ -1,5 +1,6 @@
 import { useAccountProject } from "@/components/Projects/projectStore";
 import { ContentBoxSkeleton } from "@/components/Shared/ContentBox/ContentBoxSkeleton";
+import { useBreadCrumb } from "@/components/Shared/layout/SideNav/breadCrumbStore";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import { useGetSubmissionPackage } from "@/hooks/api/usePackages";
 import { useUpdateBreadcrumb } from "@/hooks/common";
@@ -9,9 +10,9 @@ import {
   Navigate,
   Outlet,
   useParams,
+  useRouterState,
 } from "@tanstack/react-router";
 import { useEffect } from "react";
-
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout"
 )({
@@ -31,12 +32,15 @@ export default function SubmissionLayout() {
       packageId: submissionPackageId,
       enabled: Boolean(accountProject?.id),
     });
-  useUpdateBreadcrumb(META_TITLE, submissionPackage?.name || "");
+  const { replaceBreadcrumb } = useBreadCrumb();
+  const matches = useRouterState({ select: (s) => s.matches });
+
   useEffect(() => {
     if (submissionPackage) {
       setSubmissionPackage(submissionPackage);
+      replaceBreadcrumb(META_TITLE, submissionPackage?.name || "");
     }
-  }, [submissionPackage]);
+  }, [submissionPackage, matches]);
 
   if (isSubPackageLoading) {
     return (
@@ -53,4 +57,7 @@ export default function SubmissionLayout() {
   }
 
   return <Outlet />;
+}
+function useBreadcrumb(): { replaceBreadcrumb: any } {
+  throw new Error("Function not implemented.");
 }

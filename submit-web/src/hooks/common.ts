@@ -10,10 +10,15 @@ export const useIsMobile = () => {
   return isMobile;
 };
 
-export const useUpdateBreadcrumb = (title: string, name: string) => {
+export const useUpdateBreadcrumb = <T>(
+  title: string,
+  name: string,
+  dependency: T,
+) => {
   const { replaceBreadcrumb } = useBreadCrumb();
   const matches = useRouterState({ select: (s) => s.matches });
+
   useEffect(() => {
     replaceBreadcrumb(title, name);
-  }, [replaceBreadcrumb, matches]);
+  }, [replaceBreadcrumb, matches, name, dependency]);
 };
