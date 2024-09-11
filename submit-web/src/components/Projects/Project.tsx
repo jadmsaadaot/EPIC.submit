@@ -26,10 +26,10 @@ export const Project = ({ accountProject }: ProjectParam) => {
   const navigate = useNavigate();
 
   const activeSubmissionPackages = accountProject.packages.filter(
-    (subPackage) => subPackage.status === PACKAGE_STATUS.IN_REVIEW.value,
+    (subPackage) => subPackage.status === PACKAGE_STATUS.IN_REVIEW.value
   );
   const pastSubmissionPackages = accountProject.packages.filter(
-    (subPackage) => subPackage.status !== PACKAGE_STATUS.IN_REVIEW.value,
+    (subPackage) => subPackage.status !== PACKAGE_STATUS.IN_REVIEW.value
   );
 
   const { name, ea_certificate } = accountProject.project;
@@ -46,7 +46,7 @@ export const Project = ({ accountProject }: ProjectParam) => {
 
   return (
     <ContentBox
-      title={name}
+      mainLabel={name}
       label={ea_certificate ? `EAC #${ea_certificate}` : ""}
     >
       <Box
@@ -84,6 +84,7 @@ export const Project = ({ accountProject }: ProjectParam) => {
             sx={{
               fontWeight: "bold",
               backgroundColor: BCDesignTokens.themeGold10,
+              pl: BCDesignTokens.layoutPaddingSmall,
             }}
           >
             Active Submissions
@@ -107,6 +108,7 @@ export const Project = ({ accountProject }: ProjectParam) => {
             sx={{
               fontWeight: "bold",
               backgroundColor: BCDesignTokens.themeGold10,
+              ml: BCDesignTokens.layoutPaddingSmall,
             }}
           >
             Past Submissions
