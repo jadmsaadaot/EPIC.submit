@@ -3,7 +3,6 @@ import { useAccountProject } from "@/components/Projects/projectStore";
 import { useBreadCrumb } from "@/components/Shared/layout/SideNav/breadCrumbStore";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import { useGetProject } from "@/hooks/api/useProjects";
-import { useUpdateBreadcrumb } from "@/hooks/common";
 import { AccountProject } from "@/models/Project";
 import {
   createFileRoute,
@@ -38,7 +37,13 @@ function ProjectLayout() {
       setAccountProject(accountProject);
       replaceBreadcrumb(META_TITLE, accountProject?.project.name || "");
     }
-  }, [accountProject, matches]);
+  }, [
+    accountProject,
+    matches,
+    setAccountProject,
+    replaceBreadcrumb,
+    META_TITLE,
+  ]);
 
   if (isLoading) {
     return (

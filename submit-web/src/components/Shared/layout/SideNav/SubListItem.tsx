@@ -1,4 +1,4 @@
-import { alpha, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import { alpha, ListItem, ListItemButton } from "@mui/material";
 import { RouteType } from "./SideNavElements";
 import { Link, useRouterState } from "@tanstack/react-router";
 import { theme } from "@/styles/theme";

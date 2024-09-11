@@ -20,5 +20,5 @@ export const useUpdateBreadcrumb = <T>(
 
   useEffect(() => {
     replaceBreadcrumb(title, name);
-  }, [replaceBreadcrumb, matches, name, dependency]);
+  }, [replaceBreadcrumb, title, matches, name, dependency]);
 };

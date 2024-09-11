@@ -3,7 +3,6 @@ import { ContentBoxSkeleton } from "@/components/Shared/ContentBox/ContentBoxSke
 import { useBreadCrumb } from "@/components/Shared/layout/SideNav/breadCrumbStore";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import { useGetSubmissionPackage } from "@/hooks/api/usePackages";
-import { useUpdateBreadcrumb } from "@/hooks/common";
 import { Grid } from "@mui/material";
 import {
   createFileRoute,
@@ -40,7 +39,13 @@ export default function SubmissionLayout() {
       setSubmissionPackage(submissionPackage);
       replaceBreadcrumb(META_TITLE, submissionPackage?.name || "");
     }
-  }, [submissionPackage, matches]);
+  }, [
+    submissionPackage,
+    matches,
+    setSubmissionPackage,
+    replaceBreadcrumb,
+    META_TITLE,
+  ]);
 
   if (isSubPackageLoading) {
     return (
@@ -57,7 +62,4 @@ export default function SubmissionLayout() {
   }
 
   return <Outlet />;
-}
-function useBreadcrumb(): { replaceBreadcrumb: any } {
-  throw new Error("Function not implemented.");
 }
