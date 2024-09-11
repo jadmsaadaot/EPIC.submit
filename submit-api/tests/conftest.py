@@ -65,11 +65,11 @@ def db(app):  # pylint: disable=redefined-outer-name, invalid-name
     Drops schema, and recreate.
     """
     with app.app_context():
-        drop_schema_sql = """DROP SCHEMA public CASCADE;
+        drop_schema_sql = text("""DROP SCHEMA public CASCADE;
                              CREATE SCHEMA public;
-                             GRANT ALL ON SCHEMA public TO postgres;
+                             GRANT ALL ON SCHEMA public TO admin;
                              GRANT ALL ON SCHEMA public TO public;
-                          """
+                          """)
 
         sess = _db.session()
         sess.execute(drop_schema_sql)

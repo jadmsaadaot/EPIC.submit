@@ -11,27 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""Test Utils.
 
-Test Utility for creating model factory.
-"""
-from faker import Faker
+"""Test-Suite for the submit_api."""
 
-from submit_api.config import get_named_config
+from enum import Enum
 
 
-CONFIG = get_named_config('testing')
-fake = Faker()
+class ContentType(Enum):
+    """Http Content Types."""
 
-JWT_HEADER = {
-    'alg': CONFIG.JWT_OIDC_TEST_ALGORITHMS,
-    'typ': 'JWT',
-    'kid': CONFIG.JWT_OIDC_TEST_AUDIENCE
-}
-
-
-def factory_auth_header(jwt, claims):
-    """Produce JWT tokens for use in tests."""
-    return {
-        'Authorization': 'Bearer ' + jwt.create_jwt(claims=claims, header=JWT_HEADER),
-    }
+    JSON = 'application/json'
+    FORM_URL_ENCODED = 'application/x-www-form-urlencoded'
+    PDF = 'application/pdf'

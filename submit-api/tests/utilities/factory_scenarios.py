@@ -15,6 +15,7 @@
 
 Test Utility for creating test scenarios.
 """
+from enum import Enum
 
 from faker import Faker
 
@@ -24,3 +25,29 @@ from submit_api.config import get_named_config
 fake = Faker()
 
 CONFIG = get_named_config('testing')
+
+
+class TestJwtClaims(dict, Enum):
+    """Test scenarios of jwt claims."""
+
+    no_role = {
+        'iss': CONFIG.JWT_OIDC_TEST_ISSUER,
+        'sub': 'f7a4a1d3-73a8-4cbc-a40f-bb1145302065',
+        'firstname': fake.first_name(),
+        'lastname': fake.last_name(),
+        'preferred_username': fake.user_name(),
+        'realm_access': {
+            'roles': [
+            ]
+        }
+    }
+
+
+class TestPackageInfo(dict, Enum):
+    """Test scenarios of packages."""
+
+    new_package = {
+        'name': fake.company(),
+        'metadata': {},
+        'type': 'Management Plan',
+    }
