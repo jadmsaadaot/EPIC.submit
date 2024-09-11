@@ -26,7 +26,7 @@ const BreadcrumbNav: React.FC = () => {
         return null;
       })
       .filter(Boolean) as RouteSegment[];
-  }, [matches, replaceBreadcrumb]);
+  }, [matches]);
 
   useEffect(() => {
     setBreadcrumbs(routeMatches);
