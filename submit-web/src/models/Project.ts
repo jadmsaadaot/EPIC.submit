@@ -15,3 +15,16 @@ export type AccountProject = {
   project: Project;
   packages: SubmissionPackage[];
 };
+
+export const createDefaultAccountProject = (): AccountProject => ({
+  id: 0,
+  project_id: 0,
+  account_id: 0,
+  project: {
+    id: 0,
+    name: "",
+    proponent_id: 0,
+    proponent_name: "",
+  },
+  packages: [],
+});

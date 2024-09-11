@@ -34,3 +34,15 @@ export type SubmissionPackage = {
   type: PackageType;
   items: Array<SubmissionItem>;
 };
+
+export const createDefaultSubmissionPackage = (): SubmissionPackage => ({
+  id: 0,
+  name: "",
+  status: PACKAGE_STATUS.IN_REVIEW.value,
+  type_id: 0,
+  type: {
+    id: 0,
+    name: "",
+  },
+  items: [],
+});

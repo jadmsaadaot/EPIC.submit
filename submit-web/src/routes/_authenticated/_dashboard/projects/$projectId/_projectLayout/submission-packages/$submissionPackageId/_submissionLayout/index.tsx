@@ -4,61 +4,23 @@ import { ContentBox } from "@/components/Shared/ContentBox";
 import { YellowBar } from "@/components/Shared/YellowBar";
 import ItemsTable from "@/components/Submission/ItemsTable";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import {
-  createFileRoute,
-  Navigate,
-  useNavigate,
-  useParams,
-} from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
-import { useGetProject } from "@/hooks/api/useProjects";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import SubmissionStatusChip from "@/components/Submission/SubmissionStatusChip";
 import { SUBMISSION_STATUS } from "@/models/Submission";
 import { InfoBox } from "@/components/Submission/InfoBox";
-import { useGetSubmissionPackage } from "@/hooks/api/usePackages";
-import { ContentBoxSkeleton } from "@/components/Shared/ContentBox/ContentBoxSkeleton";
-import { notify } from "@/components/Shared/Snackbar/snackbarStore";
+import { useAccountProject } from "@/components/Projects/projectStore";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/$projectId/submission-packages/$submissionPackageId/"
+  "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/"
 )({
   component: SubmissionPage,
-  meta: () => [{ title: "Submission" }],
 });
 
 export default function SubmissionPage() {
-  const {
-    projectId: projectIdParam,
-    submissionPackageId: submissionPackageIdParam,
-  } = useParams({ strict: false });
-  const projectId = Number(projectIdParam);
-  const submissionPackageId = Number(submissionPackageIdParam);
-  const { data: accountProject } = useGetProject({
-    projectId,
-  });
+  const { accountProject, submissionPackage } = useAccountProject();
   const navigate = useNavigate();
-
-  const { data: submissionPackage, isPending: isSubPackageLoading } =
-    useGetSubmissionPackage({
-      packageId: submissionPackageId,
-      enabled: Boolean(accountProject?.id),
-    });
-
-  if (isSubPackageLoading) {
-    return (
-      <PageGrid>
-        <Grid item xs={12} lg={10}>
-          <ContentBoxSkeleton />
-        </Grid>
-      </PageGrid>
-    );
-  }
-
-  if (!accountProject || !submissionPackage) {
-    notify.error("Failed to load submission package");
-    return <Navigate to={"/error"} />;
-  }
 
   return (
     <PageGrid>
