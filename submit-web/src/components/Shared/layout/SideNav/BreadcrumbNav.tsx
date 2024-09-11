@@ -10,7 +10,7 @@ interface RouteSegment {
 }
 
 const BreadcrumbNav: React.FC = () => {
-  const { breadcrumbs, setBreadcrumbs, replaceBreadcrumb } = useBreadCrumb();
+  const { breadcrumbs, setBreadcrumbs } = useBreadCrumb();
   const matches = useRouterState({ select: (s) => s.matches });
 
   const routeMatches = useMemo(() => {
