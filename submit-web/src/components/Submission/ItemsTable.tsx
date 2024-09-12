@@ -16,7 +16,6 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 import SubmissionItemTableRow from "./SubmissionItemTableRow";
 import { SubmissionItem } from "@/models/SubmissionItem";
 import { SubmissionItemTableRow as SubmissionItemTableRowType } from "./types";
-import { mock } from "node:test";
 
 export default function ItemsTable({
   submissionItems,
@@ -33,13 +32,15 @@ export default function ItemsTable({
     setOrderBy(property);
   };
 
-  const mockSubmissionItem = {
-    id: "1",
-    name: "Submission 1",
-    version: "1.0.0",
-    status: "NEW_SUBMISSION",
-  };
-  const sortedSubmissionItems = [mockSubmissionItem, mockSubmissionItem];
+  const sortedSubmissionItems = submissionItems
+    .map((subItem) => ({
+      id: subItem.id,
+      name: subItem.type.name,
+      status: subItem.status,
+      submitted_by: subItem.submitted_by,
+      version: subItem.version,
+    }))
+    .sort(tableSort(order, orderBy));
 
   return (
     <TableContainer component={Box} sx={{ height: "100%" }}>
