@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { TextField, TextFieldProps } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
-import InputMask, { Props as InputMaskProps } from "react-input-mask";
+import InputMask from "react-input-mask";
 
 type IFormInputMaskProps = {
   name: string;
@@ -27,24 +27,12 @@ const ControlledInputMask: FC<IFormInputMaskProps> = ({
           onBlur={onBlur}
           inputRef={ref}
         >
-          {(inputProps: InputMaskProps) => {
-            const { color, ...restInputProps } = inputProps;
-            return (
-              <TextField
-                {...restInputProps} // Spreading the masked input props to TextField without color
-                {...otherProps} // Additional TextField props like label, variant, etc.
-                color={
-                  color as
-                    | "error"
-                    | "primary"
-                    | "secondary"
-                    | "info"
-                    | "success"
-                    | "warning"
-                } // Correctly typing the color prop
-              />
-            );
-          }}
+          {(inputProps) => (
+            <TextField
+              {...inputProps} // Spreading the masked input props to TextField
+              {...otherProps} // Additional TextField props like label, variant, etc.
+            />
+          )}
         </InputMask>
       )}
     />
