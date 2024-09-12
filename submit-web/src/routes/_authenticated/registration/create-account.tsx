@@ -15,6 +15,7 @@ import { Banner } from "@/components/registration/Banner";
 import { GridContainer } from "@/components/registration/GridContainer";
 import { BCDesignTokens } from "epic.theme";
 import { useAccount } from "@/store/accountStore";
+import ControlledInputMask from "@/components/Shared/controlled/ControlledInputMask";
 
 const queryParamSchema = yup.object().shape({
   proponent_id: yup.number(),
@@ -23,7 +24,7 @@ const queryParamSchema = yup.object().shape({
 type QueryParamsSchema = yup.InferType<typeof queryParamSchema>;
 
 export const Route = createFileRoute(
-  "/_authenticated/registration/create-account",
+  "/_authenticated/registration/create-account"
 )({
   component: CreateAccount,
 });
@@ -137,8 +138,9 @@ function CreateAccount() {
                   label="Your Position/Role at CGI Mines Inc."
                   fullWidth
                 />
-                <ControlledTextField
+                <ControlledInputMask
                   name="phone"
+                  mask="(999) 999-9999"
                   label="Your Work Phone Number"
                   fullWidth
                 />
