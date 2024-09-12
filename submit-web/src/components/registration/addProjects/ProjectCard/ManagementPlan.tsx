@@ -57,7 +57,7 @@ export const ManagementPlan = ({ project }: { project: Project }) => {
           <Box
             sx={{
               borderRadius: "3px",
-              border: `1px solid #F2F2F2`,
+              border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
               boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.1)",
             }}
             height={187}
@@ -73,7 +73,7 @@ export const ManagementPlan = ({ project }: { project: Project }) => {
             <Box height={"50%"}>
               <CardInnerBox
                 sx={{
-                  borderTop: `1px solid #F2F2F2`,
+                  border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
                 }}
               >
                 <Typography variant="body1">

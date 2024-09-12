@@ -18,7 +18,7 @@ type SubmissionItemTableRowProps = {
 const StyledTableCell = styled(TableCell)(() => ({
   borderTop: `1px solid ${BCDesignTokens.themeBlue20}`,
   borderBottom: `1px solid ${BCDesignTokens.themeBlue20}`,
-  py: BCDesignTokens.layoutPaddingXsmall,
+  padding: `${BCDesignTokens.layoutPaddingSmall} !important`,
   "&:first-of-type": {
     borderLeft: `1px solid ${BCDesignTokens.themeBlue20}`,
     borderTopLeftRadius: 5,
@@ -54,10 +54,10 @@ export default function SubmissionItemTableRow({
             }}
           >
             <Typography
-              variant="h5"
+              variant="h6"
               color="inherit"
               fontWeight={900}
-              sx={{ mr: 0.5 }}
+              sx={{ mx: 0.5 }}
             >
               {item.name}
             </Typography>
@@ -65,18 +65,12 @@ export default function SubmissionItemTableRow({
         </StyledTableCell>
         <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right">{item.version ?? "--"}</StyledTableCell>
-        <StyledTableCell
-          align="right"
-          sx={{ py: BCDesignTokens.layoutPaddingSmall }}
-        >
+        <StyledTableCell align="right">
           <SubmissionStatusChip
             status={SUBMISSION_STATUS.NEW_SUBMISSION.value}
           />
         </StyledTableCell>
-        <StyledTableCell
-          align="right"
-          sx={{ py: BCDesignTokens.layoutPaddingSmall }}
-        >
+        <StyledTableCell align="right">
           <Link
             style={{
               color: BCDesignTokens.typographyColorLink,

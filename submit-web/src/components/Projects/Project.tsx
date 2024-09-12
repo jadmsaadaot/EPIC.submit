@@ -52,7 +52,7 @@ export const Project = ({ accountProject }: ProjectParam) => {
       <Box
         sx={{
           borderRadius: "3px",
-          border: `1px solid #F2F2F2`,
+          border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`,
           boxShadow: "0px 1px 2px rgba(0, 0, 0, 0.1)",
         }}
       >
@@ -78,13 +78,18 @@ export const Project = ({ accountProject }: ProjectParam) => {
           </CardInnerBox>
         </Box>
         <Box height={"100%"} px={BCDesignTokens.layoutPaddingXsmall}>
-          <Divider sx={{ mb: 0.5 }} />
+          <Divider
+            sx={{
+              ml: BCDesignTokens.layoutPaddingSmall,
+              mb: BCDesignTokens.layoutPaddingXsmall,
+            }}
+          />
           <Typography
             variant="body1"
             sx={{
               fontWeight: "bold",
               backgroundColor: BCDesignTokens.themeGold10,
-              pl: BCDesignTokens.layoutPaddingSmall,
+              ml: BCDesignTokens.layoutPaddingSmall,
             }}
           >
             Active Submissions
@@ -101,6 +106,7 @@ export const Project = ({ accountProject }: ProjectParam) => {
             sx={{
               mb: BCDesignTokens.layoutPaddingXsmall,
               mt: BCDesignTokens.layoutPaddingSmall,
+              ml: BCDesignTokens.layoutPaddingSmall,
             }}
           />
           <Typography

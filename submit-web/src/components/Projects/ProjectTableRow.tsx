@@ -8,6 +8,7 @@ interface ProjectRowProps {
   subPackage: SubmissionPackage;
   onSubmissionClick: (submissionId: number) => void;
 }
+const border = `1px solid ${BCDesignTokens.surfaceColorBorderDefault}`;
 
 export default function ProjectTableRow({
   subPackage,
@@ -21,9 +22,9 @@ export default function ProjectTableRow({
           scope="row"
           colSpan={6}
           sx={{
-            borderTop: "1px solid #F2F2F2",
-            borderBottom: "1px solid #F2F2F2",
-            borderLeft: "1px solid #F2F2F2",
+            borderTop: border,
+            borderBottom: border,
+            borderLeft: border,
             borderTopLeftRadius: 5,
             borderBottomLeftRadius: 5,
             py: BCDesignTokens.layoutPaddingXsmall,
@@ -54,8 +55,8 @@ export default function ProjectTableRow({
           colSpan={2}
           align="right"
           sx={{
-            borderTop: "1px solid #F2F2F2",
-            borderBottom: "1px solid #F2F2F2",
+            borderTop: border,
+            borderBottom: border,
             py: BCDesignTokens.layoutPaddingXsmall,
           }}
         >
@@ -65,8 +66,8 @@ export default function ProjectTableRow({
           colSpan={2}
           align="right"
           sx={{
-            borderTop: "1px solid #F2F2F2",
-            borderBottom: "1px solid #F2F2F2",
+            borderTop: border,
+            borderBottom: border,
             py: BCDesignTokens.layoutPaddingXsmall,
           }}
         >
@@ -76,11 +77,11 @@ export default function ProjectTableRow({
           colSpan={2}
           align="right"
           sx={{
-            borderTop: "1px solid #F2F2F2",
+            borderTop: border,
             borderTopRightRadius: 5,
             borderBottomRightRadius: 5,
-            borderBottom: "1px solid #F2F2F2",
-            borderRight: "1px solid #F2F2F2",
+            borderBottom: border,
+            borderRight: border,
             py: BCDesignTokens.layoutPaddingXsmall,
           }}
         >
