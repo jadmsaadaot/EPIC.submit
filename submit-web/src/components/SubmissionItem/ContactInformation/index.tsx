@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import { useLoaderBackdrop } from "@/components/Shared/Overlays/loaderBackdropStore";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import { SUBMISSION_TYPE } from "@/models/Submission";
+import ControlledInputMask from "@/components/Shared/controlled/ControlledInputMask";
 
 const contactInformationSchema = yup.object().shape({
   primaryContact: yup.object().shape({
@@ -204,8 +205,9 @@ export const ContactInformation = () => {
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <ControlledTextField
+                      <ControlledInputMask
                         name="secondaryContact.workPhoneNumber"
+                        mask="(999) 999-9999"
                         label="Work Phone Number"
                       />
                     </Grid>
