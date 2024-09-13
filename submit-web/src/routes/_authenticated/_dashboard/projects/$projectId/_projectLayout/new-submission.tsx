@@ -16,7 +16,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
 import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/_projectLayout/new-submission"
 )({
@@ -28,7 +28,6 @@ export function NewManagementPlan() {
   // get the projectId from the route
   const { projectId } = Route.useParams();
   const { setIsOpen } = useLoaderBackdrop();
-  const queryClient = useQueryClient();
   const { data: accountProject, isPending: isProjectPending } = useGetProject({
     projectId: Number(projectId),
   });
@@ -42,12 +41,11 @@ export function NewManagementPlan() {
     navigate({
       to: `/projects/${projectId}/submission-packages/${createdSubmissionPackage.id}`,
     });
-    queryClient.invalidateQueries({ queryKey: ["project", projectId] });
   };
   const {
     mutate: createSubmissionPackage,
     isPending: isCreatingSubmissionPackagePending,
-  } = useCreateSubmissionPackage({
+  } = useCreateSubmissionPackage(projectId, {
     onError: onCreateFailure,
     onSuccess: onCreateSuccess,
   });
