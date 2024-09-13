@@ -7,6 +7,7 @@ import { GridContainer } from "@/components/registration/GridContainer";
 import { PageLoader } from "@/components/Shared/PageLoader";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { Caption2 } from "@/components/Shared/Typographies";
+import WarningBox from "@/components/Shared/WarningBox";
 import {
   useAddProjects,
   useLoadProjectsByProponentId,
@@ -21,7 +22,8 @@ import {
   Typography,
 } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
+import { BCDesignTokens } from "epic.theme";
+import { useEffect, useState } from "react";
 import { Else, If, Then } from "react-if";
 
 export const Route = createFileRoute(
@@ -43,7 +45,7 @@ function AddProjects() {
       notify.error("Failed to load projects");
     }
   }, [isLoadingProjectsError]);
-
+  const [openWarning, setOpenWarning] = useState(false);
   const onAddProjectsSuccess = () => {
     navigate({ to: "/registration/complete" });
   };
@@ -102,7 +104,13 @@ function AddProjects() {
           </If>
         </Grid>
 
-        <Stack direction="row" spacing={2} mt={"3em"} alignItems={"center"}>
+        <Stack
+          direction="row"
+          spacing={2}
+          mt={"3em"}
+          alignItems={"center"}
+          mb={BCDesignTokens.layoutMarginLarge}
+        >
           <Button
             variant="contained"
             color="primary"
@@ -116,9 +124,24 @@ function AddProjects() {
             )}
           </Button>
           <Caption2>
-            <Link href="#">No, this is incorrect</Link>
+            <Link onClick={() => setOpenWarning(true)}>
+              No, this is incorrect
+            </Link>
           </Caption2>
         </Stack>
+        {openWarning && (
+          <Grid item xs={12}>
+            <WarningBox>
+              Please Contact the EAO at
+              <Link
+                href="mailto:EAO.ManagementPlanSupport@gov.bc.ca"
+                sx={{ ml: BCDesignTokens.layoutMarginXsmall }}
+              >
+                EAO.ManagementPlanSupport@gov.bc.ca.
+              </Link>
+            </WarningBox>
+          </Grid>
+        )}
       </GridContainer>
     </>
   );
