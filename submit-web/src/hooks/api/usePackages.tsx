@@ -27,6 +27,9 @@ export const useCreateSubmissionPackage = (
     ...options,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["project", projectId] });
+      if (options && options.onSuccess) {
+        options.onSuccess();
+      }
     },
   });
 };

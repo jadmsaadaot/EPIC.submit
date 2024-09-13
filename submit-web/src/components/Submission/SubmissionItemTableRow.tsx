@@ -75,6 +75,7 @@ export default function SubmissionItemTableRow({
             style={{
               color: BCDesignTokens.typographyColorLink,
               textDecoration: "none",
+              marginRight: BCDesignTokens.layoutMarginSmall,
             }}
             to={`/projects/${projectId}/submission-packages/${submissionPackageId}/submissions/${item.id}`}
           >
