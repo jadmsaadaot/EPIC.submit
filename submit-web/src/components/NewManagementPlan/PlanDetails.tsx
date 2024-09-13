@@ -4,6 +4,7 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
+  Link,
   Radio,
   RadioGroup,
   Stack,
@@ -16,6 +17,8 @@ import { useState } from "react";
 import { useManagementPlanForm } from "./formStore";
 import { theme } from "@/styles/theme";
 import { NewManagementPlanForm } from "./types";
+import WarningBox from "../Shared/WarningBox";
+import { BCDesignTokens } from "epic.theme";
 
 const YES = "yes";
 const NO = "no";
@@ -28,7 +31,7 @@ export const PlanDetails = ({ onSubmit }: PlanDetailsProps) => {
   const [isCorrect, setIsCorrect] = useState<string>(YES);
 
   const handleIsCorrectChange = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setIsCorrect(event.target.value);
   };
@@ -115,9 +118,10 @@ export const PlanDetails = ({ onSubmit }: PlanDetailsProps) => {
           </Grid>
         )}
         <Grid item xs={12}>
-          <FormControl>
+          <FormControl sx={{ width: "100%" }}>
             <FormLabel>Is this correct?</FormLabel>
             <RadioGroup
+              sx={{ mb: BCDesignTokens.layoutMarginSmall }}
               name="isCorrect"
               value={isCorrect}
               onChange={handleIsCorrectChange}
@@ -133,9 +137,22 @@ export const PlanDetails = ({ onSubmit }: PlanDetailsProps) => {
                 label="No, this information is incorrect"
               />
             </RadioGroup>
+            {isCorrect === NO && (
+              <WarningBox>
+                If you need to select a different condition, please click the
+                “Back” button to go to the previous page. If you selected the
+                correct condition but the information displayed is incorrect for
+                that condition, please contact the EAO at
+                <Link
+                  href="mailto:EAO.ManagementPlanSupport@gov.bc.ca"
+                  sx={{ ml: BCDesignTokens.layoutMarginXsmall }}
+                >
+                  EAO.ManagementPlanSupport@gov.bc.ca.
+                </Link>
+              </WarningBox>
+            )}
           </FormControl>
         </Grid>
-
         <Grid item xs={12}>
           <Stack direction={"row"} spacing={1}>
             <Button variant="text" onClick={handleCancel}>
