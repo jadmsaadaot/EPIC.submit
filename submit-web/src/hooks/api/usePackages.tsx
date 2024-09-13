@@ -26,9 +26,11 @@ export const useCreateSubmissionPackage = (
     mutationFn: createSubmissionPackage,
     ...options,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["project", projectId] });
       if (options && options.onSuccess) {
         options.onSuccess();
+        queryClient.invalidateQueries({
+          queryKey: ["project", projectId],
+        });
       }
     },
   });
