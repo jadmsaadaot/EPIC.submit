@@ -28,7 +28,6 @@ export function NewManagementPlan() {
   // get the projectId from the route
   const { projectId } = Route.useParams();
   const { setIsOpen } = useLoaderBackdrop();
-  const queryClient = useQueryClient();
   const { data: accountProject, isPending: isProjectPending } = useGetProject({
     projectId: Number(projectId),
   });
@@ -42,12 +41,11 @@ export function NewManagementPlan() {
     navigate({
       to: `/projects/${projectId}/submission-packages/${createdSubmissionPackage.id}`,
     });
-    queryClient.invalidateQueries({ queryKey: ["project", projectId] });
   };
   const {
     mutate: createSubmissionPackage,
     isPending: isCreatingSubmissionPackagePending,
-  } = useCreateSubmissionPackage({
+  } = useCreateSubmissionPackage(projectId, {
     onError: onCreateFailure,
     onSuccess: onCreateSuccess,
   });
