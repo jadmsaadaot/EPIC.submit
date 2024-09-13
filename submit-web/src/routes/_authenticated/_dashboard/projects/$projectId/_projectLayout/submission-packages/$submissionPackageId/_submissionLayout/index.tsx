@@ -4,13 +4,19 @@ import { ContentBox } from "@/components/Shared/ContentBox";
 import { YellowBar } from "@/components/Shared/YellowBar";
 import ItemsTable from "@/components/Submission/ItemsTable";
 import { Box, Button, Grid, Typography } from "@mui/material";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Navigate,
+  useNavigate,
+  useParams,
+} from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import SubmissionStatusChip from "@/components/Submission/SubmissionStatusChip";
 import { SUBMISSION_STATUS } from "@/models/Submission";
 import { InfoBox } from "@/components/Submission/InfoBox";
-import { useAccountProject } from "@/components/Projects/projectStore";
+import { useGetSubmissionPackage } from "@/hooks/api/usePackages";
+import { useGetProject } from "@/hooks/api/useProjects";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/"
@@ -19,8 +25,25 @@ export const Route = createFileRoute(
 });
 
 export default function SubmissionPage() {
-  const { accountProject, submissionPackage } = useAccountProject();
+  const { projectId: projectIdParam } = useParams({ strict: false });
+  const projectId = Number(projectIdParam);
+  const { data: accountProject } = useGetProject({
+    projectId,
+  });
+  const { submissionPackageId: submissionPackageIdParam } = useParams({
+    strict: false,
+  });
+  const submissionPackageId = Number(submissionPackageIdParam);
+  const { data: submissionPackage } = useGetSubmissionPackage({
+    packageId: submissionPackageId,
+    enabled: Boolean(accountProject?.id),
+  });
+
   const navigate = useNavigate();
+
+  if (!accountProject || !submissionPackage) {
+    return <Navigate to={"/error"} />;
+  }
 
   return (
     <PageGrid>

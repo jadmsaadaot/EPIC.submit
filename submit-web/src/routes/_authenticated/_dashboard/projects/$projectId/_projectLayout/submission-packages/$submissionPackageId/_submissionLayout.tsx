@@ -1,8 +1,8 @@
-import { useAccountProject } from "@/components/Projects/projectStore";
 import { ContentBoxSkeleton } from "@/components/Shared/ContentBox/ContentBoxSkeleton";
 import { useBreadCrumb } from "@/components/Shared/layout/SideNav/breadCrumbStore";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import { useGetSubmissionPackage } from "@/hooks/api/usePackages";
+import { useGetProject } from "@/hooks/api/useProjects";
 import { Grid } from "@mui/material";
 import {
   createFileRoute,
@@ -20,11 +20,15 @@ export const Route = createFileRoute(
 });
 
 export default function SubmissionLayout() {
+  const { projectId: projectIdParam } = useParams({ strict: false });
+  const projectId = Number(projectIdParam);
+  const { data: accountProject } = useGetProject({
+    projectId,
+  });
   const { submissionPackageId: submissionPackageIdParam } = useParams({
     strict: false,
   });
   const submissionPackageId = Number(submissionPackageIdParam);
-  const { accountProject, setSubmissionPackage } = useAccountProject();
   const META_TITLE = `Submission ${submissionPackageId}`;
   const { data: submissionPackage, isPending: isSubPackageLoading } =
     useGetSubmissionPackage({
@@ -36,16 +40,9 @@ export default function SubmissionLayout() {
 
   useEffect(() => {
     if (submissionPackage) {
-      setSubmissionPackage(submissionPackage);
       replaceBreadcrumb(META_TITLE, submissionPackage?.name || "");
     }
-  }, [
-    submissionPackage,
-    matches,
-    setSubmissionPackage,
-    replaceBreadcrumb,
-    META_TITLE,
-  ]);
+  }, [submissionPackage, matches, replaceBreadcrumb, META_TITLE]);
 
   if (isSubPackageLoading) {
     return (
