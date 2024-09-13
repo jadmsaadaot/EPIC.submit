@@ -1,9 +1,7 @@
 import { request } from "@/utils/axiosUtils";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { Options } from "./types";
 import { SubmissionPackage } from "@/models/Package";
-
-const queryClient = useQueryClient();
 
 const createSubmissionPackage = ({
   accountProjectId,
@@ -19,16 +17,10 @@ const createSubmissionPackage = ({
   });
 };
 
-export const useCreateSubmissionPackage = (
-  projectId: string,
-  options?: Options
-) => {
+export const useCreateSubmissionPackage = (options?: Options) => {
   return useMutation({
     mutationFn: createSubmissionPackage,
     ...options,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["project", projectId] });
-    },
   });
 };
 
