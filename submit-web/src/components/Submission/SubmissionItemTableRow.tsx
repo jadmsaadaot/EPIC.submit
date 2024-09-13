@@ -18,7 +18,7 @@ type SubmissionItemTableRowProps = {
 const StyledTableCell = styled(TableCell)(() => ({
   borderTop: `1px solid ${BCDesignTokens.themeBlue20}`,
   borderBottom: `1px solid ${BCDesignTokens.themeBlue20}`,
-  padding: `${BCDesignTokens.layoutPaddingSmall} !important`,
+  padding: `${BCDesignTokens.layoutPaddingXsmall} !important`,
   "&:first-of-type": {
     borderLeft: `1px solid ${BCDesignTokens.themeBlue20}`,
     borderTopLeftRadius: 5,

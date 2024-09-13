@@ -16,7 +16,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
 import { useEffect } from "react";
-import { useQueryClient } from "@tanstack/react-query";
+
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/_projectLayout/new-submission"
 )({
