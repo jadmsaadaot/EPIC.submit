@@ -14,7 +14,11 @@ export const ContentBox = ({
   ...rest
 }: ContentBoxProps) => {
   return (
-    <Paper elevation={2} {...rest}>
+    <Paper
+      elevation={2}
+      {...rest}
+      sx={{ boxShadow: BCDesignTokens.surfaceShadowMedium }}
+    >
       <Box
         sx={{
           display: "flex",
