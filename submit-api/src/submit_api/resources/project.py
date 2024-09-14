@@ -17,6 +17,7 @@ from http import HTTPStatus
 
 from flask_restx import Namespace, Resource, cors
 
+from submit_api.auth import auth
 from submit_api.schemas.project import AccountProjectSchema, AddProjectSchema, ProjectSchema
 from submit_api.services.project_service import ProjectService
 from submit_api.utils.util import cors_preflight
@@ -50,6 +51,7 @@ class ProjectsByAccount(Resource):
         code=HTTPStatus.CREATED, model=project_list_model, description="Get projects"
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
+    @auth.require
     @cors.crossdomain(origin="*")
     def get(account_id):
         """Get projects by account id."""
@@ -63,6 +65,7 @@ class ProjectsByAccount(Resource):
         code=HTTPStatus.CREATED, model=project_list_model, description="Added projects"
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
+    @auth.require
     @cors.crossdomain(origin="*")
     def post(account_id):
         """Add projects in bulk."""
@@ -109,6 +112,7 @@ class Projects(Resource):
         code=HTTPStatus.CREATED, model=project_list_model, description="Get project"
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
+    @auth.require
     @cors.crossdomain(origin="*")
     def get(project_id):
         """Get projects by proponent id."""
