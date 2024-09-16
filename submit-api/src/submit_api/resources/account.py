@@ -45,7 +45,7 @@ class Accounts(Resource):
 
     @staticmethod
     @API.response(code=HTTPStatus.OK, description="Success", model=[account_list_model])
-    @ApiHelper.swagger_decorators(API, endpoint_description="Fetch all accounts")    
+    @ApiHelper.swagger_decorators(API, endpoint_description="Fetch all accounts")
     @auth.require
     def get():
         """Fetch all accounts."""
