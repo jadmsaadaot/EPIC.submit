@@ -17,7 +17,6 @@ from http import HTTPStatus
 
 from flask_restx import Namespace, Resource, cors
 
-from submit_api.auth import auth
 from submit_api.schemas.package import PackageSchema, PostPackageRequestSchema
 from submit_api.services.package import PackageService
 from submit_api.utils.util import cors_preflight
@@ -50,7 +49,6 @@ class Package(Resource):
         code=HTTPStatus.OK, model=package_model, description="Submission Package"
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
-    @auth.require
     @cors.crossdomain(origin="*")
     def get(package_id):
         """Get package by id."""
@@ -70,7 +68,6 @@ class PackageByAccountProject(Resource):
         code=HTTPStatus.CREATED, model=package_model, description="Submission Package"
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
-    @auth.require
     @cors.crossdomain(origin="*")
     def post(account_project_id):
         """Create a submission package."""
