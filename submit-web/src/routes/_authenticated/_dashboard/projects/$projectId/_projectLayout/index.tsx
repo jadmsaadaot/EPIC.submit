@@ -1,8 +1,8 @@
 import { PageGrid } from "@/components/Shared/PageGrid";
 import { Grid } from "@mui/material";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Navigate, useParams } from "@tanstack/react-router";
 import { Project as ProjectComponent } from "@/components/Projects/Project";
-import { useAccountProject } from "@/components/Projects/projectStore";
+import { useGetProject } from "@/hooks/api/useProjects";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/_projectLayout/"
@@ -14,7 +14,13 @@ export const Route = createFileRoute(
 });
 
 function ProjectPage() {
-  const { accountProject } = useAccountProject();
+  const { projectId: projectIdParam } = useParams({ strict: false });
+  const projectId = Number(projectIdParam);
+  const { data: accountProject } = useGetProject({
+    projectId,
+  });
+
+  if (!accountProject) return <Navigate to="/error" />;
 
   return (
     <PageGrid>

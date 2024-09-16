@@ -13,6 +13,7 @@ import { useCreateSubmissionPackage } from "@/hooks/api/usePackages";
 import { useGetProject } from "@/hooks/api/useProjects";
 import { SubmissionPackage } from "@/models/Package";
 import { Box, Grid, Typography } from "@mui/material";
+import { useQueryClient } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
 import { useEffect } from "react";
@@ -26,6 +27,7 @@ export const Route = createFileRoute(
 
 export function NewManagementPlan() {
   // get the projectId from the route
+  const queryClient = useQueryClient();
   const { projectId } = Route.useParams();
   const { setIsOpen } = useLoaderBackdrop();
   const { data: accountProject, isPending: isProjectPending } = useGetProject({
@@ -37,6 +39,9 @@ export function NewManagementPlan() {
     notify.error("Failed to create submission package");
 
   const onCreateSuccess = (createdSubmissionPackage: SubmissionPackage) => {
+    queryClient.invalidateQueries({
+      queryKey: ["project", projectId],
+    });
     notify.success("Submission package created successfully");
     navigate({
       to: `/projects/${projectId}/submission-packages/${createdSubmissionPackage.id}`,

@@ -156,8 +156,9 @@ export const ContactInformation = () => {
                     />
                   </Grid>
                   <Grid item xs={12}>
-                    <ControlledTextField
+                    <ControlledInputMask
                       name="primaryContact.workPhoneNumber"
+                      mask="(999) 999-9999"
                       label="Work Phone Number"
                     />
                   </Grid>
