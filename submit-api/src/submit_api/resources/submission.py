@@ -17,7 +17,6 @@ from http import HTTPStatus
 
 from flask_restx import Namespace, Resource, cors
 
-from submit_api.auth import auth
 from submit_api.schemas.submission import CreateSubmissionRequestSchema, SubmissionSchema
 from submit_api.services.submission import SubmissionService
 from submit_api.utils.util import cors_preflight
@@ -49,7 +48,6 @@ class SubmissionByItem(Resource):
         code=HTTPStatus.CREATED, model=submission_model, description="Submission"
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
-    @auth.require
     @cors.crossdomain(origin="*")
     def post(submission_item_id):
         """Create a submission."""

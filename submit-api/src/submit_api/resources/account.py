@@ -17,7 +17,6 @@ from http import HTTPStatus
 
 from flask_restx import Namespace, Resource, cors
 
-from submit_api.auth import auth
 from submit_api.exceptions import ResourceNotFoundError
 from submit_api.schemas.account import AccountCreateSchema, AccountSchema
 from submit_api.services.account_service import AccountService
@@ -46,7 +45,6 @@ class Accounts(Resource):
     @staticmethod
     @API.response(code=HTTPStatus.OK, description="Success", model=[account_list_model])
     @ApiHelper.swagger_decorators(API, endpoint_description="Fetch all accounts")
-    @auth.require
     def get():
         """Fetch all accounts."""
         accounts = AccountService.get_all_accounts()

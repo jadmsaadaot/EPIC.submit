@@ -17,7 +17,6 @@ from http import HTTPStatus
 
 from flask_restx import Namespace, Resource, cors
 
-from submit_api.auth import auth
 from submit_api.schemas.item import ItemSchema
 from submit_api.services.item import ItemService
 from submit_api.utils.util import cors_preflight
@@ -47,7 +46,6 @@ class Item(Resource):
         code=HTTPStatus.OK, model=item_model, description="Submission item"
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
-    @auth.require
     @cors.crossdomain(origin="*")
     def get(item_id):
         """Get item by id."""
