@@ -76,7 +76,7 @@ class User(Resource):
     @API.response(404, "Not Found")
     @cors.crossdomain(origin="*")
     def get(proponent_id):
-        """Fetch an account by id."""
+        """Fetch an account by proponent id."""
         account = AccountService.get_account_by_proponent_id(proponent_id)
         if not account:
             return ResourceNotFoundError(f"Account with proponent {proponent_id} not found")
