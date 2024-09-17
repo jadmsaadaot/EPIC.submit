@@ -106,7 +106,7 @@ export const ManagementPlanSubmission = () => {
     <Grid item xs={12}>
       <ContentBox
         mainLabel={"Copper Mine"}
-        // label={submissionItem?.project.ea_certificate}
+        label={`EAC #${accountProject?.project.ea_certificate}`}
       >
         <Box
           sx={{
