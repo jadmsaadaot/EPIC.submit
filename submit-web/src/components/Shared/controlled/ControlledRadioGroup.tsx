@@ -10,8 +10,8 @@ import { Controller, useFormContext } from "react-hook-form";
 import React, { useCallback, useState } from "react";
 
 export interface RadioOptions {
-  label: any;
-  value: any;
+  label: React.ReactNode;
+  value: unknown;
 }
 
 type IFormRadioGroupProps = {
@@ -22,7 +22,7 @@ type IFormRadioGroupProps = {
 const ControlledRadioGroup: React.ForwardRefRenderFunction<
   HTMLButtonElement,
   IFormRadioGroupProps
-> = ({ name, options, ...otherProps }, ref) => {
+> = ({ name, options }) => {
   const {
     control,
     formState: { errors, defaultValues },
@@ -47,7 +47,7 @@ const ControlledRadioGroup: React.ForwardRefRenderFunction<
         }
       />
     ));
-  }, [selectedVal]);
+  }, [options, selectedVal]);
   return (
     <Controller
       control={control}
@@ -71,4 +71,4 @@ const ControlledRadioGroup: React.ForwardRefRenderFunction<
   );
 };
 
-export default React.forwardRef(ControlledRadioGroup);
+export default ControlledRadioGroup;
