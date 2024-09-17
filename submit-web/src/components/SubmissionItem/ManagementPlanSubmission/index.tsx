@@ -22,18 +22,18 @@ import { YesNoNotApplicableOptions, YesOrNoOptions } from "./radioOptions";
 const managementPlanSubmissionSchema = yup.object().shape({
   conditionSatisfied: yup
     .boolean()
-    .required("Please confirm if the condition is satisfied"),
+    .required("Please provide an answer to this question."),
   allRequirementsAddressed: yup
     .boolean()
     .nullable()
     .transform((value, originalValue) => (originalValue === "" ? null : value))
-    .required("Please confirm if all requirements are addressed"),
+    .required("Please provide an answer to this question."),
   requirementsClear: yup
     .boolean()
-    .required("Please confirm if the requirements are clear"),
+    .required("Please provide an answer to this question."),
   informationAccurate: yup
     .boolean()
-    .required("Please confirm if the information is accurate"),
+    .required("Please provide an answer to this question."),
 });
 
 type ManagementPlanSubmissionForm = yup.InferType<
