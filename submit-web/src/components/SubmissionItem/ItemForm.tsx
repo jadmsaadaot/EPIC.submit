@@ -4,6 +4,7 @@ import {
 } from "@/models/SubmissionItem";
 import { Case, Default, Switch } from "react-if";
 import { ContactInformation } from "./ContactInformation";
+import { ManagementPlanSubmission } from "./ManagementPlanSubmission";
 
 type ItemFormProps = {
   submissionItem: TypeSubmissionItem;
@@ -18,6 +19,14 @@ export const ItemForm = ({ submissionItem }: ItemFormProps) => {
       >
         <ContactInformation />
       </Case>
+      <Case
+        condition={
+          submissionItem.type.name === SUBMISSION_ITEM_TYPE.MANAGEMENT_PLAN
+        }
+      >
+        <ManagementPlanSubmission />
+      </Case>
+
       <Default>
         <div>Default</div>
       </Default>

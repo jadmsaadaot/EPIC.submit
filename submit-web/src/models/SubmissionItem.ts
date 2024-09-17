@@ -1,6 +1,9 @@
 import { SubmissionStatus } from "./Submission";
 
-type SubmissionItemTypeName = "Contact Information";
+type SubmissionItemTypeName =
+  | "Contact Information"
+  | "Management Plan Submission";
+
 export type SubmissionItemType = {
   id: number;
   name: SubmissionItemTypeName;
@@ -8,6 +11,7 @@ export type SubmissionItemType = {
 
 export const SUBMISSION_ITEM_TYPE: Record<string, SubmissionItemTypeName> = {
   CONTACT_INFORMATION: "Contact Information",
+  MANAGEMENT_PLAN: "Management Plan Submission",
 };
 
 export interface SubmissionItem {
