@@ -8,7 +8,7 @@ import ProgressBar from "./ProgressBar";
 export interface Document {
   id: string;
   name: string;
-  url: string;
+  url?: string;
 }
 
 interface DocumentContainerProps {

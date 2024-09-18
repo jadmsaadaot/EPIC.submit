@@ -1,21 +1,16 @@
 import Uploader from "./Uploader";
 import { Accept } from "react-dropzone";
-import { useFileUploadStore } from "@/store/fileUploadStore";
 import { Box, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import UploaderIcon from "./UploaderIcon";
 
 interface UploaderProps {
-  savedFileUrl?: string;
-  savedFileName?: string;
   helpText?: string;
   height?: string;
   cropAspectRatio?: number;
   accept?: Accept;
 }
 export const FileUpload = ({
-  savedFileUrl = "",
-  savedFileName = "",
   height = "10em",
   accept = {
     pdf: [],
@@ -24,13 +19,6 @@ export const FileUpload = ({
     xls: [],
   },
 }: UploaderProps) => {
-  const { setAddedFileUrl, setAddedFileName } = useFileUploadStore();
-
-  if (savedFileUrl && savedFileName) {
-    setAddedFileName(savedFileName);
-    setAddedFileUrl(savedFileUrl);
-  }
-
   return (
     <Uploader height={height} accept={accept}>
       <Box sx={{ p: BCDesignTokens.layoutPaddingSmall }}>
