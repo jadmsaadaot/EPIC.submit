@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Grid } from "@mui/material";
 import Dropzone, { Accept } from "react-dropzone";
 import { useFileUploadStore } from "@/store/fileUploadStore";
@@ -13,16 +13,8 @@ const Uploader = ({
   accept = {},
   children,
 }: UploaderProps) => {
-  const { handleAddFile, addedFileUrl, setAddedFileUrl, setAddedFileName } =
+  const { handleAddFile, setAddedFileUrl, setAddedFileName } =
     useFileUploadStore();
-
-  useEffect(() => {
-    return () => {
-      if (addedFileUrl) {
-        URL.revokeObjectURL(addedFileUrl);
-      }
-    };
-  }, [addedFileUrl]);
 
   return (
     <Dropzone
