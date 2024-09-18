@@ -3,7 +3,7 @@ import { BCDesignTokens } from "epic.theme";
 import React from "react";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import DocumentIcon from "./DocumentIcon";
-import ProgressBar from "./ProgressTracker";
+import ProgressBar from "./ProgressBar";
 
 export interface Document {
   id: string;

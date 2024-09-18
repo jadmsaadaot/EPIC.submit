@@ -2,8 +2,7 @@ import Uploader from "./Uploader";
 import { Accept } from "react-dropzone";
 import { useFileUploadStore } from "@/store/fileUploadStore";
 import { Box, Typography } from "@mui/material";
-import UploadFileIcon from "@mui/icons-material/UploadFile";
-import { BCDesignTokens, EAOColors } from "epic.theme";
+import { BCDesignTokens } from "epic.theme";
 import UploaderIcon from "./UploaderIcon";
 
 interface UploaderProps {
@@ -35,7 +34,7 @@ export const FileUpload = ({
   }
 
   return (
-    <Uploader height={height} accept={accept}>
+    <Uploader height={height} accept={accept} handleAddFile={handleAddFile}>
       <Box sx={{ p: BCDesignTokens.layoutPaddingSmall }}>
         <UploaderIcon />
       </Box>

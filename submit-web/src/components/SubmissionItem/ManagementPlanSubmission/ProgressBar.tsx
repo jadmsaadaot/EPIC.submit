@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 
 export default function ProgressBar({ progress }: { progress: number }) {
@@ -17,7 +17,7 @@ export default function ProgressBar({ progress }: { progress: number }) {
         sx={{
           width: `${progress}%`,
           height: "100%",
-          backgroundColor: "#FACC15",
+          backgroundColor: "#FDD166",
         }}
       />
     </Box>

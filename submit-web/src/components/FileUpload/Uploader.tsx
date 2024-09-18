@@ -6,15 +6,16 @@ import { useFileUploadStore } from "@/store/fileUploadStore";
 interface UploaderProps {
   height?: string;
   accept?: Accept;
+  handleAddFile: (_files: File[]) => void;
   children: React.ReactNode;
 }
 const Uploader = ({
   height = "10em",
   accept = {},
+  handleAddFile,
   children,
 }: UploaderProps) => {
   const {
-    handleAddFile,
     addedFileUrl,
     setAddedFileUrl,
     setAddedFileName,
@@ -81,7 +82,7 @@ const Uploader = ({
       onDrop={(acceptedFiles) => {
         if (acceptedFiles.length === 0) return;
         const createdObjectURL = URL.createObjectURL(acceptedFiles[0]);
-        // handleAddFile(acceptedFiles);
+        handleAddFile(acceptedFiles);
         setAddedFileUrl(createdObjectURL);
         setAddedFileName(acceptedFiles[0].name);
       }}
