@@ -33,7 +33,7 @@ class User(Resource):
 
     @staticmethod
     @cors.crossdomain(origin="*")
-    @auth.require()
+    @auth.require
     def get():
         """Test endpoint."""
         return {'message': 'endpoint worked'}, HTTPStatus.OK
