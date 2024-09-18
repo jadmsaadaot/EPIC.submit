@@ -55,11 +55,17 @@ export const ManagementPlanSubmission = () => {
 
   const { setIsOpen } = useLoaderBackdrop();
   const navigate = useNavigate();
-  const { addedFileName, clearFiles } = useFileUploadStore();
+  const { addedFileName, clearFiles, resetStore } = useFileUploadStore();
   const methods = useForm<ManagementPlanSubmissionForm>({
     resolver: yupResolver(managementPlanSubmissionSchema),
     mode: "onSubmit",
   });
+
+  useEffect(() => {
+    return () => {
+      resetStore();
+    };
+  }, [resetStore]);
 
   const documentToUpload = {
     id: addedFileName,
