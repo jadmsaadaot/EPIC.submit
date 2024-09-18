@@ -29,5 +29,5 @@ from .project import Project
 from .project_team import ProjectTeam
 from .role import Role
 from .submission import Submission
-from .submitted_form import SubmittedForm
 from .submitted_document import SubmittedDocument
+from .submitted_form import SubmittedForm
