@@ -30,7 +30,7 @@ from .ops import API as OPS_API
 from .package import API as PACKAGE_API
 from .project import API as PROJECT_API
 from .submission import API as SUBMISSION_API
-from .test import API as TEST_API
+from .dummy_endpoint import API as TEST_API
 from .user import API as USER_API
 
 
