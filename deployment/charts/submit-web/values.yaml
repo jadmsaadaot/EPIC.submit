@@ -5,8 +5,8 @@ app:
   env: dev
 resources:
   cpu:
-    limit: 300m
-    request: 250m
+    limit: 200m
+    request: 200m
   memory:
     limit: 200Mi
     request: 100Mi

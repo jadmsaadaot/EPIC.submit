@@ -8,8 +8,8 @@ image:
 
 resources:
   cpu:
-    limit: 250m
-    request: 150m
+    limit: 100m
+    request: 75m
   memory:
     limit: 384Mi
     request: 256Mi
