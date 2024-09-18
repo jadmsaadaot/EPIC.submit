@@ -21,6 +21,7 @@ import { YesNoNotApplicableOptions, YesOrNoOptions } from "./radioOptions";
 import FileUpload from "@/components/FileUpload";
 import DocumentContainer from "./DocumentContainer";
 import { Document } from "./DocumentContainer";
+import { useFileUploadStore } from "@/store/fileUploadStore";
 
 const managementPlanSubmissionSchema = yup.object().shape({
   conditionSatisfied: yup
@@ -54,11 +55,16 @@ export const ManagementPlanSubmission = () => {
 
   const { setIsOpen } = useLoaderBackdrop();
   const navigate = useNavigate();
-
+  const { addedFileName, clearFiles } = useFileUploadStore();
   const methods = useForm<ManagementPlanSubmissionForm>({
     resolver: yupResolver(managementPlanSubmissionSchema),
     mode: "onSubmit",
   });
+
+  const documentToUpload = {
+    id: addedFileName,
+    name: addedFileName,
+  };
 
   const { handleSubmit } = methods;
 
@@ -108,13 +114,6 @@ export const ManagementPlanSubmission = () => {
       id: "1",
       name: "Consultation Record",
       url: "https://via.placeholder.com/150",
-      progress: 100,
-    },
-    {
-      id: "1",
-      name: "Comment Tracker",
-      url: "https://via.placeholder.com/150",
-      progress: 30,
     },
   ] as Document[];
 
@@ -256,7 +255,7 @@ export const ManagementPlanSubmission = () => {
                         Any proposed changes must be in tracked changes.
                       </Typography>
                     </Box>
-                    <FileUpload handleAddFile={() => {}} height={"13.125rem"} />
+                    <FileUpload height={"13.125rem"} />
                     <Typography
                       variant="body2"
                       sx={{
@@ -280,6 +279,14 @@ export const ManagementPlanSubmission = () => {
                         onRemove={() => {}}
                       />
                     ))}
+                    {addedFileName && (
+                      <DocumentContainer
+                        document={documentToUpload}
+                        onRemove={() => {
+                          clearFiles();
+                        }}
+                      />
+                    )}
                   </Grid>
                   <Grid item xs={12} container spacing={2}>
                     <Grid item xs={12} sm="auto">

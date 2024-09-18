@@ -6,7 +6,6 @@ import { BCDesignTokens } from "epic.theme";
 import UploaderIcon from "./UploaderIcon";
 
 interface UploaderProps {
-  handleAddFile: (_files: File[]) => void;
   savedFileUrl?: string;
   savedFileName?: string;
   helpText?: string;
@@ -15,7 +14,6 @@ interface UploaderProps {
   accept?: Accept;
 }
 export const FileUpload = ({
-  handleAddFile,
   savedFileUrl = "",
   savedFileName = "",
   height = "10em",
@@ -34,7 +32,7 @@ export const FileUpload = ({
   }
 
   return (
-    <Uploader height={height} accept={accept} handleAddFile={handleAddFile}>
+    <Uploader height={height} accept={accept}>
       <Box sx={{ p: BCDesignTokens.layoutPaddingSmall }}>
         <UploaderIcon />
       </Box>

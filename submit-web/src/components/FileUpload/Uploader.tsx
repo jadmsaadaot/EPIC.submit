@@ -1,27 +1,20 @@
 import React, { useEffect } from "react";
-import { Button, Grid, Stack } from "@mui/material";
+import { Grid } from "@mui/material";
 import Dropzone, { Accept } from "react-dropzone";
 import { useFileUploadStore } from "@/store/fileUploadStore";
 
 interface UploaderProps {
   height?: string;
   accept?: Accept;
-  handleAddFile: (_files: File[]) => void;
   children: React.ReactNode;
 }
 const Uploader = ({
   height = "10em",
   accept = {},
-  handleAddFile,
   children,
 }: UploaderProps) => {
-  const {
-    addedFileUrl,
-    setAddedFileUrl,
-    setAddedFileName,
-    existingFileUrl,
-    setExistingFileUrl,
-  } = useFileUploadStore();
+  const { handleAddFile, addedFileUrl, setAddedFileUrl, setAddedFileName } =
+    useFileUploadStore();
 
   useEffect(() => {
     return () => {
@@ -31,52 +24,6 @@ const Uploader = ({
     };
   }, [addedFileUrl]);
 
-  const existingImage = addedFileUrl || existingFileUrl;
-
-  if (existingImage) {
-    return (
-      <Grid
-        container
-        direction="row"
-        alignItems="flex-start"
-        justifyContent={"flex-end"}
-        spacing={1}
-        padding={1}
-      >
-        <Grid
-          item
-          xs={12}
-          style={{
-            borderRadius: "8px",
-            height: height,
-            padding: "0",
-          }}
-        ></Grid>
-        <Grid item xs={12} container justifyContent="flex-end" direction="row">
-          <Stack
-            direction="row"
-            spacing={1}
-            width="100%"
-            justifyContent="flex-end"
-          >
-            <Button
-              onClick={() => {
-                setAddedFileUrl("");
-                setAddedFileName("");
-                setExistingFileUrl("");
-                handleAddFile([]);
-                URL.revokeObjectURL(addedFileUrl);
-              }}
-              size="small"
-              sx={{ width: "88px" }}
-            >
-              Remove
-            </Button>
-          </Stack>
-        </Grid>
-      </Grid>
-    );
-  }
   return (
     <Dropzone
       onDrop={(acceptedFiles) => {

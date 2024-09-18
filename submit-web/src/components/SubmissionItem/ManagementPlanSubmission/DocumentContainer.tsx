@@ -9,7 +9,6 @@ export interface Document {
   id: string;
   name: string;
   url: string;
-  progress: number;
 }
 
 interface DocumentContainerProps {
@@ -21,8 +20,8 @@ const DocumentContainer: React.FC<DocumentContainerProps> = ({
   document,
   onRemove,
 }) => {
-  const { name, progress } = document;
-  const isComplete = progress === 100;
+  const { name } = document;
+  const isComplete = document?.url;
 
   return (
     <Grid
@@ -70,23 +69,9 @@ const DocumentContainer: React.FC<DocumentContainerProps> = ({
               }}
             />
           ) : (
-            <ProgressBar progress={progress} />
+            <ProgressBar />
           )}
         </Box>
-        {!isComplete && (
-          <Typography
-            variant="subtitle1"
-            sx={{
-              color: "#0070E0",
-              borderRadius: BCDesignTokens.layoutPaddingLarge,
-              ml: BCDesignTokens.layoutMarginSmall,
-              p: BCDesignTokens.layoutPaddingSmall,
-              backgroundColor: "#F0F8FF",
-            }}
-          >
-            {progress}%
-          </Typography>
-        )}
       </Grid>
       <Grid
         container

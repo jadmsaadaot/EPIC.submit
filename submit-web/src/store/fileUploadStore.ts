@@ -13,7 +13,19 @@ interface FileUploadState {
   fileAfterProcessing: string;
   setFileAfterProcessing: (url: string) => void;
   fileAspectRatio: number;
+  resetStore: () => void;
+  clearFiles: () => void;
 }
+
+const initialState = {
+  savedFileUrl: "",
+  savedFileName: "",
+  addedFileUrl: "",
+  addedFileName: "",
+  existingFileUrl: "",
+  fileAfterProcessing: "",
+  fileAspectRatio: 1,
+};
 
 export const useFileUploadStore = create<FileUploadState>((set) => ({
   savedFileUrl: "",
@@ -45,4 +57,12 @@ export const useFileUploadStore = create<FileUploadState>((set) => ({
       });
     }
   },
+  resetStore: () => set(initialState),
+  clearFiles: () =>
+    set({
+      addedFileUrl: "",
+      addedFileName: "",
+      existingFileUrl: "",
+      fileAfterProcessing: "",
+    }),
 }));

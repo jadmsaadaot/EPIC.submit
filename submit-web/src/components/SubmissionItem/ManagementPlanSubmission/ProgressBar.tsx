@@ -1,7 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, LinearProgress } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 
-export default function ProgressBar({ progress }: { progress: number }) {
+export default function ProgressBar() {
   return (
     <Box
       sx={{
@@ -13,9 +13,9 @@ export default function ProgressBar({ progress }: { progress: number }) {
         border: `1px solid ${BCDesignTokens.themeBlue20}`,
       }}
     >
-      <Box
+      <LinearProgress
+        color="secondary"
         sx={{
-          width: `${progress}%`,
           height: "100%",
           backgroundColor: "#FDD166",
         }}
