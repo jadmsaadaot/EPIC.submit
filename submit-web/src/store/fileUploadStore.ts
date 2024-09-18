@@ -2,14 +2,9 @@ import { create } from "zustand";
 
 interface FileUploadState {
   handleAddFile: (_files: File[]) => void;
-  savedFileUrl: string;
-  savedFileName: string;
-  addedFileUrl: string;
-  setAddedFileUrl: (url: string) => void;
+  addedFile: File | null;
   addedFileName: string;
   setAddedFileName: (name: string) => void;
-  existingFileUrl: string;
-  setExistingFileUrl: (url: string) => void;
   fileAfterProcessing: string;
   setFileAfterProcessing: (url: string) => void;
   fileAspectRatio: number;
@@ -18,28 +13,16 @@ interface FileUploadState {
 }
 
 const initialState = {
-  savedFileUrl: "",
-  savedFileName: "",
-  addedFileUrl: "",
+  addedFile: null,
   addedFileName: "",
-  existingFileUrl: "",
   fileAfterProcessing: "",
   fileAspectRatio: 1,
 };
 
 export const useFileUploadStore = create<FileUploadState>((set) => ({
-  savedFileUrl: "",
-  savedFileName: "",
-
-  addedFileUrl: "",
-  setAddedFileUrl: (url) => set({ addedFileUrl: url }),
-
   addedFileName: "",
   setAddedFileName: (name) => set({ addedFileName: name }),
-
-  existingFileUrl: "",
-  setExistingFileUrl: (url) => set({ existingFileUrl: url }),
-
+  addedFile: null,
   fileAfterProcessing: "",
   setFileAfterProcessing: (url) => set({ fileAfterProcessing: url }),
 
@@ -49,10 +32,9 @@ export const useFileUploadStore = create<FileUploadState>((set) => ({
     // Add file processing logic here
     if (files.length > 0) {
       const file = files[0];
-      const fileUrl = URL.createObjectURL(file);
 
       set({
-        addedFileUrl: fileUrl,
+        addedFile: file,
         addedFileName: file.name,
       });
     }
@@ -60,9 +42,8 @@ export const useFileUploadStore = create<FileUploadState>((set) => ({
   resetStore: () => set(initialState),
   clearFiles: () =>
     set({
-      addedFileUrl: "",
+      addedFile: null,
       addedFileName: "",
-      existingFileUrl: "",
       fileAfterProcessing: "",
     }),
 }));
