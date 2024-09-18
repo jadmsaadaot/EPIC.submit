@@ -13,17 +13,13 @@ const Uploader = ({
   accept = {},
   children,
 }: UploaderProps) => {
-  const { handleAddFile, setAddedFileUrl, setAddedFileName } =
-    useFileUploadStore();
+  const { handleAddFile } = useFileUploadStore();
 
   return (
     <Dropzone
       onDrop={(acceptedFiles) => {
         if (acceptedFiles.length === 0) return;
-        const createdObjectURL = URL.createObjectURL(acceptedFiles[0]);
         handleAddFile(acceptedFiles);
-        setAddedFileUrl(createdObjectURL);
-        setAddedFileName(acceptedFiles[0].name);
       }}
       accept={accept}
     >
