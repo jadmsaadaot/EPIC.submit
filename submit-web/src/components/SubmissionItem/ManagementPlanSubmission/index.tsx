@@ -1,6 +1,6 @@
 import { ContentBox } from "@/components/Shared/ContentBox";
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import { BCDesignTokens } from "epic.theme";
+import { BCDesignTokens, EAOColors } from "epic.theme";
 import { useSubmissionItemStore } from "../submissionItemStore";
 import * as yup from "yup";
 import { FormProvider, useForm } from "react-hook-form";
@@ -18,6 +18,9 @@ import { ProjectStatus } from "@/components/registration/addProjects/ProjectStat
 import BarTitle from "@/components/Shared/Text/BarTitle";
 import ControlledRadioGroup from "@/components/Shared/controlled/ControlledRadioGroup";
 import { YesNoNotApplicableOptions, YesOrNoOptions } from "./radioOptions";
+import FileUpload from "@/components/FileUpload";
+import DocumentContainer from "./DocumentContainer";
+import { Document } from "./DocumentContainer";
 
 const managementPlanSubmissionSchema = yup.object().shape({
   conditionSatisfied: yup
@@ -99,6 +102,21 @@ export const ManagementPlanSubmission = () => {
       to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
     });
   };
+
+  const mockFiles = [
+    {
+      id: "1",
+      name: "Consultation Record",
+      url: "https://via.placeholder.com/150",
+      progress: 100,
+    },
+    {
+      id: "1",
+      name: "Comment Tracker",
+      url: "https://via.placeholder.com/150",
+      progress: 30,
+    },
+  ] as Document[];
 
   if (!accountProject) return <Navigate to="/error" />;
 
@@ -211,6 +229,57 @@ export const ManagementPlanSubmission = () => {
                       Document(s) Upload
                     </Typography>
                     <Divider sx={{ mt: BCDesignTokens.layoutMarginXsmall }} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box sx={{ flexDirection: "column", display: "flex" }}>
+                      <Typography
+                        variant="body1"
+                        color={BCDesignTokens.typographyColorPrimary}
+                      >
+                        Upload Consultation Record(s), Including Comment Tracker
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: BCDesignTokens.typographyColorPlaceholder,
+                        }}
+                      >
+                        Must be unlocked PDF document (i.e., not password
+                        protected).
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: BCDesignTokens.typographyColorPlaceholder,
+                        }}
+                      >
+                        Any proposed changes must be in tracked changes.
+                      </Typography>
+                    </Box>
+                    <FileUpload handleAddFile={() => {}} height={"13.125rem"} />
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: EAOColors.ProponentDark,
+                      }}
+                    >
+                      Accepted file types: pdf, doc, docx, xlsx, Max. file size:
+                      ???.
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    container
+                    item
+                    xs={12}
+                    sx={{ mb: BCDesignTokens.layoutMarginXlarge }}
+                  >
+                    {mockFiles.map((document) => (
+                      <DocumentContainer
+                        key={document.id}
+                        document={document}
+                        onRemove={() => {}}
+                      />
+                    ))}
                   </Grid>
                   <Grid item xs={12} container spacing={2}>
                     <Grid item xs={12} sm="auto">
