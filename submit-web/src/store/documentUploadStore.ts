@@ -7,7 +7,7 @@ interface Document {
 }
 
 interface DocumentUploadState {
-  handleAddDocuments: (_files: File[]) => void;
+  handleAddDocuments: (_files: File[], folderId?: string) => void;
   documents: Document[];
   reset: () => void;
 }

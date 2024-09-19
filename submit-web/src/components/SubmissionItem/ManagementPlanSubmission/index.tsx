@@ -20,7 +20,6 @@ import ControlledRadioGroup from "@/components/Shared/controlled/ControlledRadio
 import { YesNoNotApplicableOptions, YesOrNoOptions } from "./radioOptions";
 import FileUpload from "@/components/FileUpload";
 import DocumentContainer from "./DocumentContainer";
-import { Document } from "./DocumentContainer";
 import { useDocumentUploadStore } from "@/store/documentUploadStore";
 
 const MANAGEMENT_PLAN_FOLDER = "Management Plan";
@@ -70,11 +69,6 @@ export const ManagementPlanSubmission = () => {
     };
   }, [reset]);
 
-  const documentToUpload = {
-    id: documents[0]?.file.name,
-    name: documents[0]?.file.name,
-  };
-
   const { handleSubmit } = methods;
 
   const onCreateFailure = () => {
@@ -117,14 +111,6 @@ export const ManagementPlanSubmission = () => {
       to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
     });
   };
-
-  const mockFiles = [
-    {
-      id: "1",
-      name: "Consultation Record",
-      url: "https://via.placeholder.com/150",
-    },
-  ] as Document[];
 
   if (!accountProject) return <Navigate to="/error" />;
 
