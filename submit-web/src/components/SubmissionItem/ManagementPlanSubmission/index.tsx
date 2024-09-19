@@ -23,6 +23,9 @@ import DocumentContainer from "./DocumentContainer";
 import { Document } from "./DocumentContainer";
 import { useDocumentUploadStore } from "@/store/documentUploadStore";
 
+const MANAGEMENT_PLAN_FOLDER = "Management Plan";
+const SUPPORTING_DOCS_FOLDER = "Supporting Documents";
+
 const managementPlanSubmissionSchema = yup.object().shape({
   conditionSatisfied: yup
     .boolean()
@@ -263,7 +266,7 @@ export const ManagementPlanSubmission = () => {
                     </Box>
                     <FileUpload
                       height={"13.125rem"}
-                      folder={"Management Plan"}
+                      folder={MANAGEMENT_PLAN_FOLDER}
                     />
                     <Typography
                       variant="body2"
@@ -283,7 +286,9 @@ export const ManagementPlanSubmission = () => {
                   >
                     {documents.length > 0 &&
                       documents
-                        .filter((doc) => doc.folderId === "Management Plan")
+                        .filter(
+                          (doc) => doc.folderId === MANAGEMENT_PLAN_FOLDER
+                        )
                         .map((document) => (
                           <DocumentContainer
                             key={document.file.name}
@@ -316,7 +321,7 @@ export const ManagementPlanSubmission = () => {
                     </Box>
                     <FileUpload
                       height={"13.125rem"}
-                      folder={"Supporting Documents"}
+                      folder={SUPPORTING_DOCS_FOLDER}
                     />
                     <Typography
                       variant="body2"
@@ -337,7 +342,7 @@ export const ManagementPlanSubmission = () => {
                     {documents.length > 0 &&
                       documents
                         .filter(
-                          (doc) => doc.folderId === "Supporting Documents"
+                          (doc) => doc.folderId === SUPPORTING_DOCS_FOLDER
                         )
                         .map((document) => (
                           <DocumentContainer
