@@ -9,6 +9,7 @@ interface Document {
 interface DocumentUploadState {
   handleAddDocuments: (_files: File[], folderId?: string) => void;
   documents: Document[];
+  removeDocument: (fileName: string) => void;
   reset: () => void;
 }
 
@@ -34,6 +35,16 @@ export const useDocumentUploadStore = create<DocumentUploadState>((set) => ({
         ],
       }));
     }
+  },
+  removeDocument: (fileName: string) => {
+    set((prev) => {
+      const documents = [...prev.documents];
+      const index = documents.findIndex((doc) => doc.file.name === fileName);
+      if (index !== -1) {
+        documents.splice(index, 1);
+      }
+      return { documents };
+    });
   },
   reset: () => set(initialState),
 }));

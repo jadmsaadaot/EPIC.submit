@@ -57,7 +57,7 @@ export const ManagementPlanSubmission = () => {
 
   const { setIsOpen } = useLoaderBackdrop();
   const navigate = useNavigate();
-  const { documents, reset } = useDocumentUploadStore();
+  const { documents, removeDocument, reset } = useDocumentUploadStore();
   const methods = useForm<ManagementPlanSubmissionForm>({
     resolver: yupResolver(managementPlanSubmissionSchema),
     mode: "onSubmit",
@@ -282,9 +282,7 @@ export const ManagementPlanSubmission = () => {
                               id: document.file.name,
                               name: document.file.name,
                             }}
-                            onRemove={() => {
-                              reset();
-                            }}
+                            onRemove={() => removeDocument(document.file.name)}
                           />
                         ))}
                   </Grid>
@@ -337,9 +335,7 @@ export const ManagementPlanSubmission = () => {
                               id: document.file.name,
                               name: document.file.name,
                             }}
-                            onRemove={() => {
-                              reset();
-                            }}
+                            onRemove={() => removeDocument(document.file.name)}
                           />
                         ))}
                   </Grid>
