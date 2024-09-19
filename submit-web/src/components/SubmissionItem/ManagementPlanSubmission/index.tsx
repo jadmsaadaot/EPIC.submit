@@ -241,7 +241,7 @@ export const ManagementPlanSubmission = () => {
                         variant="body1"
                         color={BCDesignTokens.typographyColorPrimary}
                       >
-                        Upload Consultation Record(s), Including Comment Tracker
+                        Upload Management Plan
                       </Typography>
                       <Typography
                         variant="body2"
@@ -261,7 +261,10 @@ export const ManagementPlanSubmission = () => {
                         Any proposed changes must be in tracked changes.
                       </Typography>
                     </Box>
-                    <FileUpload height={"13.125rem"} />
+                    <FileUpload
+                      height={"13.125rem"}
+                      folder={"Management Plan"}
+                    />
                     <Typography
                       variant="body2"
                       sx={{
@@ -269,7 +272,7 @@ export const ManagementPlanSubmission = () => {
                       }}
                     >
                       Accepted file types: pdf, doc, docx, xlsx, Max. file size:
-                      ???.
+                      250 MB.
                     </Typography>
                   </Grid>
                   <Grid
@@ -278,21 +281,76 @@ export const ManagementPlanSubmission = () => {
                     xs={12}
                     sx={{ mb: BCDesignTokens.layoutMarginXlarge }}
                   >
-                    {mockFiles.map((document) => (
-                      <DocumentContainer
-                        key={document.id}
-                        document={document}
-                        onRemove={() => {}}
-                      />
-                    ))}
-                    {documents.length > 0 && (
-                      <DocumentContainer
-                        document={documentToUpload}
-                        onRemove={() => {
-                          reset();
+                    {documents.length > 0 &&
+                      documents
+                        .filter((doc) => doc.folderId === "Management Plan")
+                        .map((document) => (
+                          <DocumentContainer
+                            key={document.file.name}
+                            document={{
+                              id: document.file.name,
+                              name: document.file.name,
+                            }}
+                            onRemove={() => {
+                              reset();
+                            }}
+                          />
+                        ))}
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box sx={{ flexDirection: "column", display: "flex" }}>
+                      <Typography
+                        variant="body1"
+                        color={BCDesignTokens.typographyColorPrimary}
+                      >
+                        Upload Supporting Documents, as applicable
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: BCDesignTokens.typographyColorPlaceholder,
                         }}
-                      />
-                    )}
+                      >
+                        e.g. table of proposed changes, table of concordance
+                      </Typography>
+                    </Box>
+                    <FileUpload
+                      height={"13.125rem"}
+                      folder={"Supporting Documents"}
+                    />
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: EAOColors.ProponentDark,
+                      }}
+                    >
+                      Accepted file types: pdf, doc, docx, xlsx, Max. file size:
+                      250 MB.
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    container
+                    item
+                    xs={12}
+                    sx={{ mb: BCDesignTokens.layoutMarginXlarge }}
+                  >
+                    {documents.length > 0 &&
+                      documents
+                        .filter(
+                          (doc) => doc.folderId === "Supporting Documents"
+                        )
+                        .map((document) => (
+                          <DocumentContainer
+                            key={document.file.name}
+                            document={{
+                              id: document.file.name,
+                              name: document.file.name,
+                            }}
+                            onRemove={() => {
+                              reset();
+                            }}
+                          />
+                        ))}
                   </Grid>
                   <Grid item xs={12} container spacing={2}>
                     <Grid item xs={12} sm="auto">

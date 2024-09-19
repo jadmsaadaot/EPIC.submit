@@ -3,6 +3,7 @@ import { create } from "zustand";
 interface Document {
   file: File;
   isComplete: boolean;
+  folderId?: string;
 }
 
 interface DocumentUploadState {
@@ -17,7 +18,7 @@ const initialState = {
 
 export const useDocumentUploadStore = create<DocumentUploadState>((set) => ({
   documents: [],
-  handleAddDocuments: (files: File[]) => {
+  handleAddDocuments: (files: File[], folderId?: string) => {
     // Add file processing logic here
     if (files.length > 0) {
       const file = files[0];
@@ -28,6 +29,7 @@ export const useDocumentUploadStore = create<DocumentUploadState>((set) => ({
           {
             file,
             isComplete: false,
+            folderId,
           },
         ],
       }));

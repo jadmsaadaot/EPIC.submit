@@ -7,10 +7,12 @@ interface UploaderProps {
   height?: string;
   accept?: Accept;
   children: React.ReactNode;
+  folder?: string;
 }
 const Uploader = ({
   height = "10em",
   accept = {},
+  folder,
   children,
 }: UploaderProps) => {
   const { handleAddDocuments } = useDocumentUploadStore();
@@ -19,7 +21,7 @@ const Uploader = ({
     <Dropzone
       onDrop={(acceptedFiles) => {
         if (acceptedFiles.length === 0) return;
-        handleAddDocuments(acceptedFiles);
+        handleAddDocuments(acceptedFiles, folder);
       }}
       accept={accept}
     >
