@@ -1,6 +1,6 @@
 import { ContentBox } from "@/components/Shared/ContentBox";
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import { BCDesignTokens } from "epic.theme";
+import { BCDesignTokens, EAOColors } from "epic.theme";
 import { useSubmissionItemStore } from "../submissionItemStore";
 import * as yup from "yup";
 import { FormProvider, useForm } from "react-hook-form";
@@ -18,6 +18,12 @@ import { ProjectStatus } from "@/components/registration/addProjects/ProjectStat
 import BarTitle from "@/components/Shared/Text/BarTitle";
 import ControlledRadioGroup from "@/components/Shared/controlled/ControlledRadioGroup";
 import { YesNoNotApplicableOptions, YesOrNoOptions } from "./radioOptions";
+import FileUpload from "@/components/FileUpload";
+import DocumentContainer from "./DocumentContainer";
+import { useDocumentUploadStore } from "@/store/documentUploadStore";
+
+const MANAGEMENT_PLAN_FOLDER = "Management Plan";
+const SUPPORTING_DOCS_FOLDER = "Supporting Documents";
 
 const managementPlanSubmissionSchema = yup.object().shape({
   conditionSatisfied: yup
@@ -51,11 +57,17 @@ export const ManagementPlanSubmission = () => {
 
   const { setIsOpen } = useLoaderBackdrop();
   const navigate = useNavigate();
-
+  const { documents, removeDocument, reset } = useDocumentUploadStore();
   const methods = useForm<ManagementPlanSubmissionForm>({
     resolver: yupResolver(managementPlanSubmissionSchema),
     mode: "onSubmit",
   });
+
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+  }, [reset]);
 
   const { handleSubmit } = methods;
 
@@ -211,6 +223,121 @@ export const ManagementPlanSubmission = () => {
                       Document(s) Upload
                     </Typography>
                     <Divider sx={{ mt: BCDesignTokens.layoutMarginXsmall }} />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box sx={{ flexDirection: "column", display: "flex" }}>
+                      <Typography
+                        variant="body1"
+                        color={BCDesignTokens.typographyColorPrimary}
+                      >
+                        Upload Management Plan
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: BCDesignTokens.typographyColorPlaceholder,
+                        }}
+                      >
+                        Must be unlocked PDF document (i.e., not password
+                        protected).
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: BCDesignTokens.typographyColorPlaceholder,
+                        }}
+                      >
+                        Any proposed changes must be in tracked changes.
+                      </Typography>
+                    </Box>
+                    <FileUpload
+                      height={"13.125rem"}
+                      folder={MANAGEMENT_PLAN_FOLDER}
+                    />
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: EAOColors.ProponentDark,
+                      }}
+                    >
+                      Accepted file types: pdf, doc, docx, xlsx, Max. file size:
+                      250 MB.
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    container
+                    item
+                    xs={12}
+                    sx={{ mb: BCDesignTokens.layoutMarginXlarge }}
+                  >
+                    {documents.length > 0 &&
+                      documents
+                        .filter(
+                          (doc) => doc.folderId === MANAGEMENT_PLAN_FOLDER
+                        )
+                        .map((document) => (
+                          <DocumentContainer
+                            key={document.file.name}
+                            document={{
+                              id: document.file.name,
+                              name: document.file.name,
+                            }}
+                            onRemove={() => removeDocument(document.file.name)}
+                          />
+                        ))}
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Box sx={{ flexDirection: "column", display: "flex" }}>
+                      <Typography
+                        variant="body1"
+                        color={BCDesignTokens.typographyColorPrimary}
+                      >
+                        Upload Supporting Documents, as applicable
+                      </Typography>
+                      <Typography
+                        variant="body2"
+                        sx={{
+                          color: BCDesignTokens.typographyColorPlaceholder,
+                        }}
+                      >
+                        e.g. table of proposed changes, table of concordance
+                      </Typography>
+                    </Box>
+                    <FileUpload
+                      height={"13.125rem"}
+                      folder={SUPPORTING_DOCS_FOLDER}
+                    />
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: EAOColors.ProponentDark,
+                      }}
+                    >
+                      Accepted file types: pdf, doc, docx, xlsx, Max. file size:
+                      250 MB.
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    container
+                    item
+                    xs={12}
+                    sx={{ mb: BCDesignTokens.layoutMarginXlarge }}
+                  >
+                    {documents.length > 0 &&
+                      documents
+                        .filter(
+                          (doc) => doc.folderId === SUPPORTING_DOCS_FOLDER
+                        )
+                        .map((document) => (
+                          <DocumentContainer
+                            key={document.file.name}
+                            document={{
+                              id: document.file.name,
+                              name: document.file.name,
+                            }}
+                            onRemove={() => removeDocument(document.file.name)}
+                          />
+                        ))}
                   </Grid>
                   <Grid item xs={12} container spacing={2}>
                     <Grid item xs={12} sm="auto">
