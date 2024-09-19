@@ -22,17 +22,16 @@ export const useDocumentUploadStore = create<DocumentUploadState>(
       // Add file processing logic here
       if (files.length > 0) {
         const file = files[0];
-        const currentDocuments = get().documents;
 
-        set({
+        set((prev) => ({
           documents: [
-            ...currentDocuments,
+            ...prev.documents,
             {
               file,
               isComplete: false,
             },
           ],
-        });
+        }));
       }
     },
     reset: () => set(initialState),
