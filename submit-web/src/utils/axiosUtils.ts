@@ -77,13 +77,3 @@ export const OSSPutRequest = <T>(
     },
   });
 };
-
-export const PostRequest = <T>(url: string, data = {}, params = {}) => {
-  return axios.post<T>(url, data, {
-    params,
-    headers: {
-      "Content-type": "application/json",
-      Authorization: `Bearer ${getAuthToken()}`,
-    },
-  });
-};
