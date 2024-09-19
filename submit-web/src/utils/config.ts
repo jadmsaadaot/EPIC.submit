@@ -10,11 +10,16 @@ declare global {
       VITE_APP_URL: string;
       VITE_OIDC_AUTHORITY: string;
       VITE_CLIENT_ID: string;
+      VITE_OBJECT_STORAGE_URL: string;
     };
   }
 }
 const API_URL =
   window._env_?.VITE_API_URL || import.meta.env.VITE_API_URL || "";
+const OBJECT_STORAGE_URL =
+  window._env_?.VITE_OBJECT_STORAGE_URL ||
+  import.meta.env.VITE_OBJECT_STORAGE_URL ||
+  "";
 const APP_ENVIRONMENT =
   window._env_?.VITE_ENV || import.meta.env.VITE_ENV || "";
 const APP_VERSION =
@@ -29,6 +34,7 @@ const CLIENT_ID =
 
 export const AppConfig = {
   apiUrl: `${API_URL}`,
+  documentUrl: `${OBJECT_STORAGE_URL}`,
   environment: APP_ENVIRONMENT,
   version: APP_VERSION,
   appTitle: APP_TITLE,

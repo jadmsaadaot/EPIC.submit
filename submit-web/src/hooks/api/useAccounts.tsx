@@ -1,4 +1,4 @@
-import { OnErrorType, request } from "@/utils/axiosUtils";
+import { OnErrorType, submitRequest } from "@/utils/axiosUtils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 type CreateAccountRequest = {
@@ -15,7 +15,7 @@ export type CreateAccountResponse = {
   proponent_id: number;
 };
 const createAccount = (account: CreateAccountRequest) => {
-  return request<CreateAccountResponse>({
+  return submitRequest<CreateAccountResponse>({
     url: "/accounts",
     method: "post",
     data: account,
@@ -39,7 +39,7 @@ type GetUserResponse = {
   };
 };
 const getUserByGuid = (guid?: string) => {
-  return request<GetUserResponse>({ url: `/users/guid/${guid}` });
+  return submitRequest<GetUserResponse>({ url: `/users/guid/${guid}` });
 };
 
 type CreateAccountOptions = {

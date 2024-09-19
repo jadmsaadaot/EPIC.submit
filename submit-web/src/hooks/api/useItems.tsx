@@ -1,12 +1,12 @@
 import { SubmissionItem } from "@/models/SubmissionItem";
-import { request } from "@/utils/axiosUtils";
+import { submitRequest } from "@/utils/axiosUtils";
 import { useQuery } from "@tanstack/react-query";
 
 type GetSubmissionItemByIdParams = {
   itemId: number;
 };
 const getSubmissionItemById = ({ itemId }: GetSubmissionItemByIdParams) => {
-  return request<SubmissionItem>({
+  return submitRequest<SubmissionItem>({
     url: `items/${itemId}`,
   });
 };

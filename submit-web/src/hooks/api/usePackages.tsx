@@ -1,4 +1,4 @@
-import { request } from "@/utils/axiosUtils";
+import { submitRequest } from "@/utils/axiosUtils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Options } from "./types";
 import { SubmissionPackage } from "@/models/Package";
@@ -10,7 +10,7 @@ const createSubmissionPackage = ({
   accountProjectId: number;
   data: Record<string, unknown>;
 }) => {
-  return request<SubmissionPackage>({
+  return submitRequest<SubmissionPackage>({
     url: `/packages/account-projects/${accountProjectId}`,
     method: "post",
     data,
@@ -30,7 +30,7 @@ type GetSubmissionPackageByIdParams = {
 const getSubmissionPackageById = ({
   packageId,
 }: GetSubmissionPackageByIdParams) => {
-  return request<SubmissionPackage>({
+  return submitRequest<SubmissionPackage>({
     url: `packages/${packageId}`,
   });
 };

@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { AppConfig, OidcConfig } from "@/utils/config";
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, AxiosInstance } from "axios";
 import { User } from "oidc-client-ts";
 
 export type OnErrorType = (error: AxiosError) => void;
 export type OnSuccessType = (data: any) => void;
 
-const client = axios.create({ baseURL: AppConfig.apiUrl });
+const submitClient = axios.create({ baseURL: AppConfig.apiUrl });
+const documentClient = axios.create({ baseURL: AppConfig.documentUrl });
 
 function getUser() {
   const oidcStorage = sessionStorage.getItem(
@@ -19,15 +20,70 @@ function getUser() {
   return User.fromStorageString(oidcStorage);
 }
 
-export const request = async <T = any>({ ...options }) => {
+const getAuthToken = () => {
   const user = getUser();
-
   if (user?.access_token) {
-    client.defaults.headers.common.Authorization = `Bearer ${user?.access_token}`;
-  } else {
-    return Promise.reject(new Error("No access token"));
+    return user.access_token;
   }
+  throw new Error("No access token");
+};
 
-  const response = await client.request<T>(options);
+const setAuthToken = (client: AxiosInstance) => {
+  const authToken = getAuthToken();
+
+  client.defaults.headers.common.Authorization = `Bearer ${authToken}`;
+};
+
+export const submitRequest = async <T = any>({ ...options }) => {
+  setAuthToken(submitClient);
+
+  const response = await submitClient.request<T>(options);
   return response.data;
+};
+
+export const documentRequest = async <T = any>({ ...options }) => {
+  setAuthToken(documentClient);
+
+  const response = await documentClient.request<T>(options);
+  return response.data;
+};
+
+type OSSRequestOptions = {
+  amzDate: string;
+  authHeader: string;
+};
+export const OSSGetRequest = <T>(
+  url: string,
+  requestOptions: OSSRequestOptions,
+) => {
+  return axios.get<T>(url, {
+    headers: {
+      "X-Amz-Date": requestOptions.amzDate,
+      Authorization: requestOptions.authHeader,
+    },
+    responseType: "blob",
+  });
+};
+
+export const OSSPutRequest = <T>(
+  url: string,
+  data: File,
+  requestOptions: OSSRequestOptions,
+) => {
+  return axios.put<T>(url, data, {
+    headers: {
+      "X-Amz-Date": requestOptions.amzDate,
+      Authorization: requestOptions.authHeader,
+    },
+  });
+};
+
+export const PostRequest = <T>(url: string, data = {}, params = {}) => {
+  return axios.post<T>(url, data, {
+    params,
+    headers: {
+      "Content-type": "application/json",
+      Authorization: `Bearer ${getAuthToken()}`,
+    },
+  });
 };
