@@ -1,4 +1,4 @@
-import { request } from "@/utils/axiosUtils";
+import { submitRequest } from "@/utils/axiosUtils";
 import { useMutation } from "@tanstack/react-query";
 import { Options } from "./types";
 import { Submission } from "@/models/Submission";
@@ -10,7 +10,7 @@ const createSubmission = ({
   itemId: number;
   data: Record<string, unknown>;
 }) => {
-  return request<Submission>({
+  return submitRequest<Submission>({
     url: `/submissions/items/${itemId}`,
     method: "post",
     data,

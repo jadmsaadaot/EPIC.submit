@@ -1,5 +1,5 @@
 import { AccountProject, Project } from "@/models/Project";
-import { request } from "@/utils/axiosUtils";
+import { submitRequest } from "@/utils/axiosUtils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Options } from "./types";
 
@@ -7,7 +7,9 @@ const loadProjectsByProponentId = (proponentId?: number) => {
   if (!proponentId) {
     return Promise.reject(new Error("Proponent ID is required"));
   }
-  return request<Project[]>({ url: `/projects/proponents/${proponentId}` });
+  return submitRequest<Project[]>({
+    url: `/projects/proponents/${proponentId}`,
+  });
 };
 
 const addProjects = ({
@@ -17,7 +19,7 @@ const addProjects = ({
   accountId: number;
   projectIds: number[];
 }) => {
-  return request({
+  return submitRequest({
     url: `/projects/accounts/${accountId}`,
     method: "post",
     data: {
@@ -39,7 +41,9 @@ type GetProjectsByAccountParams = {
   accountId?: number;
 };
 const getProjectsByAccount = ({ accountId }: GetProjectsByAccountParams) => {
-  return request<AccountProject[]>({ url: `/projects/accounts/${accountId}` });
+  return submitRequest<AccountProject[]>({
+    url: `/projects/accounts/${accountId}`,
+  });
 };
 
 export const useAddProjects = (options?: Options) => {
@@ -66,7 +70,7 @@ type GetProjectsByIdParams = {
   projectId: number;
 };
 const getProjectById = ({ projectId }: GetProjectsByIdParams) => {
-  return request<AccountProject>({
+  return submitRequest<AccountProject>({
     url: `projects/${projectId}`,
   });
 };
