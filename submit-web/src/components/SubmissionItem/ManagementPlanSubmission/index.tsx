@@ -21,7 +21,7 @@ import { YesNoNotApplicableOptions, YesOrNoOptions } from "./radioOptions";
 import FileUpload from "@/components/FileUpload";
 import DocumentContainer from "./DocumentContainer";
 import { Document } from "./DocumentContainer";
-import { useFileUploadStore } from "@/store/fileUploadStore";
+import { useDocumentUploadStore } from "@/store/documentUploadStore";
 
 const managementPlanSubmissionSchema = yup.object().shape({
   conditionSatisfied: yup
@@ -55,7 +55,7 @@ export const ManagementPlanSubmission = () => {
 
   const { setIsOpen } = useLoaderBackdrop();
   const navigate = useNavigate();
-  const { addedFileName, clearFiles, resetStore } = useFileUploadStore();
+  const { documents, reset } = useDocumentUploadStore();
   const methods = useForm<ManagementPlanSubmissionForm>({
     resolver: yupResolver(managementPlanSubmissionSchema),
     mode: "onSubmit",
@@ -63,13 +63,13 @@ export const ManagementPlanSubmission = () => {
 
   useEffect(() => {
     return () => {
-      resetStore();
+      reset();
     };
-  }, [resetStore]);
+  }, [reset]);
 
   const documentToUpload = {
-    id: addedFileName,
-    name: addedFileName,
+    id: documents[0]?.file.name,
+    name: documents[0]?.file.name,
   };
 
   const { handleSubmit } = methods;
@@ -285,11 +285,11 @@ export const ManagementPlanSubmission = () => {
                         onRemove={() => {}}
                       />
                     ))}
-                    {addedFileName && (
+                    {documents.length > 0 && (
                       <DocumentContainer
                         document={documentToUpload}
                         onRemove={() => {
-                          clearFiles();
+                          reset();
                         }}
                       />
                     )}

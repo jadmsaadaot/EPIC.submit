@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import Dropzone, { Accept } from "react-dropzone";
-import { useFileUploadStore } from "@/store/fileUploadStore";
+import { useDocumentUploadStore } from "@/store/documentUploadStore";
 
 interface UploaderProps {
   height?: string;
@@ -13,13 +13,13 @@ const Uploader = ({
   accept = {},
   children,
 }: UploaderProps) => {
-  const { handleAddFile } = useFileUploadStore();
+  const { handleAddDocuments } = useDocumentUploadStore();
 
   return (
     <Dropzone
       onDrop={(acceptedFiles) => {
         if (acceptedFiles.length === 0) return;
-        handleAddFile(acceptedFiles);
+        handleAddDocuments(acceptedFiles);
       }}
       accept={accept}
     >
