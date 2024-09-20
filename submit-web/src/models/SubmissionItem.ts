@@ -1,4 +1,4 @@
-import { SubmissionStatus } from "./Submission";
+import { Submission, SubmissionStatus } from "./Submission";
 
 type SubmissionItemTypeName =
   | "Contact Information"
@@ -23,4 +23,5 @@ export interface SubmissionItem {
   type: SubmissionItemType;
   type_id: number;
   version: number;
+  submissions: Submission[];
 }

@@ -9,7 +9,7 @@ interface UploaderProps {
   height?: string;
   cropAspectRatio?: number;
   accept?: Accept;
-  folder?: string;
+  onDrop: (acceptedFiles: File[]) => void;
 }
 export const FileUpload = ({
   height = "10em",
@@ -19,10 +19,10 @@ export const FileUpload = ({
     docx: [],
     xls: [],
   },
-  folder,
+  onDrop,
 }: UploaderProps) => {
   return (
-    <Uploader height={height} accept={accept} folder={folder}>
+    <Uploader height={height} accept={accept} onDrop={onDrop}>
       <Box sx={{ p: BCDesignTokens.layoutPaddingSmall }}>
         <UploaderIcon />
       </Box>

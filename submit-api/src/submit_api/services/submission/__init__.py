@@ -2,7 +2,8 @@
 
 from submit_api.models.submission import Submission as SubmissionModel
 from submit_api.models.submission import SubmissionTypeStatus
-from submit_api.services.submission.submission_creator_factory import FormSubmissionCreator, SubmissionCreatorFactory
+from submit_api.services.submission.submission_creator_factory import FormSubmissionCreator, SubmissionCreatorFactory, \
+    DocumentSubmissionCreator
 
 
 class SubmissionService:
@@ -15,7 +16,8 @@ class SubmissionService:
             raise ValueError("Submission type is required.")
 
         submission_creators = {
-            SubmissionTypeStatus.FORM.value: FormSubmissionCreator()
+            SubmissionTypeStatus.FORM.value: FormSubmissionCreator(),
+            SubmissionTypeStatus.DOCUMENT.value: DocumentSubmissionCreator()
         }
         submission_creator = submission_creators.get(submission_type)
         if not submission_creator:

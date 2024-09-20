@@ -1,28 +1,15 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Button, Grid, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import React from "react";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import DocumentIcon from "./DocumentIcon";
-import ProgressBar from "./ProgressBar";
-
-export interface Document {
-  id: string;
-  name: string;
-  url?: string;
-}
+import { DocumentSubmission } from "@/models/Submission";
 
 interface DocumentContainerProps {
-  document: Document;
-  onRemove: () => void;
+  document: DocumentSubmission;
 }
 
-const DocumentContainer: React.FC<DocumentContainerProps> = ({
-  document,
-  onRemove,
-}) => {
-  const { name } = document;
-  const isComplete = document?.url;
-
+const DocumentContainer: React.FC<DocumentContainerProps> = ({ document }) => {
   return (
     <Grid
       container
@@ -49,7 +36,7 @@ const DocumentContainer: React.FC<DocumentContainerProps> = ({
         </Box>
         <Box
           display={"flex"}
-          flexDirection={isComplete ? "row" : "column"}
+          flexDirection={"row"}
           width={"70%"}
           mr={BCDesignTokens.layoutMarginSmall}
         >
@@ -58,38 +45,19 @@ const DocumentContainer: React.FC<DocumentContainerProps> = ({
             fontWeight={BCDesignTokens.typographyFontWeightsBold}
             sx={{ color: "#222", mr: BCDesignTokens.layoutMarginSmall }}
           >
-            {name}
+            {document.name}
           </Typography>{" "}
-          {isComplete ? (
-            <CheckRoundedIcon
-              sx={{
-                color: "#2E8540",
-                background: "#C2EACA",
-                borderRadius: BCDesignTokens.layoutPaddingLarge,
-              }}
-            />
-          ) : (
-            <ProgressBar />
-          )}
+          <CheckRoundedIcon
+            sx={{
+              color: "#2E8540",
+              background: "#C2EACA",
+              borderRadius: BCDesignTokens.layoutPaddingLarge,
+            }}
+          />
         </Box>
       </Grid>
-      <Grid
-        container
-        item
-        xs={1}
-        alignItems={"center"}
-        justifyContent={"flex-end"}
-      >
-        <Box
-          sx={{
-            cursor: "pointer",
-            color: "#1A5A96",
-            mr: BCDesignTokens.layoutMarginSmall,
-          }}
-          onClick={() => onRemove()}
-        >
-          Remove
-        </Box>
+      <Grid item xs={1}>
+        <Button variant="text">Remove</Button>
       </Grid>
     </Grid>
   );

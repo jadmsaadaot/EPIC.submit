@@ -43,8 +43,8 @@ const contactInformationSchema = yup.object().shape({
 type ContactInformationForm = yup.InferType<typeof contactInformationSchema>;
 export const ContactInformation = () => {
   const { submissionItem } = useSubmissionItemStore();
-  const { projectId, submissionPackageId } = useParams({
-    strict: false,
+  const { projectId, submissionPackageId, submissionId } = useParams({
+    from: "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/submissions/$submissionId",
   });
   const { setIsOpen } = useLoaderBackdrop();
   const navigate = useNavigate();
@@ -67,7 +67,7 @@ export const ContactInformation = () => {
     });
   };
   const { mutate: createSubmission, isPending: isCreatingSubmissionPending } =
-    useCreateSubmission({
+    useCreateSubmission(Number(submissionId), {
       onError: onCreateFailure,
       onSuccess: onCreateSuccess,
     });
