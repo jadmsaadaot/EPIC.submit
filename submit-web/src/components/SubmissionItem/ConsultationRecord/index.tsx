@@ -3,7 +3,7 @@ import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import { BCDesignTokens, EAOColors } from "epic.theme";
 import { useSubmissionItemStore } from "../submissionItemStore";
 import * as yup from "yup";
-import { FormProvider, useForm } from "react-hook-form";
+import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCreateSubmission } from "@/hooks/api/useSubmissions";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
@@ -26,9 +26,16 @@ import { YesOrNoOptions } from "./radioOptions";
 const CONSULTATION_RECORD_FOLDER = "Consultation Record";
 
 const consultationRecordSchema = yup.object().shape({
-  consultedParty: yup
-    .string()
-    .required("Please provide an answer to this question."),
+  consultedParties: yup
+    .array()
+    .of(
+      yup.object().shape({
+        consultedParty: yup
+          .string()
+          .required("Please provide the name of the consulted party."),
+      })
+    )
+    .required("Please provide at least one consulted party."),
   allPartiesConsulted: yup
     .boolean()
     .nullable()
@@ -62,7 +69,18 @@ export const ConsultationRecord = () => {
   const methods = useForm<ConsultationRecordForm>({
     resolver: yupResolver(consultationRecordSchema),
     mode: "onSubmit",
+    defaultValues: {
+      consultedParties: [{ consultedParty: "" }],
+    },
   });
+  const { fields, append, remove } = useFieldArray({
+    control: methods.control,
+    name: "consultedParties", // this should match the field name in the schema
+  });
+
+  const handleAddParty = () => {
+    append({ consultedParty: "" }); // append a new field for consultedParty
+  };
 
   useEffect(() => {
     return () => {
@@ -204,17 +222,28 @@ export const ConsultationRecord = () => {
                         </ul>
                       </Typography>
                       <Grid item container xs={12}>
-                        <Grid item xs={6} mr={BCDesignTokens.layoutMarginSmall}>
-                          <ControlledTextField
-                            fullWidth
-                            name="consultedParty"
-                            placeholder="Enter the name of other consulted party here"
-                            sx={{
-                              mb: 0,
-                            }}
-                          />
-                        </Grid>
-                        <Button color="secondary">Save</Button>
+                        {fields.map((field, index) => (
+                          <Grid item container xs={12} key={field.id}>
+                            <Grid item xs={6}>
+                              <ControlledTextField
+                                fullWidth
+                                name={`consultedParties.${index}.consultedParty`}
+                                placeholder="Enter the name of other consulted party here"
+                                sx={{
+                                  mb: 0,
+                                }}
+                              />
+                            </Grid>
+                            <Button
+                              variant="outlined"
+                              color="error"
+                              onClick={() => remove(index)}
+                              sx={{ ml: BCDesignTokens.layoutMarginSmall }}
+                            >
+                              Remove
+                            </Button>
+                          </Grid>
+                        ))}
                       </Grid>
                       <Typography
                         variant="body1"
@@ -222,6 +251,7 @@ export const ConsultationRecord = () => {
                           color: BCDesignTokens.typographyColorLink,
                           cursor: "pointer",
                         }}
+                        onClick={handleAddParty}
                       >
                         + Add a Consulted Party
                       </Typography>
