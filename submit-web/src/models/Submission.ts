@@ -37,10 +37,16 @@ export const SUBMISSION_TYPE: Record<SubmissionType, SubmissionType> = {
   BUSINESS_DATA: "BUSINESS_DATA",
 };
 
+export type DocumentSubmission = {
+  id: number;
+  name: string;
+  url: string;
+};
 export type Submission = {
   id: number;
   item_id: number;
   version: number;
-  data_type: string;
-  data: SubmittedForm;
+  type: SubmissionType;
+  submitted_document: DocumentSubmission;
+  submitted_form: SubmittedForm;
 };

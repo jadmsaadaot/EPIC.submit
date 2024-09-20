@@ -1,27 +1,26 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import Dropzone, { Accept } from "react-dropzone";
-import { useDocumentUploadStore } from "@/store/documentUploadStore";
 
 interface UploaderProps {
   height?: string;
   accept?: Accept;
   children: React.ReactNode;
-  folder?: string;
+  onDrop?: (acceptedFiles: File[]) => void;
 }
 const Uploader = ({
   height = "10em",
   accept = {},
-  folder,
+  onDrop = () => {
+    return;
+  },
   children,
 }: UploaderProps) => {
-  const { handleAddDocuments } = useDocumentUploadStore();
-
   return (
     <Dropzone
       onDrop={(acceptedFiles) => {
         if (acceptedFiles.length === 0) return;
-        handleAddDocuments(acceptedFiles, folder);
+        onDrop(acceptedFiles);
       }}
       accept={accept}
     >

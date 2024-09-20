@@ -1,15 +1,15 @@
 import { create } from "zustand";
 
-interface Document {
+export type Document = {
+  id: number;
   file: File;
-  isComplete: boolean;
   folderId?: string;
-}
+};
 
 interface DocumentUploadState {
-  handleAddDocuments: (_files: File[], folderId?: string) => void;
+  handleAddDocuments: (_files: File, folderId?: string) => void;
   documents: Document[];
-  removeDocument: (fileName: string) => void;
+  removeDocument: (id: number) => void;
   reset: () => void;
 }
 
@@ -19,30 +19,19 @@ const initialState = {
 
 export const useDocumentUploadStore = create<DocumentUploadState>((set) => ({
   documents: [],
-  handleAddDocuments: (files: File[], folderId?: string) => {
+  handleAddDocuments: (file: File, folderId?: string) => {
     // Add file processing logic here
-    if (files.length > 0) {
-      const file = files[0];
+    if (!file) return;
 
-      set((prev) => ({
-        documents: [
-          ...prev.documents,
-          {
-            file,
-            isComplete: false,
-            folderId,
-          },
-        ],
-      }));
-    }
-  },
-  removeDocument: (fileName: string) => {
     set((prev) => {
-      const documents = [...prev.documents];
-      const index = documents.findIndex((doc) => doc.file.name === fileName);
-      if (index !== -1) {
-        documents.splice(index, 1);
-      }
+      const id = Math.max(...prev.documents.map((doc) => doc.id), 0) + 1;
+      const document = { id, file, folderId };
+      return { documents: [...prev.documents, document] };
+    });
+  },
+  removeDocument: (id: number) => {
+    set((prev) => {
+      const documents = prev.documents.filter((doc) => doc.id !== id);
       return { documents };
     });
   },

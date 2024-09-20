@@ -6,7 +6,7 @@ import {
 import { useMutation } from "@tanstack/react-query";
 import { Options } from "./types";
 
-type ObjectStorageHeaderDetails = {
+export type ObjectStorageHeaderDetails = {
   filename: string;
   filepath: string;
   authheader: string;
