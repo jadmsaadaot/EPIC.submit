@@ -1,16 +1,22 @@
 import { ContentBoxSkeleton } from "@/components/Shared/ContentBox/ContentBoxSkeleton";
+import { useBreadCrumb } from "@/components/Shared/layout/SideNav/breadCrumbStore";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { ItemForm } from "@/components/SubmissionItem/ItemForm";
 import { useSubmissionItemStore } from "@/components/SubmissionItem/submissionItemStore";
 import { useGetSubmissionItem } from "@/hooks/api/useItems";
-import { createFileRoute, Navigate } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  Navigate,
+  useRouterState,
+} from "@tanstack/react-router";
 import { useEffect } from "react";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/submissions/$submissionId"
 )({
   component: Submission,
+  meta: () => [{ title: `Submission Type` }],
 });
 
 export function Submission() {
@@ -21,6 +27,8 @@ export function Submission() {
     isSuccess,
   } = useGetSubmissionItem({ itemId: Number(subItemId) });
   const { setSubmissionItem, reset } = useSubmissionItemStore();
+  const { replaceBreadcrumb } = useBreadCrumb();
+  const matches = useRouterState({ select: (s) => s.matches });
 
   useEffect(() => {
     if (isSuccess) {
@@ -34,6 +42,10 @@ export function Submission() {
     isSubmissionPending,
     submissionItem,
   ]);
+
+  useEffect(() => {
+    replaceBreadcrumb("Submission Type", submissionItem?.type.name || "");
+  }, [submissionItem, replaceBreadcrumb, matches]);
 
   if (isSubmissionPending) {
     return (

@@ -23,7 +23,7 @@ import DocumentContainer from "../ManagementPlanSubmission/DocumentContainer";
 import ControlledTextField from "@/components/Shared/controlled/ControlledTextField";
 import { YesOrNoOptions } from "./radioOptions";
 
-const MANAGEMENT_PLAN_FOLDER = "Management Plan";
+const CONSULTATION_RECORD_FOLDER = "Consultation Record";
 
 const consultationRecordSchema = yup.object().shape({
   consultedParty: yup
@@ -334,7 +334,7 @@ export const ConsultationRecord = () => {
                     </Box>
                     <FileUpload
                       height={"13.125rem"}
-                      folder={MANAGEMENT_PLAN_FOLDER}
+                      folder={CONSULTATION_RECORD_FOLDER}
                     />
                     <Typography
                       variant="body2"
@@ -355,7 +355,7 @@ export const ConsultationRecord = () => {
                     {documents.length > 0 &&
                       documents
                         .filter(
-                          (doc) => doc.folderId === MANAGEMENT_PLAN_FOLDER
+                          (doc) => doc.folderId === CONSULTATION_RECORD_FOLDER
                         )
                         .map((document) => (
                           <DocumentContainer
