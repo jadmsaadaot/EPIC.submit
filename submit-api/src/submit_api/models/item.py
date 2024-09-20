@@ -33,31 +33,4 @@ class Item(BaseModel):
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
     version = Column(db.Integer, nullable=False, default=1)
-
-    @property
-    def submissions(self):
-        """Get the latest submission for each type."""
-        # Step 1: Define a subquery to get the latest version of each submission for each type
-        latest_versions_subquery = (
-            select(
-                Submission.item_id,
-                Submission.type,
-                func.max(Submission.version).label('latest_version')
-            )
-            .group_by(Submission.item_id, Submission.type)
-            .subquery()
-        )
-
-        # Step 2: Define the main query to get the latest submissions based on the latest versions
-        latest_submissions_query = (
-            select(Submission)
-            .join(latest_versions_subquery, and_(
-                Submission.item_id == latest_versions_subquery.c.item_id,
-                Submission.type == latest_versions_subquery.c.type,
-                Submission.version == latest_versions_subquery.c.latest_version
-            ))
-            .filter(Submission.item_id == self.id)
-        )
-
-        # Execute the query and return the results
-        return db.session.execute(latest_submissions_query).scalars().all()
+    submissions = db.relationship('Submission', lazy='joined')

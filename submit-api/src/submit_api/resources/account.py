@@ -45,6 +45,7 @@ class Accounts(Resource):
     @staticmethod
     @API.response(code=HTTPStatus.OK, description="Success", model=[account_list_model])
     @ApiHelper.swagger_decorators(API, endpoint_description="Fetch all accounts")
+    @cors.crossdomain(origin="*")
     def get():
         """Fetch all accounts."""
         accounts = AccountService.get_all_accounts()

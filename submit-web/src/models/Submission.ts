@@ -49,4 +49,5 @@ export type Submission = {
   type: SubmissionType;
   submitted_document: DocumentSubmission;
   submitted_form: SubmittedForm;
+  created_date: string;
 };

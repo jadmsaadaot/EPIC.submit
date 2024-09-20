@@ -29,18 +29,13 @@ class Submission(BaseModel):
     submitted_form_id = Column(db.Integer, ForeignKey('submitted_forms.id'), nullable=True)
     item_id = Column(db.Integer, ForeignKey('items.id'), nullable=False)
     type = Column(Enum(SubmissionTypeStatus), nullable=False)
-    version = Column(db.Integer, nullable=False)
-
     submitted_document_id = Column(db.Integer, ForeignKey('submitted_documents.id'), nullable=True)
+    submitted_form = db.relationship('SubmittedForm', foreign_keys=[submitted_form_id], lazy='joined')
+    submitted_document = db.relationship('SubmittedDocument', foreign_keys=[submitted_document_id], lazy='joined')
 
-    submitted_form = db.relationship('SubmittedForm', foreign_keys=[submitted_form_id], lazy='select')
-    submitted_document = db.relationship('SubmittedDocument', foreign_keys=[submitted_document_id], lazy='select')
-
-    __table_args__ = (
-        Index('submission_item_type_version', 'item_id', 'type', 'version', unique=True),
-    )
+    Index('idx_submissions_type_item_id', type, item_id)
 
     @classmethod
     def find_latest_by_type(cls, submission_type: SubmissionTypeStatus):
         """Return model by item id."""
-        return cls.query.filter_by(type=submission_type).order_by(cls.version.desc()).first()
+        return cls.query.filter_by(type=submission_type).order_by(cls.created_date.asc()).first()

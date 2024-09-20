@@ -40,12 +40,14 @@ class FormSubmissionCreator(SubmissionCreatorFactory):
     @staticmethod
     def _create_submission(session, item_id, submitted_form_id):
         """Create a new submission."""
-        previous_submission = SubmissionModel.find_latest_by_type(SubmissionTypeStatus.FORM)
+        previous_submission = SubmissionModel.find_latest_by_type(SubmissionTypeStatus.FORM.value)
+        if previous_submission:
+            raise ValueError("Form submission already created.")
+
         submission = SubmissionModel(
             item_id=item_id,
-            type=SubmissionTypeStatus.FORM,
+            type=SubmissionTypeStatus.FORM.value,
             submitted_form_id=submitted_form_id,
-            version=(previous_submission.version + 1) if previous_submission else 1
         )
         session.add(submission)
         session.commit()
@@ -78,12 +80,10 @@ class DocumentSubmissionCreator(SubmissionCreatorFactory):
     @staticmethod
     def _create_submission(session, item_id, submitted_document_id):
         """Create a new submission."""
-        previous_submission = SubmissionModel.find_latest_by_type(SubmissionTypeStatus.DOCUMENT)
         submission = SubmissionModel(
             item_id=item_id,
             type=SubmissionTypeStatus.DOCUMENT,
             submitted_document_id=submitted_document_id,
-            version=(previous_submission.version + 1) if previous_submission else 1
         )
         session.add(submission)
         session.commit()

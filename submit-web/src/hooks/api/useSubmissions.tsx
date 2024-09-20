@@ -7,7 +7,7 @@ import {
   SubmissionType,
 } from "@/models/Submission";
 
-const createSubmission = ({
+export const createSubmission = ({
   itemId,
   data,
 }: {

@@ -18,18 +18,18 @@ type AuthHeaderRequestData = {
   filename: string;
 };
 const createAuthHeaders = (data: AuthHeaderRequestData) => {
-  return documentRequest<ObjectStorageHeaderDetails[]>({
+  return documentRequest<ObjectStorageHeaderDetails>({
     url: `/objects`,
     method: "post",
     data,
   });
 };
 
-const uploadObject = async (
+const uploadObject = (
   headerDetails: ObjectStorageHeaderDetails,
   file: File,
 ) => {
-  return await OSSPutRequest(headerDetails.filepath, file, {
+  return OSSPutRequest(headerDetails.filepath, file, {
     amzDate: headerDetails.amzdate,
     authHeader: headerDetails.authheader,
   });
@@ -48,8 +48,8 @@ export const saveObject = async ({
       "Error occurred while fetching document from the object storage",
     );
   }
-  await uploadObject(fileDetailsResponse[0], file);
-  return Promise.resolve(fileDetailsResponse[0]);
+  await uploadObject(fileDetailsResponse, file);
+  return Promise.resolve(fileDetailsResponse);
 };
 
 const getObject = async (headerDetails: ObjectStorageHeaderDetails) => {
@@ -66,12 +66,13 @@ export const downloadObject = async (file: AuthHeaderRequestData) => {
       "Error occurred while fetching document from the object storage",
     );
   }
-  return await getObject(response[0]);
+  return await getObject(response);
 };
 
 export const useSaveObject = (options?: Options) => {
   return useMutation({
     mutationFn: saveObject,
     ...options,
+    retry: 0,
   });
 };

@@ -3,25 +3,21 @@ import { Box, Divider, Grid, Typography } from "@mui/material";
 import { BCDesignTokens, EAOColors } from "epic.theme";
 import FileUpload from "@/components/FileUpload";
 import { useDocumentUploadStore } from "@/store/documentUploadStore";
-import DocumentToUploadContainer from "./DocumentToUploadContainer";
 import DocumentContainer from "./DocumentContainer";
 import { When } from "react-if";
 import { Navigate, useParams } from "@tanstack/react-router";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { useSubmissionItemStore } from "../submissionItemStore";
 import { SUBMISSION_TYPE } from "@/models/Submission";
+import DocumentToUploadContainer from "./DocumentToUploadContainer";
 
 export const DocumentUploadSection = () => {
-  const { submissionId } = useParams({
+  const { submissionId: submissionItemId } = useParams({
     from: "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/submissions/$submissionId",
   });
   const { submissionItem } = useSubmissionItemStore();
 
-  const {
-    documents: pendingDocuments,
-    reset,
-    handleAddDocuments,
-  } = useDocumentUploadStore();
+  const { reset, handleAddDocuments, documents } = useDocumentUploadStore();
 
   useEffect(() => {
     return () => {
@@ -33,13 +29,23 @@ export const DocumentUploadSection = () => {
     handleAddDocuments(acceptedFiles[0]);
   };
 
-  if (!submissionId) {
+  if (!submissionItemId) {
     notify.error("Failed to load submission item");
     return <Navigate to="/error" />;
   }
 
   const documentSubmissions = submissionItem?.submissions.filter(
     (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT,
+  );
+
+  const documentSubmissionIds = documentSubmissions?.map(
+    (submission) => submission.id,
+  );
+
+  const pendingDocuments = documents.filter(
+    (document) =>
+      !document.submissionId ||
+      !documentSubmissionIds?.includes(document.submissionId),
   );
 
   return (
@@ -137,11 +143,8 @@ export const DocumentUploadSection = () => {
         xs={12}
         sx={{ mb: BCDesignTokens.layoutMarginXlarge }}
       >
-        {pendingDocuments.map((document, index) => (
-          <DocumentToUploadContainer
-            key={`${index}-${document.file.name}`}
-            document={document}
-          />
+        {pendingDocuments.map((document) => (
+          <DocumentToUploadContainer key={document.id} document={document} />
         ))}
       </Grid>
     </Grid>

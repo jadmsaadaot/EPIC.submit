@@ -87,7 +87,7 @@ export const ManagementPlanSubmission = () => {
     createSubmission({
       itemId: submissionItem.id,
       data: {
-        type: SUBMISSION_TYPE.DOCUMENT,
+        type: SUBMISSION_TYPE.FORM,
         data: formData,
       },
     });

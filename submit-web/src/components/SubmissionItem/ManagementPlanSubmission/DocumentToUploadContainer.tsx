@@ -7,12 +7,17 @@ import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { SUBMISSION_TYPE } from "@/models/Submission";
 import {
   ObjectStorageHeaderDetails,
+  saveObject,
   useSaveObject,
 } from "@/hooks/api/useObjectStorage";
-import { useCreateSubmission } from "@/hooks/api/useSubmissions";
+import {
+  createSubmission,
+  useCreateSubmission,
+} from "@/hooks/api/useSubmissions";
 import { Document, useDocumentUploadStore } from "@/store/documentUploadStore";
 import { useParams } from "@tanstack/react-router";
 import ProgressBar from "./ProgressBar";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface DocumentContainerProps {
   document: Document;
@@ -24,45 +29,50 @@ const DocumentToUploadContainer: React.FC<DocumentContainerProps> = ({
   const { submissionId: subItemId } = useParams({
     from: "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/submissions/$submissionId",
   });
+  const queryClient = useQueryClient();
 
-  const onSaveObjectSuccess = (
-    fileDataHeaderDetails: ObjectStorageHeaderDetails,
-  ) => {
-    createSubmission({
-      itemId: Number(subItemId),
-      data: {
-        type: SUBMISSION_TYPE.DOCUMENT,
-        data: {
-          name: fileDataHeaderDetails.uniquefilename,
-          url: fileDataHeaderDetails.filepath,
-        },
-      },
-    });
-  };
-  const onSaveObjectError = () => {
-    notify.error("Failed to upload document");
-  };
-  const { mutate: saveObjectToS3 } = useSaveObject({
-    onSuccess: onSaveObjectSuccess,
-    onError: onSaveObjectError,
-  });
-
-  const onCreateFailure = () => {
-    notify.error("Failed to upload document");
-  };
-
-  const { mutate: createSubmission } = useCreateSubmission(Number(subItemId), {
-    onError: onCreateFailure,
-  });
+  const { triggerPending, completeDocument, removeDocument } =
+    useDocumentUploadStore();
 
   useEffect(() => {
-    saveObjectToS3({
-      file: document.file,
-      fileDetails: {
-        filename: document.file.name,
-      },
-    });
-  }, [saveObjectToS3, document]);
+    triggerPending(document.id);
+  }, []);
+
+  const uploadObject = async () => {
+    try {
+      const uploadedFile = await saveObject({
+        file: document.file,
+        fileDetails: {
+          filename: document.file.name,
+        },
+      });
+
+      const documentSubmission = await createSubmission({
+        itemId: Number(subItemId),
+        data: {
+          type: SUBMISSION_TYPE.DOCUMENT,
+          data: {
+            name: document.file.name,
+            url: uploadedFile.filepath,
+          },
+        },
+      });
+
+      completeDocument(document.id, documentSubmission.id);
+      queryClient.invalidateQueries({
+        queryKey: ["item", documentSubmission.item_id],
+      });
+    } catch (error) {
+      notify.error("Failed to upload document");
+      removeDocument(document.id);
+    }
+  };
+
+  useEffect(() => {
+    if (document.pending) {
+      uploadObject();
+    }
+  }, [document.pending]);
 
   return (
     <Grid

@@ -43,11 +43,11 @@ class SubmissionSchema(Schema):
     id = fields.Int(data_key="id")
     item_id = fields.Int(data_key="item_id")
     type = fields.Str(data_key="type")
-    version = fields.Int(data_key="version")
-    document_id = fields.Int(data_key="document_id")
+    submitted_document_id = fields.Int(data_key="submitted_document_id")
     submitted_form_id = fields.Int(data_key="submitted_form_id")
     submitted_form = fields.Nested(SubmittedFormSchema, data_key="submitted_form")
     submitted_document = fields.Nested(SubmittedDocumentSchema, data_key="submitted_document")
+    created_date = fields.DateTime(data_key="created_date")
 
 
 class CreateSubmissionRequestSchema(Schema):
