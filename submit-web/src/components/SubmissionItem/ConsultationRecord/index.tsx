@@ -203,17 +203,19 @@ export const ConsultationRecord = () => {
                           <li>Miskuuck</li>
                         </ul>
                       </Typography>
-                      <Box>
-                        <ControlledTextField
-                          name="consultedParty"
-                          placeholder="Enter the name of the consulted party"
-                          sx={{
-                            mr: BCDesignTokens.layoutMarginSmall,
-                            mb: 0,
-                          }}
-                        />
+                      <Grid item container xs={12}>
+                        <Grid item xs={6} mr={BCDesignTokens.layoutMarginSmall}>
+                          <ControlledTextField
+                            fullWidth
+                            name="consultedParty"
+                            placeholder="Enter the name of other consulted party here"
+                            sx={{
+                              mb: 0,
+                            }}
+                          />
+                        </Grid>
                         <Button color="secondary">Save</Button>
-                      </Box>
+                      </Grid>
                       <Typography
                         variant="body1"
                         sx={{
