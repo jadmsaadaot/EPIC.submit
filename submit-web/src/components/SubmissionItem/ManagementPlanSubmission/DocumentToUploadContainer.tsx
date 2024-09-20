@@ -1,19 +1,11 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import React, { useEffect } from "react";
-import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import DocumentIcon from "./DocumentIcon";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { SUBMISSION_TYPE } from "@/models/Submission";
-import {
-  ObjectStorageHeaderDetails,
-  saveObject,
-  useSaveObject,
-} from "@/hooks/api/useObjectStorage";
-import {
-  createSubmission,
-  useCreateSubmission,
-} from "@/hooks/api/useSubmissions";
+import { saveObject } from "@/hooks/api/useObjectStorage";
+import { createSubmission } from "@/hooks/api/useSubmissions";
 import { Document, useDocumentUploadStore } from "@/store/documentUploadStore";
 import { useParams } from "@tanstack/react-router";
 import ProgressBar from "./ProgressBar";
