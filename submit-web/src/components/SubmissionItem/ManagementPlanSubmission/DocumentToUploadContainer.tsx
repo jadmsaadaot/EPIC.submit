@@ -28,7 +28,7 @@ const DocumentToUploadContainer: React.FC<DocumentContainerProps> = ({
 
   useEffect(() => {
     triggerPending(document.id);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const uploadObject = async () => {
