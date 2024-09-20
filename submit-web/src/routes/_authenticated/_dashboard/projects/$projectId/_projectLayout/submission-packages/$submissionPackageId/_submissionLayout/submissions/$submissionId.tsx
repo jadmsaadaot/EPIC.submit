@@ -12,11 +12,13 @@ import {
 } from "@tanstack/react-router";
 import { useEffect } from "react";
 
+const META_TITLE = `Submission Type`;
+
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/submissions/$submissionId"
 )({
   component: Submission,
-  meta: () => [{ title: `Submission Type` }],
+  meta: () => [{ title: META_TITLE }],
 });
 
 export function Submission() {
@@ -44,7 +46,8 @@ export function Submission() {
   ]);
 
   useEffect(() => {
-    replaceBreadcrumb("Submission Type", submissionItem?.type.name || "");
+    if (submissionItem)
+      replaceBreadcrumb(META_TITLE, submissionItem?.type.name || "");
   }, [submissionItem, replaceBreadcrumb, matches]);
 
   if (isSubmissionPending) {
