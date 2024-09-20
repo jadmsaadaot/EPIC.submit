@@ -6,11 +6,10 @@ from __future__ import annotations
 
 import enum
 
-from sqlalchemy import Column, Enum, ForeignKey, and_, func, select
+from sqlalchemy import Column, Enum, ForeignKey
 
 from .base_model import BaseModel
 from .db import db
-from .submission import Submission
 
 
 class ItemStatus(enum.Enum):
