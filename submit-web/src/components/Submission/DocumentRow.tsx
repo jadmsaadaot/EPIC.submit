@@ -82,9 +82,7 @@ export default function DocumentRow({ documentSubmission }: DocumentRowProps) {
         {account_user?.full_name || ""}
       </StyledTableCell>
       <StyledTableCell align="right">{version}</StyledTableCell>
-      <StyledTableCell align="right">
-        <SubmissionStatusChip status={SUBMISSION_STATUS.NEW_SUBMISSION.value} />
-      </StyledTableCell>
+      <StyledTableCell align="right"></StyledTableCell>
       <StyledTableCell align="right"></StyledTableCell>
     </StyledTableRow>
   );
