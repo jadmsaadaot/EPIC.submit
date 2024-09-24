@@ -6,8 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
-import SubmissionStatusChip from "./SubmissionStatusChip";
-import { Submission, SUBMISSION_STATUS } from "@/models/Submission";
+import { Submission } from "@/models/Submission";
 import { downloadObject } from "@/hooks/api/useObjectStorage";
 import { useState } from "react";
 import { notify } from "../Shared/Snackbar/snackbarStore";
