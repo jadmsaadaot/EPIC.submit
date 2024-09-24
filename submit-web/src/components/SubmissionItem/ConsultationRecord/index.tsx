@@ -1,6 +1,6 @@
 import { ContentBox } from "@/components/Shared/ContentBox";
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import { BCDesignTokens, EAOColors } from "epic.theme";
+import { BCDesignTokens } from "epic.theme";
 import { useSubmissionItemStore } from "../submissionItemStore";
 import * as yup from "yup";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
@@ -17,13 +17,10 @@ import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCar
 import { ProjectStatus } from "@/components/registration/addProjects/ProjectStatus";
 import BarTitle from "@/components/Shared/Text/BarTitle";
 import ControlledRadioGroup from "@/components/Shared/controlled/ControlledRadioGroup";
-import FileUpload from "@/components/FileUpload";
 import { useDocumentUploadStore } from "@/store/documentUploadStore";
-import DocumentContainer from "../ManagementPlanSubmission/DocumentContainer";
 import ControlledTextField from "@/components/Shared/controlled/ControlledTextField";
 import { YesOrNoOptions } from "./radioOptions";
-
-const CONSULTATION_RECORD_FOLDER = "Consultation Record";
+import { DocumentUploadSection } from "./DocumentUploadSection";
 
 const consultationRecordSchema = yup.object().shape({
   consultedParties: yup
@@ -65,7 +62,7 @@ export const ConsultationRecord = () => {
 
   const { setIsOpen } = useLoaderBackdrop();
   const navigate = useNavigate();
-  const { documents, removeDocument, reset } = useDocumentUploadStore();
+  const { reset } = useDocumentUploadStore();
   const methods = useForm<ConsultationRecordForm>({
     resolver: yupResolver(consultationRecordSchema),
     mode: "onSubmit",
@@ -100,6 +97,7 @@ export const ConsultationRecord = () => {
       to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
     });
   };
+
   const { mutate: createSubmission, isPending: isCreatingSubmissionPending } =
     useCreateSubmission({
       onError: onCreateFailure,
@@ -221,7 +219,7 @@ export const ConsultationRecord = () => {
                           <li>Miskuuck</li>
                         </ul>
                       </Typography>
-                      <Grid item container xs={12}>
+                      <Grid item container xs={12} spacing={2}>
                         {fields.map((field, index) => (
                           <Grid item container xs={12} key={field.id}>
                             <Grid item xs={6}>
@@ -327,76 +325,7 @@ export const ConsultationRecord = () => {
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
-                    <Typography
-                      variant="h5"
-                      fontWeight={400}
-                      sx={{ color: BCDesignTokens.typographyColorDisabled }}
-                    >
-                      Document(s) Upload
-                    </Typography>
-                    <Divider sx={{ mt: BCDesignTokens.layoutMarginXsmall }} />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Box sx={{ flexDirection: "column", display: "flex" }}>
-                      <Typography
-                        variant="body1"
-                        color={BCDesignTokens.typographyColorPrimary}
-                      >
-                        Upload Consultation Record(s), Including Comment Tracker
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: BCDesignTokens.typographyColorPlaceholder,
-                        }}
-                      >
-                        Must be unlocked PDF document (i.e., not password
-                        protected).
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        sx={{
-                          color: BCDesignTokens.typographyColorPlaceholder,
-                        }}
-                      >
-                        Any proposed changes must be in tracked changes.
-                      </Typography>
-                    </Box>
-                    <FileUpload
-                      height={"13.125rem"}
-                      folder={CONSULTATION_RECORD_FOLDER}
-                    />
-                    <Typography
-                      variant="body2"
-                      sx={{
-                        color: EAOColors.ProponentDark,
-                      }}
-                    >
-                      Accepted file types: pdf, doc, docx, xlsx, Max. file size:
-                      250 MB.
-                    </Typography>
-                  </Grid>
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sx={{ mb: BCDesignTokens.layoutMarginXlarge }}
-                  >
-                    {documents.length > 0 &&
-                      documents
-                        .filter(
-                          (doc) => doc.folderId === CONSULTATION_RECORD_FOLDER
-                        )
-                        .map((document) => (
-                          <DocumentContainer
-                            key={document.file.name}
-                            document={{
-                              id: document.file.name,
-                              name: document.file.name,
-                            }}
-                            onRemove={() => removeDocument(document.file.name)}
-                          />
-                        ))}
+                    <DocumentUploadSection />
                   </Grid>
                   <Grid item xs={12} container spacing={2}>
                     <Grid item xs={12} sm="auto">
