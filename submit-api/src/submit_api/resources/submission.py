@@ -21,8 +21,9 @@ from submit_api.schemas.submission import CreateSubmissionRequestSchema, Submiss
 from submit_api.services.submission import SubmissionService
 from submit_api.utils.util import cors_preflight
 
-from .apihelper import Api as ApiHelper
 from ..auth import auth
+from .apihelper import Api as ApiHelper
+
 
 API = Namespace("submissions", description="Endpoints for Submission Management")
 """Custom exception messages

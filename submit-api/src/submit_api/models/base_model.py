@@ -17,8 +17,10 @@ from datetime import datetime
 from sqlalchemy import Column
 from sqlalchemy.ext.declarative import declared_attr
 
-from .db import db
 from submit_api.utils.token_info import TokenInfo
+
+from .db import db
+
 
 TENANT_ID = 'tenant_id'
 

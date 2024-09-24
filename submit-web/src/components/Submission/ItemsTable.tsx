@@ -11,13 +11,12 @@ import {
 import { BCDesignTokens } from "epic.theme";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import { useState } from "react";
-import { Order, tableSort } from "../Shared/Table/utils";
+import { Order } from "../Shared/Table/utils";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import SubmissionItemTableRow from "./SubmissionItemTableRow";
 import { SubmissionItem } from "@/models/SubmissionItem";
 import { SubmissionItemTableRow as SubmissionItemTableRowType } from "./types";
 import { SUBMISSION_TYPE } from "@/models/Submission";
-import { downloadObject } from "@/hooks/api/useObjectStorage";
 
 export default function ItemsTable({
   submissionItems,

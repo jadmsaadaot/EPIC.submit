@@ -1,7 +1,7 @@
 """Helper for token decoding."""
 from flask import g
 
-from submit_api.utils.user_context import user_context, UserContext
+from submit_api.utils.user_context import UserContext, user_context
 
 
 class TokenInfo:

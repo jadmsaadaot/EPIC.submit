@@ -21,8 +21,9 @@ from submit_api.schemas.item import ItemSchema
 from submit_api.services.item import ItemService
 from submit_api.utils.util import cors_preflight
 
-from .apihelper import Api as ApiHelper
 from ..auth import auth
+from .apihelper import Api as ApiHelper
+
 
 API = Namespace("items", description="Endpoints for item Management")
 """Custom exception messages
