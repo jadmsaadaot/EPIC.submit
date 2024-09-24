@@ -10,6 +10,7 @@ import SubmissionStatusChip from "./SubmissionStatusChip";
 import { Submission, SUBMISSION_STATUS } from "@/models/Submission";
 import { downloadObject } from "@/hooks/api/useObjectStorage";
 import { useState } from "react";
+import { notify } from "../Shared/Snackbar/snackbarStore";
 
 type DocumentRowProps = {
   documentSubmission: Submission;
@@ -56,7 +57,7 @@ export default function DocumentRow({ documentSubmission }: DocumentRowProps) {
       document.body.appendChild(link);
       link.click();
     } catch (e) {
-      console.error(e);
+      notify.error("Failed to download document");
     } finally {
       setPendingGetObject(false);
     }
