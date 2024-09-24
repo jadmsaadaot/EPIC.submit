@@ -1,6 +1,6 @@
 import { ContentBox } from "@/components/Shared/ContentBox";
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
-import { BCDesignTokens, EAOColors } from "epic.theme";
+import { BCDesignTokens } from "epic.theme";
 import { useSubmissionItemStore } from "../submissionItemStore";
 import * as yup from "yup";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
@@ -17,14 +17,10 @@ import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCar
 import { ProjectStatus } from "@/components/registration/addProjects/ProjectStatus";
 import BarTitle from "@/components/Shared/Text/BarTitle";
 import ControlledRadioGroup from "@/components/Shared/controlled/ControlledRadioGroup";
-import FileUpload from "@/components/FileUpload";
 import { useDocumentUploadStore } from "@/store/documentUploadStore";
-import DocumentContainer from "../ManagementPlanSubmission/DocumentContainer";
 import ControlledTextField from "@/components/Shared/controlled/ControlledTextField";
 import { YesOrNoOptions } from "./radioOptions";
 import { DocumentUploadSection } from "./DocumentUploadSection";
-
-const CONSULTATION_RECORD_FOLDER = "Consultation Record";
 
 const consultationRecordSchema = yup.object().shape({
   consultedParties: yup
@@ -66,7 +62,7 @@ export const ConsultationRecord = () => {
 
   const { setIsOpen } = useLoaderBackdrop();
   const navigate = useNavigate();
-  const { documents, removeDocument, reset } = useDocumentUploadStore();
+  const { reset } = useDocumentUploadStore();
   const methods = useForm<ConsultationRecordForm>({
     resolver: yupResolver(consultationRecordSchema),
     mode: "onSubmit",
@@ -101,6 +97,7 @@ export const ConsultationRecord = () => {
       to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
     });
   };
+
   const { mutate: createSubmission, isPending: isCreatingSubmissionPending } =
     useCreateSubmission({
       onError: onCreateFailure,
