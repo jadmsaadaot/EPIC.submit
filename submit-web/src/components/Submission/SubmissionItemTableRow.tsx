@@ -88,27 +88,21 @@ export default function SubmissionItemTableRow({
           </Link>
         </StyledTableCell>
       </StyledTableRow>
-      <If condition={submissions.length > 0}>
-        <Then>
-          {submissions.map((submission) => (
-            <DocumentRow
-              key={`doc-row-${submission.id}`}
-              documentSubmission={submission}
-            />
-          ))}
-        </Then>
-        <Else>
-          <TableRow key={`row-${name}-divider`}>
-            <TableCell
-              colSpan={5}
-              sx={{
-                py: BCDesignTokens.layoutPaddingXsmall,
-                border: 0,
-              }}
-            />
-          </TableRow>
-        </Else>
-      </If>
+      {submissions.map((submission) => (
+        <DocumentRow
+          key={`doc-row-${submission.id}`}
+          documentSubmission={submission}
+        />
+      ))}
+      <TableRow key={`row-${name}-divider`}>
+        <TableCell
+          colSpan={5}
+          sx={{
+            py: BCDesignTokens.layoutPaddingXsmall,
+            border: 0,
+          }}
+        />
+      </TableRow>
     </>
   );
 }
