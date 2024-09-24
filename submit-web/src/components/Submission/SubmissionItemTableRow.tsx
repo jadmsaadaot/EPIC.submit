@@ -10,7 +10,6 @@ import SubmissionStatusChip from "./SubmissionStatusChip";
 import { SubmissionItemTableRow as SubmissionItemTableRowType } from "./types";
 import { SUBMISSION_STATUS } from "@/models/Submission";
 import { Link, useParams } from "@tanstack/react-router";
-import { Else, If, Then } from "react-if";
 import DocumentRow from "./DocumentRow";
 
 type SubmissionItemTableRowProps = {
