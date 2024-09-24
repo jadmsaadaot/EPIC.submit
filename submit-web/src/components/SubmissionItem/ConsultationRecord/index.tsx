@@ -219,7 +219,7 @@ export const ConsultationRecord = () => {
                           <li>Miskuuck</li>
                         </ul>
                       </Typography>
-                      <Grid item container xs={12}>
+                      <Grid item container xs={12} spacing={2}>
                         {fields.map((field, index) => (
                           <Grid item container xs={12} key={field.id}>
                             <Grid item xs={6}>
