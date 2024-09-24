@@ -16,6 +16,7 @@ export type ObjectStorageHeaderDetails = {
 
 type AuthHeaderRequestData = {
   filename: string;
+  s3sourceuri?: string;
 };
 const createAuthHeaders = (data: AuthHeaderRequestData) => {
   return documentRequest<ObjectStorageHeaderDetails>({
@@ -53,7 +54,7 @@ export const saveObject = async ({
 };
 
 const getObject = async (headerDetails: ObjectStorageHeaderDetails) => {
-  return await OSSGetRequest(headerDetails.filepath, {
+  return await OSSGetRequest<Blob>(headerDetails.filepath, {
     amzDate: headerDetails.amzdate,
     authHeader: headerDetails.authheader,
   });

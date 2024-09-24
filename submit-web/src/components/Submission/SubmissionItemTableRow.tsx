@@ -10,6 +10,8 @@ import SubmissionStatusChip from "./SubmissionStatusChip";
 import { SubmissionItemTableRow as SubmissionItemTableRowType } from "./types";
 import { SUBMISSION_STATUS } from "@/models/Submission";
 import { Link, useParams } from "@tanstack/react-router";
+import { Else, If, Then } from "react-if";
+import DocumentRow from "./DocumentRow";
 
 type SubmissionItemTableRowProps = {
   item: SubmissionItemTableRowType;
@@ -41,6 +43,9 @@ export default function SubmissionItemTableRow({
   const { projectId, submissionPackageId } = useParams({
     strict: false,
   });
+
+  const { name, id, submissions } = item;
+
   return (
     <>
       <StyledTableRow key={`row-${item.name}`}>
@@ -59,12 +64,12 @@ export default function SubmissionItemTableRow({
               fontWeight={900}
               sx={{ mx: 0.5 }}
             >
-              {item.name}
+              {name}
             </Typography>
           </MuiLink>
         </StyledTableCell>
         <StyledTableCell align="right"></StyledTableCell>
-        <StyledTableCell align="right">{item.version ?? "--"}</StyledTableCell>
+        <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right">
           <SubmissionStatusChip
             status={SUBMISSION_STATUS.NEW_SUBMISSION.value}
@@ -77,21 +82,33 @@ export default function SubmissionItemTableRow({
               textDecoration: "none",
               marginRight: BCDesignTokens.layoutMarginSmall,
             }}
-            to={`/projects/${projectId}/submission-packages/${submissionPackageId}/submissions/${item.id}`}
+            to={`/projects/${projectId}/submission-packages/${submissionPackageId}/submissions/${id}`}
           >
             Edit
           </Link>
         </StyledTableCell>
       </StyledTableRow>
-      <TableRow key={`row-${item.name}-divider`}>
-        <TableCell
-          colSpan={5}
-          sx={{
-            py: BCDesignTokens.layoutPaddingXsmall,
-            border: 0,
-          }}
-        />
-      </TableRow>
+      <If condition={submissions.length > 0}>
+        <Then>
+          {submissions.map((submission) => (
+            <DocumentRow
+              key={`doc-row-${submission.id}`}
+              documentSubmission={submission}
+            />
+          ))}
+        </Then>
+        <Else>
+          <TableRow key={`row-${name}-divider`}>
+            <TableCell
+              colSpan={5}
+              sx={{
+                py: BCDesignTokens.layoutPaddingXsmall,
+                border: 0,
+              }}
+            />
+          </TableRow>
+        </Else>
+      </If>
     </>
   );
 }

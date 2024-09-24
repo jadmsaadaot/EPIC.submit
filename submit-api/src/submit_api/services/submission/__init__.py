@@ -2,8 +2,8 @@
 
 from submit_api.models.submission import Submission as SubmissionModel
 from submit_api.models.submission import SubmissionTypeStatus
-from submit_api.services.submission.submission_creator_factory import FormSubmissionCreator, SubmissionCreatorFactory, \
-    DocumentSubmissionCreator
+from submit_api.services.submission.submission_creator_factory import (
+    DocumentSubmissionCreator, FormSubmissionCreator, SubmissionCreatorFactory)
 
 
 class SubmissionService:
