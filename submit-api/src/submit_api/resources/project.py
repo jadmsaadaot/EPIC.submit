@@ -22,7 +22,7 @@ from submit_api.services.project_service import ProjectService
 from submit_api.utils.util import cors_preflight
 
 from .apihelper import Api as ApiHelper
-
+from ..auth import auth
 
 API = Namespace("projects", description="Endpoints for Project Management")
 """Custom exception messages
@@ -50,6 +50,7 @@ class ProjectsByAccount(Resource):
         code=HTTPStatus.CREATED, model=project_list_model, description="Get projects"
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
+    @auth.require
     @cors.crossdomain(origin="*")
     def get(account_id):
         """Get projects by account id."""
@@ -63,6 +64,7 @@ class ProjectsByAccount(Resource):
         code=HTTPStatus.CREATED, model=project_list_model, description="Added projects"
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
+    @auth.require
     @cors.crossdomain(origin="*")
     def post(account_id):
         """Add projects in bulk."""

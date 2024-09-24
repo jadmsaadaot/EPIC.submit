@@ -22,7 +22,7 @@ from submit_api.services.submission import SubmissionService
 from submit_api.utils.util import cors_preflight
 
 from .apihelper import Api as ApiHelper
-
+from ..auth import auth
 
 API = Namespace("submissions", description="Endpoints for Submission Management")
 """Custom exception messages
@@ -49,6 +49,7 @@ class SubmissionByItem(Resource):
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
     @cors.crossdomain(origin="*")
+    @auth.require
     def post(submission_item_id):
         """Create a submission."""
         create_submission_data = CreateSubmissionRequestSchema().load(API.payload)

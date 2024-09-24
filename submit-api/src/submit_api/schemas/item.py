@@ -7,6 +7,7 @@ from marshmallow import EXCLUDE, Schema, fields
 
 from submit_api.models.item import ItemStatus
 from submit_api.models.submission import SubmissionTypeStatus
+from submit_api.schemas.account_user import AccountUserSchema
 from submit_api.schemas.item_type import ItemTypeSchema
 from submit_api.schemas.submission import SubmittedFormSchema, SubmittedDocumentSchema
 
@@ -26,6 +27,10 @@ class ItemSubmissionSchema(Schema):
     submitted_form_id = fields.Int(data_key="submitted_form_id")
     submitted_form = fields.Nested(SubmittedFormSchema, data_key="submitted_form")
     submitted_document = fields.Nested(SubmittedDocumentSchema, data_key="submitted_document")
+    created_date = fields.DateTime(data_key="created_date")
+    created_by = fields.Str(data_key="created_by")
+    account_user = fields.Nested(AccountUserSchema, data_key="account_user")
+    version = fields.Int(data_key="version")
 
 
 class ItemSchema(Schema):

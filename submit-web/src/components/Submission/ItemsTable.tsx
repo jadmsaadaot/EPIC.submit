@@ -16,6 +16,8 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 import SubmissionItemTableRow from "./SubmissionItemTableRow";
 import { SubmissionItem } from "@/models/SubmissionItem";
 import { SubmissionItemTableRow as SubmissionItemTableRowType } from "./types";
+import { SUBMISSION_TYPE } from "@/models/Submission";
+import { downloadObject } from "@/hooks/api/useObjectStorage";
 
 export default function ItemsTable({
   submissionItems,
@@ -32,15 +34,16 @@ export default function ItemsTable({
     setOrderBy(property);
   };
 
-  const sortedSubmissionItems = submissionItems
-    .map((subItem) => ({
-      id: subItem.id,
-      name: subItem.type.name,
-      status: subItem.status,
-      submitted_by: subItem.submitted_by,
-      version: subItem.version,
-    }))
-    .sort(tableSort(order, orderBy));
+  const sortedSubmissionItems = submissionItems.map((subItem) => ({
+    id: subItem.id,
+    name: subItem.type.name,
+    status: subItem.status,
+    submitted_by: subItem.submitted_by,
+    version: subItem.version,
+    submissions: subItem.submissions.filter(
+      (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT,
+    ),
+  }));
 
   return (
     <TableContainer component={Box} sx={{ height: "100%" }}>

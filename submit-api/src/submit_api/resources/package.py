@@ -22,7 +22,7 @@ from submit_api.services.package import PackageService
 from submit_api.utils.util import cors_preflight
 
 from .apihelper import Api as ApiHelper
-
+from ..auth import auth
 
 API = Namespace("packages", description="Endpoints for Package Management")
 """Custom exception messages
@@ -50,6 +50,7 @@ class Package(Resource):
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
     @cors.crossdomain(origin="*")
+    @auth.require
     def get(package_id):
         """Get package by id."""
         projects = PackageService.get_package_by_id(package_id)
@@ -68,6 +69,7 @@ class PackageByAccountProject(Resource):
         code=HTTPStatus.CREATED, model=package_model, description="Submission Package"
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
+    @auth.require
     @cors.crossdomain(origin="*")
     def post(account_project_id):
         """Create a submission package."""

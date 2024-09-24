@@ -22,7 +22,7 @@ from submit_api.services.item import ItemService
 from submit_api.utils.util import cors_preflight
 
 from .apihelper import Api as ApiHelper
-
+from ..auth import auth
 
 API = Namespace("items", description="Endpoints for item Management")
 """Custom exception messages
@@ -47,6 +47,7 @@ class Item(Resource):
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
     @cors.crossdomain(origin="*")
+    @auth.require
     def get(item_id):
         """Get item by id."""
         projects = ItemService.get_item_by_id(item_id)

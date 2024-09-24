@@ -18,7 +18,7 @@ from sqlalchemy import Column
 from sqlalchemy.ext.declarative import declared_attr
 
 from .db import db
-
+from submit_api.utils.token_info import TokenInfo
 
 TENANT_ID = 'tenant_id'
 
@@ -34,12 +34,20 @@ class BaseModel(db.Model):
     @declared_attr
     def created_by(cls):  # pylint:disable=no-self-argument, no-self-use, # noqa: N805
         """Return foreign key for created by."""
-        return Column(db.String(50))
+        return Column(db.String(50), default=cls._get_current_user)
 
     @declared_attr
     def updated_by(cls):  # pylint:disable=no-self-argument, no-self-use, # noqa: N805
         """Return foreign key for modified by."""
         return Column(db.String(50))
+
+    @staticmethod
+    def _get_current_user():
+        """Return the current user.
+
+        Used to populate the created_by and modified_by relationships on all models.
+        """
+        return TokenInfo.get_id()
 
     @classmethod
     def find_by_id(cls, identifier: int):

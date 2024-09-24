@@ -19,6 +19,7 @@ from flask_restx import Namespace, Resource, cors
 
 from submit_api.exceptions import ResourceNotFoundError
 from submit_api.utils.util import cors_preflight
+from ..auth import auth
 
 from ..schemas.user import UserSchema
 from ..services.user_service import UserService
@@ -44,6 +45,7 @@ class User(Resource):
     @ApiHelper.swagger_decorators(API, endpoint_description="Fetch a user by guid")
     @API.response(code=200, model=user_model, description="Success")
     @API.response(404, "Not Found")
+    @auth.require
     @cors.crossdomain(origin="*")
     def get(guid):
         """Fetch an account by id."""
