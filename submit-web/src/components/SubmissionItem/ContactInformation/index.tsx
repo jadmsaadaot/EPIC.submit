@@ -1,5 +1,4 @@
 import { ContentBox } from "@/components/Shared/ContentBox";
-import { YellowBar } from "@/components/Shared/YellowBar";
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import { useSubmissionItemStore } from "../submissionItemStore";
