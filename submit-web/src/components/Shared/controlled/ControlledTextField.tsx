@@ -8,7 +8,7 @@ type IFormInputProps = {
   name: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   inputEffects?: (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => string;
   maxLength?: number;
 } & TextFieldProps;

@@ -10,6 +10,7 @@ import { Navigate, useParams } from "@tanstack/react-router";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { useSubmissionItemStore } from "../submissionItemStore";
 import { SUBMISSION_TYPE } from "@/models/Submission";
+import { ControlledFileUpload } from "@/components/Shared/controlled/ControlledFileUpload";
 
 export const DocumentUploadSection = () => {
   const { submissionId: submissionItemId } = useParams({
@@ -35,17 +36,17 @@ export const DocumentUploadSection = () => {
   }
 
   const documentSubmissions = submissionItem?.submissions.filter(
-    (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT
+    (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT,
   );
 
   const documentSubmissionIds = documentSubmissions?.map(
-    (submission) => submission.id
+    (submission) => submission.id,
   );
 
   const pendingDocuments = documents.filter(
     (document) =>
       !document.submissionId ||
-      !documentSubmissionIds?.includes(document.submissionId)
+      !documentSubmissionIds?.includes(document.submissionId),
   );
 
   return (
@@ -85,7 +86,11 @@ export const DocumentUploadSection = () => {
             Any proposed changes must be in tracked changes.
           </Typography>
         </Box>
-        <FileUpload height={"13.125rem"} onDrop={handleOnDrop} />
+        <ControlledFileUpload
+          name="consultationRecords"
+          height={"13.125rem"}
+          onDrop={handleOnDrop}
+        />
         <Typography
           variant="body2"
           sx={{

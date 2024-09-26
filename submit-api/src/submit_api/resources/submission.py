@@ -53,6 +53,7 @@ class SubmissionByItem(Resource):
     @auth.require
     def post(submission_item_id):
         """Create a submission."""
+        return {"message": "Not implemented"}, HTTPStatus.NOT_IMPLEMENTED
         create_submission_data = CreateSubmissionRequestSchema().load(API.payload)
         created_submission = SubmissionService.create_submission(submission_item_id, create_submission_data)
         return SubmissionSchema().dump(created_submission), HTTPStatus.CREATED

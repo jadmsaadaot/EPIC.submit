@@ -1,73 +1,41 @@
+import { FC } from "react";
 import {
   FormControl,
-  FormControlLabel,
   FormHelperText,
-  Radio,
   RadioGroup,
   RadioGroupProps,
 } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
-import React, { useCallback, useState } from "react";
 
-export interface RadioOptions {
-  label: React.ReactNode;
-  value: unknown;
-}
-
-type IFormRadioGroupProps = {
+type IFormInputProps = {
   name: string;
-  options: RadioOptions[];
 } & RadioGroupProps;
 
-const ControlledRadioGroup: React.ForwardRefRenderFunction<
-  HTMLButtonElement,
-  IFormRadioGroupProps
-> = ({ name, options }) => {
+const ControlledRadioGroup: FC<IFormInputProps> = ({
+  name,
+  children,
+  ...otherProps
+}) => {
   const {
     control,
-    formState: { errors, defaultValues },
+    formState: { defaultValues, errors },
   } = useFormContext();
-  const [selectedVal, setSelectedVal] = useState("");
-  const generateRadioOptions = useCallback(() => {
-    return options.map((singleOption) => (
-      <FormControlLabel
-        sx={{
-          padding: "0.5rem 1rem 0.5rem 0.5rem ",
-          ...(singleOption.value === Number(selectedVal) && {}),
-        }}
-        value={singleOption.value}
-        label={singleOption.label}
-        control={
-          <Radio
-            sx={{
-              padding: 0,
-              mr: "0.5rem",
-            }}
-          />
-        }
-      />
-    ));
-  }, [options, selectedVal]);
+
+  const error = errors[name];
   return (
-    <Controller
-      control={control}
-      name={name}
-      defaultValue={defaultValues}
-      render={({ field }) => (
-        <FormControl error={!!errors[name]}>
-          <RadioGroup
-            {...field}
-            onChange={(e) => {
-              field.onChange(e);
-              setSelectedVal(e.target.value);
-            }}
-          >
-            {generateRadioOptions()}
+    <FormControl error={Boolean(error)}>
+      <Controller
+        control={control}
+        name={name}
+        defaultValue={defaultValues?.[name] || ""}
+        render={({ field }) => (
+          <RadioGroup {...otherProps} {...field}>
+            {children}
           </RadioGroup>
-          <FormHelperText>{String(errors[name]?.message || "")}</FormHelperText>
-        </FormControl>
-      )}
-    />
+        )}
+      />
+      {error && <FormHelperText>{error.message?.toString()}</FormHelperText>}
+    </FormControl>
   );
 };
 

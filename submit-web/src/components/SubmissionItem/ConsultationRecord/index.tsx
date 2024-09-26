@@ -1,5 +1,12 @@
 import { ContentBox } from "@/components/Shared/ContentBox";
-import { Box, Button, Divider, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import { useSubmissionItemStore } from "../submissionItemStore";
 import * as yup from "yup";
@@ -10,7 +17,6 @@ import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { useEffect } from "react";
 import { useLoaderBackdrop } from "@/components/Shared/Overlays/loaderBackdropStore";
 import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
-import { SUBMISSION_TYPE } from "@/models/Submission";
 import { useGetProject } from "@/hooks/api/useProjects";
 import { CardInnerBox } from "@/components/Projects/Project";
 import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
@@ -19,8 +25,11 @@ import BarTitle from "@/components/Shared/Text/BarTitle";
 import ControlledRadioGroup from "@/components/Shared/controlled/ControlledRadioGroup";
 import { useDocumentUploadStore } from "@/store/documentUploadStore";
 import ControlledTextField from "@/components/Shared/controlled/ControlledTextField";
-import { YesOrNoOptions } from "./radioOptions";
 import { DocumentUploadSection } from "./DocumentUploadSection";
+import { YesNoRadioOptions } from "@/components/Shared/YesNoRadioOptions";
+import { SUBMISSION_TYPE } from "@/models/Submission";
+import CloseIcon from "@mui/icons-material/Close";
+import { When } from "react-if";
 
 const consultationRecordSchema = yup.object().shape({
   consultedParties: yup
@@ -30,30 +39,57 @@ const consultationRecordSchema = yup.object().shape({
         consultedParty: yup
           .string()
           .required("Please provide the name of the consulted party."),
-      })
+      }),
     )
     .required("Please provide at least one consulted party."),
   allPartiesConsulted: yup
-    .boolean()
-    .nullable()
-    .transform((value, originalValue) => (originalValue === "" ? null : value))
+    .bool()
+    .nonNullable()
+    .transform((value) => {
+      if (value === "" || value === null) return null;
+      return value;
+    })
     .required("Please provide an answer to this question."),
   planWasReviewed: yup
-    .boolean()
+    .bool()
+    .nonNullable()
+    .transform((value) => {
+      if (value === "" || value === null) return null;
+      return value;
+    })
     .required("Please provide an answer to this question."),
   writtenExplanationsProvidedToParties: yup
-    .boolean()
+    .bool()
+    .nonNullable()
+    .transform((value) => {
+      if (value === "" || value === null) return null;
+      return value;
+    })
     .required("Please provide an answer to this question."),
   writtenExplanationsProvidedToCommenters: yup
-    .boolean()
+    .bool()
+    .nonNullable()
+    .transform((value) => {
+      if (value === "" || value === null) return null;
+      return value;
+    })
     .required("Please provide an answer to this question."),
+  consultationRecords: yup
+    .array()
+    .of(yup.string())
+    .required("Please upload at least one document.")
+    .min(1, "Please upload at least one document."),
 });
 
 type ConsultationRecordForm = yup.InferType<typeof consultationRecordSchema>;
 export const ConsultationRecord = () => {
   const { submissionItem } = useSubmissionItemStore();
-  const { projectId: projectIdParam, submissionPackageId } = useParams({
-    strict: false,
+  const {
+    projectId: projectIdParam,
+    submissionPackageId,
+    submissionId,
+  } = useParams({
+    from: "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/submissions/$submissionId",
   });
   const projectId = Number(projectIdParam);
   const { data: accountProject } = useGetProject({
@@ -99,7 +135,7 @@ export const ConsultationRecord = () => {
   };
 
   const { mutate: createSubmission, isPending: isCreatingSubmissionPending } =
-    useCreateSubmission({
+    useCreateSubmission(Number(submissionId), {
       onError: onCreateFailure,
       onSuccess: onCreateSuccess,
     });
@@ -109,11 +145,25 @@ export const ConsultationRecord = () => {
       notify.error("Failed to load submission item");
       return;
     }
+
+    const {
+      consultedParties,
+      allPartiesConsulted,
+      planWasReviewed,
+      writtenExplanationsProvidedToParties,
+      writtenExplanationsProvidedToCommenters,
+    } = formData;
     createSubmission({
       itemId: submissionItem.id,
       data: {
         type: SUBMISSION_TYPE.DOCUMENT,
-        data: formData,
+        data: {
+          consultedParties,
+          allPartiesConsulted,
+          planWasReviewed,
+          writtenExplanationsProvidedToParties,
+          writtenExplanationsProvidedToCommenters,
+        },
       },
     });
   };
@@ -232,14 +282,11 @@ export const ConsultationRecord = () => {
                                 }}
                               />
                             </Grid>
-                            <Button
-                              variant="outlined"
-                              color="error"
-                              onClick={() => remove(index)}
-                              sx={{ ml: BCDesignTokens.layoutMarginSmall }}
-                            >
-                              Remove
-                            </Button>
+                            <When condition={fields.length > 1}>
+                              <IconButton onClick={() => remove(index)}>
+                                <CloseIcon />
+                              </IconButton>
+                            </When>
                           </Grid>
                         ))}
                       </Grid>
@@ -274,10 +321,9 @@ export const ConsultationRecord = () => {
                         Were all parties listed above consulted/engaged on the
                         development of this plan?
                       </Typography>
-                      <ControlledRadioGroup
-                        name="allPartiesConsulted"
-                        options={YesOrNoOptions}
-                      />
+                      <ControlledRadioGroup name="allPartiesConsulted">
+                        <YesNoRadioOptions />
+                      </ControlledRadioGroup>
                     </Grid>
                     <Grid
                       item
@@ -288,10 +334,9 @@ export const ConsultationRecord = () => {
                         Was the plan provided to all parties listed above for
                         review and comment during plan development?
                       </Typography>
-                      <ControlledRadioGroup
-                        name="planWasReviewed"
-                        options={YesOrNoOptions}
-                      />
+                      <ControlledRadioGroup name="planWasReviewed">
+                        <YesNoRadioOptions />
+                      </ControlledRadioGroup>
                     </Grid>
                     <Grid
                       item
@@ -303,10 +348,9 @@ export const ConsultationRecord = () => {
                         listed above on how comments were fully and impartially
                         considered and addressed in the plan?
                       </Typography>
-                      <ControlledRadioGroup
-                        name="writtenExplanationsProvidedToParties"
-                        options={YesOrNoOptions}
-                      />
+                      <ControlledRadioGroup name="writtenExplanationsProvidedToParties">
+                        <YesNoRadioOptions />
+                      </ControlledRadioGroup>
                     </Grid>
                     <Grid
                       item
@@ -318,10 +362,9 @@ export const ConsultationRecord = () => {
                         explanations been provided to the commenters as to why
                         the comments were not addressed?
                       </Typography>
-                      <ControlledRadioGroup
-                        name="writtenExplanationsProvidedToCommenters"
-                        options={YesOrNoOptions}
-                      />
+                      <ControlledRadioGroup name="writtenExplanationsProvidedToCommenters">
+                        <YesNoRadioOptions />
+                      </ControlledRadioGroup>
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>

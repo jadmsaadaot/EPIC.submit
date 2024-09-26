@@ -8,15 +8,21 @@ const SnackBarProvider: React.FC = () => {
   return (
     <Snackbar
       open={isOpen}
-      autoHideDuration={3000}
       onClose={setClose}
+      autoHideDuration={3000}
       anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
     >
       <Alert
         onClose={setClose}
         severity={severity}
         variant="filled"
-        sx={{ width: "100%" }}
+        sx={{
+          width: "100%",
+
+          "& .MuiIconButton-root": {
+            color: "inherit",
+          },
+        }}
       >
         {message}
       </Alert>

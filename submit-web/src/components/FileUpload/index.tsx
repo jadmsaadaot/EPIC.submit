@@ -4,13 +4,11 @@ import { Box, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import UploaderIcon from "./UploaderIcon";
 
-interface UploaderProps {
-  helpText?: string;
+export type FileUploadProps = {
   height?: string;
-  cropAspectRatio?: number;
   accept?: Accept;
   onDrop: (acceptedFiles: File[]) => void;
-}
+};
 export const FileUpload = ({
   height = "10em",
   accept = {
@@ -20,7 +18,7 @@ export const FileUpload = ({
     xls: [],
   },
   onDrop,
-}: UploaderProps) => {
+}: FileUploadProps) => {
   return (
     <Uploader height={height} accept={accept} onDrop={onDrop}>
       <Box sx={{ p: BCDesignTokens.layoutPaddingSmall }}>
