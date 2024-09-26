@@ -22,7 +22,6 @@ import { Route as AuthenticatedAdminLoginImport } from './routes/_authenticated/
 import { Route as AuthenticatedDashboardImport } from './routes/_authenticated/_dashboard'
 import { Route as AuthenticatedRegistrationCreateAccountImport } from './routes/_authenticated/registration/create-account'
 import { Route as AuthenticatedRegistrationCompleteImport } from './routes/_authenticated/registration/complete'
-import { Route as AuthenticatedRegistrationAddProjectsImport } from './routes/_authenticated/registration/add-projects'
 import { Route as AuthenticatedDashboardProfileImport } from './routes/_authenticated/_dashboard/profile'
 import { Route as AuthenticatedDashboardProjectsIndexImport } from './routes/_authenticated/_dashboard/projects/index'
 import { Route as AuthenticatedDashboardProjectsProjectIdIndexImport } from './routes/_authenticated/_dashboard/projects/$projectId/index'
@@ -102,12 +101,6 @@ const AuthenticatedRegistrationCreateAccountRoute =
 const AuthenticatedRegistrationCompleteRoute =
   AuthenticatedRegistrationCompleteImport.update({
     path: '/registration/complete',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-
-const AuthenticatedRegistrationAddProjectsRoute =
-  AuthenticatedRegistrationAddProjectsImport.update({
-    path: '/registration/add-projects',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 
@@ -253,13 +246,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardProfileImport
       parentRoute: typeof AuthenticatedDashboardImport
     }
-    '/_authenticated/registration/add-projects': {
-      id: '/_authenticated/registration/add-projects'
-      path: '/registration/add-projects'
-      fullPath: '/registration/add-projects'
-      preLoaderRoute: typeof AuthenticatedRegistrationAddProjectsImport
-      parentRoute: typeof AuthenticatedImport
-    }
     '/_authenticated/registration/complete': {
       id: '/_authenticated/registration/complete'
       path: '/registration/complete'
@@ -388,7 +374,6 @@ export const routeTree = rootRoute.addChildren({
         }),
     }),
     AuthenticatedAdminLoginRoute,
-    AuthenticatedRegistrationAddProjectsRoute,
     AuthenticatedRegistrationCompleteRoute,
     AuthenticatedRegistrationCreateAccountRoute,
   }),
@@ -420,7 +405,6 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_authenticated/_dashboard",
         "/_authenticated/admin-login",
-        "/_authenticated/registration/add-projects",
         "/_authenticated/registration/complete",
         "/_authenticated/registration/create-account"
       ]
@@ -451,10 +435,6 @@ export const routeTree = rootRoute.addChildren({
     "/_authenticated/_dashboard/profile": {
       "filePath": "_authenticated/_dashboard/profile.tsx",
       "parent": "/_authenticated/_dashboard"
-    },
-    "/_authenticated/registration/add-projects": {
-      "filePath": "_authenticated/registration/add-projects.tsx",
-      "parent": "/_authenticated"
     },
     "/_authenticated/registration/complete": {
       "filePath": "_authenticated/registration/complete.tsx",
