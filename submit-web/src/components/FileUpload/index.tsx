@@ -8,6 +8,7 @@ export type FileUploadProps = {
   height?: string;
   accept?: Accept;
   onDrop: (acceptedFiles: File[]) => void;
+  error?: boolean;
 };
 export const FileUpload = ({
   height = "10em",
@@ -17,10 +18,11 @@ export const FileUpload = ({
     docx: [],
     xls: [],
   },
+  error = false,
   onDrop,
 }: FileUploadProps) => {
   return (
-    <Uploader height={height} accept={accept} onDrop={onDrop}>
+    <Uploader height={height} accept={accept} onDrop={onDrop} error={error}>
       <Box sx={{ p: BCDesignTokens.layoutPaddingSmall }}>
         <UploaderIcon />
       </Box>

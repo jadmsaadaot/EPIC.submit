@@ -1,7 +1,7 @@
 import { FileUploadProps, FileUpload } from "@/components/FileUpload";
-import { Box, FormHelperText, Stack } from "@mui/material";
+import { FormHelperText, Stack } from "@mui/material";
 import { get } from "lodash";
-import { Controller, Form, useFormContext } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 type ControlledFileUploadProps = FileUploadProps & {
   name: string;
@@ -32,10 +32,10 @@ export const ControlledFileUpload = ({
             {...otherProps}
             onDrop={(acceptedFiles: File[]) => {
               if (acceptedFiles.length === 0) return;
-              console.log([...fileUploadValues, acceptedFiles[0].name]);
               field.onChange([...fileUploadValues, acceptedFiles[0].name]);
-              //   onDrop(acceptedFiles);
+              onDrop(acceptedFiles);
             }}
+            error={Boolean(error)}
           />
           {error && <FormHelperText error>{helperText}</FormHelperText>}
         </Stack>

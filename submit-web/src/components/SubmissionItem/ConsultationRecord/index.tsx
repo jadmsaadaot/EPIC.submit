@@ -8,7 +8,6 @@ import {
   Typography,
 } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
-import { useSubmissionItemStore } from "../submissionItemStore";
 import * as yup from "yup";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -49,7 +48,7 @@ const consultationRecordSchema = yup.object().shape({
       if (value === "" || value === null) return null;
       return value;
     })
-    .required("Please provide an answer to this question."),
+    .required("Please answer this question."),
   planWasReviewed: yup
     .bool()
     .nonNullable()
@@ -57,7 +56,7 @@ const consultationRecordSchema = yup.object().shape({
       if (value === "" || value === null) return null;
       return value;
     })
-    .required("Please provide an answer to this question."),
+    .required("Please answer this question."),
   writtenExplanationsProvidedToParties: yup
     .bool()
     .nonNullable()
@@ -65,7 +64,7 @@ const consultationRecordSchema = yup.object().shape({
       if (value === "" || value === null) return null;
       return value;
     })
-    .required("Please provide an answer to this question."),
+    .required("Please answer this question."),
   writtenExplanationsProvidedToCommenters: yup
     .bool()
     .nonNullable()
@@ -73,7 +72,7 @@ const consultationRecordSchema = yup.object().shape({
       if (value === "" || value === null) return null;
       return value;
     })
-    .required("Please provide an answer to this question."),
+    .required("Please answer this question."),
   consultationRecords: yup
     .array()
     .of(yup.string())
@@ -83,11 +82,10 @@ const consultationRecordSchema = yup.object().shape({
 
 type ConsultationRecordForm = yup.InferType<typeof consultationRecordSchema>;
 export const ConsultationRecord = () => {
-  const { submissionItem } = useSubmissionItemStore();
   const {
     projectId: projectIdParam,
     submissionPackageId,
-    submissionId,
+    submissionId: submissionItemId,
   } = useParams({
     from: "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/submissions/$submissionId",
   });
@@ -121,7 +119,10 @@ export const ConsultationRecord = () => {
     };
   }, [reset]);
 
-  const { handleSubmit } = methods;
+  const {
+    handleSubmit,
+    formState: { errors, dirtyFields },
+  } = methods;
 
   const onCreateFailure = () => {
     notify.error("Failed to create submission");
@@ -135,17 +136,25 @@ export const ConsultationRecord = () => {
   };
 
   const { mutate: createSubmission, isPending: isCreatingSubmissionPending } =
-    useCreateSubmission(Number(submissionId), {
+    useCreateSubmission(Number(submissionItemId), {
       onError: onCreateFailure,
       onSuccess: onCreateSuccess,
     });
 
-  const onSubmitHandler = async (formData: ConsultationRecordForm) => {
-    if (!submissionItem) {
-      notify.error("Failed to load submission item");
+  const saveAndClose = () => {
+    if (!Object.keys(dirtyFields).length) {
+      navigate({
+        to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
+      });
       return;
     }
+    const formData = {
+      ...methods.getValues(),
+    };
+    saveSubmission(formData);
+  };
 
+  const saveSubmission = async (formData: ConsultationRecordForm) => {
     const {
       consultedParties,
       allPartiesConsulted,
@@ -154,9 +163,9 @@ export const ConsultationRecord = () => {
       writtenExplanationsProvidedToCommenters,
     } = formData;
     createSubmission({
-      itemId: submissionItem.id,
+      itemId: Number(submissionItemId),
       data: {
-        type: SUBMISSION_TYPE.DOCUMENT,
+        type: SUBMISSION_TYPE.FORM,
         data: {
           consultedParties,
           allPartiesConsulted,
@@ -172,12 +181,6 @@ export const ConsultationRecord = () => {
     setIsOpen(isCreatingSubmissionPending);
     return () => setIsOpen(false);
   }, [isCreatingSubmissionPending, setIsOpen]);
-
-  const handleCancel = () => {
-    navigate({
-      to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
-    });
-  };
 
   if (!accountProject) return <Navigate to="/error" />;
 
@@ -215,7 +218,7 @@ export const ConsultationRecord = () => {
               title={accountProject.project.name + " Management Plan"}
             />
             <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(onSubmitHandler)}>
+              <form onSubmit={handleSubmit(saveSubmission)}>
                 <Grid container spacing={BCDesignTokens.layoutMarginMedium}>
                   <Grid item xs={12}>
                     <Typography
@@ -322,7 +325,9 @@ export const ConsultationRecord = () => {
                         development of this plan?
                       </Typography>
                       <ControlledRadioGroup name="allPartiesConsulted">
-                        <YesNoRadioOptions />
+                        <YesNoRadioOptions
+                          error={Boolean(errors["allPartiesConsulted"])}
+                        />
                       </ControlledRadioGroup>
                     </Grid>
                     <Grid
@@ -335,7 +340,9 @@ export const ConsultationRecord = () => {
                         review and comment during plan development?
                       </Typography>
                       <ControlledRadioGroup name="planWasReviewed">
-                        <YesNoRadioOptions />
+                        <YesNoRadioOptions
+                          error={Boolean(errors["planWasReviewed"])}
+                        />
                       </ControlledRadioGroup>
                     </Grid>
                     <Grid
@@ -349,7 +356,11 @@ export const ConsultationRecord = () => {
                         considered and addressed in the plan?
                       </Typography>
                       <ControlledRadioGroup name="writtenExplanationsProvidedToParties">
-                        <YesNoRadioOptions />
+                        <YesNoRadioOptions
+                          error={Boolean(
+                            errors["writtenExplanationsProvidedToParties"],
+                          )}
+                        />
                       </ControlledRadioGroup>
                     </Grid>
                     <Grid
@@ -363,7 +374,11 @@ export const ConsultationRecord = () => {
                         the comments were not addressed?
                       </Typography>
                       <ControlledRadioGroup name="writtenExplanationsProvidedToCommenters">
-                        <YesNoRadioOptions />
+                        <YesNoRadioOptions
+                          error={Boolean(
+                            errors["writtenExplanationsProvidedToCommenters"],
+                          )}
+                        />
                       </ControlledRadioGroup>
                     </Grid>
                   </Grid>
@@ -372,7 +387,7 @@ export const ConsultationRecord = () => {
                   </Grid>
                   <Grid item xs={12} container spacing={2}>
                     <Grid item xs={12} sm="auto">
-                      <Button color="secondary" onClick={handleCancel}>
+                      <Button color="secondary" onClick={saveAndClose}>
                         Save & Continue Later
                       </Button>
                     </Grid>
