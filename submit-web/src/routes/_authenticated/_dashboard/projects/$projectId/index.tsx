@@ -7,7 +7,7 @@ import { useGetProject } from "@/hooks/api/useProjects";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/$projectId/",
+  "/_authenticated/_dashboard/projects/$projectId/"
 )({
   component: ProjectPage,
   meta: () => [{ title: "Project" }],
@@ -47,7 +47,7 @@ function ProjectPage() {
 
   return (
     <PageGrid>
-      <Grid item xs={12} lg={10}>
+      <Grid item xs={12}>
         <ProjectComponent accountProject={project} />
       </Grid>
     </PageGrid>

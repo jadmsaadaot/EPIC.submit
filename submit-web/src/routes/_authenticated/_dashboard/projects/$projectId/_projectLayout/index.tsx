@@ -24,7 +24,7 @@ function ProjectPage() {
 
   return (
     <PageGrid>
-      <Grid item xs={12} lg={10}>
+      <Grid item xs={12}>
         <ProjectComponent accountProject={accountProject} />
       </Grid>
     </PageGrid>
