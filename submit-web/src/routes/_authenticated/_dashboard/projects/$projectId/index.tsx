@@ -47,7 +47,7 @@ function ProjectPage() {
 
   return (
     <PageGrid>
-      <Grid item xs={12} sx={{ border: "2px solid red" }}>
+      <Grid item xs={12}>
         <ProjectComponent accountProject={project} />
       </Grid>
     </PageGrid>
