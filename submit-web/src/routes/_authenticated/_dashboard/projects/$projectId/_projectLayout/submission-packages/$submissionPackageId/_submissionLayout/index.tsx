@@ -47,7 +47,7 @@ export default function SubmissionPage() {
 
   return (
     <PageGrid>
-      <Grid item xs={12} lg={10}>
+      <Grid item xs={12}>
         <ContentBox
           mainLabel={accountProject?.project?.name}
           label={

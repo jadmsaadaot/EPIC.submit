@@ -36,7 +36,7 @@ export function ProjectsPage() {
 
   return (
     <PageGrid>
-      <Grid item xs={12} lg={10}>
+      <Grid item xs={12}>
         <If condition={isProjectsLoading}>
           <Then>
             <ProjectsSkeleton />
