@@ -4,16 +4,9 @@ import { Box } from "@mui/material";
 import CreateAccountForm from "./createAccountForm";
 import { CREATE_ACCOUNT_STEPS } from "./constants";
 import AddProjects from "./addProjects";
-import { useEffect } from "react";
 
 export const TabPanel = () => {
-  const { step, reset } = useCreateAccountForm();
-
-  useEffect(() => {
-    return () => {
-      reset();
-    };
-  }, [reset]);
+  const { step } = useCreateAccountForm();
 
   return (
     <Box>
