@@ -21,16 +21,10 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
 import { useEffect, useState } from "react";
 import { Else, If, Then } from "react-if";
-
-export const Route = createFileRoute(
-  "/_authenticated/registration/add-projects"
-)({
-  component: AddProjects,
-});
 
 function AddProjects() {
   const navigate = useNavigate();
@@ -40,12 +34,15 @@ function AddProjects() {
     isPending: isFetchingProjects,
     isError: isLoadingProjectsError,
   } = useLoadProjectsByProponentId(proponentId);
+
   useEffect(() => {
     if (isLoadingProjectsError) {
       notify.error("Failed to load projects");
     }
   }, [isLoadingProjectsError]);
+
   const [openWarning, setOpenWarning] = useState(false);
+
   const onAddProjectsSuccess = () => {
     navigate({ to: "/registration/complete" });
   };
@@ -146,3 +143,5 @@ function AddProjects() {
     </>
   );
 }
+
+export default AddProjects;

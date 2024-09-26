@@ -47,7 +47,7 @@ export default function SubmissionLayout() {
   if (isSubPackageLoading) {
     return (
       <PageGrid>
-        <Grid item xs={12} lg={10}>
+        <Grid item xs={12}>
           <ContentBoxSkeleton />
         </Grid>
       </PageGrid>
