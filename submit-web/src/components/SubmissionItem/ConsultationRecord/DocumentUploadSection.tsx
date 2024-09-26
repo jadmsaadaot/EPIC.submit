@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { BCDesignTokens, EAOColors } from "epic.theme";
-import FileUpload from "@/components/FileUpload";
 import { useDocumentUploadStore } from "@/store/documentUploadStore";
 import DocumentContainer from "../ManagementPlanSubmission/DocumentContainer";
 import DocumentToUploadContainer from "../ManagementPlanSubmission/DocumentToUploadContainer";
