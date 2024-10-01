@@ -18,4 +18,5 @@ class ItemType(BaseModel):
 
     id = Column(db.Integer, primary_key=True, autoincrement=True)
     name = Column(db.String(255), nullable=False)
+    sort_order = Column(db.Integer, nullable=True, default=0)
     package_types = relationship('PackageType', secondary='package_item_types', back_populates='item_types')
