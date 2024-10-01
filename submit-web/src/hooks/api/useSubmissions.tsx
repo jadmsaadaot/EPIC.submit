@@ -7,13 +7,16 @@ import {
   SubmissionType,
 } from "@/models/Submission";
 
-export const createSubmission = ({
-  itemId,
-  data,
-}: {
-  itemId: number;
-  data: Record<string, unknown>;
-}) => {
+type FormType = Record<string, unknown>;
+export const editSubmission = (id: number, data: FormType) => {
+  return submitRequest<Submission>({
+    url: `/submissions/${id}`,
+    method: "patch",
+    data,
+  });
+};
+
+export const createSubmission = (itemId: number, data: FormType) => {
   return submitRequest<Submission>({
     url: `/submissions/items/${itemId}`,
     method: "post",
@@ -24,7 +27,28 @@ export const createSubmission = ({
 export const useCreateSubmission = (itemId: number, options?: Options) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: createSubmission,
+    mutationFn: ({ data }: { data: any }) => createSubmission(itemId, data),
+    ...options,
+    onSuccess: () => {
+      if (options?.onSuccess) {
+        options.onSuccess();
+      }
+      queryClient.invalidateQueries({
+        queryKey: ["item", itemId],
+      });
+    },
+  });
+};
+
+export const useSaveSubmission = (
+  itemId: number,
+  submission?: Submission,
+  options?: Options,
+) => {
+  const queryClient = useQueryClient();
+  const saveSubmission = submission ? editSubmission : createSubmission;
+  return useMutation({
+    mutationFn: ({ data }: { data: FormType }) => saveSubmission(itemId, data),
     ...options,
     onSuccess: () => {
       if (options?.onSuccess) {

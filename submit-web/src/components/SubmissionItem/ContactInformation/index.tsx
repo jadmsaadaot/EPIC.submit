@@ -10,7 +10,7 @@ import { useCreateSubmission } from "@/hooks/api/useSubmissions";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { useEffect } from "react";
 import { useLoaderBackdrop } from "@/components/Shared/Overlays/loaderBackdropStore";
-import { useNavigate, useParams } from "@tanstack/react-router";
+import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
 import { SUBMISSION_TYPE } from "@/models/Submission";
 import ControlledInputMask from "@/components/Shared/controlled/ControlledInputMask";
 import BarTitle from "@/components/Shared/Text/BarTitle";
@@ -90,13 +90,11 @@ export const ContactInformation = () => {
       notify.error("Failed to load submission item");
       return;
     }
-    createSubmission({
-      itemId: submissionItem.id,
-      data: {
-        type: SUBMISSION_TYPE.FORM,
-        data: formData,
-      },
-    });
+    const data = {
+      type: SUBMISSION_TYPE.FORM,
+      data: formData,
+    };
+    createSubmission(data);
   };
 
   useEffect(() => {
@@ -114,10 +112,7 @@ export const ContactInformation = () => {
 
   return (
     <Grid item xs={12}>
-      <ContentBox
-        mainLabel={"Copper Mine"}
-        // label={submissionItem?.project.ea_certificate}
-      >
+      <ContentBox mainLabel={"Copper Mine"}>
         <Box
           sx={{
             borderRadius: "4px",

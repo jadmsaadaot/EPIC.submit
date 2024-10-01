@@ -11,7 +11,7 @@ import { BCDesignTokens } from "epic.theme";
 import * as yup from "yup";
 import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCreateSubmission } from "@/hooks/api/useSubmissions";
+import { useSaveSubmission } from "@/hooks/api/useSubmissions";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { useEffect } from "react";
 import { useLoaderBackdrop } from "@/components/Shared/Overlays/loaderBackdropStore";
@@ -29,6 +29,7 @@ import { YesNoRadioOptions } from "@/components/Shared/YesNoRadioOptions";
 import { SUBMISSION_TYPE } from "@/models/Submission";
 import CloseIcon from "@mui/icons-material/Close";
 import { When } from "react-if";
+import { useSubmissionItemStore } from "../submissionItemStore";
 
 const consultationRecordSchema = yup.object().shape({
   consultedParties: yup
@@ -97,11 +98,24 @@ export const ConsultationRecord = () => {
   const { setIsOpen } = useLoaderBackdrop();
   const navigate = useNavigate();
   const { reset } = useDocumentUploadStore();
+
+  const { submissionItem } = useSubmissionItemStore();
+  const formSubmission = submissionItem?.submissions?.find(
+    (submission) => submission.type === SUBMISSION_TYPE.FORM,
+  );
+
+  const defaultValues = formSubmission?.submitted_form?.submission_json
+    ? {
+        ...formSubmission.submitted_form.submission_json,
+      }
+    : {};
+  console.log(defaultValues);
   const methods = useForm<ConsultationRecordForm>({
     resolver: yupResolver(consultationRecordSchema),
     mode: "onSubmit",
     defaultValues: {
       consultedParties: [{ consultedParty: "" }],
+      ...defaultValues,
     },
   });
   const { fields, append, remove } = useFieldArray({
@@ -119,27 +133,47 @@ export const ConsultationRecord = () => {
     };
   }, [reset]);
 
+  const onCreateFailure = () => {
+    notify.error("Failed to save submission");
+  };
+
+  const onCreateSuccess = () => {
+    notify.success("Submission saved successfully");
+    navigate({
+      to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
+    });
+  };
+  const { mutate: callSaveSubmission, isPending: isCreatingSubmissionPending } =
+    useSaveSubmission(Number(submissionItemId), formSubmission, {
+      onError: onCreateFailure,
+      onSuccess: onCreateSuccess,
+    });
   const {
     handleSubmit,
     formState: { errors, dirtyFields },
   } = methods;
 
-  const onCreateFailure = () => {
-    notify.error("Failed to create submission");
-  };
-
-  const onCreateSuccess = () => {
-    notify.success("Submission created successfully");
-    navigate({
-      to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
+  const saveSubmission = async (formData: ConsultationRecordForm) => {
+    const {
+      consultedParties,
+      allPartiesConsulted,
+      planWasReviewed,
+      writtenExplanationsProvidedToParties,
+      writtenExplanationsProvidedToCommenters,
+    } = formData;
+    callSaveSubmission({
+      data: {
+        type: SUBMISSION_TYPE.FORM,
+        data: {
+          consultedParties,
+          allPartiesConsulted,
+          planWasReviewed,
+          writtenExplanationsProvidedToParties,
+          writtenExplanationsProvidedToCommenters,
+        },
+      },
     });
   };
-
-  const { mutate: createSubmission, isPending: isCreatingSubmissionPending } =
-    useCreateSubmission(Number(submissionItemId), {
-      onError: onCreateFailure,
-      onSuccess: onCreateSuccess,
-    });
 
   const saveAndClose = () => {
     if (!Object.keys(dirtyFields).length) {
@@ -152,29 +186,6 @@ export const ConsultationRecord = () => {
       ...methods.getValues(),
     };
     saveSubmission(formData);
-  };
-
-  const saveSubmission = async (formData: ConsultationRecordForm) => {
-    const {
-      consultedParties,
-      allPartiesConsulted,
-      planWasReviewed,
-      writtenExplanationsProvidedToParties,
-      writtenExplanationsProvidedToCommenters,
-    } = formData;
-    createSubmission({
-      itemId: Number(submissionItemId),
-      data: {
-        type: SUBMISSION_TYPE.FORM,
-        data: {
-          consultedParties,
-          allPartiesConsulted,
-          planWasReviewed,
-          writtenExplanationsProvidedToParties,
-          writtenExplanationsProvidedToCommenters,
-        },
-      },
-    });
   };
 
   useEffect(() => {

@@ -17,8 +17,8 @@ import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCar
 import { ProjectStatus } from "@/components/registration/addProjects/ProjectStatus";
 import BarTitle from "@/components/Shared/Text/BarTitle";
 import ControlledRadioGroup from "@/components/Shared/controlled/ControlledRadioGroup";
-import { YesNoNotApplicableOptions, YesOrNoOptions } from "./radioOptions";
 import { DocumentUploadSection } from "./DocumentUploadSection";
+import { YesNoRadioOptions } from "@/components/Shared/YesNoRadioOptions";
 
 const managementPlanSubmissionSchema = yup.object().shape({
   conditionSatisfied: yup
@@ -61,7 +61,10 @@ export const ManagementPlanSubmission = () => {
     mode: "onSubmit",
   });
 
-  const { handleSubmit } = methods;
+  const {
+    handleSubmit,
+    formState: { errors },
+  } = methods;
 
   const onCreateFailure = () => {
     notify.error("Failed to create submission");
@@ -84,13 +87,11 @@ export const ManagementPlanSubmission = () => {
       notify.error("Failed to load submission item");
       return;
     }
-    createSubmission({
-      itemId: submissionItem.id,
-      data: {
-        type: SUBMISSION_TYPE.FORM,
-        data: formData,
-      },
-    });
+    const managementPlanData = {
+      type: SUBMISSION_TYPE.FORM,
+      data: formData,
+    };
+    createSubmission(managementPlanData);
   };
 
   useEffect(() => {
@@ -158,10 +159,12 @@ export const ManagementPlanSubmission = () => {
                         Does the plan address all the requirements in the
                         (condition number)?
                       </Typography>
-                      <ControlledRadioGroup
-                        name="conditionSatisfied"
-                        options={YesOrNoOptions}
-                      />
+
+                      <ControlledRadioGroup name="conditionSatisfied">
+                        <YesNoRadioOptions
+                          error={Boolean(errors["conditionSatisfied"])}
+                        />
+                      </ControlledRadioGroup>
                     </Grid>
                     <Grid item xs={12}>
                       <Typography variant="body1">
@@ -170,20 +173,22 @@ export const ManagementPlanSubmission = () => {
                         application sections), does the plan address all
                         requirements within the referenced document(s)?
                       </Typography>
-                      <ControlledRadioGroup
-                        name="allRequirementsAddressed"
-                        options={YesNoNotApplicableOptions}
-                      />
+                      <ControlledRadioGroup name="allRequirementsAddressed">
+                        <YesNoRadioOptions
+                          error={Boolean(errors["allRequirementsAddressed"])}
+                        />
+                      </ControlledRadioGroup>
                     </Grid>
                     <Grid item xs={12}>
                       <Typography variant="body1">
                         Is each requirement in the plan clear, measurable,
                         and/or include accountability?
                       </Typography>
-                      <ControlledRadioGroup
-                        name="requirementsClear"
-                        options={YesOrNoOptions}
-                      />
+                      <ControlledRadioGroup name="requirementsClear">
+                        <YesNoRadioOptions
+                          error={Boolean(errors["requirementsClear"])}
+                        />
+                      </ControlledRadioGroup>
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
@@ -201,10 +206,11 @@ export const ManagementPlanSubmission = () => {
                       The information on this form is correct to the best of
                       your knowledge.
                     </Typography>
-                    <ControlledRadioGroup
-                      name="informationAccurate"
-                      options={YesOrNoOptions}
-                    />
+                    <ControlledRadioGroup name="informationAccurate">
+                      <YesNoRadioOptions
+                        error={Boolean(errors["informationAccurate"])}
+                      />
+                    </ControlledRadioGroup>
                   </Grid>
                   <Grid item xs={12}>
                     <DocumentUploadSection />

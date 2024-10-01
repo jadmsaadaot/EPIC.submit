@@ -3,7 +3,6 @@ import { BCDesignTokens } from "epic.theme";
 import React, { useEffect } from "react";
 import DocumentIcon from "./DocumentIcon";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
-import { SUBMISSION_TYPE } from "@/models/Submission";
 import { saveObject } from "@/hooks/api/useObjectStorage";
 import { createSubmission } from "@/hooks/api/useSubmissions";
 import { Document, useDocumentUploadStore } from "@/store/documentUploadStore";
@@ -40,16 +39,14 @@ const DocumentToUploadContainer: React.FC<DocumentContainerProps> = ({
         },
       });
 
-      const documentSubmission = await createSubmission({
-        itemId: Number(subItemId),
-        data: {
-          type: SUBMISSION_TYPE.DOCUMENT,
-          data: {
-            name: document.file.name,
-            url: uploadedFile.filepath,
-          },
-        },
-      });
+      const documentData = {
+        name: document.file.name,
+        url: uploadedFile.filepath,
+      };
+      const documentSubmission = await createSubmission(
+        Number(subItemId),
+        documentData,
+      );
 
       completeDocument(document.id, documentSubmission.id);
       queryClient.invalidateQueries({

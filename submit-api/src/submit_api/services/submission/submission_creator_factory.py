@@ -40,7 +40,8 @@ class FormSubmissionCreator(SubmissionCreatorFactory):
     @staticmethod
     def _create_submission(session, item_id, submitted_form_id):
         """Create a new submission."""
-        previous_submission = SubmissionModel.find_latest_by_type(SubmissionTypeStatus.FORM.value)
+        previous_submission = SubmissionModel.find_latest_by_type_and_item_id(
+            item_id, SubmissionTypeStatus.FORM.value)
         if previous_submission:
             raise ValueError("Form submission already created.")
 

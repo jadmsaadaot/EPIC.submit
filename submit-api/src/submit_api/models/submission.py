@@ -42,6 +42,6 @@ class Submission(BaseModel):
     Index('idx_submissions_type_item_id', type, item_id)
 
     @classmethod
-    def find_latest_by_type(cls, submission_type: SubmissionTypeStatus):
+    def find_latest_by_type_and_item_id(cls, item_id: int, submission_type: SubmissionTypeStatus):
         """Return model by item id."""
-        return cls.query.filter_by(type=submission_type).order_by(cls.created_date.asc()).first()
+        return cls.query.filter_by(item_id=item_id, type=submission_type).order_by(cls.created_date.asc()).first()
