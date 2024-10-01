@@ -5,6 +5,8 @@ Manages the submission schema
 
 from marshmallow import EXCLUDE, Schema, fields
 
+from submit_api.schemas.account_user import AccountUserSchema
+
 
 class SubmittedFormSchema(Schema):
     """submitted form schema."""
@@ -30,6 +32,8 @@ class SubmittedDocumentSchema(Schema):
     id = fields.Int(data_key="id")
     name = fields.Str(data_key="name")
     url = fields.Str(data_key="url")
+    created_date = fields.DateTime(data_key="created_date")
+    created_by = fields.Str(data_key="created_by")
 
 
 class SubmissionSchema(Schema):
@@ -48,6 +52,9 @@ class SubmissionSchema(Schema):
     submitted_form = fields.Nested(SubmittedFormSchema, data_key="submitted_form")
     submitted_document = fields.Nested(SubmittedDocumentSchema, data_key="submitted_document")
     created_date = fields.DateTime(data_key="created_date")
+    created_by = fields.Str(data_key="created_by")
+    account_user = fields.Nested(AccountUserSchema, data_key="account_user")
+    version = fields.Int(data_key="version")
 
 
 class CreateSubmissionRequestSchema(Schema):

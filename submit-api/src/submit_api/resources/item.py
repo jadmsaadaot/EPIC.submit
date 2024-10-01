@@ -21,6 +21,7 @@ from submit_api.schemas.item import ItemSchema
 from submit_api.services.item import ItemService
 from submit_api.utils.util import cors_preflight
 
+from ..auth import auth
 from .apihelper import Api as ApiHelper
 
 
@@ -47,6 +48,7 @@ class Item(Resource):
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
     @cors.crossdomain(origin="*")
+    @auth.require
     def get(item_id):
         """Get item by id."""
         projects = ItemService.get_item_by_id(item_id)

@@ -19,7 +19,7 @@ import { useGetSubmissionPackage } from "@/hooks/api/usePackages";
 import { useGetProject } from "@/hooks/api/useProjects";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/"
+  "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/",
 )({
   component: SubmissionPage,
 });

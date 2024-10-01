@@ -22,6 +22,7 @@ from submit_api.schemas.account import AccountCreateSchema, AccountSchema
 from submit_api.services.account_service import AccountService
 from submit_api.utils.util import cors_preflight
 
+from ..auth import auth
 from .apihelper import Api as ApiHelper
 
 
@@ -45,6 +46,7 @@ class Accounts(Resource):
     @staticmethod
     @API.response(code=HTTPStatus.OK, description="Success", model=[account_list_model])
     @ApiHelper.swagger_decorators(API, endpoint_description="Fetch all accounts")
+    @auth.require
     @cors.crossdomain(origin="*")
     def get():
         """Fetch all accounts."""
@@ -57,6 +59,7 @@ class Accounts(Resource):
     @API.expect(account_create_model)
     @API.response(code=HTTPStatus.CREATED, model=account_list_model, description="Account Created")
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
+    @auth.require
     @cors.crossdomain(origin="*")
     def post():
         """Create an account."""
@@ -75,6 +78,7 @@ class User(Resource):
     @ApiHelper.swagger_decorators(API, endpoint_description="Fetch a account by proponent id")
     @API.response(code=200, model=account_list_model, description="Success")
     @API.response(404, "Not Found")
+    @auth.require
     @cors.crossdomain(origin="*")
     def get(proponent_id):
         """Fetch an account by proponent id."""

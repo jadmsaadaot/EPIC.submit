@@ -21,6 +21,7 @@ from submit_api.schemas.submission import CreateSubmissionRequestSchema, Submiss
 from submit_api.services.submission import SubmissionService
 from submit_api.utils.util import cors_preflight
 
+from ..auth import auth
 from .apihelper import Api as ApiHelper
 
 
@@ -49,6 +50,7 @@ class SubmissionByItem(Resource):
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
     @cors.crossdomain(origin="*")
+    @auth.require
     def post(submission_item_id):
         """Create a submission."""
         create_submission_data = CreateSubmissionRequestSchema().load(API.payload)

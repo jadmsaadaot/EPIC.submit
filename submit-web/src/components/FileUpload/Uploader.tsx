@@ -1,12 +1,14 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import Dropzone, { Accept } from "react-dropzone";
+import { BCDesignTokens } from "epic.theme";
 
 interface UploaderProps {
   height?: string;
   accept?: Accept;
   children: React.ReactNode;
   onDrop?: (acceptedFiles: File[]) => void;
+  error?: boolean;
 }
 const Uploader = ({
   height = "10em",
@@ -14,6 +16,7 @@ const Uploader = ({
   onDrop = () => {
     return;
   },
+  error = false,
   children,
 }: UploaderProps) => {
   return (
@@ -37,14 +40,15 @@ const Uploader = ({
               borderRadius: "8px",
               height: height,
               cursor: "pointer",
-              background: "#F6F9FC",
+              background: error
+                ? BCDesignTokens.supportSurfaceColorDanger
+                : BCDesignTokens.themeBlue10,
+              border: error
+                ? `1px dashed ${BCDesignTokens.surfaceColorPrimaryDangerButtonDefault}`
+                : `1px dashed ${BCDesignTokens.themeBlue60}`,
             }}
           >
-            <input
-              {...getInputProps()}
-              multiple={false}
-              accept={".pdf,.xlsx,.docx"}
-            />
+            <input {...getInputProps()} multiple={false} />
             {children}
           </Grid>
         </section>
