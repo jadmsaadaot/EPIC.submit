@@ -34,6 +34,9 @@ const StyledTableCell = styled(TableCell)(() => ({
 
 const StyledTableRow = styled(TableRow)(() => ({
   backgroundColor: BCDesignTokens.themeBlue10,
+  "&:hover": {
+    backgroundColor: BCDesignTokens.themeBlue40,
+  },
 }));
 
 export default function SubmissionItemTableRow({

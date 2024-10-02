@@ -16,7 +16,15 @@ export default function ProjectTableRow({
 }: ProjectRowProps) {
   return (
     <>
-      <TableRow key={`row-${subPackage.id}`} sx={{ my: 1 }}>
+      <TableRow
+        key={`row-${subPackage.id}`}
+        sx={{
+          my: 1,
+          "&:hover": {
+            backgroundColor: BCDesignTokens.surfaceColorMenusHover,
+          },
+        }}
+      >
         <TableCell
           component="th"
           scope="row"
