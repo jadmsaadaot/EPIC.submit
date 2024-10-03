@@ -28,7 +28,8 @@ export const createSubmission = (itemId: number, data: FormType) => {
 export const useCreateSubmission = (itemId: number, options?: Options) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ data }: { data: any }) => createSubmission(itemId, data),
+    mutationFn: ({ data }: { data: FormType }) =>
+      createSubmission(itemId, data),
     ...options,
     onSuccess: () => {
       if (options?.onSuccess) {

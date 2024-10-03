@@ -6,9 +6,12 @@ import * as yup from "yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ControlledTextField from "@/components/Shared/controlled/ControlledTextField";
-import { useCreateSubmission } from "@/hooks/api/useSubmissions";
+import {
+  useCreateSubmission,
+  useSaveSubmission,
+} from "@/hooks/api/useSubmissions";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useLoaderBackdrop } from "@/components/Shared/Overlays/loaderBackdropStore";
 import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
 import { SUBMISSION_TYPE } from "@/models/Submission";
@@ -18,6 +21,7 @@ import { CardInnerBox } from "@/components/Projects/Project";
 import { ProjectStatus } from "@/components/registration/addProjects/ProjectStatus";
 import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
 import { useGetProject } from "@/hooks/api/useProjects";
+import { useGetSubmissionItem } from "@/hooks/api/useItems";
 
 const contactInformationSchema = yup.object().shape({
   primaryContact: yup.object().shape({
@@ -46,13 +50,15 @@ const contactInformationSchema = yup.object().shape({
 
 type ContactInformationForm = yup.InferType<typeof contactInformationSchema>;
 export const ContactInformation = () => {
-  const { submissionItem } = useSubmissionItemStore();
   const {
     projectId: projectIdParam,
     submissionPackageId,
     submissionId,
   } = useParams({
     from: "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/submissions/$submissionId",
+  });
+  const { data: submissionItem } = useGetSubmissionItem({
+    itemId: Number(submissionId),
   });
   const projectId = Number(projectIdParam);
   const { data: accountProject } = useGetProject({
@@ -62,9 +68,17 @@ export const ContactInformation = () => {
   const { setIsOpen } = useLoaderBackdrop();
   const navigate = useNavigate();
 
+  const formSubmission = submissionItem?.submissions.find(
+    (submission) => submission.type === SUBMISSION_TYPE.FORM,
+  );
+  const defaultValues = useMemo(() => {
+    if (!formSubmission?.submitted_form?.submission_json) return {};
+    return formSubmission.submitted_form.submission_json;
+  }, [formSubmission]);
   const methods = useForm<ContactInformationForm>({
     resolver: yupResolver(contactInformationSchema),
     mode: "onSubmit",
+    defaultValues,
   });
 
   const { handleSubmit } = methods;
@@ -79,8 +93,8 @@ export const ContactInformation = () => {
       to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
     });
   };
-  const { mutate: createSubmission, isPending: isCreatingSubmissionPending } =
-    useCreateSubmission(Number(submissionId), {
+  const { mutate: saveSubmission, isPending: isCreatingSubmissionPending } =
+    useSaveSubmission(submissionItem, {
       onError: onCreateFailure,
       onSuccess: onCreateSuccess,
     });
@@ -90,11 +104,13 @@ export const ContactInformation = () => {
       notify.error("Failed to load submission item");
       return;
     }
-    const data = {
+    const request = {
       type: SUBMISSION_TYPE.FORM,
       data: formData,
     };
-    createSubmission(data);
+    saveSubmission({
+      data: request,
+    });
   };
 
   useEffect(() => {

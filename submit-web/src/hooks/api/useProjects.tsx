@@ -60,7 +60,7 @@ export const useGetProjects = ({
   accountId,
 }: UseGetProjectsByAccountParams) => {
   return useQuery({
-    queryKey: ["projects", accountId],
+    queryKey: ["account-projects", accountId],
     queryFn: () => getProjectsByAccount({ accountId }),
     enabled: Boolean(accountId),
   });
@@ -81,7 +81,7 @@ type UseGetProjectByIdParams = {
 
 export const useGetProject = ({ projectId }: UseGetProjectByIdParams) => {
   return useQuery({
-    queryKey: ["project", projectId],
+    queryKey: ["account-project", projectId],
     queryFn: () => getProjectById({ projectId }),
     enabled: Boolean(projectId),
   });
