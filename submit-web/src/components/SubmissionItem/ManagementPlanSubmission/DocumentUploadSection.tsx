@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { BCDesignTokens, EAOColors } from "epic.theme";
-import FileUpload from "@/components/FileUpload";
 import { useDocumentUploadStore } from "@/store/documentUploadStore";
 import DocumentContainer from "./DocumentContainer";
 import { When } from "react-if";
@@ -9,7 +8,9 @@ import { Navigate, useParams } from "@tanstack/react-router";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { useSubmissionItemStore } from "../submissionItemStore";
 import { SUBMISSION_TYPE } from "@/models/Submission";
-import DocumentToUploadContainer from "./DocumentToUploadContainer";
+import DocumentToUploadContainer from "../DocumentToUploadContainer";
+import { ControlledFileUpload } from "@/components/Shared/controlled/ControlledFileUpload";
+import { MANAGEMENT_PLAN_DOCUMENT_FOLDERS } from "./constants";
 
 export const DocumentUploadSection = () => {
   const { submissionId: submissionItemId } = useParams({
@@ -25,8 +26,8 @@ export const DocumentUploadSection = () => {
     };
   }, [reset]);
 
-  const handleOnDrop = (acceptedFiles: File[]) => {
-    handleAddDocuments(acceptedFiles[0]);
+  const handleOnDrop = (acceptedFiles: File[], folder: string) => {
+    handleAddDocuments(acceptedFiles[0], folder);
   };
 
   if (!submissionItemId) {
@@ -42,12 +43,33 @@ export const DocumentUploadSection = () => {
     (submission) => submission.id,
   );
 
+  const managementPlanDocuments = documentSubmissions?.filter(
+    (submission) =>
+      submission.submitted_document.folder ===
+      MANAGEMENT_PLAN_DOCUMENT_FOLDERS.MANAGEMENT_PLAN,
+  );
+
+  const supportingDocuments = documentSubmissions?.filter(
+    (submission) =>
+      submission.submitted_document.folder ===
+      MANAGEMENT_PLAN_DOCUMENT_FOLDERS.SUPPORTING,
+  );
+
   const pendingDocuments = documents.filter(
     (document) =>
       !document.submissionId ||
       !documentSubmissionIds?.includes(document.submissionId),
   );
 
+  const pendingManagementPlanDocuments = pendingDocuments.filter(
+    (document) =>
+      document.folder === MANAGEMENT_PLAN_DOCUMENT_FOLDERS.MANAGEMENT_PLAN,
+  );
+
+  const pendingSupportingDocuments = pendingDocuments.filter(
+    (document) =>
+      document.folder === MANAGEMENT_PLAN_DOCUMENT_FOLDERS.SUPPORTING,
+  );
   return (
     <Grid container spacing={2}>
       <Grid item xs={12}>
@@ -85,7 +107,16 @@ export const DocumentUploadSection = () => {
             Any proposed changes must be in tracked changes.
           </Typography>
         </Box>
-        <FileUpload height={"13.125rem"} onDrop={handleOnDrop} />
+        <ControlledFileUpload
+          name="managementPlans"
+          height={"13.125rem"}
+          onDrop={(acceptedFiles) =>
+            handleOnDrop(
+              acceptedFiles,
+              MANAGEMENT_PLAN_DOCUMENT_FOLDERS.MANAGEMENT_PLAN,
+            )
+          }
+        />
         <Typography
           variant="body2"
           sx={{
@@ -94,6 +125,31 @@ export const DocumentUploadSection = () => {
         >
           Accepted file types: pdf, doc, docx, xlsx, Max. file size: 250 MB.
         </Typography>
+      </Grid>
+      <When condition={Boolean(documentSubmissions?.length)}>
+        <Grid
+          container
+          item
+          xs={12}
+          sx={{ mb: BCDesignTokens.layoutMarginXlarge }}
+        >
+          {managementPlanDocuments?.map((docSub) => (
+            <DocumentContainer
+              key={docSub.id}
+              document={docSub.submitted_document}
+            />
+          ))}
+        </Grid>
+      </When>
+      <Grid
+        container
+        item
+        xs={12}
+        sx={{ mb: BCDesignTokens.layoutMarginXlarge }}
+      >
+        {pendingManagementPlanDocuments.map((document) => (
+          <DocumentToUploadContainer key={document.id} document={document} />
+        ))}
       </Grid>
       <Grid item xs={12}>
         <Box sx={{ flexDirection: "column", display: "flex" }}>
@@ -112,7 +168,16 @@ export const DocumentUploadSection = () => {
             e.g. table of proposed changes, table of concordance
           </Typography>
         </Box>
-        <FileUpload height={"13.125rem"} onDrop={handleOnDrop} />
+        <ControlledFileUpload
+          name="supportingDocuments"
+          height={"13.125rem"}
+          onDrop={(acceptedFiles) =>
+            handleOnDrop(
+              acceptedFiles,
+              MANAGEMENT_PLAN_DOCUMENT_FOLDERS.SUPPORTING,
+            )
+          }
+        />
         <Typography
           variant="body2"
           sx={{
@@ -129,7 +194,7 @@ export const DocumentUploadSection = () => {
           xs={12}
           sx={{ mb: BCDesignTokens.layoutMarginXlarge }}
         >
-          {documentSubmissions?.map((docSub) => (
+          {supportingDocuments?.map((docSub) => (
             <DocumentContainer
               key={docSub.id}
               document={docSub.submitted_document}
@@ -143,7 +208,7 @@ export const DocumentUploadSection = () => {
         xs={12}
         sx={{ mb: BCDesignTokens.layoutMarginXlarge }}
       >
-        {pendingDocuments.map((document) => (
+        {pendingSupportingDocuments.map((document) => (
           <DocumentToUploadContainer key={document.id} document={document} />
         ))}
       </Grid>

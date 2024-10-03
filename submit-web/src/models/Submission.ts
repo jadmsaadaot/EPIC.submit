@@ -29,7 +29,9 @@ export const SUBMISSION_STATUS: Record<
 
 export type SubmittedForm = {
   id: number;
-  form_json: { [x: string]: unknown };
+  submission_json: {
+    [x: string]: unknown;
+  };
 };
 
 export type SubmissionType = "FORM" | "DOCUMENT" | "BUSINESS_DATA";
@@ -43,6 +45,7 @@ export type DocumentSubmission = {
   id: number;
   name: string;
   url: string;
+  folder: string;
 };
 export type Submission = {
   id: number;

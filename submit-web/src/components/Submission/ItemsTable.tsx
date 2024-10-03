@@ -2,7 +2,6 @@ import {
   Box,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
@@ -16,6 +15,7 @@ import SwapVertIcon from "@mui/icons-material/SwapVert";
 import SubmissionItemTableRow from "./SubmissionItemTableRow";
 import { SubmissionItem } from "@/models/SubmissionItem";
 import { SubmissionItemTableRow as SubmissionItemTableRowType } from "./types";
+import { StyledTableCell } from "../Shared/Table/common";
 import { SUBMISSION_TYPE } from "@/models/Submission";
 
 export default function ItemsTable({
@@ -40,7 +40,7 @@ export default function ItemsTable({
     submitted_by: subItem.submitted_by,
     version: subItem.version,
     submissions: subItem.submissions.filter(
-      (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT,
+      (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT
     ),
   }));
 
@@ -55,7 +55,7 @@ export default function ItemsTable({
           }}
         >
           <TableRow>
-            <TableCell sx={{ color: BCDesignTokens.themeGray70 }} colSpan={2}>
+            <StyledTableCell colSpan={2}>
               <TableSortLabel
                 active={orderBy === "name"}
                 direction={orderBy === "name" ? order : "asc"}
@@ -64,32 +64,29 @@ export default function ItemsTable({
                 sx={{
                   ".MuiTableSortLabel-icon": {
                     color: `${BCDesignTokens.themeGray70} !important`,
+                    "&:hover": {
+                      color: "#EDEBE9 !important",
+                    },
                   },
                 }}
               >
-                <Typography sx={{ color: BCDesignTokens.themeGray70 }}>
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: BCDesignTokens.themeGray70,
+                    "&:hover": {
+                      color: "#EDEBE9",
+                    },
+                  }}
+                >
                   Form/Document
                 </Typography>
               </TableSortLabel>
-            </TableCell>
-            <TableCell align="right" sx={{ color: BCDesignTokens.themeGray70 }}>
-              Uploaded by
-            </TableCell>
-            <TableCell align="right" sx={{ color: BCDesignTokens.themeGray70 }}>
-              Version
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{ color: BCDesignTokens.themeGray70 }}
-            >
-              Status
-            </TableCell>
-            <TableCell
-              align="center"
-              sx={{ color: BCDesignTokens.themeGray70 }}
-            >
-              Actions
-            </TableCell>
+            </StyledTableCell>
+            <StyledTableCell align="right">Uploaded by</StyledTableCell>
+            <StyledTableCell align="right">Version</StyledTableCell>
+            <StyledTableCell align="center">Status</StyledTableCell>
+            <StyledTableCell align="center">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>

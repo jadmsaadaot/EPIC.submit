@@ -18,3 +18,4 @@ class SubmittedDocument(BaseModel):
     id = Column(db.Integer, primary_key=True, autoincrement=True)
     name = Column(db.String(255), nullable=False)
     url = Column(db.String(), nullable=False)
+    folder = Column(db.String(), nullable=True)
