@@ -1,13 +1,12 @@
 import { ContentBox } from "@/components/Shared/ContentBox";
 import { Box, Button, Divider, Grid, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
-import { useSubmissionItemStore } from "../submissionItemStore";
 import * as yup from "yup";
 import { FormProvider, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCreateSubmission } from "@/hooks/api/useSubmissions";
+import { useSaveSubmission } from "@/hooks/api/useSubmissions";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useLoaderBackdrop } from "@/components/Shared/Overlays/loaderBackdropStore";
 import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
 import { SUBMISSION_TYPE } from "@/models/Submission";
@@ -17,24 +16,29 @@ import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCar
 import { ProjectStatus } from "@/components/registration/addProjects/ProjectStatus";
 import BarTitle from "@/components/Shared/Text/BarTitle";
 import ControlledRadioGroup from "@/components/Shared/controlled/ControlledRadioGroup";
-import { YesNoNotApplicableOptions, YesOrNoOptions } from "./radioOptions";
 import { DocumentUploadSection } from "./DocumentUploadSection";
+import { YesNoRadioOptions } from "@/components/Shared/YesNoRadioOptions";
+import { useGetSubmissionItem } from "@/hooks/api/useItems";
+import { MANAGEMENT_PLAN_DOCUMENT_FOLDERS } from "./constants";
+import { booleanToString, stringToBoolean } from "@/utils";
 
 const managementPlanSubmissionSchema = yup.object().shape({
-  conditionSatisfied: yup
-    .boolean()
-    .required("Please provide an answer to this question."),
+  conditionSatisfied: yup.string().required("Please answer this question."),
   allRequirementsAddressed: yup
-    .boolean()
-    .nullable()
-    .transform((value, originalValue) => (originalValue === "" ? null : value))
-    .required("Please provide an answer to this question."),
-  requirementsClear: yup
-    .boolean()
-    .required("Please provide an answer to this question."),
-  informationAccurate: yup
-    .boolean()
-    .required("Please provide an answer to this question."),
+    .string()
+    .required("Please answer this question."),
+  requirementsClear: yup.string().required("Please answer this question."),
+  informationAccurate: yup.string().required("Please answer this question."),
+  managementPlans: yup
+    .array()
+    .of(yup.string())
+    .required("Please upload at least one document.")
+    .min(1, "Please upload at least one document."),
+  supportingDocuments: yup
+    .array()
+    .of(yup.string())
+    .required("Please upload at least one document.")
+    .min(1, "Please upload at least one document."),
 });
 
 type ManagementPlanSubmissionForm = yup.InferType<
@@ -44,64 +48,136 @@ export const ManagementPlanSubmission = () => {
   const {
     projectId: projectIdParam,
     submissionPackageId,
-    submissionId,
+    submissionId: submissionItemId,
   } = useParams({
     from: "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/submissions/$submissionId",
-  });
-  const { submissionItem } = useSubmissionItemStore();
-  const projectId = Number(projectIdParam);
-  const { data: accountProject } = useGetProject({
-    projectId,
   });
 
   const { setIsOpen } = useLoaderBackdrop();
   const navigate = useNavigate();
+
+  const projectId = Number(projectIdParam);
+  const { data: accountProject } = useGetProject({
+    projectId,
+  });
+  const { data: submissionItem } = useGetSubmissionItem({
+    itemId: Number(submissionItemId),
+  });
+
+  const formSubmission = submissionItem?.submissions.find(
+    (submission) => submission.type === SUBMISSION_TYPE.FORM,
+  );
+  const defaultFormValues = useMemo(() => {
+    if (!formSubmission?.submitted_form?.submission_json) return {};
+
+    return {
+      ...formSubmission.submitted_form.submission_json,
+      conditionSatisfied: booleanToString(
+        formSubmission.submitted_form.submission_json.conditionSatisfied,
+      ),
+      allRequirementsAddressed: booleanToString(
+        formSubmission.submitted_form.submission_json.allRequirementsAddressed,
+      ),
+      requirementsClear: booleanToString(
+        formSubmission.submitted_form.submission_json.requirementsClear,
+      ),
+      informationAccurate: booleanToString(
+        formSubmission.submitted_form.submission_json.informationAccurate,
+      ),
+    };
+  }, [formSubmission]);
+
+  const documentSubmissions = submissionItem?.submissions?.filter(
+    (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT,
+  );
+  const defaultDocumentValues = useMemo(() => {
+    if (!documentSubmissions) return {};
+
+    return {
+      managementPlans: documentSubmissions
+        .filter(
+          (submission) =>
+            submission.submitted_document.folder ===
+            MANAGEMENT_PLAN_DOCUMENT_FOLDERS.MANAGEMENT_PLAN,
+        )
+        .map((submission) => submission.submitted_document.url),
+      supportingDocuments: documentSubmissions
+        .filter(
+          (submission) =>
+            submission.submitted_document.folder ===
+            MANAGEMENT_PLAN_DOCUMENT_FOLDERS.SUPPORTING,
+        )
+        .map((submission) => submission.submitted_document.url),
+    };
+  }, [documentSubmissions]);
+
   const methods = useForm<ManagementPlanSubmissionForm>({
     resolver: yupResolver(managementPlanSubmissionSchema),
     mode: "onSubmit",
+    defaultValues: {
+      ...defaultFormValues,
+      ...defaultDocumentValues,
+    },
   });
 
-  const { handleSubmit } = methods;
+  const {
+    handleSubmit,
+    formState: { errors, dirtyFields },
+  } = methods;
 
   const onCreateFailure = () => {
-    notify.error("Failed to create submission");
+    notify.error("Failed to save submission");
   };
 
   const onCreateSuccess = () => {
-    notify.success("Submission created successfully");
+    notify.success("Submission saved successfully");
     navigate({
       to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
     });
   };
-  const { mutate: createSubmission, isPending: isCreatingSubmissionPending } =
-    useCreateSubmission(Number(submissionId), {
+  const { mutate: callSaveSubmission, isPending: isCreatingSubmissionPending } =
+    useSaveSubmission(submissionItem, {
       onError: onCreateFailure,
       onSuccess: onCreateSuccess,
     });
-
-  const onSubmitHandler = async (formData: ManagementPlanSubmissionForm) => {
-    if (!submissionItem) {
-      notify.error("Failed to load submission item");
-      return;
-    }
-    createSubmission({
-      itemId: submissionItem.id,
-      data: {
-        type: SUBMISSION_TYPE.FORM,
-        data: formData,
-      },
-    });
-  };
 
   useEffect(() => {
     setIsOpen(isCreatingSubmissionPending);
     return () => setIsOpen(false);
   }, [isCreatingSubmissionPending, setIsOpen]);
 
-  const handleCancel = () => {
-    navigate({
-      to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
+  const saveSubmission = async (formData: ManagementPlanSubmissionForm) => {
+    const {
+      conditionSatisfied,
+      allRequirementsAddressed,
+      requirementsClear,
+      informationAccurate,
+    } = formData;
+    callSaveSubmission({
+      data: {
+        type: SUBMISSION_TYPE.FORM,
+        data: {
+          conditionSatisfied: stringToBoolean(conditionSatisfied),
+          allRequirementsAddressed: stringToBoolean(allRequirementsAddressed),
+          requirementsClear: stringToBoolean(requirementsClear),
+          informationAccurate: stringToBoolean(informationAccurate),
+        },
+      },
     });
+  };
+
+  const saveAndClose = () => {
+    if (!Object.keys(dirtyFields).length) {
+      navigate({
+        to: `/projects/${projectId}/submission-packages/${submissionPackageId}`,
+      });
+      return;
+    }
+    const formData = {
+      ...methods.getValues(),
+    };
+
+    saveSubmission(formData);
   };
 
   if (!accountProject) return <Navigate to="/error" />;
@@ -140,7 +216,7 @@ export const ManagementPlanSubmission = () => {
               title={accountProject.project.name + " Management Plan"}
             />
             <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(onSubmitHandler)}>
+              <form onSubmit={handleSubmit(saveSubmission)}>
                 <Grid container spacing={BCDesignTokens.layoutMarginMedium}>
                   <Grid item xs={12}>
                     <Typography
@@ -158,10 +234,12 @@ export const ManagementPlanSubmission = () => {
                         Does the plan address all the requirements in the
                         (condition number)?
                       </Typography>
-                      <ControlledRadioGroup
-                        name="conditionSatisfied"
-                        options={YesOrNoOptions}
-                      />
+
+                      <ControlledRadioGroup name="conditionSatisfied">
+                        <YesNoRadioOptions
+                          error={Boolean(errors["conditionSatisfied"])}
+                        />
+                      </ControlledRadioGroup>
                     </Grid>
                     <Grid item xs={12}>
                       <Typography variant="body1">
@@ -170,20 +248,22 @@ export const ManagementPlanSubmission = () => {
                         application sections), does the plan address all
                         requirements within the referenced document(s)?
                       </Typography>
-                      <ControlledRadioGroup
-                        name="allRequirementsAddressed"
-                        options={YesNoNotApplicableOptions}
-                      />
+                      <ControlledRadioGroup name="allRequirementsAddressed">
+                        <YesNoRadioOptions
+                          error={Boolean(errors["allRequirementsAddressed"])}
+                        />
+                      </ControlledRadioGroup>
                     </Grid>
                     <Grid item xs={12}>
                       <Typography variant="body1">
                         Is each requirement in the plan clear, measurable,
                         and/or include accountability?
                       </Typography>
-                      <ControlledRadioGroup
-                        name="requirementsClear"
-                        options={YesOrNoOptions}
-                      />
+                      <ControlledRadioGroup name="requirementsClear">
+                        <YesNoRadioOptions
+                          error={Boolean(errors["requirementsClear"])}
+                        />
+                      </ControlledRadioGroup>
                     </Grid>
                   </Grid>
                   <Grid item xs={12}>
@@ -201,17 +281,18 @@ export const ManagementPlanSubmission = () => {
                       The information on this form is correct to the best of
                       your knowledge.
                     </Typography>
-                    <ControlledRadioGroup
-                      name="informationAccurate"
-                      options={YesOrNoOptions}
-                    />
+                    <ControlledRadioGroup name="informationAccurate">
+                      <YesNoRadioOptions
+                        error={Boolean(errors["informationAccurate"])}
+                      />
+                    </ControlledRadioGroup>
                   </Grid>
                   <Grid item xs={12}>
                     <DocumentUploadSection />
                   </Grid>
                   <Grid item xs={12} container spacing={2}>
                     <Grid item xs={12} sm="auto">
-                      <Button color="secondary" onClick={handleCancel}>
+                      <Button color="secondary" onClick={saveAndClose}>
                         Save & Continue Later
                       </Button>
                     </Grid>

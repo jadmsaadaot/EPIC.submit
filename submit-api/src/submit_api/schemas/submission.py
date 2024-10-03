@@ -32,6 +32,7 @@ class SubmittedDocumentSchema(Schema):
     id = fields.Int(data_key="id")
     name = fields.Str(data_key="name")
     url = fields.Str(data_key="url")
+    folder = fields.Str(data_key="folder")
     created_date = fields.DateTime(data_key="created_date")
     created_by = fields.Str(data_key="created_by")
 

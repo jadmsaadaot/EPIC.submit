@@ -6,14 +6,18 @@ import {
   SUBMISSION_TYPE,
   SubmissionType,
 } from "@/models/Submission";
+import { SubmissionItem } from "@/models/SubmissionItem";
 
-export const createSubmission = ({
-  itemId,
-  data,
-}: {
-  itemId: number;
-  data: Record<string, unknown>;
-}) => {
+type FormType = Record<string, unknown>;
+export const editSubmission = (id: number, data: FormType) => {
+  return submitRequest<Submission>({
+    url: `/submissions/${id}`,
+    method: "patch",
+    data,
+  });
+};
+
+export const createSubmission = (itemId: number, data: FormType) => {
   return submitRequest<Submission>({
     url: `/submissions/items/${itemId}`,
     method: "post",
@@ -24,7 +28,8 @@ export const createSubmission = ({
 export const useCreateSubmission = (itemId: number, options?: Options) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: createSubmission,
+    mutationFn: ({ data }: { data: FormType }) =>
+      createSubmission(itemId, data),
     ...options,
     onSuccess: () => {
       if (options?.onSuccess) {
@@ -32,6 +37,37 @@ export const useCreateSubmission = (itemId: number, options?: Options) => {
       }
       queryClient.invalidateQueries({
         queryKey: ["item", itemId],
+      });
+    },
+  });
+};
+
+export const useSaveSubmission = (
+  submissionItem?: SubmissionItem,
+  options?: Options,
+) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ data }: { data: FormType }) => {
+      if (!submissionItem) {
+        throw new Error("Submission item is required");
+      }
+
+      const formSubmission = submissionItem.submissions.find(
+        (submission) => submission.type === SUBMISSION_TYPE.FORM,
+      );
+      if (formSubmission) {
+        return editSubmission(formSubmission.id, data);
+      }
+      return createSubmission(submissionItem.id, data);
+    },
+    ...options,
+    onSuccess: (submission) => {
+      if (options?.onSuccess) {
+        options.onSuccess();
+      }
+      queryClient.invalidateQueries({
+        queryKey: ["item", submission.item_id],
       });
     },
   });
