@@ -43,6 +43,7 @@ export type DocumentSubmission = {
   id: number;
   name: string;
   url: string;
+  folder: string;
 };
 export type Submission = {
   id: number;

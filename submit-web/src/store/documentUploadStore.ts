@@ -3,13 +3,13 @@ import { create } from "zustand";
 export type Document = {
   id: number;
   file: File;
-  folderId?: string;
+  folder?: string;
   pending?: boolean;
   submissionId?: number;
 };
 
 interface DocumentUploadState {
-  handleAddDocuments: (_files: File, folderId?: string) => void;
+  handleAddDocuments: (_files: File, folder?: string) => void;
   documents: Document[];
   removeDocument: (id: number) => void;
   reset: () => void;
@@ -23,13 +23,13 @@ const initialState = {
 
 export const useDocumentUploadStore = create<DocumentUploadState>((set) => ({
   documents: [],
-  handleAddDocuments: (file: File, folderId?: string) => {
+  handleAddDocuments: (file: File, folder?: string) => {
     // Add file processing logic here
     if (!file) return;
 
     set((prev) => {
       const id = Math.max(...prev.documents.map((doc) => doc.id), 0) + 1;
-      const document = { id, file, folderId, pending: false };
+      const document = { id, file, folder, pending: false };
       return { documents: [...prev.documents, document] };
     });
   },

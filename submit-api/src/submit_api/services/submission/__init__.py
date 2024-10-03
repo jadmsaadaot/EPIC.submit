@@ -47,8 +47,7 @@ class SubmissionService:
         submission = cls.get_submission_by_id(submission_id)
         if not submission:
             raise ValueError("Submission not found.")
-
-        if submission.type != SubmissionTypeStatus.FORM.value:
+        if submission.type != SubmissionTypeStatus.FORM:
             raise ValueError("Submission type is not supported.")
 
         if not submission.submitted_form:
@@ -59,6 +58,6 @@ class SubmissionService:
     def edit_submission_form(cls, submission_id, request):
         """Edit a submission form."""
         submission = cls.get_submission_by_id_and_validate_edit(submission_id)
-        submission.submitted_form.submission_json = request
+        submission.submitted_form.submission_json = request.get('data')
         submission.submitted_form.save()
         return submission

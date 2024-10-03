@@ -9,6 +9,7 @@ import { Document, useDocumentUploadStore } from "@/store/documentUploadStore";
 import { useParams } from "@tanstack/react-router";
 import ProgressBar from "./ProgressBar";
 import { useQueryClient } from "@tanstack/react-query";
+import { SUBMISSION_TYPE } from "@/models/Submission";
 
 interface DocumentContainerProps {
   document: Document;
@@ -42,11 +43,12 @@ const DocumentToUploadContainer: React.FC<DocumentContainerProps> = ({
       const documentData = {
         name: document.file.name,
         url: uploadedFile.filepath,
+        folder: document.folder,
       };
-      const documentSubmission = await createSubmission(
-        Number(subItemId),
-        documentData,
-      );
+      const documentSubmission = await createSubmission(Number(subItemId), {
+        type: SUBMISSION_TYPE.DOCUMENT,
+        data: documentData,
+      });
 
       completeDocument(document.id, documentSubmission.id);
       queryClient.invalidateQueries({

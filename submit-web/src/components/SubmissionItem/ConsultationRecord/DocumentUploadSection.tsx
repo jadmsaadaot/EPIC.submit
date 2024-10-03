@@ -10,6 +10,7 @@ import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { useSubmissionItemStore } from "../submissionItemStore";
 import { SUBMISSION_TYPE } from "@/models/Submission";
 import { ControlledFileUpload } from "@/components/Shared/controlled/ControlledFileUpload";
+import { CONSULTATION_RECORD_DOCUMENT_FOLDERS } from "./constants";
 
 export const DocumentUploadSection = () => {
   const { submissionId: submissionItemId } = useParams({
@@ -26,7 +27,10 @@ export const DocumentUploadSection = () => {
   }, [reset]);
 
   const handleOnDrop = (acceptedFiles: File[]) => {
-    handleAddDocuments(acceptedFiles[0]);
+    handleAddDocuments(
+      acceptedFiles[0],
+      CONSULTATION_RECORD_DOCUMENT_FOLDERS.CONSULTATION_RECORDS,
+    );
   };
 
   if (!submissionItemId) {

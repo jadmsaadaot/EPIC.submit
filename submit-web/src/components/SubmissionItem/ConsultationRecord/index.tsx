@@ -13,7 +13,7 @@ import { FormProvider, useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useSaveSubmission } from "@/hooks/api/useSubmissions";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useLoaderBackdrop } from "@/components/Shared/Overlays/loaderBackdropStore";
 import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
 import { useGetProject } from "@/hooks/api/useProjects";
@@ -29,7 +29,8 @@ import { YesNoRadioOptions } from "@/components/Shared/YesNoRadioOptions";
 import { SUBMISSION_TYPE } from "@/models/Submission";
 import CloseIcon from "@mui/icons-material/Close";
 import { When } from "react-if";
-import { useSubmissionItemStore } from "../submissionItemStore";
+import { useGetSubmissionItem } from "@/hooks/api/useItems";
+import { booleanToString, stringToBoolean } from "@/utils";
 
 const consultationRecordSchema = yup.object().shape({
   consultedParties: yup
@@ -42,37 +43,13 @@ const consultationRecordSchema = yup.object().shape({
       }),
     )
     .required("Please provide at least one consulted party."),
-  allPartiesConsulted: yup
-    .bool()
-    .nonNullable()
-    .transform((value) => {
-      if (value === "" || value === null) return null;
-      return value;
-    })
-    .required("Please answer this question."),
-  planWasReviewed: yup
-    .bool()
-    .nonNullable()
-    .transform((value) => {
-      if (value === "" || value === null) return null;
-      return value;
-    })
-    .required("Please answer this question."),
+  allPartiesConsulted: yup.string().required("Please answer this question."),
+  planWasReviewed: yup.string().required("Please answer this question."),
   writtenExplanationsProvidedToParties: yup
-    .bool()
-    .nonNullable()
-    .transform((value) => {
-      if (value === "" || value === null) return null;
-      return value;
-    })
+    .string()
     .required("Please answer this question."),
   writtenExplanationsProvidedToCommenters: yup
-    .bool()
-    .nonNullable()
-    .transform((value) => {
-      if (value === "" || value === null) return null;
-      return value;
-    })
+    .string()
     .required("Please answer this question."),
   consultationRecords: yup
     .array()
@@ -99,23 +76,54 @@ export const ConsultationRecord = () => {
   const navigate = useNavigate();
   const { reset } = useDocumentUploadStore();
 
-  const { submissionItem } = useSubmissionItemStore();
+  const { data: submissionItem } = useGetSubmissionItem({
+    itemId: Number(submissionItemId),
+  });
+
   const formSubmission = submissionItem?.submissions?.find(
     (submission) => submission.type === SUBMISSION_TYPE.FORM,
   );
+  const defaultFormValues = useMemo(() => {
+    if (!formSubmission?.submitted_form?.submission_json) return {};
 
-  const defaultValues = formSubmission?.submitted_form?.submission_json
-    ? {
-        ...formSubmission.submitted_form.submission_json,
-      }
-    : {};
-  console.log(defaultValues);
+    return {
+      allPartiesConsulted: booleanToString(
+        formSubmission.submitted_form.submission_json.allPartiesConsulted,
+      ),
+      planWasReviewed: booleanToString(
+        formSubmission.submitted_form.submission_json.planWasReviewed,
+      ),
+      writtenExplanationsProvidedToParties: booleanToString(
+        formSubmission.submitted_form.submission_json
+          .writtenExplanationsProvidedToParties,
+      ),
+      writtenExplanationsProvidedToCommenters: booleanToString(
+        formSubmission.submitted_form.submission_json
+          .writtenExplanationsProvidedToCommenters,
+      ),
+    };
+  }, [formSubmission]);
+
+  const documentSubmissions = submissionItem?.submissions?.filter(
+    (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT,
+  );
+  const defaultDocumentValues = useMemo(() => {
+    if (!documentSubmissions) return {};
+
+    return {
+      consultationRecords: documentSubmissions.map(
+        (submission) => submission.submitted_document.url,
+      ),
+    };
+  }, [documentSubmissions]);
+
   const methods = useForm<ConsultationRecordForm>({
     resolver: yupResolver(consultationRecordSchema),
     mode: "onSubmit",
     defaultValues: {
       consultedParties: [{ consultedParty: "" }],
-      ...defaultValues,
+      ...defaultFormValues,
+      ...defaultDocumentValues,
     },
   });
   const { fields, append, remove } = useFieldArray({
@@ -144,7 +152,7 @@ export const ConsultationRecord = () => {
     });
   };
   const { mutate: callSaveSubmission, isPending: isCreatingSubmissionPending } =
-    useSaveSubmission(Number(submissionItemId), formSubmission, {
+    useSaveSubmission(submissionItem, {
       onError: onCreateFailure,
       onSuccess: onCreateSuccess,
     });
@@ -166,10 +174,14 @@ export const ConsultationRecord = () => {
         type: SUBMISSION_TYPE.FORM,
         data: {
           consultedParties,
-          allPartiesConsulted,
-          planWasReviewed,
-          writtenExplanationsProvidedToParties,
-          writtenExplanationsProvidedToCommenters,
+          allPartiesConsulted: stringToBoolean(allPartiesConsulted),
+          planWasReviewed: stringToBoolean(planWasReviewed),
+          writtenExplanationsProvidedToParties: stringToBoolean(
+            writtenExplanationsProvidedToParties,
+          ),
+          writtenExplanationsProvidedToCommenters: stringToBoolean(
+            writtenExplanationsProvidedToCommenters,
+          ),
         },
       },
     });
@@ -185,6 +197,7 @@ export const ConsultationRecord = () => {
     const formData = {
       ...methods.getValues(),
     };
+
     saveSubmission(formData);
   };
 

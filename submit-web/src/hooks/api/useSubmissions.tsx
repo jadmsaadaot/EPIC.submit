@@ -6,6 +6,7 @@ import {
   SUBMISSION_TYPE,
   SubmissionType,
 } from "@/models/Submission";
+import { SubmissionItem } from "@/models/SubmissionItem";
 
 type FormType = Record<string, unknown>;
 export const editSubmission = (id: number, data: FormType) => {
@@ -41,21 +42,31 @@ export const useCreateSubmission = (itemId: number, options?: Options) => {
 };
 
 export const useSaveSubmission = (
-  itemId: number,
-  submission?: Submission,
+  submissionItem?: SubmissionItem,
   options?: Options,
 ) => {
   const queryClient = useQueryClient();
-  const saveSubmission = submission ? editSubmission : createSubmission;
   return useMutation({
-    mutationFn: ({ data }: { data: FormType }) => saveSubmission(itemId, data),
+    mutationFn: ({ data }: { data: FormType }) => {
+      if (!submissionItem) {
+        throw new Error("Submission item is required");
+      }
+
+      const formSubmission = submissionItem.submissions.find(
+        (submission) => submission.type === SUBMISSION_TYPE.FORM,
+      );
+      if (formSubmission) {
+        return editSubmission(formSubmission.id, data);
+      }
+      return createSubmission(submissionItem.id, data);
+    },
     ...options,
-    onSuccess: () => {
+    onSuccess: (submission) => {
       if (options?.onSuccess) {
         options.onSuccess();
       }
       queryClient.invalidateQueries({
-        queryKey: ["item", itemId],
+        queryKey: ["item", submission.item_id],
       });
     },
   });

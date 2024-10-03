@@ -71,7 +71,8 @@ class DocumentSubmissionCreator(SubmissionCreatorFactory):
         """Create a new submitted document."""
         submitted_document = SubmittedDocumentModel(
             name=request_data.get('name'),
-            url=request_data.get('url')
+            url=request_data.get('url'),
+            folder=request_data.get('folder')
         )
         session.add(submitted_document)
         session.commit()
