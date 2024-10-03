@@ -15,8 +15,11 @@ class PackageItemType(BaseModel):
 
     __tablename__ = 'package_item_types'
 
-    package_type_id = Column(db.Integer, ForeignKey('package_types.id'), nullable=False)
-    item_type_id = Column(db.Integer, ForeignKey('item_types.id'), nullable=False)
+    package_type_id = Column(db.Integer, ForeignKey(
+        'package_types.id'), nullable=False)
+    item_type_id = Column(db.Integer, ForeignKey(
+        'item_types.id'), nullable=False)
+    sort_order = Column(db.Integer, nullable=True, default=0)
 
     __table_args__ = (
         PrimaryKeyConstraint('package_type_id', 'item_type_id'),

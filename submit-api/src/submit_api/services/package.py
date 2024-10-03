@@ -5,6 +5,7 @@ from submit_api.models import Package as PackageModel
 from submit_api.models import PackageType as PackageTypeModel
 from submit_api.models.db import session_scope
 from submit_api.models.package_metadata import PackageMetadata as PackageMetadataModel
+import submit_api.models.package_item_type as PackageItemTypeModel
 
 
 class PackageService:
@@ -20,13 +21,12 @@ class PackageService:
     def create_package(cls, account_project_id, request_data):
         """Create a new package."""
         with session_scope() as session:
-            package_type = PackageTypeModel.find_by_name(request_data.get("type"))
+            package_type = PackageTypeModel.find_by_name(
+                request_data.get("type"))
             package = cls._create_package(
-                session, account_project_id, request_data, package_type
-            )
+                session, account_project_id, request_data, package_type)
             cls._create_package_metadata(
-                session, package.id, request_data.get("metadata")
-            )
+                session, package.id, request_data.get("metadata"))
             cls._create_items(session, package.id, package_type.item_types)
             session.commit()
         return PackageModel.find_by_id(package.id)
@@ -55,15 +55,22 @@ class PackageService:
     @staticmethod
     def _create_items(session, package_id, item_types):
         """Create items for the package."""
-        # Sort item_types by their sort order
-        sorted_item_types = sorted(
-            item_types, key=lambda item_type: item_type.sort_order
-        )
+        # Query package_item_types and create a mapping of item_type_id to package_item_type
+        package_item_types = session.query(PackageItemTypeModel).filter_by(
+            package_type_id=package_id,
+        ).all()
+        item_type_to_package_item_type = {
+            pit.item_type_id: pit for pit in package_item_types}
 
-        for item_type in sorted_item_types:
-            item = ItemModel(
-                package_id=package_id,
-                type_id=item_type.id,
-            )
-            session.add(item)
+        for item_type in item_types:
+            package_item_type = item_type_to_package_item_type.get(
+                item_type.id)
+            if package_item_type:
+                item = ItemModel(
+                    package_id=package_id,
+                    type_id=item_type.id,
+                    sort_order=package_item_type.sort_order
+                )
+                session.add(item)
+
         session.flush()
