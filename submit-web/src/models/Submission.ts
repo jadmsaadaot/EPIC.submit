@@ -29,7 +29,9 @@ export const SUBMISSION_STATUS: Record<
 
 export type SubmittedForm = {
   id: number;
-  submission_json: { [x: string]: unknown };
+  submission_json: {
+    [x: string]: unknown;
+  };
 };
 
 export type SubmissionType = "FORM" | "DOCUMENT" | "BUSINESS_DATA";

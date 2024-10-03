@@ -87,6 +87,7 @@ export const ConsultationRecord = () => {
     if (!formSubmission?.submitted_form?.submission_json) return {};
 
     return {
+      ...formSubmission.submitted_form.submission_json,
       allPartiesConsulted: booleanToString(
         formSubmission.submitted_form.submission_json.allPartiesConsulted,
       ),
