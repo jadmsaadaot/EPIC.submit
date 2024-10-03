@@ -8,7 +8,7 @@ import { Navigate, useParams } from "@tanstack/react-router";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { useSubmissionItemStore } from "../submissionItemStore";
 import { SUBMISSION_TYPE } from "@/models/Submission";
-import DocumentToUploadContainer from "./DocumentToUploadContainer";
+import DocumentToUploadContainer from "../DocumentToUploadContainer";
 import { ControlledFileUpload } from "@/components/Shared/controlled/ControlledFileUpload";
 import { MANAGEMENT_PLAN_DOCUMENT_FOLDERS } from "./constants";
 
