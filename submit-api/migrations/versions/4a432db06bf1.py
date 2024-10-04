@@ -36,11 +36,11 @@ def upgrade():
     # Update item type names
     op.execute(
         f"UPDATE item_types SET name = '{
-            contact_information_form}', WHERE name = '{contact_information}'"
+            contact_information_form}' WHERE name = '{contact_information}'"
     )
     op.execute(
         f"UPDATE item_types SET name = '{
-            management_plan}', WHERE name = '{management_plan_submission}'"
+            management_plan}' WHERE name = '{management_plan_submission}'"
     )
     op.execute("UPDATE submissions SET version = 1 WHERE version IS NULL")
 
@@ -49,15 +49,26 @@ def upgrade():
         batch_op.alter_column(
             'version', existing_type=sa.Integer(), nullable=False)
 
+    # Get the connection object
+    conn = op.get_bind()
+
     # Fetch the package_type_id for the Management Plan
-    result = op.execute(
-        sa.text("SELECT id FROM package_types WHERE name = :name"),
-        {'name': 'Management Plan'}  # <-- Use actual string literal
+    result = conn.execute(
+        sa.text("SELECT id FROM package_types WHERE name = :name").bindparams(name='Management Plan')
     ).fetchone()
+
+    if result is None:
+        raise ValueError("No package type found for 'Management Plan'")
+
+    package_type_id = result[0]
+
+    if result is None:
+        raise ValueError("No package type found for 'Management Plan'")
+
     package_type_id = result[0]
 
     # Fetch the item_type_ids for the associated item types
-    item_types = op.execute(
+    item_types = conn.execute(
         sa.text("""
             SELECT id, name FROM item_types
             WHERE name IN ('Management Plan', 'Consultation Record(s)', 'Contact Information Form')
@@ -83,9 +94,9 @@ def upgrade():
             'sort_order': sort_orders[item_type[1]]
         })
 
-    # Perform bulk update using op.execute with raw SQL
+    # Perform bulk update using conn.execute with raw SQL
     for update in bulk_updates:
-        op.execute(
+        conn.execute(
             sa.text(
                 """
                 UPDATE package_item_types
@@ -104,7 +115,7 @@ def downgrade():
     with op.batch_alter_table("item_types", schema=None) as batch_op:
         batch_op.drop_column("sort_order")
 
-    with op.batch_alter_table("item_types", schema=None) as batch_op:
+    with op.batch_alter_table("package_item_types", schema=None) as batch_op:
         batch_op.drop_column("sort_order")
 
     # Revert the item type names to their original values
@@ -117,15 +128,14 @@ def downgrade():
             management_plan_submission}' WHERE name = '{management_plan}'"
     )
 
-    op.execute(
-        sa.text("""
-            UPDATE package_item_types
-            SET sort_order = NULL
-            WHERE package_type_id = (
-                SELECT id FROM package_types WHERE name = :name
-            )
-        """),
-        {'name': 'Management Plan'}
-    )
-
+    # op.execute(
+    #     sa.text("""
+    #         UPDATE package_item_types
+    #         SET sort_order = NULL
+    #         WHERE package_type_id = (
+    #             SELECT id FROM package_types WHERE name = :name
+    #         )
+    #     """),
+    #     {'name': 'Management Plan'}
+    # )
     # ### end Alembic commands ###
