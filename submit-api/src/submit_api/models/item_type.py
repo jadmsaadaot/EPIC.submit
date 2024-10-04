@@ -5,11 +5,20 @@ Manages the item types
 
 from __future__ import annotations
 
-from sqlalchemy import Column
+import enum
+
+from sqlalchemy import Column, Enum
 from sqlalchemy.orm import relationship
 
 from .base_model import BaseModel
 from .db import db
+
+
+class SubmissionMethod(enum.Enum):
+    """Enum for item type input format."""
+
+    FORM_SUBMISSION = 'FORM_SUBMISSION'
+    DOCUMENT_UPLOAD = 'DOCUMENT_UPLOAD'
 
 
 class ItemType(BaseModel):
@@ -19,6 +28,5 @@ class ItemType(BaseModel):
 
     id = Column(db.Integer, primary_key=True, autoincrement=True)
     name = Column(db.String(255), nullable=False)
-    package_types = relationship(
-        "PackageType", secondary="package_item_types", back_populates="item_types"
-    )
+    submission_method = Column(Enum(SubmissionMethod), nullable=False)
+    package_types = relationship('PackageType', secondary='package_item_types', back_populates='item_types')

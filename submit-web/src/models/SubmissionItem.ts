@@ -1,20 +1,30 @@
 import { Submission, SubmissionStatus } from "./Submission";
 
 type SubmissionItemTypeName =
-  | "Contact Information"
-  | "Management Plan Submission"
+  | "Contact Information Form"
+  | "Management Plan"
   | "Consultation Record(s)";
 
+type SubmissionItemMethod = "FORM_SUBMISSION" | "DOCUMENT_UPLOAD";
+export const SUBMISSION_ITEM_METHOD: Record<
+  SubmissionItemMethod,
+  SubmissionItemMethod
+> = Object.freeze({
+  FORM_SUBMISSION: "FORM_SUBMISSION",
+  DOCUMENT_UPLOAD: "DOCUMENT_UPLOAD",
+});
 export type SubmissionItemType = {
   id: number;
   name: SubmissionItemTypeName;
+  submission_method: SubmissionItemMethod;
 };
 
-export const SUBMISSION_ITEM_TYPE: Record<string, SubmissionItemTypeName> = {
-  CONTACT_INFORMATION: "Contact Information",
-  MANAGEMENT_PLAN: "Management Plan Submission",
-  CONSULTATION_RECORD: "Consultation Record(s)",
-};
+export const SUBMISSION_ITEM_TYPE: Record<string, SubmissionItemTypeName> =
+  Object.freeze({
+    CONTACT_INFORMATION: "Contact Information Form",
+    MANAGEMENT_PLAN: "Management Plan",
+    CONSULTATION_RECORD: "Consultation Record(s)",
+  });
 
 export interface SubmissionItem {
   id: number;

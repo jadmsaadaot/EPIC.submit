@@ -7,4 +7,5 @@ export type SubmissionItemTableRow = {
   status: SubmissionStatus;
   version: number;
   submissions: Array<Submission>;
+  has_document: boolean;
 };
