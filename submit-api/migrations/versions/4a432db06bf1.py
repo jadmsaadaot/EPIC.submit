@@ -82,20 +82,12 @@ def upgrade():
         'Management Plan': 2
     }
 
-    bulk_updates = []
     for item_type in item_types:
         # Ensure `item_type[1]` exists in `sort_orders`
         if item_type[1] not in sort_orders:
             raise ValueError(f"Item type {item_type[1]} not found in sort_orders.")
 
-        bulk_updates.append({
-            'package_type_id': package_type_id,
-            'item_type_id': item_type[0],
-            'sort_order': sort_orders[item_type[1]]
-        })
-
-    # Perform bulk update using conn.execute with raw SQL
-    for update in bulk_updates:
+        # Perform update using conn.execute with raw SQL
         conn.execute(
             sa.text(
                 """
@@ -104,7 +96,11 @@ def upgrade():
                 WHERE package_type_id = :package_type_id AND item_type_id = :item_type_id
                 """
             ),
-            update  # This unpacks the dictionary as parameters to the query
+            {
+                'package_type_id': package_type_id,
+                'item_type_id': item_type[0],
+                'sort_order': sort_orders[item_type[1]]
+            }
         )
     # ### end Alembic commands ###
 
