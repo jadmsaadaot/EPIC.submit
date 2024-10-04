@@ -128,14 +128,4 @@ def downgrade():
             management_plan_submission}' WHERE name = '{management_plan}'"
     )
 
-    # op.execute(
-    #     sa.text("""
-    #         UPDATE package_item_types
-    #         SET sort_order = NULL
-    #         WHERE package_type_id = (
-    #             SELECT id FROM package_types WHERE name = :name
-    #         )
-    #     """),
-    #     {'name': 'Management Plan'}
-    # )
     # ### end Alembic commands ###
