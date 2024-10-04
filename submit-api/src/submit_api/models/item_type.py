@@ -22,5 +22,3 @@ class ItemType(BaseModel):
     package_types = relationship(
         "PackageType", secondary="package_item_types", back_populates="item_types"
     )
-    package_item_type = relationship(
-        "PackageItemType", back_populates="item_type")
