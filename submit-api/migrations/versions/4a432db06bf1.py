@@ -50,10 +50,11 @@ def upgrade():
             'version', existing_type=sa.Integer(), nullable=False)
 
     # Fetch the package_type_id for the Management Plan
-    package_type_id = op.execute(
+    result = op.execute(
         sa.text("SELECT id FROM package_types WHERE name = :name"),
-        {'name': management_plan}
-    ).fetchone()[0]
+        {'name': 'Management Plan'}  # <-- Use actual string literal
+    ).fetchone()
+    package_type_id = result[0]
 
     # Fetch the item_type_ids for the associated item types
     item_types = op.execute(
@@ -65,17 +66,21 @@ def upgrade():
 
     # Define sort orders for the item types
     sort_orders = {
-        contact_information_form: 1,
-        consultation_records: 2,
-        management_plan: 3
+        'Contact Information Form': 0,
+        'Consultation Record(s)': 1,
+        'Management Plan': 2
     }
 
     bulk_updates = []
     for item_type in item_types:
+        # Ensure `item_type[1]` exists in `sort_orders`
+        if item_type[1] not in sort_orders:
+            raise ValueError(f"Item type {item_type[1]} not found in sort_orders.")
+
         bulk_updates.append({
             'package_type_id': package_type_id,
-            'item_type_id': item_type.id,
-            'sort_order': sort_orders[item_type.name]
+            'item_type_id': item_type[0],
+            'sort_order': sort_orders[item_type[1]]
         })
 
     # Perform bulk update using op.execute with raw SQL
@@ -88,7 +93,7 @@ def upgrade():
                 WHERE package_type_id = :package_type_id AND item_type_id = :item_type_id
                 """
             ),
-            **update  # This unpacks the dictionary as parameters to the query
+            update  # This unpacks the dictionary as parameters to the query
         )
     # ### end Alembic commands ###
 
