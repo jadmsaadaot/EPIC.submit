@@ -19,6 +19,7 @@ export const SUBMISSION_ITEM_TYPE: Record<string, SubmissionItemTypeName> = {
 export interface SubmissionItem {
   id: number;
   package_id: number;
+  sort_order: number;
   status: SubmissionStatus;
   submitted_by: string;
   submitted_on: string;

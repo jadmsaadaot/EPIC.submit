@@ -74,8 +74,6 @@ class PackageService:
                 )
                 items.append(item)
 
-        items.sort(key=lambda item: item.sort_order)
-
         for item in items:
             session.add(item)
 
