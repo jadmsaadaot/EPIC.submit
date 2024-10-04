@@ -24,7 +24,3 @@ class PackageItemType(BaseModel):
     __table_args__ = (
         PrimaryKeyConstraint('package_type_id', 'item_type_id'),
     )
-    
-    def __repr__(self):
-        return (f"<PackageItemType package_type_id={self.package_type_id}, "
-                f"item_type_id={self.item_type_id}, sort_order={self.sort_order}>")

@@ -58,7 +58,7 @@ class PackageService:
         package_item_types = session.query(PackageItemTypeModel).filter_by(
             package_type_id=package_type_id,
         ).all()
-        
+
         item_type_to_package_item_type = {
             pit.item_type_id: pit for pit in package_item_types
         }
