@@ -8,6 +8,7 @@ from submit_api.models.db import session_scope
 from submit_api.models.package_metadata import PackageMetadata as PackageMetadataModel
 from submit_api.models.package_item_type import PackageItemType as PackageItemTypeModel
 
+
 class PackageService:
     """Package management service."""
 
