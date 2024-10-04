@@ -46,13 +46,7 @@ export const useGetSubmissionPackage = ({
 }: UseGetSubmissionPackageByIdParams) => {
   return useQuery({
     queryKey: ["package", packageId],
-    queryFn: async () => {
-      const data = await getSubmissionPackageById({ packageId });
-      if (data && data.items) {
-        data.items.sort((a, b) => a.sort_order - b.sort_order);
-      }
-      return data;
-    },
+    queryFn: () => getSubmissionPackageById({ packageId }),
     enabled: enabled && Boolean(packageId),
   });
 };

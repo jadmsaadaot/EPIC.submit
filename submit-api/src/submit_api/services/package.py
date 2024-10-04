@@ -64,7 +64,6 @@ class PackageService:
             pit.item_type_id: pit for pit in package_item_types
         }
 
-        items = []
         for item_type in item_types:
             package_item_type = item_type_to_package_item_type.get(item_type.id)
             if package_item_type:
@@ -73,9 +72,6 @@ class PackageService:
                     type_id=item_type.id,
                     sort_order=package_item_type.sort_order
                 )
-                items.append(item)
-
-        for item in items:
-            session.add(item)
+                session.add(item)
 
         session.flush()
