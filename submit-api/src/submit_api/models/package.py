@@ -35,7 +35,7 @@ class Package(BaseModel):
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
     meta = db.relationship('PackageMetadata', backref='package', lazy='select')
-    items = db.relationship('Item', backref='package', lazy='select')
+    items = db.relationship('Item', backref='package', lazy='select', order_by='Item.sort_order')
 
     @classmethod
     def get_package_by_id_with_items(cls, package_id: int):

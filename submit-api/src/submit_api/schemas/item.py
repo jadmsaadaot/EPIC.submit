@@ -50,3 +50,4 @@ class ItemSchema(Schema):
     submitted_on = fields.DateTime(data_key="submitted_on")
     submitted_by = fields.Str(data_key="submitted_by")
     submissions = fields.Nested(ItemSubmissionSchema, data_key="submissions", many=True)
+    sort_order = fields.Int(data_key="sort_order")
