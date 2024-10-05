@@ -36,7 +36,6 @@ export default function ItemsTable({
     setOrderBy(property);
   };
 
-  console.log(submissionItems);
   const sortedSubmissionItems = submissionItems.map((subItem) => ({
     id: subItem.id,
     name: subItem.type.name,
