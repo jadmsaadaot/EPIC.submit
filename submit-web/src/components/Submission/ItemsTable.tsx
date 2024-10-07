@@ -18,8 +18,9 @@ import {
   SubmissionItem,
 } from "@/models/SubmissionItem";
 import { SubmissionItemTableRow as SubmissionItemTableRowType } from "./types";
-import { StyledTableCell } from "../Shared/Table/common";
-import { SUBMISSION_TYPE } from "@/models/Submission";
+import { StyledTableHeadCell } from "../Shared/Table/common";
+import { SUBMISSION_STATUS, SUBMISSION_TYPE } from "@/models/Submission";
+import { usePackageStore } from "./packageStore";
 
 export default function ItemsTable({
   submissionItems,
@@ -35,6 +36,8 @@ export default function ItemsTable({
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+
+  const { isValidating } = usePackageStore();
 
   const sortedSubmissionItems = submissionItems.map((subItem) => ({
     id: subItem.id,
@@ -60,7 +63,7 @@ export default function ItemsTable({
           }}
         >
           <TableRow>
-            <StyledTableCell colSpan={2}>
+            <StyledTableHeadCell colSpan={2}>
               <TableSortLabel
                 active={orderBy === "name"}
                 direction={orderBy === "name" ? order : "asc"}
@@ -87,11 +90,11 @@ export default function ItemsTable({
                   Form/Document
                 </Typography>
               </TableSortLabel>
-            </StyledTableCell>
-            <StyledTableCell align="right">Uploaded by</StyledTableCell>
-            <StyledTableCell align="right">Version</StyledTableCell>
-            <StyledTableCell align="center">Status</StyledTableCell>
-            <StyledTableCell align="center">Actions</StyledTableCell>
+            </StyledTableHeadCell>
+            <StyledTableHeadCell align="right">Uploaded by</StyledTableHeadCell>
+            <StyledTableHeadCell align="right">Version</StyledTableHeadCell>
+            <StyledTableHeadCell align="center">Status</StyledTableHeadCell>
+            <StyledTableHeadCell align="center">Actions</StyledTableHeadCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -99,6 +102,10 @@ export default function ItemsTable({
             <SubmissionItemTableRow
               key={`custom-row-${subItem.name}`}
               item={subItem}
+              error={
+                isValidating &&
+                subItem.status !== SUBMISSION_STATUS.COMPLETED.value
+              }
             />
           ))}
         </TableBody>
