@@ -17,6 +17,8 @@ import { SUBMISSION_STATUS } from "@/models/Submission";
 import { InfoBox } from "@/components/Submission/InfoBox";
 import { useGetSubmissionPackage } from "@/hooks/api/usePackages";
 import { useGetProject } from "@/hooks/api/useProjects";
+import { usePackageStore } from "@/components/Submission/packageStore";
+import { useEffect } from "react";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/",
@@ -25,6 +27,7 @@ export const Route = createFileRoute(
 });
 
 export default function SubmissionPage() {
+  const { setIsValidating, reset } = usePackageStore();
   const { projectId: projectIdParam } = useParams({ strict: false });
   const projectId = Number(projectIdParam);
   const { data: accountProject } = useGetProject({
@@ -40,6 +43,28 @@ export default function SubmissionPage() {
   });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    return () => {
+      reset();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const submitPackage = () => {
+    if (!submissionPackage) {
+      return;
+    }
+
+    if (
+      submissionPackage.items.some(
+        (item) => item.status !== SUBMISSION_STATUS.COMPLETED.value,
+      )
+    ) {
+      setIsValidating(true);
+      return;
+    }
+  };
 
   if (!accountProject || !submissionPackage) {
     return <Navigate to={"/error"} />;
@@ -131,7 +156,7 @@ export default function SubmissionPage() {
                 >
                   Save & Close
                 </Button>
-                <Button>Submit Management Plan</Button>
+                <Button onClick={submitPackage}>Submit Management Plan</Button>
               </Box>
             </Box>
           </Box>
