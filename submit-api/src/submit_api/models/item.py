@@ -11,11 +11,12 @@ from sqlalchemy import Column, Enum, ForeignKey
 from .base_model import BaseModel
 from .db import db
 
-
+    
 class ItemStatus(enum.Enum):
     """Enum for item statuses."""
 
-    PENDING = 'PENDING'
+    NEW_SUBMISSION = 'NEW_SUBMISSION'
+    PARTIALLY_COMPLETED = 'PARTIALLY_COMPLETED'
     COMPLETED = 'COMPLETED'
 
 
@@ -30,7 +31,7 @@ class Item(BaseModel):
     sort_order = Column(db.Integer, nullable=True, default=0)
     type = db.relationship('ItemType', foreign_keys=[type_id], lazy='joined')
     status = Column(Enum(ItemStatus), nullable=False,
-                    default=ItemStatus.PENDING)
+                    default=ItemStatus.NEW_SUBMISSION)
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
     version = Column(db.Integer, nullable=False, default=1)
