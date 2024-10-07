@@ -67,4 +67,6 @@ class CreateSubmissionRequestSchema(Schema):
         unknown = EXCLUDE
 
     type = fields.Str(data_key="type")
+    status = fields.Str(data_key="status")
     data = fields.Dict(data_key="data")
+    item_id = fields.Int(data_key="item_id")

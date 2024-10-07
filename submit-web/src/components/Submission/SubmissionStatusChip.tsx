@@ -7,6 +7,7 @@ type StyleProps = {
   sx: Record<string, string | number>;
   label: string;
 };
+
 const statusStyles: Record<SubmissionStatus, StyleProps> = {
   NEW_SUBMISSION: {
     sx: {
@@ -47,7 +48,7 @@ export default function SubmissionStatusChip({
 }: {
   status: SubmissionStatus;
 }) {
-  const style = statusStyles[status];
+  const style = statusStyles[status] || statusStyles.NEW_SUBMISSION;
 
   return (
     <Chip

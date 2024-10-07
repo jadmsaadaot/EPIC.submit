@@ -3,7 +3,7 @@ import { AccountUser } from "./AccountUser";
 export type SubmissionStatus =
   | "NEW_SUBMISSION"
   | "COMPLETED"
-  | "PARTIALLY_COMPLETE"
+  | "PARTIALLY_COMPLETED"
   | "SUBMITTED";
 export const SUBMISSION_STATUS: Record<
   SubmissionStatus,
@@ -17,9 +17,9 @@ export const SUBMISSION_STATUS: Record<
     value: "COMPLETED",
     label: "Completed",
   },
-  PARTIALLY_COMPLETE: {
-    value: "PARTIALLY_COMPLETE",
-    label: "Partially Complete",
+  PARTIALLY_COMPLETED: {
+    value: "PARTIALLY_COMPLETED",
+    label: "Partially Completed",
   },
   SUBMITTED: {
     value: "SUBMITTED",

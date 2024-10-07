@@ -46,7 +46,7 @@ export default function SubmissionItemTableRow({
     strict: false,
   });
 
-  const { name, id, submissions } = item;
+  const { name, id, submissions, status } = item;
 
   return (
     <>
@@ -73,9 +73,7 @@ export default function SubmissionItemTableRow({
         <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right">
-          <SubmissionStatusChip
-            status={SUBMISSION_STATUS.NEW_SUBMISSION.value}
-          />
+          <SubmissionStatusChip status={status} />
         </StyledTableCell>
         <StyledTableCell align="right">
           <Link

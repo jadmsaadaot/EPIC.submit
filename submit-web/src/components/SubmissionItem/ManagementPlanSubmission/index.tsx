@@ -9,7 +9,11 @@ import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { useEffect, useMemo } from "react";
 import { useLoaderBackdrop } from "@/components/Shared/Overlays/loaderBackdropStore";
 import { Navigate, useNavigate, useParams } from "@tanstack/react-router";
-import { SUBMISSION_TYPE } from "@/models/Submission";
+import {
+  SUBMISSION_STATUS,
+  SUBMISSION_TYPE,
+  SubmissionStatus,
+} from "@/models/Submission";
 import { useGetProject } from "@/hooks/api/useProjects";
 import { CardInnerBox } from "@/components/Projects/Project";
 import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
@@ -65,7 +69,7 @@ export const ManagementPlanSubmission = () => {
   });
 
   const formSubmission = submissionItem?.submissions.find(
-    (submission) => submission.type === SUBMISSION_TYPE.FORM,
+    (submission) => submission.type === SUBMISSION_TYPE.FORM
   );
   const defaultFormValues = useMemo(() => {
     if (!formSubmission?.submitted_form?.submission_json) return {};
@@ -73,22 +77,22 @@ export const ManagementPlanSubmission = () => {
     return {
       ...formSubmission.submitted_form.submission_json,
       conditionSatisfied: booleanToString(
-        formSubmission.submitted_form.submission_json.conditionSatisfied,
+        formSubmission.submitted_form.submission_json.conditionSatisfied
       ),
       allRequirementsAddressed: booleanToString(
-        formSubmission.submitted_form.submission_json.allRequirementsAddressed,
+        formSubmission.submitted_form.submission_json.allRequirementsAddressed
       ),
       requirementsClear: booleanToString(
-        formSubmission.submitted_form.submission_json.requirementsClear,
+        formSubmission.submitted_form.submission_json.requirementsClear
       ),
       informationAccurate: booleanToString(
-        formSubmission.submitted_form.submission_json.informationAccurate,
+        formSubmission.submitted_form.submission_json.informationAccurate
       ),
     };
   }, [formSubmission]);
 
   const documentSubmissions = submissionItem?.submissions?.filter(
-    (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT,
+    (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT
   );
   const defaultDocumentValues = useMemo(() => {
     if (!documentSubmissions) return {};
@@ -98,14 +102,14 @@ export const ManagementPlanSubmission = () => {
         .filter(
           (submission) =>
             submission.submitted_document.folder ===
-            MANAGEMENT_PLAN_DOCUMENT_FOLDERS.MANAGEMENT_PLAN,
+            MANAGEMENT_PLAN_DOCUMENT_FOLDERS.MANAGEMENT_PLAN
         )
         .map((submission) => submission.submitted_document.url),
       supportingDocuments: documentSubmissions
         .filter(
           (submission) =>
             submission.submitted_document.folder ===
-            MANAGEMENT_PLAN_DOCUMENT_FOLDERS.SUPPORTING,
+            MANAGEMENT_PLAN_DOCUMENT_FOLDERS.SUPPORTING
         )
         .map((submission) => submission.submitted_document.url),
     };
@@ -146,7 +150,10 @@ export const ManagementPlanSubmission = () => {
     return () => setIsOpen(false);
   }, [isCreatingSubmissionPending, setIsOpen]);
 
-  const saveSubmission = async (formData: ManagementPlanSubmissionForm) => {
+  const saveSubmission = async (
+    formData: ManagementPlanSubmissionForm,
+    status?: SubmissionStatus
+  ) => {
     const {
       conditionSatisfied,
       allRequirementsAddressed,
@@ -156,6 +163,8 @@ export const ManagementPlanSubmission = () => {
     callSaveSubmission({
       data: {
         type: SUBMISSION_TYPE.FORM,
+        status: status || SUBMISSION_STATUS.COMPLETED.value,
+        item_id: submissionItemId,
         data: {
           conditionSatisfied: stringToBoolean(conditionSatisfied),
           allRequirementsAddressed: stringToBoolean(allRequirementsAddressed),
@@ -177,7 +186,7 @@ export const ManagementPlanSubmission = () => {
       ...methods.getValues(),
     };
 
-    saveSubmission(formData);
+    saveSubmission(formData, SUBMISSION_STATUS.PARTIALLY_COMPLETED.value);
   };
 
   if (!accountProject) return <Navigate to="/error" />;
