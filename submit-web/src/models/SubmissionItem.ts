@@ -1,8 +1,8 @@
 import { Submission, SubmissionStatus } from "./Submission";
 
 type SubmissionItemTypeName =
-  | "Contact Information"
-  | "Management Plan Submission"
+  | "Contact Information Form"
+  | "Management Plan"
   | "Consultation Record(s)";
 
 export type SubmissionItemType = {
@@ -11,8 +11,8 @@ export type SubmissionItemType = {
 };
 
 export const SUBMISSION_ITEM_TYPE: Record<string, SubmissionItemTypeName> = {
-  CONTACT_INFORMATION: "Contact Information",
-  MANAGEMENT_PLAN: "Management Plan Submission",
+  CONTACT_INFORMATION: "Contact Information Form",
+  MANAGEMENT_PLAN: "Management Plan",
   CONSULTATION_RECORD: "Consultation Record(s)",
 };
 
