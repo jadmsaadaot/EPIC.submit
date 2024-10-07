@@ -152,7 +152,7 @@ export const ManagementPlanSubmission = () => {
 
   const saveSubmission = async (
     formData: ManagementPlanSubmissionForm,
-    status?: SubmissionStatus
+    status: SubmissionStatus
   ) => {
     const {
       conditionSatisfied,

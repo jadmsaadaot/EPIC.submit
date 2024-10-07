@@ -25,8 +25,8 @@ const statusStyles: Record<SubmissionStatus, StyleProps> = {
     },
     label: "Completed",
   },
-  PARTIALLY_COMPLETE: {
-    label: "Partially Complete",
+  PARTIALLY_COMPLETED: {
+    label: "Partially Completed",
     sx: {
       borderRadius: 1,
       border: `2px solid ${BCDesignTokens.supportBorderColorWarning}`,
