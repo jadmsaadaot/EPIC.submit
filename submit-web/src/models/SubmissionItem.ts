@@ -19,12 +19,11 @@ export type SubmissionItemType = {
   submission_method: SubmissionItemMethod;
 };
 
-export const SUBMISSION_ITEM_TYPE: Record<string, SubmissionItemTypeName> =
-  Object.freeze({
-    CONTACT_INFORMATION: "Contact Information Form",
-    MANAGEMENT_PLAN: "Management Plan",
-    CONSULTATION_RECORD: "Consultation Record(s)",
-  });
+export const SUBMISSION_ITEM_TYPE: Record<string, SubmissionItemTypeName> = {
+  CONTACT_INFORMATION: "Contact Information Form",
+  MANAGEMENT_PLAN: "Management Plan",
+  CONSULTATION_RECORD: "Consultation Record(s)",
+};
 
 export interface SubmissionItem {
   id: number;
