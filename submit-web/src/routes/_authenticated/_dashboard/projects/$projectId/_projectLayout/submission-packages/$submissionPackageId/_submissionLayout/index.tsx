@@ -48,6 +48,7 @@ export default function SubmissionPage() {
     return () => {
       reset();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const submitPackage = () => {
