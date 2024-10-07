@@ -9,8 +9,9 @@ import { BCDesignTokens } from "epic.theme";
 import SubmissionStatusChip from "./SubmissionStatusChip";
 import { SubmissionItemTableRow as SubmissionItemTableRowType } from "./types";
 import { SUBMISSION_STATUS } from "@/models/Submission";
-import { Link, useParams } from "@tanstack/react-router";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import DocumentRow from "./DocumentRow";
+import { Unless } from "react-if";
 
 type SubmissionItemTableRowProps = {
   item: SubmissionItemTableRowType;
@@ -42,11 +43,20 @@ const StyledTableRow = styled(TableRow)(() => ({
 export default function SubmissionItemTableRow({
   item,
 }: SubmissionItemTableRowProps) {
+  const navigate = useNavigate();
   const { projectId, submissionPackageId } = useParams({
-    strict: false,
+    from: "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId",
   });
 
-  const { name, id, submissions, status } = item;
+  const { name, id, submissions, has_document, status } = item;
+
+  const actionLabel = has_document ? "Add/Edit Files" : "Fill/Edit Form";
+
+  const onActionClick = () => {
+    navigate({
+      to: `/projects/${projectId}/submission-packages/${submissionPackageId}/submissions/${id}`,
+    });
+  };
 
   return (
     <>
@@ -76,16 +86,21 @@ export default function SubmissionItemTableRow({
           <SubmissionStatusChip status={status} />
         </StyledTableCell>
         <StyledTableCell align="right">
-          <Link
-            style={{
-              color: BCDesignTokens.typographyColorLink,
-              textDecoration: "none",
-              marginRight: BCDesignTokens.layoutMarginSmall,
-            }}
-            to={`/projects/${projectId}/submission-packages/${submissionPackageId}/submissions/${id}`}
-          >
-            Edit
-          </Link>
+          <Unless condition={status === SUBMISSION_STATUS.SUBMITTED.value}>
+            <Typography
+              variant="body2"
+              sx={{
+                color: BCDesignTokens.typographyColorLink,
+                "&:hover": {
+                  cursor: "pointer",
+                  textDecoration: "underline",
+                },
+              }}
+              onClick={onActionClick}
+            >
+              {actionLabel}
+            </Typography>
+          </Unless>
         </StyledTableCell>
       </StyledTableRow>
       {submissions.map((submission) => (

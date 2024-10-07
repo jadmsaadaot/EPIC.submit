@@ -13,7 +13,10 @@ import { useState } from "react";
 import { Order } from "../Shared/Table/utils";
 import SwapVertIcon from "@mui/icons-material/SwapVert";
 import SubmissionItemTableRow from "./SubmissionItemTableRow";
-import { SubmissionItem } from "@/models/SubmissionItem";
+import {
+  SUBMISSION_ITEM_METHOD,
+  SubmissionItem,
+} from "@/models/SubmissionItem";
 import { SubmissionItemTableRow as SubmissionItemTableRowType } from "./types";
 import { StyledTableCell } from "../Shared/Table/common";
 import { SUBMISSION_TYPE } from "@/models/Submission";
@@ -40,8 +43,10 @@ export default function ItemsTable({
     submitted_by: subItem.submitted_by,
     version: subItem.version,
     submissions: subItem.submissions.filter(
-      (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT
+      (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT,
     ),
+    has_document:
+      subItem.type.submission_method === SUBMISSION_ITEM_METHOD.DOCUMENT_UPLOAD,
   }));
 
   return (
