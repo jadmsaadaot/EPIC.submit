@@ -14,6 +14,7 @@ const statusStyles: Record<SubmissionStatus, StyleProps> = {
       borderRadius: 1,
       border: `2px solid ${EAOColors.DecisionDark}`,
       background: EAOColors.DecisionLight,
+      height: "24px",
     },
     label: "New Submission",
   },
@@ -22,6 +23,7 @@ const statusStyles: Record<SubmissionStatus, StyleProps> = {
       borderRadius: 1,
       border: `2px solid ${BCDesignTokens.supportBorderColorSuccess}`,
       background: BCDesignTokens.supportSurfaceColorSuccess,
+      height: "24px",
     },
     label: "Completed",
   },
@@ -31,6 +33,7 @@ const statusStyles: Record<SubmissionStatus, StyleProps> = {
       borderRadius: 1,
       border: `2px solid ${BCDesignTokens.supportBorderColorWarning}`,
       background: BCDesignTokens.supportSurfaceColorWarning,
+      height: "24px",
     },
   },
   SUBMITTED: {
@@ -39,6 +42,7 @@ const statusStyles: Record<SubmissionStatus, StyleProps> = {
       borderRadius: 1,
       border: `2px solid ${BCDesignTokens.themeBlue100}`,
       background: BCDesignTokens.themeBlue20,
+      height: "24px",
     },
   },
 };
