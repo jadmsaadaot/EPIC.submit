@@ -56,7 +56,7 @@ class SubmissionByItem(Resource):
         created_submission = SubmissionService.create_submission(submission_item_id, create_submission_data)
         item_id = create_submission_data.get("item_id")
         status = create_submission_data.get("status")
-        if (status):
+        if status:
             SubmissionService.update_submission_item_status(item_id, status)
         return SubmissionSchema().dump(created_submission), HTTPStatus.CREATED
 
@@ -81,6 +81,6 @@ class Submissions(Resource):
         edited_submission = SubmissionService.edit_submission_form(submission_id, edit_submission_data)
         item_id = edit_submission_data.get("item_id")
         status = edit_submission_data.get("status")
-        if (status):
+        if status:
             SubmissionService.update_submission_item_status(item_id, status)
         return SubmissionSchema().dump(edited_submission), HTTPStatus.OK
