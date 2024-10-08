@@ -20,7 +20,6 @@ from flask_restx import Namespace, Resource, cors
 from submit_api.schemas.submission import CreateSubmissionRequestSchema, SubmissionSchema
 from submit_api.services.submission import SubmissionService
 from submit_api.utils.util import cors_preflight
-from sqlalchemy.orm import Session
 from ..auth import auth
 from .apihelper import Api as ApiHelper
 
