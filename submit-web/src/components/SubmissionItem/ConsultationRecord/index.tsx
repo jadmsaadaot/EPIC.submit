@@ -26,7 +26,11 @@ import { useDocumentUploadStore } from "@/store/documentUploadStore";
 import ControlledTextField from "@/components/Shared/controlled/ControlledTextField";
 import { DocumentUploadSection } from "./DocumentUploadSection";
 import { YesNoRadioOptions } from "@/components/Shared/YesNoRadioOptions";
-import { SUBMISSION_TYPE } from "@/models/Submission";
+import {
+  SUBMISSION_STATUS,
+  SUBMISSION_TYPE,
+  SubmissionStatus,
+} from "@/models/Submission";
 import CloseIcon from "@mui/icons-material/Close";
 import { When } from "react-if";
 import { useGetSubmissionItem } from "@/hooks/api/useItems";
@@ -40,7 +44,7 @@ const consultationRecordSchema = yup.object().shape({
         consultedParty: yup
           .string()
           .required("Please provide the name of the consulted party."),
-      }),
+      })
     )
     .required("Please provide at least one consulted party."),
   allPartiesConsulted: yup.string().required("Please answer this question."),
@@ -81,7 +85,7 @@ export const ConsultationRecord = () => {
   });
 
   const formSubmission = submissionItem?.submissions?.find(
-    (submission) => submission.type === SUBMISSION_TYPE.FORM,
+    (submission) => submission.type === SUBMISSION_TYPE.FORM
   );
   const defaultFormValues = useMemo(() => {
     if (!formSubmission?.submitted_form?.submission_json) return {};
@@ -89,31 +93,31 @@ export const ConsultationRecord = () => {
     return {
       ...formSubmission.submitted_form.submission_json,
       allPartiesConsulted: booleanToString(
-        formSubmission.submitted_form.submission_json.allPartiesConsulted,
+        formSubmission.submitted_form.submission_json.allPartiesConsulted
       ),
       planWasReviewed: booleanToString(
-        formSubmission.submitted_form.submission_json.planWasReviewed,
+        formSubmission.submitted_form.submission_json.planWasReviewed
       ),
       writtenExplanationsProvidedToParties: booleanToString(
         formSubmission.submitted_form.submission_json
-          .writtenExplanationsProvidedToParties,
+          .writtenExplanationsProvidedToParties
       ),
       writtenExplanationsProvidedToCommenters: booleanToString(
         formSubmission.submitted_form.submission_json
-          .writtenExplanationsProvidedToCommenters,
+          .writtenExplanationsProvidedToCommenters
       ),
     };
   }, [formSubmission]);
 
   const documentSubmissions = submissionItem?.submissions?.filter(
-    (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT,
+    (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT
   );
   const defaultDocumentValues = useMemo(() => {
     if (!documentSubmissions) return {};
 
     return {
       consultationRecords: documentSubmissions.map(
-        (submission) => submission.submitted_document.url,
+        (submission) => submission.submitted_document.url
       ),
     };
   }, [documentSubmissions]);
@@ -162,7 +166,14 @@ export const ConsultationRecord = () => {
     formState: { errors, dirtyFields },
   } = methods;
 
-  const saveSubmission = async (formData: ConsultationRecordForm) => {
+  const handleFormSubmit = (formData: ConsultationRecordForm) => {
+    saveSubmission(formData, SUBMISSION_STATUS.COMPLETED.value); // Add default status here
+  };
+
+  const saveSubmission = async (
+    formData: ConsultationRecordForm,
+    status: SubmissionStatus
+  ) => {
     const {
       consultedParties,
       allPartiesConsulted,
@@ -173,15 +184,16 @@ export const ConsultationRecord = () => {
     callSaveSubmission({
       data: {
         type: SUBMISSION_TYPE.FORM,
+        status: status || SUBMISSION_STATUS.COMPLETED.value,
         data: {
           consultedParties,
           allPartiesConsulted: stringToBoolean(allPartiesConsulted),
           planWasReviewed: stringToBoolean(planWasReviewed),
           writtenExplanationsProvidedToParties: stringToBoolean(
-            writtenExplanationsProvidedToParties,
+            writtenExplanationsProvidedToParties
           ),
           writtenExplanationsProvidedToCommenters: stringToBoolean(
-            writtenExplanationsProvidedToCommenters,
+            writtenExplanationsProvidedToCommenters
           ),
         },
       },
@@ -199,7 +211,7 @@ export const ConsultationRecord = () => {
       ...methods.getValues(),
     };
 
-    saveSubmission(formData);
+    saveSubmission(formData, SUBMISSION_STATUS.PARTIALLY_COMPLETED.value);
   };
 
   useEffect(() => {
@@ -243,7 +255,7 @@ export const ConsultationRecord = () => {
               title={accountProject.project.name + " Management Plan"}
             />
             <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(saveSubmission)}>
+              <form onSubmit={handleSubmit(handleFormSubmit)}>
                 <Grid container spacing={BCDesignTokens.layoutMarginMedium}>
                   <Grid item xs={12}>
                     <Typography
@@ -383,7 +395,7 @@ export const ConsultationRecord = () => {
                       <ControlledRadioGroup name="writtenExplanationsProvidedToParties">
                         <YesNoRadioOptions
                           error={Boolean(
-                            errors["writtenExplanationsProvidedToParties"],
+                            errors["writtenExplanationsProvidedToParties"]
                           )}
                         />
                       </ControlledRadioGroup>
@@ -401,7 +413,7 @@ export const ConsultationRecord = () => {
                       <ControlledRadioGroup name="writtenExplanationsProvidedToCommenters">
                         <YesNoRadioOptions
                           error={Boolean(
-                            errors["writtenExplanationsProvidedToCommenters"],
+                            errors["writtenExplanationsProvidedToCommenters"]
                           )}
                         />
                       </ControlledRadioGroup>
