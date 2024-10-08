@@ -185,6 +185,7 @@ export const ConsultationRecord = () => {
       data: {
         type: SUBMISSION_TYPE.FORM,
         status: status || SUBMISSION_STATUS.COMPLETED.value,
+        item_id: submissionItemId,
         data: {
           consultedParties,
           allPartiesConsulted: stringToBoolean(allPartiesConsulted),
