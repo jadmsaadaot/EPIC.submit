@@ -166,7 +166,7 @@ export const ConsultationRecord = () => {
     formState: { errors, dirtyFields },
   } = methods;
 
-  const handleFormSubmit = (formData: ConsultationRecordForm) => {
+  const handleCompleteForm = (formData: ConsultationRecordForm) => {
     saveSubmission(formData, SUBMISSION_STATUS.COMPLETED.value); // Add default status here
   };
 
@@ -184,7 +184,7 @@ export const ConsultationRecord = () => {
     callSaveSubmission({
       data: {
         type: SUBMISSION_TYPE.FORM,
-        status: status || SUBMISSION_STATUS.COMPLETED.value,
+        status,
         item_id: submissionItemId,
         data: {
           consultedParties,
@@ -256,7 +256,7 @@ export const ConsultationRecord = () => {
               title={accountProject.project.name + " Management Plan"}
             />
             <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(handleFormSubmit)}>
+              <form onSubmit={handleSubmit(handleCompleteForm)}>
                 <Grid container spacing={BCDesignTokens.layoutMarginMedium}>
                   <Grid item xs={12}>
                     <Typography

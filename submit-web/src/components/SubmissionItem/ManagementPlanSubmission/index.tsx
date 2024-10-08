@@ -150,7 +150,7 @@ export const ManagementPlanSubmission = () => {
     return () => setIsOpen(false);
   }, [isCreatingSubmissionPending, setIsOpen]);
 
-  const handleFormSubmit = (formData: ManagementPlanSubmissionForm) => {
+  const handleCompleteForm = (formData: ManagementPlanSubmissionForm) => {
     saveSubmission(formData, SUBMISSION_STATUS.COMPLETED.value); // Add default status here
   };
 
@@ -167,7 +167,7 @@ export const ManagementPlanSubmission = () => {
     callSaveSubmission({
       data: {
         type: SUBMISSION_TYPE.FORM,
-        status: status || SUBMISSION_STATUS.COMPLETED.value,
+        status,
         item_id: submissionItemId,
         data: {
           conditionSatisfied: stringToBoolean(conditionSatisfied),
@@ -229,7 +229,7 @@ export const ManagementPlanSubmission = () => {
               title={accountProject.project.name + " Management Plan"}
             />
             <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(handleFormSubmit)}>
+              <form onSubmit={handleSubmit(handleCompleteForm)}>
                 <Grid container spacing={BCDesignTokens.layoutMarginMedium}>
                   <Grid item xs={12}>
                     <Typography
