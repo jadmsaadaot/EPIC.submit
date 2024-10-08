@@ -69,5 +69,5 @@ class SubmissionService:
         if status is None:
             raise ValueError("Status is required.")
         update_data = {"status": status}
-        ItemService.update_item(item_id, update_data)
+        ItemService.update_submission_item(item_id, update_data)
         return

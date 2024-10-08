@@ -13,8 +13,8 @@ class ItemService:
         return item
 
     @classmethod
-    def update_item(cls, item_id, update_data):
-        """Update item by id."""
+    def update_submission_item(cls, item_id, update_data):
+        """Update submission item by id."""
         submission_item = cls.get_item_by_id(item_id)
         if not submission_item:
             raise ValueError(f"Item with id {item_id} not found.")
