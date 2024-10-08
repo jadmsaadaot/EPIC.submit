@@ -34,7 +34,6 @@ class SubmissionService:
     @classmethod
     def create_submission(cls, item_id, request_data):
         """Create a new submission."""
-
         submission_type = request_data.get("type")
         if not submission_type:
             raise ValueError("Submission type is required.")
