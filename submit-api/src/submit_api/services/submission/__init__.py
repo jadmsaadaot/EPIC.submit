@@ -37,15 +37,8 @@ class SubmissionService:
         submission_type = request_data.get("type")
         if not submission_type:
             raise ValueError("Submission type is required.")
-
         submission_creator = cls.make_submission_creator(submission_type)
         submission_data = request_data.get("data")
-        status = request_data.get("status")
-        # Update the item with the status from the request
-        if status is not None:
-            update_data = {"status": status}
-            ItemService.update_item(item_id, update_data)
-
         submission = submission_creator.create(item_id, submission_data)
         return submission
 
@@ -68,10 +61,13 @@ class SubmissionService:
         submission = cls.get_submission_by_id_and_validate_edit(submission_id)
         submission.submitted_form.submission_json = request.get('data')
         submission.submitted_form.save()
-        item_id = request.get("item_id")
-        status = request.get("status")
-        # Update the item with the status from the request
-        if status is not None:
-            update_data = {"status": status}
-            ItemService.update_item(item_id, update_data)
         return submission
+
+    @classmethod
+    def update_submission_item_status(cls, item_id, status):
+        """Update the status of the submission item."""
+        if status is None:
+            raise ValueError("Status is required.")
+        update_data = {"status": status}
+        ItemService.update_item(item_id, update_data)
+        return
