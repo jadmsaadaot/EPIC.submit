@@ -11,3 +11,16 @@ class ItemService:
         """Get item by id."""
         item = ItemModel.find_by_id(item_id)
         return item
+
+    @classmethod
+    def update_submission_item(cls, item_id, update_data):
+        """Update submission item by id."""
+        submission_item = cls.get_item_by_id(item_id)
+        if not submission_item:
+            raise ValueError(f"Item with id {item_id} not found.")
+
+        for key, value in update_data.items():
+            setattr(submission_item, key, value)
+
+        submission_item.save()
+        return submission_item

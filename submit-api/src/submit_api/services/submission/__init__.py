@@ -4,6 +4,7 @@ from submit_api.models.submission import Submission as SubmissionModel
 from submit_api.models.submission import SubmissionTypeStatus
 from submit_api.services.submission.submission_creator_factory import (
     DocumentSubmissionCreator, FormSubmissionCreator, SubmissionCreatorFactory)
+from submit_api.services.item import ItemService
 
 
 class SubmissionService:
@@ -36,10 +37,10 @@ class SubmissionService:
         submission_type = request_data.get("type")
         if not submission_type:
             raise ValueError("Submission type is required.")
-
         submission_creator = cls.make_submission_creator(submission_type)
         submission_data = request_data.get("data")
-        return submission_creator.create(item_id, submission_data)
+        submission = submission_creator.create(item_id, submission_data)
+        return submission
 
     @classmethod
     def get_submission_by_id_and_validate_edit(cls, submission_id):
@@ -61,3 +62,11 @@ class SubmissionService:
         submission.submitted_form.submission_json = request.get('data')
         submission.submitted_form.save()
         return submission
+
+    @classmethod
+    def update_submission_item_status(cls, item_id, status):
+        """Update the status of the submission item."""
+        if status is None:
+            raise ValueError("Status is required.")
+        update_data = {"status": status}
+        ItemService.update_submission_item(item_id, update_data)

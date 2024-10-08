@@ -7,12 +7,14 @@ type StyleProps = {
   sx: Record<string, string | number>;
   label: string;
 };
+
 const statusStyles: Record<SubmissionStatus, StyleProps> = {
   NEW_SUBMISSION: {
     sx: {
       borderRadius: 1,
       border: `2px solid ${EAOColors.DecisionDark}`,
       background: EAOColors.DecisionLight,
+      height: "24px",
     },
     label: "New Submission",
   },
@@ -21,15 +23,17 @@ const statusStyles: Record<SubmissionStatus, StyleProps> = {
       borderRadius: 1,
       border: `2px solid ${BCDesignTokens.supportBorderColorSuccess}`,
       background: BCDesignTokens.supportSurfaceColorSuccess,
+      height: "24px",
     },
     label: "Completed",
   },
-  PARTIALLY_COMPLETE: {
-    label: "Partially Complete",
+  PARTIALLY_COMPLETED: {
+    label: "Partially Completed",
     sx: {
       borderRadius: 1,
       border: `2px solid ${BCDesignTokens.supportBorderColorWarning}`,
       background: BCDesignTokens.supportSurfaceColorWarning,
+      height: "24px",
     },
   },
   SUBMITTED: {
@@ -38,6 +42,7 @@ const statusStyles: Record<SubmissionStatus, StyleProps> = {
       borderRadius: 1,
       border: `2px solid ${BCDesignTokens.themeBlue100}`,
       background: BCDesignTokens.themeBlue20,
+      height: "24px",
     },
   },
 };
@@ -47,7 +52,7 @@ export default function SubmissionStatusChip({
 }: {
   status: SubmissionStatus;
 }) {
-  const style = statusStyles[status];
+  const style = statusStyles[status] || statusStyles.NEW_SUBMISSION;
 
   return (
     <Chip

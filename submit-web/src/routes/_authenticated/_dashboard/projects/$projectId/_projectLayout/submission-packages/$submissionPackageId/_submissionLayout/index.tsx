@@ -21,7 +21,7 @@ import { usePackageStore } from "@/components/Submission/packageStore";
 import { useEffect } from "react";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/",
+  "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/"
 )({
   component: SubmissionPage,
 });
@@ -129,7 +129,7 @@ export default function SubmissionPage() {
                     Submission Status:
                   </Typography>
                   <SubmissionStatusChip
-                    status={SUBMISSION_STATUS.PARTIALLY_COMPLETE.value}
+                    status={SUBMISSION_STATUS.PARTIALLY_COMPLETED.value}
                   />
                 </Box>
               </Box>
