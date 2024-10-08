@@ -11,7 +11,7 @@ from sqlalchemy import Column, Enum, ForeignKey
 from .base_model import BaseModel
 from .db import db
 
-    
+
 class ItemStatus(enum.Enum):
     """Enum for item statuses."""
 
