@@ -13,7 +13,8 @@ import { SubmissionItemTableRow as SubmissionItemTableRowType } from "./types";
 import { SUBMISSION_STATUS } from "@/models/Submission";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import DocumentRow from "./DocumentRow";
-import { Unless, When } from "react-if";
+import { Else, If, Then, Unless, When } from "react-if";
+import { SUBMISSION_ITEM_TYPE } from "@/models/SubmissionItem";
 
 const StyledTableCell = styled(TableCell)<{ error?: boolean }>(({ error }) => ({
   borderTop: error
@@ -58,7 +59,7 @@ const PackageTableRow = ({
   const childrenWithProps = React.Children.map(children, (child) =>
     React.isValidElement(child)
       ? React.cloneElement(child, { error } as any) // eslint-disable-line @typescript-eslint/no-explicit-any
-      : child,
+      : child
   );
 
   return (
@@ -116,7 +117,19 @@ export default function SubmissionItemTableRow({
         <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right">
-          <SubmissionStatusChip status={status} />
+          <If
+            condition={
+              SUBMISSION_STATUS.NEW_SUBMISSION.value == status &&
+              name !== SUBMISSION_ITEM_TYPE.MANAGEMENT_PLAN
+            }
+          >
+            <Then>
+              <></>
+            </Then>
+            <Else>
+              <SubmissionStatusChip status={status} />
+            </Else>
+          </If>
         </StyledTableCell>
         <StyledTableCell align="right">
           <Unless condition={status === SUBMISSION_STATUS.SUBMITTED.value}>
