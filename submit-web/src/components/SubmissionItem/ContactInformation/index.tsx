@@ -18,6 +18,7 @@ import { ProjectStatus } from "@/components/registration/addProjects/ProjectStat
 import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
 import { useGetProject } from "@/hooks/api/useProjects";
 import { useGetSubmissionItem } from "@/hooks/api/useItems";
+import Form from "@/components/Shared/Forms/common";
 
 const contactInformationSchema = yup.object().shape({
   primaryContact: yup.object().shape({
@@ -156,7 +157,7 @@ export const ContactInformation = () => {
             />
 
             <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(onSubmitHandler)}>
+              <Form onSubmit={handleSubmit(onSubmitHandler)}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Typography
@@ -308,7 +309,7 @@ export const ContactInformation = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-              </form>
+              </Form>
             </FormProvider>
           </Box>
         </Box>
