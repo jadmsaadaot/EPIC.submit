@@ -79,23 +79,23 @@ class PackageByAccountProject(Resource):
         return PackageSchema().dump(created_package), HTTPStatus.CREATED
 
 
-@cors_preflight("GET, OPTIONS, POST")
-@API.route("/<int:package_id>/status", methods=["POST", "GET", "OPTIONS"])
-class Package(Resource):
-    """Resource for managing projects."""
+@cors_preflight("OPTIONS, POST")
+@API.route("/<int:package_id>/state", methods=["POST", "OPTIONS"])
+class PackageState(Resource):
+    """Resource for managing packages state."""
 
     @staticmethod
     @ApiHelper.swagger_decorators(
-        API, endpoint_description="Get package by id"
+        API, endpoint_description="Update package state"
     )
     @API.response(
-        code=HTTPStatus.OK, model=package_model, description="Submission Package"
+        code=HTTPStatus.OK, model=package_model, description="Updated Package"
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
     @cors.crossdomain(origin="*")
     @auth.require
     def post(package_id):
-        """Get package by id."""
+        """Update package state."""
         request_body = PostPackageState().load(API.payload)
         package = PackageService.update_package_state(package_id, request_body)
         return PackageSchema().dump(package), HTTPStatus.OK
