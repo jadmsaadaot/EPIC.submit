@@ -5,7 +5,7 @@ type FormProps = {
   children: React.ReactNode;
 } & React.FormHTMLAttributes<HTMLFormElement>;
 
-export default function Form({ onSubmit, children, ...rest }: FormProps) {
+export default function Form({ children, ...rest }: FormProps) {
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (
       event.key === "Enter" &&
@@ -16,7 +16,7 @@ export default function Form({ onSubmit, children, ...rest }: FormProps) {
   };
 
   return (
-    <form onSubmit={onSubmit} onKeyDown={handleKeyDown} {...rest}>
+    <form onKeyDown={handleKeyDown} {...rest}>
       {children}
     </form>
   );
