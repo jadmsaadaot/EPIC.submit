@@ -9,7 +9,6 @@ export type FileUploadProps = {
   accept?: Accept;
   onDrop: (acceptedFiles: File[]) => void;
   error?: boolean;
-  maxSize?: number;
 };
 export const FileUpload = ({
   height = "10em",
