@@ -116,7 +116,7 @@ export default function SubmissionItemTableRow({
         <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right">
-          <When condition={SUBMISSION_STATUS.NEW_SUBMISSION.value != status}>
+          <When condition={SUBMISSION_STATUS.NEW_SUBMISSION.value !== status}>
             <SubmissionStatusChip status={status} />
           </When>
         </StyledTableCell>
