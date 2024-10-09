@@ -1,5 +1,5 @@
-import React from "react";
-import { Grid } from "@mui/material";
+import React, { useState } from "react";
+import { FormHelperText, Grid } from "@mui/material";
 import Dropzone, { Accept } from "react-dropzone";
 import { BCDesignTokens } from "epic.theme";
 
@@ -9,7 +9,10 @@ interface UploaderProps {
   children: React.ReactNode;
   onDrop?: (acceptedFiles: File[]) => void;
   error?: boolean;
+  maxSize?: number;
 }
+const MAX_FILE_SIZE = 250 * 1024 * 1024;
+
 const Uploader = ({
   height = "10em",
   accept = {},
@@ -18,12 +21,27 @@ const Uploader = ({
   },
   error = false,
   children,
+  maxSize = MAX_FILE_SIZE,
 }: UploaderProps) => {
+  const [sizeError, setSizeError] = useState<string | null>(null);
+
   return (
     <Dropzone
-      onDrop={(acceptedFiles) => {
-        if (acceptedFiles.length === 0) return;
-        onDrop(acceptedFiles);
+      maxSize={maxSize}
+      onDrop={(acceptedFiles, rejectedFiles) => {
+        // Check if any files exceed the maximum size
+        const oversizedFiles = rejectedFiles.filter(
+          (file) => file.file.size > maxSize
+        );
+
+        if (oversizedFiles.length > 0) {
+          setSizeError(
+            `This file exceeds the ${maxSize / (1024 * 1024)} MB limit.`
+          );
+        } else {
+          setSizeError(null);
+          onDrop(acceptedFiles);
+        }
       }}
       accept={accept}
     >
@@ -50,7 +68,15 @@ const Uploader = ({
           >
             <input {...getInputProps()} multiple={false} />
             {children}
-          </Grid>
+          </Grid>{" "}
+          {sizeError && (
+            <FormHelperText
+              error
+              style={{ textAlign: "left", marginTop: "8px" }}
+            >
+              {sizeError}
+            </FormHelperText>
+          )}{" "}
         </section>
       )}
     </Dropzone>

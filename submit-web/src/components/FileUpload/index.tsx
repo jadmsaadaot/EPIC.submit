@@ -13,10 +13,12 @@ export type FileUploadProps = {
 export const FileUpload = ({
   height = "10em",
   accept = {
-    pdf: [],
-    doc: [],
-    docx: [],
-    xls: [],
+    "application/pdf": [],
+    "application/msword": [],
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+      [],
+    "application/vnd.ms-excel": [],
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [],
   },
   error = false,
   onDrop,
@@ -31,14 +33,14 @@ export const FileUpload = ({
         fontWeight={BCDesignTokens.typographyFontWeightsBold}
         sx={{ color: BCDesignTokens.typographyColorSecondary }}
       >
-        Drag and Drop File(s) Here or{" "}
+        Drag and Drop a File Here or{" "}
         <span
           style={{
             textDecoration: "underline",
             color: "#1A5A96",
           }}
         >
-          Select File(s)
+          Select a File
         </span>
       </Typography>
     </Uploader>

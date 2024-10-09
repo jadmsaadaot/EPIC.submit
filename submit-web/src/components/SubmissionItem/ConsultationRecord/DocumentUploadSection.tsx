@@ -29,7 +29,7 @@ export const DocumentUploadSection = () => {
   const handleOnDrop = (acceptedFiles: File[]) => {
     handleAddDocuments(
       acceptedFiles[0],
-      CONSULTATION_RECORD_DOCUMENT_FOLDERS.CONSULTATION_RECORDS,
+      CONSULTATION_RECORD_DOCUMENT_FOLDERS.CONSULTATION_RECORDS
     );
   };
 
@@ -39,17 +39,17 @@ export const DocumentUploadSection = () => {
   }
 
   const documentSubmissions = submissionItem?.submissions.filter(
-    (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT,
+    (submission) => submission.type === SUBMISSION_TYPE.DOCUMENT
   );
 
   const documentSubmissionIds = documentSubmissions?.map(
-    (submission) => submission.id,
+    (submission) => submission.id
   );
 
   const pendingDocuments = documents.filter(
     (document) =>
       !document.submissionId ||
-      !documentSubmissionIds?.includes(document.submissionId),
+      !documentSubmissionIds?.includes(document.submissionId)
   );
 
   return (
@@ -100,7 +100,7 @@ export const DocumentUploadSection = () => {
             color: EAOColors.ProponentDark,
           }}
         >
-          Accepted file types: pdf, doc, docx, xlsx, Max. file size: 250 MB.
+          Accepted file types: pdf, doc, docx, xlsx. Max. file size: 250 MB.
         </Typography>
       </Grid>
       <When condition={Boolean(documentSubmissions?.length)}>
