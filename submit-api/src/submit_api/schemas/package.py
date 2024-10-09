@@ -6,6 +6,7 @@ Manages the package
 from marshmallow import EXCLUDE, Schema, fields
 
 from submit_api.models.package import PackageStatus
+from submit_api.schemas.account_user import AccountUserSchema
 from submit_api.schemas.item import ItemSchema
 from submit_api.schemas.package_type import PackageTypeSchema
 
@@ -62,6 +63,6 @@ class PackageSchema(Schema):
     type_id = fields.Int(data_key="type_id")
     status = fields.Enum(data_key="status", enum=PackageStatus)
     submitted_on = fields.DateTime(data_key="submitted_on")
-    submitted_by = fields.Str(data_key="submitted_by")
+    submitted_by_account_user = fields.Pluck(AccountUserSchema, "full_name", data_key="submitted_by")
     meta = fields.Nested(PackageMetadataSchema, data_key="meta", many=True)
     items = fields.Nested(ItemSchema, data_key="items", many=True)

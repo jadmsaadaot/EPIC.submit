@@ -3,6 +3,7 @@ import { Link, TableCell, TableRow, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
 import PackageStatusChip from "./ProjectStatusChip";
 import { SubmissionPackage } from "@/models/Package";
+import dayjs from "dayjs";
 
 interface ProjectRowProps {
   subPackage: SubmissionPackage;
@@ -68,7 +69,9 @@ export default function ProjectTableRow({
             py: BCDesignTokens.layoutPaddingXsmall,
           }}
         >
-          {subPackage.submitted_on ?? "--"}
+          {subPackage.submitted_on
+            ? dayjs(subPackage.submitted_on).format("DD-MMM-YYYY")
+            : "--"}
         </TableCell>
         <TableCell
           colSpan={2}

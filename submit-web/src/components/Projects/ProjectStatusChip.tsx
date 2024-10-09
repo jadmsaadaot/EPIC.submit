@@ -18,7 +18,7 @@ const statusStyles: Record<PackageStatus, StyleProps> = {
   IN_REVIEW: {
     sx: {
       borderRadius: 1,
-      border: `2px solid ${BCDesignTokens.themeBlue100}`,
+      border: `1px solid ${BCDesignTokens.themeBlue100}`,
       background: BCDesignTokens.themeBlue20,
     },
     label: "In Review",
@@ -29,6 +29,22 @@ const statusStyles: Record<PackageStatus, StyleProps> = {
       //TODO - Add styles for rejected status
     },
   },
+  SUBMITTED: {
+    sx: {
+      borderRadius: 1,
+      border: `1px solid ${BCDesignTokens.supportBorderColorInfo}`,
+      background: BCDesignTokens.themeBlue20,
+    },
+    label: "Submitted",
+  },
+  COMPLETED: {
+    sx: {
+      borderRadius: 1,
+      border: `1px solid ${BCDesignTokens.supportBorderColorSuccess}`,
+      background: BCDesignTokens.supportSurfaceColorSuccess,
+    },
+    label: "Completed",
+  },
 };
 
 export default function PackageStatusChip({
@@ -37,6 +53,10 @@ export default function PackageStatusChip({
   status: PackageStatus;
 }) {
   const style = statusStyles[status];
+
+  if (!style) {
+    return null;
+  }
 
   return (
     <Chip

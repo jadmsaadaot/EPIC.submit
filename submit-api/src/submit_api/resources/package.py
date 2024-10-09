@@ -55,6 +55,7 @@ class Package(Resource):
     def get(package_id):
         """Get package by id."""
         package = PackageService.get_package_by_id(package_id)
+        print(str(package.submitted_by_account_user))
         return PackageSchema().dump(package), HTTPStatus.OK
 
 

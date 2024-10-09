@@ -87,7 +87,7 @@ class PackageService:
     def _get_and_validate_complete_package(package_id) -> PackageModel:
         """Retrieve and validate that all items in the package are completed."""
         package = PackageModel.find_by_id(package_id)
-        if any(item.status != ItemStatus.COMPLETED.value for item in package.items):
+        if any(item.status.value != ItemStatus.COMPLETED.value for item in package.items):
             raise BadRequestError("All items must be completed before completing the package")
         return package
 
@@ -103,7 +103,7 @@ class PackageService:
         """Update package submission details."""
         package.submitted_on = datetime.utcnow()
         package.submitted_by = TokenInfo.get_id()
-        package.status = PackageStatus.SUBMITTED.value
+        package.status = PackageStatus.SUBMITTED
         session.add(package)
 
     @classmethod
@@ -113,7 +113,7 @@ class PackageService:
 
         with session_scope() as session:
             cls._update_package_submission_details(package, session)
-            cls._update_items_status(package.items, ItemStatus.SUBMITTED.value, session)
+            cls._update_items_status(package.items, ItemStatus.SUBMITTED, session)
             session.flush()
             session.commit()
         return package
