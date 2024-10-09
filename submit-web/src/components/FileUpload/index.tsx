@@ -9,14 +9,17 @@ export type FileUploadProps = {
   accept?: Accept;
   onDrop: (acceptedFiles: File[]) => void;
   error?: boolean;
+  maxSize?: number;
 };
 export const FileUpload = ({
   height = "10em",
   accept = {
-    pdf: [],
-    doc: [],
-    docx: [],
-    xls: [],
+    "application/pdf": [],
+    "application/msword": [],
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+      [],
+    "application/vnd.ms-excel": [],
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [],
   },
   error = false,
   onDrop,
@@ -38,7 +41,7 @@ export const FileUpload = ({
             color: "#1A5A96",
           }}
         >
-          Select a Filea
+          Select a File
         </span>
       </Typography>
     </Uploader>
