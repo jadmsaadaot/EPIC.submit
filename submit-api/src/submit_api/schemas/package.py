@@ -23,6 +23,17 @@ class PostPackageRequestSchema(Schema):
     type = fields.Str(data_key="type")
 
 
+class PostPackageState(Schema):
+    """package schema."""
+
+    class Meta:  # pylint: disable=too-few-public-methods
+        """Exclude unknown fields in the deserialized output."""
+
+        unknown = EXCLUDE
+
+    status = fields.Str(data_key="status")
+
+
 class PackageMetadataSchema(Schema):
     """package schema."""
 

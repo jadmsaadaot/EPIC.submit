@@ -17,7 +17,7 @@ from http import HTTPStatus
 
 from flask_restx import Namespace, Resource, cors
 
-from submit_api.schemas.package import PackageSchema, PostPackageRequestSchema
+from submit_api.schemas.package import PackageSchema, PostPackageRequestSchema, PostPackageState
 from submit_api.services.package import PackageService
 from submit_api.utils.util import cors_preflight
 
@@ -54,8 +54,8 @@ class Package(Resource):
     @auth.require
     def get(package_id):
         """Get package by id."""
-        projects = PackageService.get_package_by_id(package_id)
-        return PackageSchema().dump(projects), HTTPStatus.OK
+        package = PackageService.get_package_by_id(package_id)
+        return PackageSchema().dump(package), HTTPStatus.OK
 
 
 @cors_preflight("GET, OPTIONS, POST")
@@ -77,3 +77,25 @@ class PackageByAccountProject(Resource):
         create_package_data = PostPackageRequestSchema().load(API.payload)
         created_package = PackageService.create_package(account_project_id, create_package_data)
         return PackageSchema().dump(created_package), HTTPStatus.CREATED
+
+
+@cors_preflight("OPTIONS, POST")
+@API.route("/<int:package_id>/state", methods=["POST", "OPTIONS"])
+class PackageState(Resource):
+    """Resource for managing packages state."""
+
+    @staticmethod
+    @ApiHelper.swagger_decorators(
+        API, endpoint_description="Update package state"
+    )
+    @API.response(
+        code=HTTPStatus.OK, model=package_model, description="Updated Package"
+    )
+    @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
+    @cors.crossdomain(origin="*")
+    @auth.require
+    def post(package_id):
+        """Update package state."""
+        request_body = PostPackageState().load(API.payload)
+        package = PackageService.update_package_state(package_id, request_body)
+        return PackageSchema().dump(package), HTTPStatus.OK

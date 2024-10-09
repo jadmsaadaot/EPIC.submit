@@ -18,6 +18,7 @@ class ItemStatus(enum.Enum):
     NEW_SUBMISSION = 'NEW_SUBMISSION'
     PARTIALLY_COMPLETED = 'PARTIALLY_COMPLETED'
     COMPLETED = 'COMPLETED'
+    SUBMITTED = 'SUBMITTED'
 
 
 class Item(BaseModel):
