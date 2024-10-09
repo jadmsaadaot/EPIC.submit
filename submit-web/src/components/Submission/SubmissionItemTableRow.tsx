@@ -58,7 +58,7 @@ const PackageTableRow = ({
   const childrenWithProps = React.Children.map(children, (child) =>
     React.isValidElement(child)
       ? React.cloneElement(child, { error } as any) // eslint-disable-line @typescript-eslint/no-explicit-any
-      : child,
+      : child
   );
 
   return (
@@ -116,7 +116,9 @@ export default function SubmissionItemTableRow({
         <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right">
-          <SubmissionStatusChip status={status} />
+          <When condition={SUBMISSION_STATUS.NEW_SUBMISSION.value !== status}>
+            <SubmissionStatusChip status={status} />
+          </When>
         </StyledTableCell>
         <StyledTableCell align="right">
           <Unless condition={status === SUBMISSION_STATUS.SUBMITTED.value}>
