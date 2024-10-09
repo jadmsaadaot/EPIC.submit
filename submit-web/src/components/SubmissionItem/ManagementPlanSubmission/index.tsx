@@ -38,11 +38,7 @@ const managementPlanSubmissionSchema = yup.object().shape({
     .of(yup.string())
     .required("Please upload at least one document.")
     .min(1, "Please upload at least one document."),
-  supportingDocuments: yup
-    .array()
-    .of(yup.string())
-    .required("Please upload at least one document.")
-    .min(1, "Please upload at least one document."),
+  supportingDocuments: yup.array().of(yup.string()),
 });
 
 type ManagementPlanSubmissionForm = yup.InferType<

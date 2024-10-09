@@ -9,7 +9,7 @@ import {
 import { BCDesignTokens } from "epic.theme";
 import { SubmissionPackage } from "@/models/Package";
 import ProjectTableRow from "./ProjectTableRow";
-import { StyledTableCell } from "../Shared/Table/common";
+import { StyledTableHeadCell } from "../Shared/Table/common";
 
 export default function SubmissionPackageTable({
   submissionPackages,
@@ -33,16 +33,18 @@ export default function SubmissionPackageTable({
             }}
           >
             <TableRow>
-              <StyledTableCell colSpan={6}>Submission Name</StyledTableCell>
-              <StyledTableCell colSpan={2} align="right">
+              <StyledTableHeadCell colSpan={6}>
+                Submission Name
+              </StyledTableHeadCell>
+              <StyledTableHeadCell colSpan={2} align="right">
                 Submitted On
-              </StyledTableCell>
-              <StyledTableCell colSpan={2} align="right">
+              </StyledTableHeadCell>
+              <StyledTableHeadCell colSpan={2} align="right">
                 Submitted By
-              </StyledTableCell>
-              <StyledTableCell colSpan={2} align="center">
+              </StyledTableHeadCell>
+              <StyledTableHeadCell colSpan={2} align="center">
                 Status
-              </StyledTableCell>
+              </StyledTableHeadCell>
             </TableRow>
           </TableHead>
         )}
