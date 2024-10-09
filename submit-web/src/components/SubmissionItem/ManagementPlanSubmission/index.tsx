@@ -150,6 +150,12 @@ export const ManagementPlanSubmission = () => {
     saveSubmission(formData, SUBMISSION_STATUS.COMPLETED.value); // Add default status here
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  };
+
   const saveSubmission = async (
     formData: ManagementPlanSubmissionForm,
     status: SubmissionStatus
@@ -225,7 +231,10 @@ export const ManagementPlanSubmission = () => {
               title={accountProject.project.name + " Management Plan"}
             />
             <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(handleCompleteForm)}>
+              <form
+                onSubmit={handleSubmit(handleCompleteForm)}
+                onKeyDown={handleKeyDown}
+              >
                 <Grid container spacing={BCDesignTokens.layoutMarginMedium}>
                   <Grid item xs={12}>
                     <Typography

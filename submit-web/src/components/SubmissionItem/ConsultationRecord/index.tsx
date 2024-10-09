@@ -215,6 +215,12 @@ export const ConsultationRecord = () => {
     saveSubmission(formData, SUBMISSION_STATUS.PARTIALLY_COMPLETED.value);
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  };
+
   useEffect(() => {
     setIsOpen(isCreatingSubmissionPending);
     return () => setIsOpen(false);
@@ -256,7 +262,10 @@ export const ConsultationRecord = () => {
               title={accountProject.project.name + " Management Plan"}
             />
             <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(handleCompleteForm)}>
+              <form
+                onSubmit={handleSubmit(handleCompleteForm)}
+                onKeyDown={handleKeyDown}
+              >
                 <Grid container spacing={BCDesignTokens.layoutMarginMedium}>
                   <Grid item xs={12}>
                     <Typography

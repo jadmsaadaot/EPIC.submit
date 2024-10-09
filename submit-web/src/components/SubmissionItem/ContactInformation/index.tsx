@@ -122,6 +122,12 @@ export const ContactInformation = () => {
     });
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+    }
+  };
+
   if (!accountProject) return <Navigate to="/error" />;
 
   return (
@@ -156,7 +162,10 @@ export const ContactInformation = () => {
             />
 
             <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(onSubmitHandler)}>
+              <form
+                onSubmit={handleSubmit(onSubmitHandler)}
+                onKeyDown={handleKeyDown}
+              >
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Typography
