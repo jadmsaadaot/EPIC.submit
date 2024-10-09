@@ -31,14 +31,14 @@ export const FileUpload = ({
         fontWeight={BCDesignTokens.typographyFontWeightsBold}
         sx={{ color: BCDesignTokens.typographyColorSecondary }}
       >
-        Drag and Drop File(s) Here or{" "}
+        Drag and Drop a File Here or{" "}
         <span
           style={{
             textDecoration: "underline",
             color: "#1A5A96",
           }}
         >
-          Select File(s)
+          Select a Filea
         </span>
       </Typography>
     </Uploader>
