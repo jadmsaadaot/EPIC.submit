@@ -13,8 +13,7 @@ import { SubmissionItemTableRow as SubmissionItemTableRowType } from "./types";
 import { SUBMISSION_STATUS } from "@/models/Submission";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import DocumentRow from "./DocumentRow";
-import { Else, If, Then, Unless, When } from "react-if";
-import { SUBMISSION_ITEM_TYPE } from "@/models/SubmissionItem";
+import { Unless, When } from "react-if";
 
 const StyledTableCell = styled(TableCell)<{ error?: boolean }>(({ error }) => ({
   borderTop: error
@@ -117,19 +116,9 @@ export default function SubmissionItemTableRow({
         <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right"></StyledTableCell>
         <StyledTableCell align="right">
-          <If
-            condition={
-              SUBMISSION_STATUS.NEW_SUBMISSION.value == status &&
-              name !== SUBMISSION_ITEM_TYPE.MANAGEMENT_PLAN
-            }
-          >
-            <Then>
-              <></>
-            </Then>
-            <Else>
-              <SubmissionStatusChip status={status} />
-            </Else>
-          </If>
+          <When condition={SUBMISSION_STATUS.NEW_SUBMISSION.value != status}>
+            <SubmissionStatusChip status={status} />
+          </When>
         </StyledTableCell>
         <StyledTableCell align="right">
           <Unless condition={status === SUBMISSION_STATUS.SUBMITTED.value}>
