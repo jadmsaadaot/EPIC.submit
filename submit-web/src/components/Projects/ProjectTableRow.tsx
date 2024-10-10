@@ -27,8 +27,6 @@ export default function ProjectTableRow({
         }}
       >
         <TableCell
-          component="th"
-          scope="row"
           colSpan={6}
           sx={{
             borderTop: border,
