@@ -12,7 +12,6 @@ import {
 } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
 import { PageGrid } from "@/components/Shared/PageGrid";
-import SubmissionStatusChip from "@/components/Submission/SubmissionStatusChip";
 import { SUBMISSION_STATUS } from "@/models/Submission";
 import { InfoBox } from "@/components/Submission/InfoBox";
 import {
