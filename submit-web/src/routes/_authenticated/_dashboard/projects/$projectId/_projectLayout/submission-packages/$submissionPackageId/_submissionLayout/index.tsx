@@ -26,6 +26,8 @@ import { PACKAGE_STATUS } from "@/models/Package";
 import { LoadingButton as Button } from "@/components/Shared/LoadingButton";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import PackageStatusChip from "@/components/Projects/ProjectStatusChip";
+import { SuccessBox } from "@/components/Submission/SuccessBox";
+import { When } from "react-if";
 
 export const Route = createFileRoute(
   "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/",
@@ -166,6 +168,15 @@ export default function SubmissionPage() {
               >
                 <ItemsTable submissionItems={submissionPackage.items} />
               </Box>
+              <When
+                condition={
+                  submissionPackage.status === PACKAGE_STATUS.SUBMITTED.value
+                }
+              >
+                <Box mb={BCDesignTokens.layoutMarginXlarge}>
+                  <SuccessBox submissionPackageType={submissionPackage.type} />
+                </Box>
+              </When>
               <Box
                 sx={{
                   pt: BCDesignTokens.layoutPaddingXlarge,
@@ -180,7 +191,13 @@ export default function SubmissionPage() {
                 >
                   Save & Close
                 </Button>
-                <Button onClick={submitPackage} loading={isSubmittingPackage}>
+                <Button
+                  onClick={submitPackage}
+                  loading={isSubmittingPackage}
+                  disabled={
+                    submissionPackage.status === PACKAGE_STATUS.SUBMITTED.value
+                  }
+                >
                   Submit Management Plan
                 </Button>
               </Box>
