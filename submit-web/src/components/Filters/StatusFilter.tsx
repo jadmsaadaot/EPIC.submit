@@ -7,6 +7,7 @@ import {
 import { useProjectFilters } from "./projectFilterStore";
 import { SUBMISSION_STATUS } from "@/models/Submission";
 import SubmissionStatusChip from "../Submission/SubmissionStatusChip";
+import { BCDesignTokens } from "epic.theme";
 
 function StatusFilter() {
   const { filters, setFilters } = useProjectFilters();
@@ -23,6 +24,11 @@ function StatusFilter() {
         value={filters.status}
         displayEmpty
         onChange={handleChange}
+        sx={{
+          "& .MuiInputBase-input": {
+            p: BCDesignTokens.layoutPaddingSmall,
+          },
+        }}
       >
         {Object.values(SUBMISSION_STATUS).map((status) => (
           <MenuItem key={status.value} value={status.value}>

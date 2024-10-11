@@ -19,7 +19,7 @@ export default function DateSubmittedFilter() {
         onChange={handleDateChange}
         slots={{
           textField: (params) => (
-            <TextField {...params} placeholder="Date Submitted" />
+            <TextField fullWidth {...params} placeholder="Date Submitted" />
           ),
         }}
       />
