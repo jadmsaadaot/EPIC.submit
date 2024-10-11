@@ -35,6 +35,11 @@ class Package(BaseModel):
     status = Column(Enum(PackageStatus), nullable=False, default=PackageStatus.IN_REVIEW)
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
+    submitted_by_account_user = db.relationship(
+        'AccountUser',
+        primaryjoin="foreign(Package.submitted_by) == AccountUser.auth_guid",
+        lazy='joined'
+    )
     meta = db.relationship('PackageMetadata', backref='package', lazy='select')
     items = db.relationship('Item', backref='package', lazy='select', order_by='Item.sort_order')
 

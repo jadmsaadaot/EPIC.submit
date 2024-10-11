@@ -1,5 +1,5 @@
 import { submitRequest } from "@/utils/axiosUtils";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Options } from "./types";
 import { SubmissionPackage } from "@/models/Package";
 
@@ -48,5 +48,35 @@ export const useGetSubmissionPackage = ({
     queryKey: ["package", packageId],
     queryFn: () => getSubmissionPackageById({ packageId }),
     enabled: enabled && Boolean(packageId),
+  });
+};
+
+const updateStateSubmissionPackage = ({
+  packageId,
+  data,
+}: {
+  packageId: number;
+  data: Record<string, unknown>;
+}) => {
+  return submitRequest<SubmissionPackage>({
+    url: `/packages/${packageId}/state`,
+    method: "post",
+    data,
+  });
+};
+
+export const useUpdateStateSubmissionPackage = (options?: Options) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateStateSubmissionPackage,
+    ...options,
+    onSuccess: (submissionPackage) => {
+      if (options?.onSuccess) {
+        options.onSuccess();
+      }
+      queryClient.invalidateQueries({
+        queryKey: ["package", submissionPackage.id],
+      });
+    },
   });
 };

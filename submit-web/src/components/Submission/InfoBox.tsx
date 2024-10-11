@@ -1,5 +1,6 @@
 import { SubmissionPackage } from "@/models/Package";
 import { Grid, Typography } from "@mui/material";
+import dayjs from "dayjs";
 import { BCDesignTokens } from "epic.theme";
 
 type InfoBoxProps = {
@@ -23,8 +24,10 @@ export const InfoBox = ({ submissionPackage }: InfoBoxProps) => {
         <Typography color={BCDesignTokens.themeGray70}>
           Date Submitted:
         </Typography>{" "}
-        <Typography color={"inherit"}>
-          {submissionPackage?.submitted_on}
+        <Typography color={"inherit"} ml="10px">
+          {submissionPackage?.submitted_on
+            ? dayjs(submissionPackage.submitted_on).format("DD-MMM-YYYY")
+            : "--"}
         </Typography>
       </Grid>
       <Grid item xs={12} md={4} container>
@@ -41,7 +44,7 @@ export const InfoBox = ({ submissionPackage }: InfoBoxProps) => {
         <Typography color={BCDesignTokens.themeGray70}>
           Submitted by:
         </Typography>
-        <Typography color={"inherit"}>
+        <Typography color={"inherit"} ml="10px">
           {submissionPackage?.submitted_by}
         </Typography>
       </Grid>

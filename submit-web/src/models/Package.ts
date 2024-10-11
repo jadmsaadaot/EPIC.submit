@@ -5,7 +5,12 @@ export type PackageType = {
   name: string;
 };
 
-export type PackageStatus = "IN_REVIEW" | "APPROVED" | "REJECTED";
+export type PackageStatus =
+  | "IN_REVIEW"
+  | "APPROVED"
+  | "REJECTED"
+  | "COMPLETED"
+  | "SUBMITTED";
 export const PACKAGE_STATUS: Record<
   PackageStatus,
   { value: PackageStatus; label: string }
@@ -21,6 +26,14 @@ export const PACKAGE_STATUS: Record<
   REJECTED: {
     value: "REJECTED",
     label: "Rejected",
+  },
+  COMPLETED: {
+    value: "COMPLETED",
+    label: "Completed",
+  },
+  SUBMITTED: {
+    value: "SUBMITTED",
+    label: "Submitted",
   },
 };
 

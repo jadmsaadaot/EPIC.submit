@@ -6,6 +6,7 @@ Manages the engagement
 from marshmallow import EXCLUDE, Schema, fields
 
 from submit_api.models.package import PackageStatus
+from submit_api.schemas.account_user import AccountUserSchema
 from submit_api.schemas.package_type import PackageTypeSchema
 
 
@@ -48,7 +49,7 @@ class AccountProjectPackageSchema(Schema):
     type = fields.Nested(PackageTypeSchema, data_key="type")
     status = fields.Enum(data_key="status", enum=PackageStatus)
     submitted_on = fields.DateTime(data_key="submitted_on")
-    submitted_by = fields.Str(data_key="submitted_by")
+    submitted_by_account_user = fields.Pluck(AccountUserSchema, "full_name", data_key="submitted_by")
     items = fields.Function(lambda obj: [])
 
 
