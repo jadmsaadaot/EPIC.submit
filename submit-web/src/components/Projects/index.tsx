@@ -1,8 +1,9 @@
 import { AccountProject } from "@/models/Project";
-import { Stack } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 import { Project } from "./Project";
 import { ContentBoxSkeleton } from "../Shared/ContentBox/ContentBoxSkeleton";
 import { Navigate } from "@tanstack/react-router";
+import { SearchFilter } from "../Filters/SearchFilter";
 
 type ProjectsParams = {
   accountProjects?: AccountProject[];
