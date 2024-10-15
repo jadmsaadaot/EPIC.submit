@@ -6,12 +6,9 @@ from __future__ import annotations
 
 
 from sqlalchemy import Column, Enum, ForeignKey
-from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import validates, object_session
 
 from .base_model import BaseModel
-from .db import db, session_scope
-from .queries.package import PackageQueries
+from .db import db
 from ..enums.item_status import ItemStatus
 
 
@@ -26,16 +23,8 @@ class Item(BaseModel):
     sort_order = Column(db.Integer, nullable=True, default=0)
     type = db.relationship('ItemType', foreign_keys=[type_id], lazy='joined')
     status = Column(Enum(ItemStatus), nullable=False,
-                    default=ItemStatus.NEW_SUBMISSION)
+                    default=ItemStatus.NEW_SUBMISSION.value)
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
     version = Column(db.Integer, nullable=False, default=1)
     submissions = db.relationship('Submission', lazy='joined')
-
-    @validates('status')
-    def validate_status(self, _, status):
-        """Listen for changes in Item status and update the related Package status."""
-        session = object_session(self)
-        with session_scope(session) as session:
-            PackageQueries.update_package_status(self.package_id, status, session)
-        return status

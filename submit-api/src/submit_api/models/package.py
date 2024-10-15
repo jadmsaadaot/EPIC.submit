@@ -35,7 +35,7 @@ class Package(BaseModel):
     name = Column(db.String(255), nullable=False)
     type_id = Column(db.Integer, ForeignKey('package_types.id'), nullable=False)
     type = db.relationship('PackageType', foreign_keys=[type_id], lazy='joined')
-    status = Column(Enum(PackageStatus), nullable=False, default=PackageStatus.IN_REVIEW)
+    status = Column(Enum(PackageStatus), nullable=False, default=PackageStatus.NEW_SUBMISSION.value)
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
     submitted_by_account_user = db.relationship(
