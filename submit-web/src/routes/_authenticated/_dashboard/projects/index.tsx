@@ -8,6 +8,7 @@ import { Projects, ProjectsSkeleton } from "@/components/Projects";
 import { useEffect } from "react";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { PageGrid } from "@/components/Shared/PageGrid";
+import ProjectFilters from "@/components/Filters/ProjectFilters";
 
 export const Route = createFileRoute("/_authenticated/_dashboard/projects/")({
   component: ProjectsPage,
@@ -37,6 +38,7 @@ export function ProjectsPage() {
   return (
     <PageGrid>
       <Grid item xs={12}>
+        <ProjectFilters />
         <If condition={isProjectsLoading}>
           <Then>
             <ProjectsSkeleton />
