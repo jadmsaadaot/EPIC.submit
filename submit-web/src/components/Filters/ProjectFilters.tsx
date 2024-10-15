@@ -1,11 +1,14 @@
-import { Grid, Link, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { SearchFilter } from "./SearchFilter";
 import StatusFilter from "./StatusFilter";
 import DateSubmittedFilter from "./DateSubmittedFilter";
 import FilterAltOffOutlinedIcon from "@mui/icons-material/FilterAltOffOutlined";
 import { BCDesignTokens } from "epic.theme";
+import { useProjectFilters } from "./projectFilterStore";
 
 function ProjectFilters() {
+  const { resetFilters } = useProjectFilters();
+
   return (
     <Grid
       container
@@ -22,18 +25,27 @@ function ProjectFilters() {
         <DateSubmittedFilter />
       </Grid>
       <Grid container item xs={1}>
-        <Typography
-          variant="body1"
-          sx={{
-            color: BCDesignTokens.typographyColorLink,
-            fontWeight: 900,
-          }}
+        <Box
+          display={"flex"}
+          flexDirection={"row"}
+          mt={BCDesignTokens.layoutMarginSmall}
+          onClick={() => resetFilters()}
+          sx={{ cursor: "pointer" }}
         >
-          Clear Filters
-        </Typography>
-        <FilterAltOffOutlinedIcon
-          htmlColor={BCDesignTokens.typographyColorLink}
-        />
+          <Typography
+            variant="body1"
+            sx={{
+              color: BCDesignTokens.typographyColorLink,
+              fontWeight: 900,
+            }}
+          >
+            Clear Filters
+          </Typography>
+          <FilterAltOffOutlinedIcon
+            fontSize="small"
+            htmlColor={BCDesignTokens.typographyColorLink}
+          />
+        </Box>
       </Grid>
     </Grid>
   );
