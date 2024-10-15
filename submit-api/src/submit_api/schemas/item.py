@@ -5,7 +5,7 @@ Manages the item schema
 
 from marshmallow import EXCLUDE, Schema, fields
 
-from submit_api.models.item import ItemStatus
+from submit_api.enums.item_status import ItemStatus
 from submit_api.models.submission import SubmissionTypeStatus
 from submit_api.schemas.account_user import AccountUserSchema
 from submit_api.schemas.item_type import ItemTypeSchema

@@ -51,6 +51,7 @@ class AccountProjectPackageSchema(Schema):
     submitted_on = fields.DateTime(data_key="submitted_on")
     submitted_by_account_user = fields.Pluck(AccountUserSchema, "full_name", data_key="submitted_by")
     items = fields.Function(lambda obj: [])
+    aggregated_item_statuses = fields.List(fields.Enum(enum=PackageStatus), data_key="aggregated_item_statuses")
 
 
 class AccountProjectSchema(Schema):

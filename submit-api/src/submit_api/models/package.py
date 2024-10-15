@@ -20,6 +20,9 @@ class PackageStatus(enum.Enum):
     APPROVED = 'APPROVED'
     REJECTED = 'REJECTED'
     SUBMITTED = 'SUBMITTED'
+    PARTIALLY_COMPLETED = 'PARTIALLY_COMPLETED'
+    COMPLETED = 'COMPLETED'
+    NEW_SUBMISSION = 'NEW_SUBMISSION'
 
 
 class Package(BaseModel):
@@ -41,7 +44,14 @@ class Package(BaseModel):
         lazy='joined'
     )
     meta = db.relationship('PackageMetadata', backref='package', lazy='select')
-    items = db.relationship('Item', backref='package', lazy='select', order_by='Item.sort_order')
+    items = db.relationship('Item', backref='package', lazy='joined', order_by='Item.sort_order')
+    aggregated_item_statuses = Column(db.ARRAY(Enum(PackageStatus)), nullable=False, default=list)
+
+    # @hybrid_property
+    # def aggregated_item_statuses(self):
+    #     """Aggregate item statuses."""
+    #     aggregated_statuses = PackageQueries.aggregate_item_statuses(self.items)
+    #     return aggregated_statuses
 
     @classmethod
     def get_package_by_id_with_items(cls, package_id: int):

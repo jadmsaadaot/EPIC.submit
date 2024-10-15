@@ -2,6 +2,7 @@
 from collections import defaultdict
 from datetime import datetime
 
+from submit_api.enums.item_status import ItemStatus
 from submit_api.exceptions import BadRequestError
 # Set up logging configuration
 
@@ -9,7 +10,6 @@ from submit_api.models import Item as ItemModel
 from submit_api.models import Package as PackageModel
 from submit_api.models import PackageType as PackageTypeModel
 from submit_api.models.db import session_scope
-from submit_api.models.item import ItemStatus
 from submit_api.models.package import PackageStatus
 from submit_api.models.package_metadata import PackageMetadata as PackageMetadataModel
 from submit_api.models.package_item_type import PackageItemType as PackageItemTypeModel
