@@ -9,9 +9,7 @@ type Filters = {
 
 type FilterState = {
   filters: Filters;
-  searchEnabled: boolean;
   setFilters: (filters: Partial<Filters>) => void;
-  setSearchEnabled: (enabled: boolean) => void;
   resetFilters: () => void;
 };
 
@@ -21,8 +19,6 @@ export const useProjectFilters = create<FilterState>((set) => ({
     search_text: "",
     submitted_on: null,
   },
-  searchEnabled: false,
-  setSearchEnabled: (enabled) => set(() => ({ searchEnabled: enabled })),
   setFilters: (newFilters) =>
     set((state) => ({
       filters: { ...state.filters, ...newFilters },

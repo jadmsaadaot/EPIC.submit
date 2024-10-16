@@ -1,20 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import { InputAdornment, IconButton, TextField } from "@mui/material";
 import { Search, Clear } from "@mui/icons-material";
 import { useProjectFilters } from "./projectFilterStore";
 import { BCDesignTokens } from "epic.theme";
 
 export const SearchFilter = () => {
-  const { filters, setFilters, setSearchEnabled } = useProjectFilters();
+  const { filters, setFilters } = useProjectFilters();
+  const [searchText, setSearchText] = useState(filters.search_text);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      setSearchEnabled(true);
+      setFilters({ search_text: searchText });
     }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters({ search_text: event.target.value });
+    setSearchText(event.target.value);
   };
 
   const handleClear = () => {
@@ -26,7 +27,7 @@ export const SearchFilter = () => {
       fullWidth
       variant="outlined"
       placeholder="Search Submissions"
-      value={filters.search_text}
+      value={searchText}
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       InputProps={{

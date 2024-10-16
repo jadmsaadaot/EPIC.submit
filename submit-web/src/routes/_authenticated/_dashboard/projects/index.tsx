@@ -18,29 +18,21 @@ export const Route = createFileRoute("/_authenticated/_dashboard/projects/")({
 
 export function ProjectsPage() {
   const { accountId } = useAccount();
-  const { filters, searchEnabled, setSearchEnabled } = useProjectFilters();
+  const { filters } = useProjectFilters();
   const {
     data: projectsData,
     isPending: isProjectsLoading,
     isError: isProjectsError,
   } = useGetProjects({
     accountId: 1,
-    enabled: searchEnabled,
     searchOptions: filters,
   });
 
   useEffect(() => {
     if (isProjectsError) {
       notify.error("Failed to load projects");
-      setSearchEnabled(false);
     }
   }, [isProjectsError]);
-
-  useEffect(() => {
-    if (projectsData) {
-      setSearchEnabled(false);
-    }
-  }, [projectsData, setSearchEnabled]);
 
   if (isProjectsError) {
     return <Navigate to={"/error"} />;
