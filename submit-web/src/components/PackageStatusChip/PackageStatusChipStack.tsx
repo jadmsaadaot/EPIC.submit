@@ -1,5 +1,5 @@
 import { PackageStatus } from "@/models/Package";
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import PackageStatusChip from ".";
 
 type PackageStatusChipStackProps = {
@@ -9,10 +9,12 @@ export const PackageStatusChipStack = ({
   status,
 }: PackageStatusChipStackProps) => {
   return (
-    <Stack direction="column" spacing={1}>
-      {status.map((value) => (
-        <PackageStatusChip key={value} status={value} />
-      ))}
-    </Stack>
+    <Box sx={{ display: "inline-block" }}>
+      <Stack direction="column" spacing={1} width={"fit-content"}>
+        {status.map((value) => (
+          <PackageStatusChip key={value} status={value} />
+        ))}
+      </Stack>
+    </Box>
   );
 };

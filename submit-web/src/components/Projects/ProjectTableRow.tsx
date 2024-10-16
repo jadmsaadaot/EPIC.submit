@@ -27,7 +27,6 @@ export default function ProjectTableRow({
         }}
       >
         <TableCell
-          colSpan={6}
           sx={{
             borderTop: border,
             borderBottom: border,
@@ -59,7 +58,6 @@ export default function ProjectTableRow({
           </Link>
         </TableCell>
         <TableCell
-          colSpan={2}
           align="right"
           sx={{
             borderTop: border,
@@ -72,7 +70,6 @@ export default function ProjectTableRow({
             : "--"}
         </TableCell>
         <TableCell
-          colSpan={2}
           align="right"
           sx={{
             borderTop: border,
@@ -83,8 +80,7 @@ export default function ProjectTableRow({
           {subPackage.submitted_by ?? "--"}
         </TableCell>
         <TableCell
-          colSpan={2}
-          align="right"
+          align="center"
           sx={{
             borderTop: border,
             borderTopRightRadius: 5,
@@ -101,7 +97,7 @@ export default function ProjectTableRow({
         <TableCell
           component="th"
           scope="row"
-          colSpan={12}
+          colSpan={4}
           sx={{
             border: 0,
             py: BCDesignTokens.layoutPaddingXsmall,
