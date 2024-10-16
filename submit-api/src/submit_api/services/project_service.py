@@ -3,6 +3,7 @@
 from submit_api.models.account_project import AccountProject as AccountProjectModel
 from submit_api.models.project import Project as ProjectModel
 from submit_api.models.queries.project import ProjectQueries
+from submit_api.models.account_project_search_options import AccountProjectSearchOptions
 
 
 class ProjectService:
@@ -15,9 +16,9 @@ class ProjectService:
         return db_project
 
     @classmethod
-    def get_projects_by_account_id(cls, account_id):
+    def get_projects_by_account_id(cls, account_id, search_options=AccountProjectSearchOptions):
         """Get projects by account id."""
-        return ProjectQueries.get_projects_by_account_id(account_id)
+        return ProjectQueries.get_projects_by_account_id(account_id, search_options)
 
     @classmethod
     def get_projects_by_proponent_id(cls, proponent_id):

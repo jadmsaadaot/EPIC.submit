@@ -5,20 +5,20 @@ import { useProjectFilters } from "./projectFilterStore";
 import { BCDesignTokens } from "epic.theme";
 
 export const SearchFilter = () => {
-  const { filters, setFilters } = useProjectFilters();
+  const { filters, setFilters, setSearchEnabled } = useProjectFilters();
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
-      //Trigger Search
+      setSearchEnabled(true);
     }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFilters({ searchText: event.target.value });
+    setFilters({ search_text: event.target.value });
   };
 
   const handleClear = () => {
-    setFilters({ searchText: "" });
+    setFilters({ search_text: "" });
   };
 
   return (
@@ -26,7 +26,7 @@ export const SearchFilter = () => {
       fullWidth
       variant="outlined"
       placeholder="Search Submissions"
-      value={filters.searchText}
+      value={filters.search_text}
       onChange={handleChange}
       onKeyDown={handleKeyDown}
       InputProps={{
@@ -35,7 +35,7 @@ export const SearchFilter = () => {
             <Search htmlColor={BCDesignTokens.typographyColorPlaceholder} />
           </InputAdornment>
         ),
-        endAdornment: filters.searchText && (
+        endAdornment: filters.search_text && (
           <InputAdornment position="end">
             <IconButton onClick={handleClear}>
               <Clear htmlColor={BCDesignTokens.typographyColorPlaceholder} />
