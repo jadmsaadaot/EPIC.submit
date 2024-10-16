@@ -26,10 +26,13 @@ export const Project = ({ accountProject }: ProjectParam) => {
   const navigate = useNavigate();
 
   const activeSubmissionPackages = accountProject.packages.filter(
-    (subPackage) => subPackage.status === PACKAGE_STATUS.IN_REVIEW.value
+    (subPackage) => subPackage.status.includes(PACKAGE_STATUS.IN_REVIEW.value),
   );
   const pastSubmissionPackages = accountProject.packages.filter(
-    (subPackage) => subPackage.status !== PACKAGE_STATUS.IN_REVIEW.value
+    (subPackage) =>
+      // check if the package status includes approved or rejected
+      subPackage.status.includes(PACKAGE_STATUS.APPROVED.value) ||
+      subPackage.status.includes(PACKAGE_STATUS.REJECTED.value),
   );
 
   const { name, ea_certificate } = accountProject.project;

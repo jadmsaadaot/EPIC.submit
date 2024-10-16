@@ -1,9 +1,9 @@
 import { ArrowForwardIos } from "@mui/icons-material";
 import { Link, TableCell, TableRow, Typography } from "@mui/material";
 import { BCDesignTokens } from "epic.theme";
-import PackageStatusChip from "./ProjectStatusChip";
 import { SubmissionPackage } from "@/models/Package";
 import dayjs from "dayjs";
+import { PackageStatusChipStack } from "../PackageStatusChip/PackageStatusChipStack";
 
 interface ProjectRowProps {
   subPackage: SubmissionPackage;
@@ -94,7 +94,7 @@ export default function ProjectTableRow({
             py: BCDesignTokens.layoutPaddingXsmall,
           }}
         >
-          <PackageStatusChip status={subPackage.status} />
+          <PackageStatusChipStack status={subPackage.status} />
         </TableCell>
       </TableRow>
       <TableRow key={`empty-row-${subPackage.id}`} sx={{ py: 1 }}>

@@ -35,7 +35,6 @@ class Package(BaseModel):
     name = Column(db.String(255), nullable=False)
     type_id = Column(db.Integer, ForeignKey('package_types.id'), nullable=False)
     type = db.relationship('PackageType', foreign_keys=[type_id], lazy='joined')
-    status = Column(Enum(PackageStatus), nullable=False, default=PackageStatus.NEW_SUBMISSION.value)
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
     submitted_by_account_user = db.relationship(
@@ -45,13 +44,7 @@ class Package(BaseModel):
     )
     meta = db.relationship('PackageMetadata', backref='package', lazy='select')
     items = db.relationship('Item', backref='package', lazy='joined', order_by='Item.sort_order')
-    aggregated_item_statuses = Column(db.ARRAY(Enum(PackageStatus)), nullable=False, default=list)
-
-    # @hybrid_property
-    # def aggregated_item_statuses(self):
-    #     """Aggregate item statuses."""
-    #     aggregated_statuses = PackageQueries.aggregate_item_statuses(self.items)
-    #     return aggregated_statuses
+    status = Column(db.ARRAY(Enum(PackageStatus)), nullable=False, default=[PackageStatus.NEW_SUBMISSION.value])
 
     @classmethod
     def get_package_by_id_with_items(cls, package_id: int):

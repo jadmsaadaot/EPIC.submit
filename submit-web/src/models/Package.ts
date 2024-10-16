@@ -40,7 +40,7 @@ export const PACKAGE_STATUS: Record<
 export type SubmissionPackage = {
   id: number;
   name: string;
-  status: PackageStatus;
+  status: PackageStatus[];
   submitted_on?: string;
   submitted_by?: string;
   type_id: number;
@@ -51,7 +51,7 @@ export type SubmissionPackage = {
 export const createDefaultSubmissionPackage = (): SubmissionPackage => ({
   id: 0,
   name: "",
-  status: PACKAGE_STATUS.IN_REVIEW.value,
+  status: [PACKAGE_STATUS.IN_REVIEW.value],
   type_id: 0,
   type: {
     id: 0,
