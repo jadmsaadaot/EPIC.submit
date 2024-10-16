@@ -25,6 +25,7 @@ import { YesNoRadioOptions } from "@/components/Shared/YesNoRadioOptions";
 import { useGetSubmissionItem } from "@/hooks/api/useItems";
 import { MANAGEMENT_PLAN_DOCUMENT_FOLDERS } from "./constants";
 import { booleanToString, stringToBoolean } from "@/utils";
+import Form from "@/components/Shared/Forms/common";
 
 const managementPlanSubmissionSchema = yup.object().shape({
   conditionSatisfied: yup.string().required("Please answer this question."),
@@ -225,7 +226,7 @@ export const ManagementPlanSubmission = () => {
               title={accountProject.project.name + " Management Plan"}
             />
             <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(handleCompleteForm)}>
+              <Form onSubmit={handleSubmit(handleCompleteForm)}>
                 <Grid container spacing={BCDesignTokens.layoutMarginMedium}>
                   <Grid item xs={12}>
                     <Typography
@@ -310,7 +311,7 @@ export const ManagementPlanSubmission = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-              </form>
+              </Form>
             </FormProvider>
           </Box>
         </Box>

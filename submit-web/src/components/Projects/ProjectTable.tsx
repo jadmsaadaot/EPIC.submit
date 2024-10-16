@@ -22,7 +22,7 @@ export default function SubmissionPackageTable({
 }) {
   return (
     <TableContainer component={Box} sx={{ height: "100%" }}>
-      <Table sx={{ tableLayout: "fixed", border: 0 }} aria-label="simple table">
+      <Table sx={{ tableLayout: "fixed", border: 0 }}>
         {!headless && (
           <TableHead
             sx={{
@@ -37,7 +37,7 @@ export default function SubmissionPackageTable({
                 Submission Name
               </StyledTableHeadCell>
               <StyledTableHeadCell colSpan={2} align="right">
-                Submitted On
+                Date Submitted
               </StyledTableHeadCell>
               <StyledTableHeadCell colSpan={2} align="right">
                 Submitted By

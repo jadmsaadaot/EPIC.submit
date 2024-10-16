@@ -1,12 +1,19 @@
 """Service for package management."""
+from collections import defaultdict
+from datetime import datetime
+
+from submit_api.exceptions import BadRequestError
 # Set up logging configuration
 
 from submit_api.models import Item as ItemModel
 from submit_api.models import Package as PackageModel
 from submit_api.models import PackageType as PackageTypeModel
 from submit_api.models.db import session_scope
+from submit_api.models.item import ItemStatus
+from submit_api.models.package import PackageStatus
 from submit_api.models.package_metadata import PackageMetadata as PackageMetadataModel
 from submit_api.models.package_item_type import PackageItemType as PackageItemTypeModel
+from submit_api.utils.token_info import TokenInfo
 
 
 class PackageService:
@@ -75,3 +82,61 @@ class PackageService:
                 session.add(item)
 
         session.flush()
+
+    @staticmethod
+    def _get_and_validate_complete_package(package_id) -> PackageModel:
+        """Retrieve and validate that all items in the package are completed."""
+        package = PackageModel.find_by_id(package_id)
+        if any(item.status.value != ItemStatus.COMPLETED.value for item in package.items):
+            raise BadRequestError("All items must be completed before completing the package")
+        return package
+
+    @staticmethod
+    def _update_items_status(items, status, session):
+        """Update status of all items in the package."""
+        for item in items:
+            item.status = status
+            session.add(item)
+
+    @staticmethod
+    def _update_package_submission_details(package, session):
+        """Update package submission details."""
+        package.submitted_on = datetime.utcnow()
+        package.submitted_by = TokenInfo.get_id()
+        package.status = PackageStatus.SUBMITTED
+        session.add(package)
+
+    @classmethod
+    def submit_package(cls, package_id):
+        """Submit the package by updating its status and items."""
+        package = cls._get_and_validate_complete_package(package_id)
+
+        with session_scope() as session:
+            cls._update_package_submission_details(package, session)
+            cls._update_items_status(package.items, ItemStatus.SUBMITTED, session)
+            session.flush()
+            session.commit()
+        return package
+
+    @staticmethod
+    def _unsupported_status(*args, **kwargs):
+        """Handle unsupported status."""
+        raise BadRequestError("Status is not supported.")
+
+    @classmethod
+    def _get_state_updater(cls, status) -> callable:
+        """Retrieve the appropriate state updater function based on status."""
+        state_updaters = defaultdict(
+            lambda: cls._unsupported_status,
+            {
+                PackageStatus.SUBMITTED.value: cls.submit_package,
+            }
+        )
+        return state_updaters[status]
+
+    @classmethod
+    def update_package_state(cls, package_id, request_data):
+        """Update the state of the package based on the provided status."""
+        status = request_data.get("status")
+        state_updater = cls._get_state_updater(status)
+        return state_updater(package_id)

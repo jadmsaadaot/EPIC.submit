@@ -18,6 +18,7 @@ import { ProjectStatus } from "@/components/registration/addProjects/ProjectStat
 import { PROJECT_STATUS } from "@/components/registration/addProjects/ProjectCard/constants";
 import { useGetProject } from "@/hooks/api/useProjects";
 import { useGetSubmissionItem } from "@/hooks/api/useItems";
+import Form from "@/components/Shared/Forms/common";
 
 const contactInformationSchema = yup.object().shape({
   primaryContact: yup.object().shape({
@@ -156,7 +157,7 @@ export const ContactInformation = () => {
             />
 
             <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(onSubmitHandler)}>
+              <Form onSubmit={handleSubmit(onSubmitHandler)}>
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Typography
@@ -178,29 +179,42 @@ export const ContactInformation = () => {
                       Primary Contact
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} container>
+                  <Grid
+                    item
+                    container
+                    sx={{
+                      width: {
+                        xs: "100%", // width for extra-small screens
+                        md: "390px", // width for medium screens and up
+                      },
+                    }}
+                  >
                     <Grid item xs={12}>
                       <ControlledTextField
                         name="primaryContact.givenName"
                         label="Given Name"
+                        fullWidth
                       />
                     </Grid>
                     <Grid item xs={12}>
                       <ControlledTextField
                         name="primaryContact.surname"
                         label="Surname"
+                        fullWidth
                       />
                     </Grid>
                     <Grid item xs={12}>
                       <ControlledTextField
                         name="primaryContact.company"
                         label="Company"
+                        fullWidth
                       />
                     </Grid>
                     <Grid item xs={12}>
                       <ControlledTextField
                         name="primaryContact.position"
                         label="Position/Role"
+                        fullWidth
                       />
                     </Grid>
                     <Grid item xs={12}>
@@ -208,12 +222,14 @@ export const ContactInformation = () => {
                         name="primaryContact.workPhoneNumber"
                         mask="(999) 999-9999"
                         label="Work Phone Number"
+                        fullWidth
                       />
                     </Grid>
                     <Grid item xs={12}>
                       <ControlledTextField
                         name="primaryContact.workEmailAddress"
                         label="Work Email Address"
+                        fullWidth
                       />
                     </Grid>
                   </Grid>
@@ -227,30 +243,42 @@ export const ContactInformation = () => {
                       Secondary Contact
                     </Typography>
                   </Grid>
-                  <Grid item xs={12} container>
-                    <Grid item xs={12} container>
+                  <Grid item md={4} xs={12} container>
+                    <Grid
+                      container
+                      sx={{
+                        width: {
+                          xs: "100%", // width for extra-small screens
+                          md: "390px", // width for medium screens and up
+                        },
+                      }}
+                    >
                       <Grid item xs={12}>
                         <ControlledTextField
                           name="secondaryContact.givenName"
                           label="Given Name"
+                          fullWidth
                         />
                       </Grid>
                       <Grid item xs={12}>
                         <ControlledTextField
                           name="secondaryContact.surname"
                           label="Surname"
+                          fullWidth
                         />
                       </Grid>
                       <Grid item xs={12}>
                         <ControlledTextField
                           name="secondaryContact.company"
                           label="Company"
+                          fullWidth
                         />
                       </Grid>
                       <Grid item xs={12}>
                         <ControlledTextField
                           name="secondaryContact.position"
                           label="Position/Role"
+                          fullWidth
                         />
                       </Grid>
                       <Grid item xs={12}>
@@ -258,12 +286,14 @@ export const ContactInformation = () => {
                           name="secondaryContact.workPhoneNumber"
                           mask="(999) 999-9999"
                           label="Work Phone Number"
+                          fullWidth
                         />
                       </Grid>
                       <Grid item xs={12}>
                         <ControlledTextField
                           name="secondaryContact.workEmailAddress"
                           label="Work Email Address"
+                          fullWidth
                         />
                       </Grid>
                     </Grid>
@@ -279,7 +309,7 @@ export const ContactInformation = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-              </form>
+              </Form>
             </FormProvider>
           </Box>
         </Box>

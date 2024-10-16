@@ -3,7 +3,7 @@ import { ProjectStatus } from "@/components/registration/addProjects/ProjectStat
 import { ContentBox } from "@/components/Shared/ContentBox";
 import { YellowBar } from "@/components/Shared/YellowBar";
 import ItemsTable from "@/components/Submission/ItemsTable";
-import { Box, Button, Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import {
   createFileRoute,
   Navigate,
@@ -12,16 +12,24 @@ import {
 } from "@tanstack/react-router";
 import { BCDesignTokens } from "epic.theme";
 import { PageGrid } from "@/components/Shared/PageGrid";
-import SubmissionStatusChip from "@/components/Submission/SubmissionStatusChip";
 import { SUBMISSION_STATUS } from "@/models/Submission";
 import { InfoBox } from "@/components/Submission/InfoBox";
-import { useGetSubmissionPackage } from "@/hooks/api/usePackages";
+import {
+  useGetSubmissionPackage,
+  useUpdateStateSubmissionPackage,
+} from "@/hooks/api/usePackages";
 import { useGetProject } from "@/hooks/api/useProjects";
 import { usePackageStore } from "@/components/Submission/packageStore";
 import { useEffect } from "react";
+import { PACKAGE_STATUS } from "@/models/Package";
+import { LoadingButton as Button } from "@/components/Shared/LoadingButton";
+import { notify } from "@/components/Shared/Snackbar/snackbarStore";
+import PackageStatusChip from "@/components/Projects/ProjectStatusChip";
+import { SuccessBox } from "@/components/Submission/SuccessBox";
+import { When } from "react-if";
 
 export const Route = createFileRoute(
-  "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/"
+  "/_authenticated/_dashboard/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/",
 )({
   component: SubmissionPage,
 });
@@ -40,6 +48,18 @@ export default function SubmissionPage() {
   const { data: submissionPackage } = useGetSubmissionPackage({
     packageId: submissionPackageId,
     enabled: Boolean(accountProject?.id),
+  });
+
+  const {
+    mutate: updateStateSubmissionPackage,
+    isPending: isSubmittingPackage,
+  } = useUpdateStateSubmissionPackage({
+    onSuccess: () => {
+      navigate({ to: `/projects/${accountProject?.id}` });
+    },
+    onError: () => {
+      notify.error("Failed to submit management plan");
+    },
   });
 
   const navigate = useNavigate();
@@ -64,6 +84,13 @@ export default function SubmissionPage() {
       setIsValidating(true);
       return;
     }
+
+    updateStateSubmissionPackage({
+      packageId: submissionPackage.id,
+      data: {
+        status: PACKAGE_STATUS.SUBMITTED.value,
+      },
+    });
   };
 
   if (!accountProject || !submissionPackage) {
@@ -128,9 +155,7 @@ export default function SubmissionPage() {
                   >
                     Submission Status:
                   </Typography>
-                  <SubmissionStatusChip
-                    status={SUBMISSION_STATUS.PARTIALLY_COMPLETED.value}
-                  />
+                  <PackageStatusChip status={submissionPackage.status} />
                 </Box>
               </Box>
               <InfoBox submissionPackage={submissionPackage} />
@@ -142,6 +167,15 @@ export default function SubmissionPage() {
               >
                 <ItemsTable submissionItems={submissionPackage.items} />
               </Box>
+              <When
+                condition={
+                  submissionPackage.status === PACKAGE_STATUS.SUBMITTED.value
+                }
+              >
+                <Box mb={BCDesignTokens.layoutMarginXlarge}>
+                  <SuccessBox submissionPackageType={submissionPackage.type} />
+                </Box>
+              </When>
               <Box
                 sx={{
                   pt: BCDesignTokens.layoutPaddingXlarge,
@@ -156,7 +190,15 @@ export default function SubmissionPage() {
                 >
                   Save & Close
                 </Button>
-                <Button onClick={submitPackage}>Submit Management Plan</Button>
+                <Button
+                  onClick={submitPackage}
+                  loading={isSubmittingPackage}
+                  disabled={
+                    submissionPackage.status === PACKAGE_STATUS.SUBMITTED.value
+                  }
+                >
+                  Submit Management Plan
+                </Button>
               </Box>
             </Box>
           </Box>

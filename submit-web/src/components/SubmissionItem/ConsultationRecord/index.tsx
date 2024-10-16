@@ -35,6 +35,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { When } from "react-if";
 import { useGetSubmissionItem } from "@/hooks/api/useItems";
 import { booleanToString, stringToBoolean } from "@/utils";
+import Form from "@/components/Shared/Forms/common";
 
 const consultationRecordSchema = yup.object().shape({
   consultedParties: yup
@@ -256,7 +257,7 @@ export const ConsultationRecord = () => {
               title={accountProject.project.name + " Management Plan"}
             />
             <FormProvider {...methods}>
-              <form onSubmit={handleSubmit(handleCompleteForm)}>
+              <Form onSubmit={handleSubmit(handleCompleteForm)}>
                 <Grid container spacing={BCDesignTokens.layoutMarginMedium}>
                   <Grid item xs={12}>
                     <Typography
@@ -434,7 +435,7 @@ export const ConsultationRecord = () => {
                     </Grid>
                   </Grid>
                 </Grid>
-              </form>
+              </Form>
             </FormProvider>
           </Box>
         </Box>
