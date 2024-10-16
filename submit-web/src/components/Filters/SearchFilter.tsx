@@ -20,6 +20,7 @@ export const SearchFilter = () => {
 
   const handleClear = () => {
     setFilters({ search_text: "" });
+    setSearchText("");
   };
 
   return (
@@ -36,7 +37,7 @@ export const SearchFilter = () => {
             <Search htmlColor={BCDesignTokens.typographyColorPlaceholder} />
           </InputAdornment>
         ),
-        endAdornment: filters.search_text && (
+        endAdornment: searchText && (
           <InputAdornment position="end">
             <IconButton onClick={handleClear}>
               <Clear htmlColor={BCDesignTokens.typographyColorPlaceholder} />
