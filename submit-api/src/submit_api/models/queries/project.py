@@ -14,7 +14,7 @@
 """Model to handle all complex operations related to User."""
 from submit_api.models import AccountProject, Project, db
 from submit_api.models.account_project_search_options import AccountProjectSearchOptions
-
+from submit_api.models.package import Package
 # pylint: disable=too-few-public-methods
 
 
@@ -55,6 +55,10 @@ class ProjectQueries:
 
     @classmethod
     def _filter_by_search_text(cls, query, search_text):
-        """Filter by search text across project name and description."""
-        return query.filter(
-            Project.name.ilike(f"%{search_text}%"))
+        """Filter by search text across project name and package name."""
+        query = query.join(Package, AccountProject.packages).filter(
+            db.or_(
+                Package.name.ilike(f"%{search_text}%")
+            )
+        )
+        return query
