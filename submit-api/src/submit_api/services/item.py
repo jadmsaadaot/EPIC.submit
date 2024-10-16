@@ -1,5 +1,5 @@
 """Service for item management."""
-from submit_api.models import Item as ItemModel, db
+from submit_api.models import Item as ItemModel
 from submit_api.models.db import session_scope
 from submit_api.models.queries.package import PackageQueries
 
