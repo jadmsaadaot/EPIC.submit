@@ -4,21 +4,12 @@ Manages the item
 """
 from __future__ import annotations
 
-import enum
 
 from sqlalchemy import Column, Enum, ForeignKey
 
 from .base_model import BaseModel
 from .db import db
-
-
-class ItemStatus(enum.Enum):
-    """Enum for item statuses."""
-
-    NEW_SUBMISSION = 'NEW_SUBMISSION'
-    PARTIALLY_COMPLETED = 'PARTIALLY_COMPLETED'
-    COMPLETED = 'COMPLETED'
-    SUBMITTED = 'SUBMITTED'
+from ..enums.item_status import ItemStatus
 
 
 class Item(BaseModel):
@@ -32,7 +23,7 @@ class Item(BaseModel):
     sort_order = Column(db.Integer, nullable=True, default=0)
     type = db.relationship('ItemType', foreign_keys=[type_id], lazy='joined')
     status = Column(Enum(ItemStatus), nullable=False,
-                    default=ItemStatus.NEW_SUBMISSION)
+                    default=ItemStatus.NEW_SUBMISSION.value)
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
     version = Column(db.Integer, nullable=False, default=1)

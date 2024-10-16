@@ -20,10 +20,11 @@ ma = Marshmallow()
 
 
 @contextmanager
-def session_scope():
+def session_scope(session=None):
     """Provide a transactional scope around a series of operations."""
     # Using the default session for the scope
-    session = db.session
+    if session is None:
+        session = db.session
     try:
         yield session
         session.commit()

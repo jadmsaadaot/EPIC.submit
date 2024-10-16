@@ -66,3 +66,4 @@ class PackageSchema(Schema):
     submitted_by_account_user = fields.Pluck(AccountUserSchema, "full_name", data_key="submitted_by")
     meta = fields.Nested(PackageMetadataSchema, data_key="meta", many=True)
     items = fields.Nested(ItemSchema, data_key="items", many=True)
+    aggregated_item_statuses = fields.List(fields.Enum(enum=PackageStatus), data_key="aggregated_item_statuses")
