@@ -23,7 +23,8 @@ class PackageQueries:
     @classmethod
     def _add_partially_completed_status(cls, aggregated_statuses: set, statuses: list[str]):
         """Find partially completed packages"""
-        if ItemStatus.PARTIALLY_COMPLETED.value in statuses or len(statuses) > statuses.count(ItemStatus.COMPLETED.value) > 0:
+        if (ItemStatus.PARTIALLY_COMPLETED.value
+                in statuses or len(statuses) > statuses.count(ItemStatus.COMPLETED.value) > 0):
             aggregated_statuses.add(PackageStatus.PARTIALLY_COMPLETED.value)
         return
 
