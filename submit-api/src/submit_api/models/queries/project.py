@@ -29,8 +29,7 @@ class ProjectQueries:
         ).join(Project)
 
         # Apply search filters if provided
-        if search_options:
-            query = cls.filter_by_search_criteria(query, search_options)
+        query = cls.filter_by_search_criteria(query, search_options)
 
         return query.all()
 
@@ -45,6 +44,9 @@ class ProjectQueries:
     @classmethod
     def filter_by_search_criteria(cls, query, search_options):
         """Apply various filters based on search options."""
+        if not search_options:
+            return query
+
         query = cls._filter_by_search_text(query, search_options.search_text)
 
         return query
