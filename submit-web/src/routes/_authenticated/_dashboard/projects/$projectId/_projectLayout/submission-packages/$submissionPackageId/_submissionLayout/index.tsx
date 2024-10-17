@@ -54,9 +54,6 @@ export default function SubmissionPage() {
     mutate: updateStateSubmissionPackage,
     isPending: isSubmittingPackage,
   } = useUpdateStateSubmissionPackage({
-    onSuccess: () => {
-      navigate({ to: `/projects/${accountProject?.id}` });
-    },
     onError: () => {
       notify.error("Failed to submit management plan");
     },
