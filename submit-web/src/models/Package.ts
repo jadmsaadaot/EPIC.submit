@@ -10,7 +10,10 @@ export type PackageStatus =
   | "APPROVED"
   | "REJECTED"
   | "COMPLETED"
-  | "SUBMITTED";
+  | "SUBMITTED"
+  | "PARTIALLY_COMPLETED"
+  | "NEW_SUBMISSION";
+
 export const PACKAGE_STATUS: Record<
   PackageStatus,
   { value: PackageStatus; label: string }
@@ -34,6 +37,14 @@ export const PACKAGE_STATUS: Record<
   SUBMITTED: {
     value: "SUBMITTED",
     label: "Submitted",
+  },
+  PARTIALLY_COMPLETED: {
+    value: "PARTIALLY_COMPLETED",
+    label: "Partially Completed",
+  },
+  NEW_SUBMISSION: {
+    value: "NEW_SUBMISSION",
+    label: "New Submission",
   },
 };
 
