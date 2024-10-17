@@ -56,8 +56,6 @@ class ProjectQueries:
         """Filter by search text across project name and package name."""
         if search_text:
             query = query.join(Package, AccountProject.packages).filter(
-                db.or_(
-                    Package.name.ilike(f"%{search_text}%")
-                )
+                Package.name.ilike(f"%{search_text}%")
             )
         return query
