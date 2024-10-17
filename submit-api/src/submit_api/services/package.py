@@ -13,6 +13,7 @@ from submit_api.models.db import session_scope
 from submit_api.models.package import PackageStatus
 from submit_api.models.package_metadata import PackageMetadata as PackageMetadataModel
 from submit_api.models.package_item_type import PackageItemType as PackageItemTypeModel
+from submit_api.models.queries.package import PackageQueries
 from submit_api.utils.token_info import TokenInfo
 
 
@@ -92,6 +93,11 @@ class PackageService:
         return package
 
     @staticmethod
+    def _update_package_status(package_id, session, package=None):
+        """Update the status of the package based on the statuses of its items."""
+        PackageQueries.update_package_status(package_id, session, package)
+
+    @staticmethod
     def _update_items_status(items, status, session):
         """Update status of all items in the package."""
         for item in items:
@@ -103,7 +109,6 @@ class PackageService:
         """Update package submission details."""
         package.submitted_on = datetime.utcnow()
         package.submitted_by = TokenInfo.get_id()
-        package.status = PackageStatus.SUBMITTED
         session.add(package)
 
     @classmethod
@@ -112,8 +117,9 @@ class PackageService:
         package = cls._get_and_validate_complete_package(package_id)
 
         with session_scope() as session:
+            cls._update_items_status(package.items, ItemStatus.SUBMITTED.value, session)
+            cls._update_package_status(package_id, session, package)
             cls._update_package_submission_details(package, session)
-            cls._update_items_status(package.items, ItemStatus.SUBMITTED, session)
             session.flush()
             session.commit()
         return package

@@ -55,11 +55,12 @@ class PackageQueries:
         return aggregated_statuses_list
 
     @staticmethod
-    def update_package_status(package_id, session):
+    def update_package_status(package_id, session, package=None):
         """Update the status of the package based on the statuses of its items."""
-        package = session.query(PackageModel).filter_by(id=package_id).one()
+        if not package:
+            package = session.query(PackageModel).filter_by(id=package_id).one()
         # Determine new package statuses based on item statuses
         new_statuses = PackageQueries.aggregate_item_statuses(package.items)
-        if set(package.aggregated_item_statuses) != set(new_statuses):
-            package.aggregated_item_statuses = list(new_statuses)
+        if set(package.status) != set(new_statuses):
+            package.status = list(new_statuses)
             session.add(package)
