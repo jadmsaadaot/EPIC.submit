@@ -10,7 +10,7 @@ from sqlalchemy.exc import ArgumentError, IntegrityError
 from submit_api.exceptions import PermissionDeniedError
 
 from .db import db
-    
+
 
 class Project(db.Model):
     """Definition of the Project entity."""
