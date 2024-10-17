@@ -61,7 +61,7 @@ class PackageSchema(Schema):
     name = fields.Str(data_key="name")
     type = fields.Nested(PackageTypeSchema, data_key="type")
     type_id = fields.Int(data_key="type_id")
-    status = fields.List(fields.Enum(enum=PackageStatus), enum=PackageStatus ,data_key="status")
+    status = fields.List(fields.Enum(enum=PackageStatus), enum=PackageStatus, data_key="status")
     submitted_on = fields.DateTime(data_key="submitted_on")
     submitted_by_account_user = fields.Pluck(AccountUserSchema, "full_name", data_key="submitted_by")
     meta = fields.Nested(PackageMetadataSchema, data_key="meta", many=True)
