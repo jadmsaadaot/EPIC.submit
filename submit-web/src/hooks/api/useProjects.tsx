@@ -47,18 +47,11 @@ const getProjectsByAccount = ({
   searchOptions,
 }: GetProjectsByAccountParams) => {
   // Initialize URL with base path and account ID
-  let url = `/projects/accounts/${accountId}`;
-
-  // Append search options as query parameters if provided
-  if (searchOptions) {
-    const params = new URLSearchParams(
-      searchOptions as Record<string, string>
-    ).toString();
-    url += `?${params}`;
-  }
+  const url = `/projects/accounts/${accountId}`;
 
   return submitRequest<AccountProject[]>({
     url,
+    params: searchOptions,
   });
 };
 

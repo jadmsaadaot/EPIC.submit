@@ -30,7 +30,7 @@ class ProjectQueries:
 
         # Apply search filters if provided
         if search_options:
-            query = cls.apply_search_filters(query, search_options)
+            query = cls.filter_by_search_criteria(query, search_options)
 
         return query.all()
 
@@ -43,22 +43,19 @@ class ProjectQueries:
         return query.all()
 
     @classmethod
-    def apply_search_filters(cls, query, search_options):
+    def filter_by_search_criteria(cls, query, search_options):
         """Apply various filters based on search options."""
-        if search_options.search_text:
-            query = cls._filter_by_search_text(
-                query, search_options.search_text)
-        if hasattr(search_options, 'status'):
-            query = cls._filter_by_status(query, search_options.status)
-        # Additional filters can be added here in the future
+        query = cls._filter_by_search_text(query, search_options.search_text)
+
         return query
 
     @classmethod
     def _filter_by_search_text(cls, query, search_text):
         """Filter by search text across project name and package name."""
-        query = query.join(Package, AccountProject.packages).filter(
-            db.or_(
-                Package.name.ilike(f"%{search_text}%")
+        if search_text:
+            query = query.join(Package, AccountProject.packages).filter(
+                db.or_(
+                    Package.name.ilike(f"%{search_text}%")
+                )
             )
-        )
         return query
