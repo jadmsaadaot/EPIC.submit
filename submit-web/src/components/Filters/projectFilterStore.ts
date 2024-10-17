@@ -3,7 +3,7 @@ import { Dayjs } from "dayjs";
 
 type Filters = {
   status: string[];
-  searchText: string;
+  search_text: string;
   submitted_on: Dayjs | null;
 };
 
@@ -16,7 +16,7 @@ type FilterState = {
 export const useProjectFilters = create<FilterState>((set) => ({
   filters: {
     status: [],
-    searchText: "",
+    search_text: "",
     submitted_on: null,
   },
   setFilters: (newFilters) =>
@@ -27,7 +27,7 @@ export const useProjectFilters = create<FilterState>((set) => ({
     set(() => ({
       filters: {
         status: [],
-        searchText: "",
+        search_text: "",
         submitted_on: null,
       },
     })),

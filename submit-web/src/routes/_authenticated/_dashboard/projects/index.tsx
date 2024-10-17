@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import ProjectFilters from "@/components/Filters/ProjectFilters";
+import { useProjectFilters } from "@/components/Filters/projectFilterStore";
 
 export const Route = createFileRoute("/_authenticated/_dashboard/projects/")({
   component: ProjectsPage,
@@ -17,12 +18,14 @@ export const Route = createFileRoute("/_authenticated/_dashboard/projects/")({
 
 export function ProjectsPage() {
   const { accountId } = useAccount();
+  const { filters } = useProjectFilters();
   const {
     data: projectsData,
     isPending: isProjectsLoading,
     isError: isProjectsError,
   } = useGetProjects({
     accountId,
+    searchOptions: filters,
   });
 
   useEffect(() => {

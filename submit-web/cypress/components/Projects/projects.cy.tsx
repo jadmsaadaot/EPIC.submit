@@ -14,20 +14,24 @@ describe("<ProjectsPage />", () => {
       isLoading: false,
     });
     setupTokenStorage();
-    cy.intercept("GET", `${AppConfig.apiUrl}/projects/accounts/1`, [
-      {
-        id: 1,
-        project_id: 1,
-        account_id: 1,
-        name: "Test Project",
-        project: {
+    cy.intercept(
+      "GET",
+      `${AppConfig.apiUrl}/projects/accounts/1?search_text=`,
+      [
+        {
           id: 1,
+          project_id: 1,
+          account_id: 1,
           name: "Test Project",
-          ea_certificate: "1234",
+          project: {
+            id: 1,
+            name: "Test Project",
+            ea_certificate: "1234",
+          },
+          packages: [],
         },
-        packages: [],
-      },
-    ]).as("getProjects");
+      ]
+    ).as("getProjects");
   });
   it("renders", () => {
     mount(<TestWrapper component={ProjectsPage} />);

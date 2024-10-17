@@ -16,11 +16,11 @@
 from http import HTTPStatus
 
 from flask_restx import Namespace, Resource, cors
-
+from flask import request
 from submit_api.schemas.project import AccountProjectSchema, AddProjectSchema, ProjectSchema
 from submit_api.services.project_service import ProjectService
 from submit_api.utils.util import cors_preflight
-
+from submit_api.models.account_project_search_options import AccountProjectSearchOptions
 from ..auth import auth
 from .apihelper import Api as ApiHelper
 
@@ -55,25 +55,13 @@ class ProjectsByAccount(Resource):
     @cors.crossdomain(origin="*")
     def get(account_id):
         """Get projects by account id."""
-        projects = ProjectService.get_projects_by_account_id(account_id)
-        return AccountProjectSchema(many=True).dump(projects), HTTPStatus.OK
-
-    @staticmethod
-    @ApiHelper.swagger_decorators(API, endpoint_description="Add projects in bulk")
-    @API.expect(project_add_list)
-    @API.response(
-        code=HTTPStatus.CREATED, model=project_list_model, description="Added projects"
-    )
-    @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
-    @auth.require
-    @cors.crossdomain(origin="*")
-    def post(account_id):
-        """Add projects in bulk."""
-        projects_data = AddProjectSchema().load(API.payload)
-        added_projects = ProjectService.bulk_add_projects(
-            account_id, projects_data.get("project_ids")
+        search_text = request.args.get('search_text')
+        # Create search options instance
+        search_options = AccountProjectSearchOptions(
+            search_text=search_text,
         )
-        return ProjectSchema(many=True).dump(added_projects), HTTPStatus.CREATED
+        projects = ProjectService.get_projects_by_account_id(account_id, search_options)
+        return AccountProjectSchema(many=True).dump(projects), HTTPStatus.OK
 
 
 @cors_preflight("GET, OPTIONS, POST")

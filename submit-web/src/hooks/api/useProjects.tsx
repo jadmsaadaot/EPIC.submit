@@ -39,10 +39,19 @@ export const useLoadProjectsByProponentId = (proponentId?: number) => {
 
 type GetProjectsByAccountParams = {
   accountId?: number;
+  searchOptions?: Record<string, string | number>;
 };
-const getProjectsByAccount = ({ accountId }: GetProjectsByAccountParams) => {
+
+const getProjectsByAccount = ({
+  accountId,
+  searchOptions,
+}: GetProjectsByAccountParams) => {
+  // Initialize URL with base path and account ID
+  const url = `/projects/accounts/${accountId}`;
+
   return submitRequest<AccountProject[]>({
-    url: `/projects/accounts/${accountId}`,
+    url,
+    params: searchOptions,
   });
 };
 
@@ -55,14 +64,15 @@ export const useAddProjects = (options?: Options) => {
 
 type UseGetProjectsByAccountParams = {
   accountId: number;
+  searchOptions?: Record<string, string | number>;
 };
 export const useGetProjects = ({
   accountId,
+  searchOptions,
 }: UseGetProjectsByAccountParams) => {
   return useQuery({
-    queryKey: ["account-projects", accountId],
-    queryFn: () => getProjectsByAccount({ accountId }),
-    enabled: Boolean(accountId),
+    queryKey: ["account-projects", accountId, searchOptions],
+    queryFn: () => getProjectsByAccount({ accountId, searchOptions }),
   });
 };
 
