@@ -8,7 +8,7 @@ export default function ProjectsSubRoutes() {
   const { accountId } = useAccount();
   const { filters } = useProjectFilters();
   const { data: accountProjects, isPending } = useGetProjects({
-    accountId,
+    accountId: 1,
     searchOptions: filters,
   });
 

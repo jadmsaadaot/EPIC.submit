@@ -47,15 +47,27 @@ class ProjectQueries:
         if not search_options:
             return query
 
-        query = cls._filter_by_search_text(query, search_options.search_text)
+        query = cls._filter_by_submission_name(
+            query, search_options.search_text)
+
+        query = cls._filter_by_submission_status(query, search_options.status)
 
         return query
 
     @classmethod
-    def _filter_by_search_text(cls, query, search_text):
-        """Filter by search text across project name and package name."""
+    def _filter_by_submission_name(cls, query, search_text):
+        """Filter by search text across package name."""
         if search_text:
             query = query.join(Package, AccountProject.packages).filter(
                 Package.name.ilike(f"%{search_text}%")
+            )
+        return query
+
+    @classmethod
+    def _filter_by_submission_status(cls, query, statuses):
+        """Filter by submissions status."""
+        if statuses:
+            query = query.join(Package, AccountProject.packages).filter(
+                Package.status.in_(statuses)
             )
         return query
