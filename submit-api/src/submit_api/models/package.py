@@ -20,6 +20,9 @@ class PackageStatus(enum.Enum):
     APPROVED = 'APPROVED'
     REJECTED = 'REJECTED'
     SUBMITTED = 'SUBMITTED'
+    PARTIALLY_COMPLETED = 'PARTIALLY_COMPLETED'
+    COMPLETED = 'COMPLETED'
+    NEW_SUBMISSION = 'NEW_SUBMISSION'
 
 
 class Package(BaseModel):
@@ -32,7 +35,6 @@ class Package(BaseModel):
     name = Column(db.String(255), nullable=False)
     type_id = Column(db.Integer, ForeignKey('package_types.id'), nullable=False)
     type = db.relationship('PackageType', foreign_keys=[type_id], lazy='joined')
-    status = Column(Enum(PackageStatus), nullable=False, default=PackageStatus.IN_REVIEW)
     submitted_on = Column(db.DateTime, nullable=True)
     submitted_by = Column(db.String(255), nullable=True)
     submitted_by_account_user = db.relationship(
@@ -41,7 +43,8 @@ class Package(BaseModel):
         lazy='joined'
     )
     meta = db.relationship('PackageMetadata', backref='package', lazy='select')
-    items = db.relationship('Item', backref='package', lazy='select', order_by='Item.sort_order')
+    items = db.relationship('Item', backref='package', lazy='joined', order_by='Item.sort_order')
+    status = Column(db.ARRAY(Enum(PackageStatus)), nullable=False, default=[PackageStatus.NEW_SUBMISSION.value])
 
     @classmethod
     def get_package_by_id_with_items(cls, package_id: int):

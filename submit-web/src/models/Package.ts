@@ -10,7 +10,10 @@ export type PackageStatus =
   | "APPROVED"
   | "REJECTED"
   | "COMPLETED"
-  | "SUBMITTED";
+  | "SUBMITTED"
+  | "PARTIALLY_COMPLETED"
+  | "NEW_SUBMISSION";
+
 export const PACKAGE_STATUS: Record<
   PackageStatus,
   { value: PackageStatus; label: string }
@@ -35,12 +38,20 @@ export const PACKAGE_STATUS: Record<
     value: "SUBMITTED",
     label: "Submitted",
   },
+  PARTIALLY_COMPLETED: {
+    value: "PARTIALLY_COMPLETED",
+    label: "Partially Completed",
+  },
+  NEW_SUBMISSION: {
+    value: "NEW_SUBMISSION",
+    label: "New Submission",
+  },
 };
 
 export type SubmissionPackage = {
   id: number;
   name: string;
-  status: PackageStatus;
+  status: PackageStatus[];
   submitted_on?: string;
   submitted_by?: string;
   type_id: number;
@@ -51,7 +62,7 @@ export type SubmissionPackage = {
 export const createDefaultSubmissionPackage = (): SubmissionPackage => ({
   id: 0,
   name: "",
-  status: PACKAGE_STATUS.IN_REVIEW.value,
+  status: [PACKAGE_STATUS.IN_REVIEW.value],
   type_id: 0,
   type: {
     id: 0,

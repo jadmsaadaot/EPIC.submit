@@ -1,6 +1,6 @@
 import { PackageStatus } from "@/models/Package";
 import { Chip } from "@mui/material";
-import { BCDesignTokens } from "epic.theme";
+import { BCDesignTokens, EAOColors } from "epic.theme";
 
 type StyleProps = {
   sx: Record<string, string | number>;
@@ -44,6 +44,24 @@ const statusStyles: Record<PackageStatus, StyleProps> = {
       background: BCDesignTokens.supportSurfaceColorSuccess,
     },
     label: "Completed",
+  },
+  PARTIALLY_COMPLETED: {
+    label: "Partially Completed",
+    sx: {
+      borderRadius: 1,
+      border: `1px solid ${BCDesignTokens.supportBorderColorWarning}`,
+      background: BCDesignTokens.supportSurfaceColorWarning,
+      height: "24px",
+    },
+  },
+  NEW_SUBMISSION: {
+    sx: {
+      borderRadius: 1,
+      border: `1px solid ${EAOColors.DecisionDark}`,
+      background: EAOColors.DecisionLight,
+      height: "24px",
+    },
+    label: "New Submission",
   },
 };
 

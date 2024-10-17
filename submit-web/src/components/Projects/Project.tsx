@@ -26,10 +26,19 @@ export const Project = ({ accountProject }: ProjectParam) => {
   const navigate = useNavigate();
 
   const activeSubmissionPackages = accountProject.packages.filter(
-    (subPackage) => subPackage.status === PACKAGE_STATUS.IN_REVIEW.value
+    (subPackage) =>
+      !subPackage.status.some(
+        (status) =>
+          status === PACKAGE_STATUS.APPROVED.value ||
+          status === PACKAGE_STATUS.REJECTED.value,
+      ),
   );
-  const pastSubmissionPackages = accountProject.packages.filter(
-    (subPackage) => subPackage.status !== PACKAGE_STATUS.IN_REVIEW.value
+  const pastSubmissionPackages = accountProject.packages.filter((subPackage) =>
+    subPackage.status.some(
+      (status) =>
+        status === PACKAGE_STATUS.APPROVED.value ||
+        status === PACKAGE_STATUS.REJECTED.value,
+    ),
   );
 
   const { name, ea_certificate } = accountProject.project;

@@ -33,18 +33,14 @@ export default function SubmissionPackageTable({
             }}
           >
             <TableRow>
-              <StyledTableHeadCell colSpan={6}>
-                Submission Name
-              </StyledTableHeadCell>
-              <StyledTableHeadCell colSpan={2} align="right">
+              <StyledTableHeadCell>Submission Name</StyledTableHeadCell>
+              <StyledTableHeadCell align="right">
                 Date Submitted
               </StyledTableHeadCell>
-              <StyledTableHeadCell colSpan={2} align="right">
+              <StyledTableHeadCell align="right">
                 Submitted By
               </StyledTableHeadCell>
-              <StyledTableHeadCell colSpan={2} align="center">
-                Status
-              </StyledTableHeadCell>
+              <StyledTableHeadCell align="center">Status</StyledTableHeadCell>
             </TableRow>
           </TableHead>
         )}
