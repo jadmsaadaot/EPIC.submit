@@ -64,7 +64,6 @@ class ProjectsByAccount(Resource):
             search_text=search_text,
             status=status,
         )
-        print(status)
         projects = ProjectService.get_projects_by_account_id(account_id, search_options)
         return AccountProjectSchema(many=True).dump(projects), HTTPStatus.OK
 
