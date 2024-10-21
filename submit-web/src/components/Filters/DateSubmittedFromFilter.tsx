@@ -7,21 +7,25 @@ import { useProjectFilters } from "./projectFilterStore";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { BCDesignTokens } from "epic.theme";
 
-export default function DateSubmittedFilter() {
+export default function DateSubmittedFromFilter() {
   const { filters, setFilters } = useProjectFilters();
 
   const handleDateChange = (date: Dayjs | null) => {
-    setFilters({ submitted_on: date });
+    setFilters({ submitted_on_from: date });
   };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
-        value={filters.submitted_on}
+        value={filters.submitted_on_from}
         onChange={handleDateChange}
         slots={{
           textField: (params) => (
-            <TextField fullWidth {...params} placeholder="Date Submitted" />
+            <TextField
+              fullWidth
+              {...params}
+              placeholder="Date Submitted - From"
+            />
           ),
           openPickerIcon: () => (
             <CalendarMonthIcon

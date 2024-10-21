@@ -4,7 +4,8 @@ import { Dayjs } from "dayjs";
 type Filters = {
   status: string[];
   search_text: string;
-  submitted_on: Dayjs | null;
+  submitted_on_from: Dayjs | null;
+  submitted_on_to: Dayjs | null;
 };
 
 type FilterState = {
@@ -17,7 +18,8 @@ export const useProjectFilters = create<FilterState>((set) => ({
   filters: {
     status: [],
     search_text: "",
-    submitted_on: null,
+    submitted_on_from: null,
+    submitted_on_to: null,
   },
   setFilters: (newFilters) =>
     set((state) => ({
@@ -28,7 +30,8 @@ export const useProjectFilters = create<FilterState>((set) => ({
       filters: {
         status: [],
         search_text: "",
-        submitted_on: null,
+        submitted_on_from: null,
+        submitted_on_to: null,
       },
     })),
 }));

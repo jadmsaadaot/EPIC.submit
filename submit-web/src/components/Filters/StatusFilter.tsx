@@ -1,5 +1,7 @@
 import {
+  Box,
   FormControl,
+  InputLabel, // Add InputLabel
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -31,37 +33,27 @@ function StatusFilter() {
         id="status-select"
         value={filters.status}
         multiple
-        displayEmpty
         onChange={handleChange}
         sx={{
           "& .MuiInputBase-input": {
             p: BCDesignTokens.layoutPaddingSmall,
           },
+          "& .MuiOutlinedInput-notchedOutline": {
+            border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault} !important`,
+          },
         }}
         renderValue={(selected) => {
-          if (selected.length === Object.values(SUBMISSION_STATUS).length) {
-            return (
-              <Typography
-                variant="body2"
-                color={BCDesignTokens.typographyColorDisabled}
-              >
-                Status
-              </Typography>
-            );
-          }
-
           return (
             <div style={{ display: "flex", flexWrap: "wrap" }}>
               {(selected as string[]).map((value) => (
-                <SubmissionStatusChip key={value} status={value} />
+                <Box key={value} mr={1}>
+                  <SubmissionStatusChip status={value} />
+                </Box>
               ))}
             </div>
           );
         }}
       >
-        <MenuItem value="all">
-          <em>All</em>
-        </MenuItem>
         {Object.values(SUBMISSION_STATUS).map((status) => (
           <MenuItem key={status.value} value={status.value}>
             <SubmissionStatusChip status={status.value} />
