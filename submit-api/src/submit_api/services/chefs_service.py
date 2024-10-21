@@ -116,4 +116,4 @@ class ChefsApiService:
         url = f'{self.ches_base_url}/api/v1/email'
         response = requests.post(url, data=json_request_body, headers=headers)
         response.raise_for_status()
-        return response.json()
+        return response.json(), response.status_code
