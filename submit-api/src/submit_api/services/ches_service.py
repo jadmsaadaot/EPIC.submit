@@ -27,6 +27,7 @@ from submit_api.utils.template import Template
 @dataclass
 class EmailDetails:
     """Email details class."""
+
     sender: str
     recipients: List[str]
     subject: str
@@ -37,13 +38,14 @@ class EmailDetails:
     bcc: Optional[List[str]] = None
 
     def __post_init__(self):
+        """Post init method to initialize optional fields."""
         self.body_args = self.body_args or {}
         self.cc = self.cc or []  # pylint: disable=invalid-name
         self.bcc = self.bcc or []
 
 
-class ChefsApiService:
-    """CHEFS api Service class."""
+class ChesApiService:
+    """CHES api Service class."""
 
     def __init__(self):
         """Initiate class."""
@@ -64,7 +66,8 @@ class ChefsApiService:
             headers={
                 'Authorization': f'Basic {basic_auth_encoded}',
                 'Content-Type': 'application/x-www-form-urlencoded'
-            }
+            },
+            timeout=10
         )
         response.raise_for_status()
         response_json = response.json()
@@ -114,6 +117,7 @@ class ChefsApiService:
             'Authorization': f'Bearer {self.access_token}'
         }
         url = f'{self.ches_base_url}/api/v1/email'
-        response = requests.post(url, data=json_request_body, headers=headers)
+        response = requests.post(url, data=json_request_body, headers=headers,
+                                 timeout=10)
         response.raise_for_status()
         return response.json(), response.status_code

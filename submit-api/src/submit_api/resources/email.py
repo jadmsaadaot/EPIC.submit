@@ -21,7 +21,7 @@ from submit_api.utils.util import cors_preflight
 
 from ..auth import auth
 from .apihelper import Api as ApiHelper
-from ..services.chefs_service import ChefsApiService, EmailDetails
+from ..services.ches_service import ChesApiService, EmailDetails
 
 API = Namespace("email", description="Endpoints for sending emails")
 """Custom exception messages
@@ -46,5 +46,5 @@ class Item(Resource):
         email_details = EmailDetails(
             **request_json
         )
-        response_json, status = ChefsApiService().send_email(email_details)
+        response_json, status = ChesApiService().send_email(email_details)
         return response_json, status
