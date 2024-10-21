@@ -1,11 +1,9 @@
 import {
   Box,
   FormControl,
-  InputLabel, // Add InputLabel
   MenuItem,
   Select,
   SelectChangeEvent,
-  Typography,
 } from "@mui/material";
 import { useProjectFilters } from "./projectFilterStore";
 import { SUBMISSION_STATUS } from "@/models/Submission";
