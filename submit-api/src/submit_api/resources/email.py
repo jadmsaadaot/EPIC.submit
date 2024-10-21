@@ -46,5 +46,5 @@ class Item(Resource):
         email_details = EmailDetails(
             **request_json
         )
-        response = ChefsApiService().send_email(email_details)
-        return response.json(), response.status_code
+        response_json, status = ChefsApiService().send_email(email_details)
+        return response_json, status
