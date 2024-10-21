@@ -38,7 +38,7 @@ class EmailDetails:
 
     def __post_init__(self):
         self.body_args = self.body_args or {}
-        self.cc = self.cc or []
+        self.cc = self.cc or []  # pylint: disable=invalid-name
         self.bcc = self.bcc or []
 
 

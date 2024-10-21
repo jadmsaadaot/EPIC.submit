@@ -39,7 +39,7 @@ class Item(Resource):
     )
     @API.response(HTTPStatus.BAD_REQUEST, "Bad Request")
     @cors.crossdomain(origin="*")
-    # @auth.require
+    @auth.require
     def post():
         """Send email."""
         request_json = API.payload
