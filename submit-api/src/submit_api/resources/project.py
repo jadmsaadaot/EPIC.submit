@@ -59,10 +59,12 @@ class ProjectsByAccount(Resource):
         args = request.args
         search_text = args.get('search_text')
         # Create search options instance
+        status = list(map(PackageStatus, args.getlist('status[]')))
         search_options = AccountProjectSearchOptions(
             search_text=search_text,
-            status=list(map(PackageStatus, args.getlist('status[]'))),
+            status=status,
         )
+        print(status)
         projects = ProjectService.get_projects_by_account_id(account_id, search_options)
         return AccountProjectSchema(many=True).dump(projects), HTTPStatus.OK
 

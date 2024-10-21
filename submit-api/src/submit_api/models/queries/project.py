@@ -65,9 +65,12 @@ class ProjectQueries:
 
     @classmethod
     def _filter_by_submission_status(cls, query, statuses):
-        """Filter by submissions status."""
+        """Filter by submission status using overlap."""
         if statuses:
-            query = query.join(Package, AccountProject.packages).filter(
-                Package.status.in_(statuses)
-            )
+            # Convert enum to string values
+            status_values = [status.value for status in statuses]
+            if status_values:
+                query = query.join(Package, AccountProject.packages).filter(
+                    Package.status.op('&&')(status_values)
+                )
         return query
