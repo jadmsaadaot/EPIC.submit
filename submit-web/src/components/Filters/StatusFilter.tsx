@@ -29,8 +29,10 @@ function StatusFilter() {
       <Select
         labelId="status-select-label"
         id="status-select"
+        placeholder="Status"
         value={filters.status}
         multiple
+        displayEmpty
         onChange={handleChange}
         sx={{
           "& .MuiInputBase-input": {

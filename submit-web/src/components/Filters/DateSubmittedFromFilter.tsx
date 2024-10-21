@@ -25,6 +25,14 @@ export default function DateSubmittedFromFilter() {
               fullWidth
               {...params}
               placeholder="Date Submitted - From"
+              inputProps={{
+                ...params.inputProps,
+                sx: {
+                  "::placeholder": {
+                    fontSize: BCDesignTokens.typographyFontSizeSmallBody, // Controls placeholder font size
+                  },
+                },
+              }}
             />
           ),
           openPickerIcon: () => (
