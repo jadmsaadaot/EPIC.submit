@@ -47,8 +47,7 @@ function StatusFilter() {
           if (selected.length === 0) {
             return (
               <Typography
-                variant="caption"
-                sx={{ fontSize: BCDesignTokens.typographyFontSizeSmallBody }}
+                variant="body2"
                 color={BCDesignTokens.typographyColorDisabled}
               >
                 Status
