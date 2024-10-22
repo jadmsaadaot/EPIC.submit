@@ -4,6 +4,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Typography,
 } from "@mui/material";
 import { useProjectFilters } from "./projectFilterStore";
 import { SUBMISSION_STATUS } from "@/models/Submission";
@@ -43,6 +44,17 @@ function StatusFilter() {
           },
         }}
         renderValue={(selected) => {
+          if (selected.length === 0) {
+            return (
+              <Typography
+                variant="body2"
+                color={BCDesignTokens.typographyColorDisabled}
+              >
+                Status
+              </Typography>
+            );
+          }
+
           return (
             <div style={{ display: "flex", flexWrap: "wrap" }}>
               {(selected as string[]).map((value) => (
