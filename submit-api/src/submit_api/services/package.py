@@ -139,10 +139,11 @@ class PackageService:
         email_details = EmailDetails(
             template_name=MANAGEMENT_PLAN_SUBMISSION_CONFIRMATION_EMAIL_TEMPLATE,
             body_args={
-                'submitter_name': submitter.display_name,
+                'submitter_name': submitter.full_name,
+                'submission_date': package.submitted_on.strftime('%Y-%m-%d %H:%M:%S'),
                 'certificate_holder_name': proponent.proponent_name,
                 'package_name': package.name,
-                'documents': document_submissions
+                'documents': [submission.submitted_document.name for submission in document_submissions]
             },
             subject=f'Confirmation of receipt for {package.name}',
             sender=sender_email,
@@ -160,9 +161,9 @@ class PackageService:
             cls._update_items_status(package.items, ItemStatus.SUBMITTED.value, session)
             cls._update_package_status(package_id, session, package)
             cls._update_package_submission_details(package, session)
-            cls.send_package_submission_email_confirmation(package)
             session.flush()
             session.commit()
+        cls.send_package_submission_email_confirmation(package)
         return package
 
     @staticmethod
