@@ -17,31 +17,11 @@
 import base64
 import json
 from datetime import datetime, timedelta
-from typing import Optional, List
 import requests
-from attr import dataclass
 from flask import current_app
+
+from submit_api.services.email_service import EmailDetails
 from submit_api.utils.template import Template
-
-
-@dataclass
-class EmailDetails:
-    """Email details class."""
-
-    sender: str
-    recipients: List[str]
-    subject: str
-    body: Optional[str] = None
-    template_name: Optional[str] = None
-    body_args: Optional[dict] = None
-    cc: Optional[List[str]] = None
-    bcc: Optional[List[str]] = None
-
-    def __post_init__(self):
-        """Post init method to initialize optional fields."""
-        self.body_args = self.body_args or {}
-        self.cc = self.cc or []  # pylint: disable=invalid-name
-        self.bcc = self.bcc or []
 
 
 class ChesApiService:
