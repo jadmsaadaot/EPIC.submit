@@ -72,4 +72,3 @@ class ProjectQueries:
             if status_values:
                 query = query.filter(Package.status.op("&&")(status_values))
         return query
-
