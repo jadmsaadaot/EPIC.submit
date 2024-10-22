@@ -4,18 +4,18 @@ from datetime import datetime
 
 from submit_api.enums.item_status import ItemStatus
 from submit_api.exceptions import BadRequestError
-# Set up logging configuration
-
-from submit_api.models import Item as ItemModel, Project as ProjectModel
+from submit_api.models import Item as ItemModel
 from submit_api.models import Package as PackageModel
 from submit_api.models import PackageType as PackageTypeModel
+from submit_api.models import Project as ProjectModel
 from submit_api.models.db import session_scope
+from submit_api.models.email_details import EmailDetails
 from submit_api.models.package import PackageStatus
-from submit_api.models.package_metadata import PackageMetadata as PackageMetadataModel
 from submit_api.models.package_item_type import PackageItemType as PackageItemTypeModel
+from submit_api.models.package_metadata import PackageMetadata as PackageMetadataModel
 from submit_api.models.queries.package import PackageQueries
 from submit_api.models.submission import SubmissionTypeStatus
-from submit_api.services.email_service import EmailDetails, EmailService
+from submit_api.services.email_service import EmailService
 from submit_api.services.package_type import PackageTypeService
 from submit_api.utils.constants import MANAGEMENT_PLAN_SUBMISSION_CONFIRMATION_EMAIL_TEMPLATE
 from submit_api.utils.token_info import TokenInfo

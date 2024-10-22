@@ -14,30 +14,12 @@
 
 
 """Service for sending emails."""
-from dataclasses import dataclass
-from typing import List, Optional
+from threading import Thread
 
+from flask import current_app
+
+from submit_api.models.email_details import EmailDetails
 from submit_api.services.ches_service import ChesApiService
-
-
-@dataclass
-class EmailDetails:
-    """Email details class."""
-
-    sender: str
-    recipients: List[str]
-    subject: str
-    body: Optional[str] = None
-    template_name: Optional[str] = None
-    body_args: Optional[dict] = None
-    cc: Optional[List[str]] = None
-    bcc: Optional[List[str]] = None
-
-    def __post_init__(self):
-        """Post init method to initialize optional fields."""
-        self.body_args = self.body_args or {}
-        self.cc = self.cc or []  # pylint: disable=invalid-name
-        self.bcc = self.bcc or []
 
 
 class EmailService:
@@ -50,7 +32,13 @@ class EmailService:
     def send_email(self, email_details: EmailDetails):
         """Send email."""
         try:
-            return self.email_api_service.send_email(email_details)
+            thread = Thread(
+                target=self.email_api_service.send_email,
+                args=(email_details,)
+            )
+            thread.start()
+            return True
         except Exception as e:
-            raise e
+            current_app.logger.error(f"Error sending email: {e}")
+            return False
 
