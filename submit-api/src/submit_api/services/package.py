@@ -4,16 +4,20 @@ from datetime import datetime
 
 from submit_api.enums.item_status import ItemStatus
 from submit_api.exceptions import BadRequestError
-# Set up logging configuration
-
 from submit_api.models import Item as ItemModel
 from submit_api.models import Package as PackageModel
 from submit_api.models import PackageType as PackageTypeModel
+from submit_api.models import Project as ProjectModel
 from submit_api.models.db import session_scope
+from submit_api.data_classes.email_details import EmailDetails
 from submit_api.models.package import PackageStatus
-from submit_api.models.package_metadata import PackageMetadata as PackageMetadataModel
 from submit_api.models.package_item_type import PackageItemType as PackageItemTypeModel
+from submit_api.models.package_metadata import PackageMetadata as PackageMetadataModel
 from submit_api.models.queries.package import PackageQueries
+from submit_api.models.submission import SubmissionTypeStatus
+from submit_api.services.email_service import EmailService
+from submit_api.services.package_type import PackageTypeService
+from submit_api.utils.constants import MANAGEMENT_PLAN_SUBMISSION_CONFIRMATION_EMAIL_TEMPLATE
 from submit_api.utils.token_info import TokenInfo
 
 
@@ -111,6 +115,43 @@ class PackageService:
         package.submitted_by = TokenInfo.get_id()
         session.add(package)
 
+    @staticmethod
+    def _get_document_submissions_from_package(package):
+        """Get submissions from package."""
+        submissions = []
+        for item in package.items:
+            for submission in item.submissions:
+                if submission.type == SubmissionTypeStatus.DOCUMENT:
+                    submissions.append(submission)
+        return submissions
+
+    @classmethod
+    def send_package_submission_email_confirmation(cls, package: PackageModel):
+        """Send email confirmation for package submission."""
+        submitter = package.submitted_by_account_user
+        submitted_by_email = submitter.work_email_address
+        sender_email = PackageTypeService.get_email_sender_for_package_type(package.type.name)
+        if not sender_email:
+            raise BadRequestError("Sender email not found for package type")
+
+        proponent = ProjectModel.get_one_by_proponent_id(submitter.account.proponent_id)
+        document_submissions = cls._get_document_submissions_from_package(package)
+        email_details = EmailDetails(
+            template_name=MANAGEMENT_PLAN_SUBMISSION_CONFIRMATION_EMAIL_TEMPLATE,
+            body_args={
+                'submitter_name': submitter.full_name,
+                'submission_date': package.submitted_on.strftime('%Y-%m-%d %H:%M:%S'),
+                'certificate_holder_name': proponent.proponent_name,
+                'package_name': package.name,
+                'documents': [submission.submitted_document.name for submission in document_submissions]
+            },
+            subject=f'Confirmation of receipt for {package.name}',
+            sender=sender_email,
+            recipients=[submitted_by_email],
+        )
+
+        return EmailService().send_email(email_details)
+
     @classmethod
     def submit_package(cls, package_id):
         """Submit the package by updating its status and items."""
@@ -122,6 +163,7 @@ class PackageService:
             cls._update_package_submission_details(package, session)
             session.flush()
             session.commit()
+        cls.send_package_submission_email_confirmation(package)
         return package
 
     @staticmethod
