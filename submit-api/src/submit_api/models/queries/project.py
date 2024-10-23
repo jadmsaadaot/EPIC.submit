@@ -15,6 +15,7 @@
 from submit_api.models import AccountProject, Project, db
 from submit_api.models.account_project_search_options import AccountProjectSearchOptions
 from submit_api.models.package import Package
+
 # pylint: disable=too-few-public-methods
 
 
@@ -22,12 +23,13 @@ class ProjectQueries:
     """Query module for complex projects queries"""
 
     @classmethod
-    def get_projects_by_account_id(cls, account_id: int, search_options=AccountProjectSearchOptions):
+    def get_projects_by_account_id(
+        cls, account_id: int, search_options=AccountProjectSearchOptions
+    ):
         """Find projects by account_id with optional search and pagination."""
         query = db.session.query(AccountProject).filter(
             AccountProject.account_id == account_id
         ).join(Project)
-
         # Apply search filters if provided
         query = cls.filter_by_search_criteria(query, search_options)
 
@@ -45,22 +47,29 @@ class ProjectQueries:
         """Apply various filters based on search options."""
         if not search_options:
             return query
-        query = query.join(Package, AccountProject.packages)
+        query = db.session.query(AccountProject).join(Package)
         query = cls._filter_by_submission_name(
             query, search_options.search_text)
         query = cls._filter_by_submission_status(query, search_options.status)
         query = cls._filter_by_submission_dates(
             query, search_options.submitted_on_start, search_options.submitted_on_end)
-
         return query
 
     @classmethod
-    def _filter_by_search_text(cls, query, search_text):
-        """Filter by search text across project name and package name."""
+    def _filter_by_submission_name(cls, query, search_text):
+        """Filter by search text across package name."""
         if search_text:
-            query = query.join(Package, AccountProject.packages).filter(
-                Package.name.ilike(f"%{search_text}%")
-            )
+            query = query.filter(Package.name.ilike(f"%{search_text}%"))
+        return query
+
+    @classmethod
+    def _filter_by_submission_status(cls, query, statuses):
+        """Filter by submission status using overlap."""
+        if statuses:
+            # Convert enum to string values
+            status_values = [status.value for status in statuses]
+            if status_values:
+                query = query.filter(Package.status.op("&&")(status_values))
         return query
 
     @classmethod

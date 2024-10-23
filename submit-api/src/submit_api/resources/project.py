@@ -20,6 +20,7 @@ from flask import request
 from submit_api.schemas.project import AccountProjectSchema, AddProjectSchema, ProjectSchema
 from submit_api.services.project_service import ProjectService
 from submit_api.utils.util import cors_preflight
+from submit_api.models.package import PackageStatus
 from submit_api.models.account_project_search_options import AccountProjectSearchOptions
 from ..auth import auth
 from .apihelper import Api as ApiHelper
@@ -61,10 +62,12 @@ class ProjectsByAccount(Resource):
         submitted_on_end = args.get('submitted_on_end')
         status = list(map(PackageStatus, args.getlist('status[]')))
         # Create search options instance
+        status = list(map(PackageStatus, args.getlist('status[]')))
         search_options = AccountProjectSearchOptions(
             search_text=search_text,
             submitted_on_start=submitted_on_start,
             submitted_on_end=submitted_on_end,
+            status=status,
         )
         projects = ProjectService.get_projects_by_account_id(account_id, search_options)
         return AccountProjectSchema(many=True).dump(projects), HTTPStatus.OK
