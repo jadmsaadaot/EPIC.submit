@@ -10,3 +10,5 @@ class AccountProjectSearchOptions:  # pylint: disable=too-many-instance-attribut
 
     search_text: str
     status: List[PackageStatus]  # Update to be a list of PackageStatus
+    submitted_on_start: str
+    submitted_on_end: str

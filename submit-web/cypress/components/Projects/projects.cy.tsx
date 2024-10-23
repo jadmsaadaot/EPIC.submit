@@ -16,7 +16,7 @@ describe("<ProjectsPage />", () => {
     setupTokenStorage();
     cy.intercept(
       "GET",
-      `${AppConfig.apiUrl}/projects/accounts/1?search_text=`,
+      `${AppConfig.apiUrl}/projects/accounts/1?search_text=&submitted_on_start=&submitted_on_end=`,
       [
         {
           id: 1,

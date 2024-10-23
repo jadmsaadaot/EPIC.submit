@@ -38,7 +38,8 @@ class ProjectQueries:
     @classmethod
     def get_projects_by_proponent_id(cls, proponent_id: int):
         """Find projects by proponent_id"""
-        query = db.session.query(Project).filter(Project.proponent_id == proponent_id)
+        query = db.session.query(Project).filter(
+            Project.proponent_id == proponent_id)
         return query.all()
 
     @classmethod
@@ -47,9 +48,11 @@ class ProjectQueries:
         if not search_options:
             return query
         query = db.session.query(AccountProject).join(Package)
-        query = cls._filter_by_submission_name(query, search_options.search_text)
+        query = cls._filter_by_submission_name(
+            query, search_options.search_text)
         query = cls._filter_by_submission_status(query, search_options.status)
-
+        query = cls._filter_by_submission_dates(
+            query, search_options.submitted_on_start, search_options.submitted_on_end)
         return query
 
     @classmethod
@@ -67,4 +70,13 @@ class ProjectQueries:
             status_values = [status.value for status in statuses]
             if status_values:
                 query = query.filter(Package.status.op("&&")(status_values))
+        return query
+
+    @classmethod
+    def _filter_by_submission_dates(cls, query, submitted_on_start, submitted_on_end):
+        """Filter by the submitted_on date range."""
+        if submitted_on_start:
+            query = query.filter(Package.submitted_on >= submitted_on_start)
+        if submitted_on_end:
+            query = query.filter(Package.submitted_on <= submitted_on_end)
         return query

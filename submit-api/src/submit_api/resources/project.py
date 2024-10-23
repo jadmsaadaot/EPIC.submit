@@ -58,10 +58,13 @@ class ProjectsByAccount(Resource):
         """Get projects by account id."""
         args = request.args
         search_text = args.get('search_text')
-        # Create search options instance
+        submitted_on_start = args.get('submitted_on_start')
+        submitted_on_end = args.get('submitted_on_end')
         status = list(map(PackageStatus, args.getlist('status[]')))
         search_options = AccountProjectSearchOptions(
             search_text=search_text,
+            submitted_on_start=submitted_on_start,
+            submitted_on_end=submitted_on_end,
             status=status,
         )
         projects = ProjectService.get_projects_by_account_id(account_id, search_options)
