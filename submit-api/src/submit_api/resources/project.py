@@ -61,8 +61,6 @@ class ProjectsByAccount(Resource):
         submitted_on_start = args.get('submitted_on_start')
         submitted_on_end = args.get('submitted_on_end')
         status = list(map(PackageStatus, args.getlist('status[]')))
-        # Create search options instance
-        status = list(map(PackageStatus, args.getlist('status[]')))
         search_options = AccountProjectSearchOptions(
             search_text=search_text,
             submitted_on_start=submitted_on_start,
