@@ -27,13 +27,9 @@ class ProjectQueries:
         cls, account_id: int, search_options=AccountProjectSearchOptions
     ):
         """Find projects by account_id with optional search and pagination."""
-        query = (
-            db.session.query(AccountProject)
-            .filter(AccountProject.account_id == account_id)
-            .join(Project)
-            .join(Package, AccountProject.packages)
-        )  # Join with Package here
-
+        query = db.session.query(AccountProject).filter(
+            AccountProject.account_id == account_id
+        ).join(Project)
         # Apply search filters if provided
         query = cls.filter_by_search_criteria(query, search_options)
 
@@ -50,7 +46,7 @@ class ProjectQueries:
         """Apply various filters based on search options."""
         if not search_options:
             return query
-
+        query = db.session.query(AccountProject).join(Package)
         query = cls._filter_by_submission_name(query, search_options.search_text)
         query = cls._filter_by_submission_status(query, search_options.status)
 
