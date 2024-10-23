@@ -26,7 +26,7 @@ class EmailDetails:  # pylint: disable=too-many-instance-attributes
     body: Optional[str] = None
     template_name: Optional[str] = None
     body_args: Optional[dict] = None
-    cc: Optional[List[str]] = None
+    cc: Optional[List[str]] = None  # pylint: disable=invalid-name
     bcc: Optional[List[str]] = None
 
     def __post_init__(self):
