@@ -75,7 +75,6 @@ class ProjectQueries:
     @classmethod
     def _filter_by_submission_dates(cls, query, submitted_on_start, submitted_on_end):
         """Filter by the submitted_on date range."""
-        print(submitted_on_start)
         if submitted_on_start:
             query = query.filter(Package.submitted_on >= submitted_on_start)
         if submitted_on_end:
