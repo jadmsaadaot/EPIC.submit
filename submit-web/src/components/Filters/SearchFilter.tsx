@@ -45,6 +45,13 @@ export const SearchFilter = () => {
           </InputAdornment>
         ),
       }}
+      inputProps={{
+        sx: {
+          "::placeholder": {
+            fontSize: BCDesignTokens.typographyFontSizeSmallBody, // Controls placeholder font size
+          },
+        },
+      }}
     />
   );
 };

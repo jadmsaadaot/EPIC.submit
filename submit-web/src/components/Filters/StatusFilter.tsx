@@ -1,4 +1,5 @@
 import {
+  Box,
   FormControl,
   MenuItem,
   Select,
@@ -29,6 +30,7 @@ function StatusFilter() {
       <Select
         labelId="status-select-label"
         id="status-select"
+        placeholder="Status"
         value={filters.status}
         multiple
         displayEmpty
@@ -37,9 +39,12 @@ function StatusFilter() {
           "& .MuiInputBase-input": {
             p: BCDesignTokens.layoutPaddingSmall,
           },
+          "& .MuiOutlinedInput-notchedOutline": {
+            border: `1px solid ${BCDesignTokens.surfaceColorBorderDefault} !important`,
+          },
         }}
         renderValue={(selected) => {
-          if (selected.length === Object.values(SUBMISSION_STATUS).length) {
+          if (selected.length === 0) {
             return (
               <Typography
                 variant="body2"
@@ -53,15 +58,14 @@ function StatusFilter() {
           return (
             <div style={{ display: "flex", flexWrap: "wrap" }}>
               {(selected as string[]).map((value) => (
-                <SubmissionStatusChip key={value} status={value} />
+                <Box key={value} mr={1}>
+                  <SubmissionStatusChip status={value} />
+                </Box>
               ))}
             </div>
           );
         }}
       >
-        <MenuItem value="all">
-          <em>All</em>
-        </MenuItem>
         {Object.values(SUBMISSION_STATUS).map((status) => (
           <MenuItem key={status.value} value={status.value}>
             <SubmissionStatusChip status={status.value} />

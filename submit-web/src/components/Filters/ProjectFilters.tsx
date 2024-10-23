@@ -1,10 +1,11 @@
 import { Box, Grid, Typography } from "@mui/material";
 import { SearchFilter } from "./SearchFilter";
 import StatusFilter from "./StatusFilter";
-import DateSubmittedFilter from "./DateSubmittedFilter";
 import FilterAltOffOutlinedIcon from "@mui/icons-material/FilterAltOffOutlined";
 import { BCDesignTokens } from "epic.theme";
 import { useProjectFilters } from "./projectFilterStore";
+import DateSubmittedFromFilter from "./DateSubmittedFromFilter";
+import DateSubmittedToFilter from "./DateSubmittedToFilter";
 
 function ProjectFilters() {
   const { resetFilters } = useProjectFilters();
@@ -15,14 +16,17 @@ function ProjectFilters() {
       item
       sx={{ maxWidth: "1448px", justifyContent: "space-between" }}
     >
-      <Grid item xs={3.5}>
+      <Grid item xs={2.5}>
         <SearchFilter />
       </Grid>
       <Grid item xs={3.5}>
         <StatusFilter />
       </Grid>
-      <Grid item xs={3.5}>
-        <DateSubmittedFilter />
+      <Grid item xs={2}>
+        <DateSubmittedFromFilter />
+      </Grid>
+      <Grid item xs={2}>
+        <DateSubmittedToFilter />
       </Grid>
       <Grid container item xs={1}>
         <Box
@@ -33,10 +37,9 @@ function ProjectFilters() {
           sx={{ cursor: "pointer" }}
         >
           <Typography
-            variant="body1"
+            variant="caption"
             sx={{
               color: BCDesignTokens.typographyColorLink,
-              fontWeight: 900,
             }}
           >
             Clear Filters
