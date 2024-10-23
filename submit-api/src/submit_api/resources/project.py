@@ -55,10 +55,15 @@ class ProjectsByAccount(Resource):
     @cors.crossdomain(origin="*")
     def get(account_id):
         """Get projects by account id."""
-        search_text = request.args.get('search_text')
+        args = request.args
+        search_text = args.get('search_text')
+        submitted_on_start = args.get('submitted_on_start')
+        submitted_on_end = args.get('submitted_on_end')
         # Create search options instance
         search_options = AccountProjectSearchOptions(
             search_text=search_text,
+            submitted_on_start=submitted_on_start,
+            submitted_on_end=submitted_on_end,
         )
         projects = ProjectService.get_projects_by_account_id(account_id, search_options)
         return AccountProjectSchema(many=True).dump(projects), HTTPStatus.OK
