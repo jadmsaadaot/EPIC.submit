@@ -15,13 +15,15 @@
 
 from http import HTTPStatus
 
-from flask_restx import Namespace, Resource, cors
 from flask import request
+from flask_restx import Namespace, Resource, cors
+
+from submit_api.models.account_project_search_options import AccountProjectSearchOptions
+from submit_api.models.package import PackageStatus
 from submit_api.schemas.project import AccountProjectSchema, AddProjectSchema, ProjectSchema
 from submit_api.services.project_service import ProjectService
 from submit_api.utils.util import cors_preflight
-from submit_api.models.package import PackageStatus
-from submit_api.models.account_project_search_options import AccountProjectSearchOptions
+
 from ..auth import auth
 from .apihelper import Api as ApiHelper
 

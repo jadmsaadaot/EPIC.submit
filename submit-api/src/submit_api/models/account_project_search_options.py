@@ -1,6 +1,8 @@
 """This module holds data classes."""
 from typing import List
+
 from attr import dataclass
+
 from submit_api.models.package import PackageStatus
 
 

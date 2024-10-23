@@ -1,9 +1,9 @@
 """Service for project management."""
 
 from submit_api.models.account_project import AccountProject as AccountProjectModel
+from submit_api.models.account_project_search_options import AccountProjectSearchOptions
 from submit_api.models.project import Project as ProjectModel
 from submit_api.models.queries.project import ProjectQueries
-from submit_api.models.account_project_search_options import AccountProjectSearchOptions
 
 
 class ProjectService:

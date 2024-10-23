@@ -17,9 +17,11 @@
 import base64
 import json
 from datetime import datetime, timedelta
+
 import requests
 from flask import current_app
 
+from submit_api.data_classes.email_details import EmailDetails
 from submit_api.utils.template import Template
 
 
@@ -67,7 +69,7 @@ class ChesApiService:
             raise ValueError('Template not found')
         return template.render(body_args)
 
-    def _get_email_body(self, email_details):
+    def _get_email_body(self, email_details: EmailDetails):
         if email_details.body:
             body = email_details.body
             body_type = 'text'
@@ -77,7 +79,7 @@ class ChesApiService:
             body_type = 'html'
         return body, body_type
 
-    def send_email(self, email_details):
+    def send_email(self, email_details: EmailDetails):
         """Generate document based on template and data."""
         self._ensure_valid_token()
 

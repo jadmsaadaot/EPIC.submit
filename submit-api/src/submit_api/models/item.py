@@ -4,12 +4,11 @@ Manages the item
 """
 from __future__ import annotations
 
-
 from sqlalchemy import Column, Enum, ForeignKey
 
+from ..enums.item_status import ItemStatus
 from .base_model import BaseModel
 from .db import db
-from ..enums.item_status import ItemStatus
 
 
 class Item(BaseModel):
