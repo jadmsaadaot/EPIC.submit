@@ -13,7 +13,8 @@
 # limitations under the License.
 """Model to handle all complex operations related to User."""
 from submit_api.enums.item_status import ItemStatus
-from submit_api.models.package import Package as PackageModel, PackageStatus
+from submit_api.models.package import Package as PackageModel
+from submit_api.models.package import PackageStatus
 
 
 # pylint: disable=too-few-public-methods
