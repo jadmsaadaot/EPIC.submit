@@ -17,7 +17,7 @@ from typing import List, Optional
 
 
 @dataclass
-class EmailDetails:
+class EmailDetails:  # pylint: disable=too-many-instance-attributes
     """Email details class."""
 
     sender: str

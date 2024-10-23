@@ -20,7 +20,6 @@ from datetime import datetime, timedelta
 import requests
 from flask import current_app
 
-from submit_api.services.email_service import EmailDetails
 from submit_api.utils.template import Template
 
 
@@ -68,16 +67,17 @@ class ChesApiService:
             raise ValueError('Template not found')
         return template.render(body_args)
 
-    def _get_email_body(self, email_details: EmailDetails):
-        if email_details.body:
-            body = email_details.body
+    def _get_email_body(self, email_details):
+        if email_details.get('body'):
+            body = email_details.get('body')
             body_type = 'text'
         else:
-            body = self._get_email_body_from_template(email_details.template_name, email_details.body_args)
+            body = self._get_email_body_from_template(email_details.get('template_name'),
+                                                      email_details.get('body_args'))
             body_type = 'html'
         return body, body_type
 
-    def send_email(self, email_details: EmailDetails):
+    def send_email(self, email_details):
         """Generate document based on template and data."""
         self._ensure_valid_token()
 
@@ -85,11 +85,11 @@ class ChesApiService:
         request_body = {
             'bodyType': body_type,
             'body': body,
-            'subject': email_details.subject,
-            'from': email_details.sender,
-            'to': email_details.recipients,
-            'cc': email_details.cc,
-            'bcc': email_details.bcc
+            'subject': email_details.get('subject'),
+            'from': email_details.get('sender'),
+            'to': email_details.get('recipients'),
+            'cc': email_details.get('cc'),
+            'bcc': email_details.get('bcc')
         }
         json_request_body = json.dumps(request_body)
         headers = {

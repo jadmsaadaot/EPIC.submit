@@ -11,11 +11,4 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-"""This module contains constants used in the application."""
-
-SUBMISSION_PACKAGE_TYPE_EMAIL_SENDER_MAP = {
-    'Management Plan': 'EAO.ManagementPlanSupport@gov.bc.ca'
-}
-
-MANAGEMENT_PLAN_SUBMISSION_CONFIRMATION_EMAIL_TEMPLATE = 'management_plan_submission_verification.html'
-MANAGEMENT_PLAN_SUBMISSION_CONFIRMATION_EMAIL_SUBJECT = 'Management Plan Submission Confirmation'
+"""Exposes all of the data classes."""

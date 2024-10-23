@@ -14,11 +14,12 @@
 
 
 """Service for sending emails."""
-from threading import Thread
+from threading import Thread, ThreadError
 
 from flask import current_app
+from requests.exceptions import RequestException
 
-from submit_api.models.email_details import EmailDetails
+from submit_api.data_classes.email_details import EmailDetails
 from submit_api.services.ches_service import ChesApiService
 
 
@@ -38,7 +39,6 @@ class EmailService:
             )
             thread.start()
             return True
-        except Exception as e:
+        except (ThreadError, RequestException) as e:
             current_app.logger.error(f"Error sending email: {e}")
             return False
-

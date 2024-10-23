@@ -9,7 +9,7 @@ from submit_api.models import Package as PackageModel
 from submit_api.models import PackageType as PackageTypeModel
 from submit_api.models import Project as ProjectModel
 from submit_api.models.db import session_scope
-from submit_api.models.email_details import EmailDetails
+from submit_api.data_classes.email_details import EmailDetails
 from submit_api.models.package import PackageStatus
 from submit_api.models.package_item_type import PackageItemType as PackageItemTypeModel
 from submit_api.models.package_metadata import PackageMetadata as PackageMetadataModel
