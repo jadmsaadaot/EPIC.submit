@@ -7,6 +7,7 @@ import {
   SubmissionType,
 } from "@/models/Submission";
 import { SubmissionItem } from "@/models/SubmissionItem";
+import { defaultUseQueryOptions } from "./constants";
 
 type FormType = Record<string, unknown>;
 export const editSubmission = (id: number, data: FormType) => {
@@ -69,6 +70,9 @@ export const useSaveSubmission = (
       queryClient.invalidateQueries({
         queryKey: ["item", submission.item_id],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["package", submissionItem?.package_id],
+      });
     },
   });
 };
@@ -102,5 +106,6 @@ export const useGetSubmissionsByItemIdAndType = ({
     queryKey: ["submissions", type],
     queryFn: () => getSubmissionsByItemIdAndType({ itemId }),
     enabled: enabled && Boolean(itemId),
+    ...defaultUseQueryOptions,
   });
 };

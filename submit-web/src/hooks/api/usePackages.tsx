@@ -2,6 +2,8 @@ import { submitRequest } from "@/utils/axiosUtils";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Options } from "./types";
 import { SubmissionPackage } from "@/models/Package";
+import { usePackageTableStore } from "@/components/Submission/packageStore";
+import { defaultUseQueryOptions } from "./constants";
 
 const createSubmissionPackage = ({
   accountProjectId,
@@ -18,9 +20,18 @@ const createSubmissionPackage = ({
 };
 
 export const useCreateSubmissionPackage = (options?: Options) => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: createSubmissionPackage,
     ...options,
+    onSuccess: (submissionPackage: SubmissionPackage) => {
+      if (options?.onSuccess) {
+        options.onSuccess();
+      }
+      queryClient.invalidateQueries({
+        queryKey: ["account-projects", submissionPackage.account_project_id],
+      });
+    },
   });
 };
 
@@ -48,6 +59,7 @@ export const useGetSubmissionPackage = ({
     queryKey: ["package", packageId],
     queryFn: () => getSubmissionPackageById({ packageId }),
     enabled: enabled && Boolean(packageId),
+    ...defaultUseQueryOptions,
   });
 };
 
@@ -67,6 +79,7 @@ const updateStateSubmissionPackage = ({
 
 export const useUpdateStateSubmissionPackage = (options?: Options) => {
   const queryClient = useQueryClient();
+  const {} = usePackageTableStore();
   return useMutation({
     mutationFn: updateStateSubmissionPackage,
     ...options,
@@ -76,6 +89,9 @@ export const useUpdateStateSubmissionPackage = (options?: Options) => {
       }
       queryClient.invalidateQueries({
         queryKey: ["package", submissionPackage.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["account-projects", submissionPackage.account_project_id],
       });
     },
   });

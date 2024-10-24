@@ -2,6 +2,7 @@ import { AccountProject, Project } from "@/models/Project";
 import { submitRequest } from "@/utils/axiosUtils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Options } from "./types";
+import { defaultUseQueryOptions } from "./constants";
 
 const loadProjectsByProponentId = (proponentId?: number) => {
   if (!proponentId) {
@@ -39,7 +40,7 @@ export const useLoadProjectsByProponentId = (proponentId?: number) => {
 
 type GetProjectsByAccountParams = {
   accountId?: number;
-  searchOptions?: Record<string, string | number>;
+  searchOptions?: Record<string, string | number | string[]>;
 };
 
 const getProjectsByAccount = ({
@@ -64,7 +65,7 @@ export const useAddProjects = (options?: Options) => {
 
 type UseGetProjectsByAccountParams = {
   accountId: number;
-  searchOptions?: Record<string, string | number>;
+  searchOptions?: Record<string, string | number | string[]>;
 };
 export const useGetProjects = ({
   accountId,
@@ -73,6 +74,8 @@ export const useGetProjects = ({
   return useQuery({
     queryKey: ["account-projects", accountId, searchOptions],
     queryFn: () => getProjectsByAccount({ accountId, searchOptions }),
+    enabled: Boolean(accountId),
+    ...defaultUseQueryOptions,
   });
 };
 
@@ -94,5 +97,6 @@ export const useGetProject = ({ projectId }: UseGetProjectByIdParams) => {
     queryKey: ["account-project", projectId],
     queryFn: () => getProjectById({ projectId }),
     enabled: Boolean(projectId),
+    ...defaultUseQueryOptions,
   });
 };

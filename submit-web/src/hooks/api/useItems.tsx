@@ -1,6 +1,7 @@
 import { SubmissionItem } from "@/models/SubmissionItem";
 import { submitRequest } from "@/utils/axiosUtils";
 import { useQuery } from "@tanstack/react-query";
+import { defaultUseQueryOptions } from "./constants";
 
 type GetSubmissionItemByIdParams = {
   itemId: number;
@@ -24,5 +25,6 @@ export const useGetSubmissionItem = ({
     queryKey: ["item", itemId],
     queryFn: () => getSubmissionItemById({ itemId }),
     enabled: enabled && Boolean(itemId),
+    ...defaultUseQueryOptions,
   });
 };

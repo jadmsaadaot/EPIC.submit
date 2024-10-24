@@ -19,7 +19,7 @@ import {
   useUpdateStateSubmissionPackage,
 } from "@/hooks/api/usePackages";
 import { useGetProject } from "@/hooks/api/useProjects";
-import { usePackageStore } from "@/components/Submission/packageStore";
+import { usePackageTableStore } from "@/components/Submission/packageStore";
 import { useEffect } from "react";
 import { PACKAGE_STATUS } from "@/models/Package";
 import { LoadingButton as Button } from "@/components/Shared/LoadingButton";
@@ -35,7 +35,7 @@ export const Route = createFileRoute(
 });
 
 export default function SubmissionPage() {
-  const { setIsValidating, reset } = usePackageStore();
+  const { setIsValidating, reset } = usePackageTableStore();
   const { projectId: projectIdParam } = useParams({ strict: false });
   const projectId = Number(projectIdParam);
   const { data: accountProject } = useGetProject({

@@ -1,6 +1,5 @@
 import { createFileRoute, Navigate } from "@tanstack/react-router";
 import { Grid } from "@mui/material";
-
 import { useGetProjects } from "@/hooks/api/useProjects";
 import { useAccount } from "@/store/accountStore";
 import { Else, If, Then } from "react-if";
