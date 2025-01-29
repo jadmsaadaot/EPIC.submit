@@ -8,10 +8,14 @@ import { BCDesignTokens } from "epic.theme";
 import { PageGrid } from "@/components/Shared/PageGrid";
 import { InfoBox } from "@/components/Submission/InfoBox";
 import {
+  getSubmissionPackageQueryOptions,
   useGetSubmissionPackage,
   useUpdateStateSubmissionPackage,
 } from "@/hooks/api/usePackages";
-import { useGetAccountProject } from "@/hooks/api/useProjects";
+import {
+  getAccountProjectQueryOptions,
+  useGetAccountProject,
+} from "@/hooks/api/useProjects";
 import { PACKAGE_STATUS } from "@/models/Package";
 import { LoadingButton as Button } from "@/components/Shared/LoadingButton";
 import { notify } from "@/components/Shared/Snackbar/snackbarStore";
@@ -29,11 +33,36 @@ import { ProjectStatus } from "@/components/registration/addProjects/ProjectStat
 import ItemsTable from "@/components/Submission/ItemsTable";
 import { UPDATE_REQUEST_STATUS } from "@/models/UpdateRequest";
 import BarTitle from "@/components/Shared/Text/BarTitle";
+import { ContentBoxSkeleton } from "@/components/Shared/ContentBox/ContentBoxSkeleton";
 
 export const Route = createFileRoute(
   "/proponent/_proponentLayout/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/",
 )({
   component: SubmissionPage,
+  loader: async ({
+    context: { queryClient },
+    params: { projectId, submissionPackageId },
+  }) => {
+    const submissionPackage = await queryClient.ensureQueryData(
+      getSubmissionPackageQueryOptions({
+        packageId: Number(submissionPackageId),
+      }),
+    );
+    const accountProject = await queryClient.ensureQueryData(
+      getAccountProjectQueryOptions(Number(projectId)),
+    );
+    return Promise.resolve({
+      submissionPackage,
+      accountProject,
+    });
+  },
+  errorComponent: () => <Navigate to="/error" />,
+  pendingComponent: () => (
+    <PageGrid>
+      <ContentBoxSkeleton />
+    </PageGrid>
+  ),
+  meta: ({ loaderData }) => [{ title: loaderData.submissionPackage.name }],
 });
 
 export default function SubmissionPage() {

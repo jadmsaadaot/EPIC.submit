@@ -24,7 +24,7 @@ type DocumentsTableProps = Readonly<{
 }>;
 export default function DocumentsTable({ folder }: DocumentsTableProps) {
   const { submissionId: submissionItemId } = useParams({
-    from: "/proponent/_proponentLayout/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/submissions/$submissionId",
+    from: "/proponent/_proponentLayout/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId//submissions/$submissionId",
   });
 
   const [addedSubmissions, setAddedSubmissions] = useState<Submission[]>([]);

@@ -24,7 +24,7 @@ export default function PendingDocumentRow({
   setDocumentSubmissions,
 }: DocumentTableRowProps) {
   const { submissionId: subItemId } = useParams({
-    from: "/proponent/_proponentLayout/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/submissions/$submissionId",
+    from: "/proponent/_proponentLayout/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/submissions/$submissionId",
   });
 
   const queryClient = useQueryClient();

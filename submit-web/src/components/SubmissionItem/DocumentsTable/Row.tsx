@@ -15,7 +15,7 @@ type DocumentRowProps = Readonly<{
 
 export default function Row({ documentSubmission }: DocumentRowProps) {
   const { submissionPackageId } = useParams({
-    from: "/proponent/_proponentLayout/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/submissions/$submissionId",
+    from: "/proponent/_proponentLayout/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/submissions/$submissionId",
   });
   const [pendingGetObject, setPendingGetObject] = useState(false);
   const [isReplacingDocument, setIsReplacingDocument] = useState(false);
