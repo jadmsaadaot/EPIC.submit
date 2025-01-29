@@ -7,6 +7,7 @@ import {
 } from "@/components/SubmissionItem/ItemForm/ProponentItemForm";
 import { getSubmissionItemQueryOptions } from "@/hooks/api/useItems";
 import { getSubmissionPackageQueryOptions } from "@/hooks/api/usePackages";
+import { getAccountProjectQueryOptions } from "@/hooks/api/useProjects";
 import { UPDATE_REQUEST_STATUS } from "@/models/UpdateRequest";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { createFileRoute, Navigate } from "@tanstack/react-router";
@@ -17,18 +18,33 @@ const LoadingSkeleton = () => (
   </PageGrid>
 );
 export const Route = createFileRoute(
-  "/proponent/_proponentLayout/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/_submissionLayout/submissions/$submissionId",
+  "/proponent/_proponentLayout/projects/$projectId/_projectLayout/submission-packages/$submissionPackageId/submissions/$submissionId",
 )({
   component: Submission,
-  loader: ({ context: { queryClient }, params: { submissionId } }) =>
-    queryClient.ensureQueryData(
+  loader: async ({
+    context: { queryClient },
+    params: { submissionId, projectId },
+  }) => {
+    const submissionItem = await queryClient.ensureQueryData(
       getSubmissionItemQueryOptions({ itemId: Number(submissionId) }),
-    ),
+    );
+    const submissionPackage = await queryClient.ensureQueryData(
+      getSubmissionPackageQueryOptions({
+        packageId: submissionItem.package_id,
+      }),
+    );
+    const accountProject = await queryClient.ensureQueryData(
+      getAccountProjectQueryOptions(Number(projectId)),
+    );
+    return Promise.resolve({
+      submissionItem,
+      submissionPackage,
+      accountProject,
+    });
+  },
   errorComponent: () => <Navigate to="/error" />,
   pendingComponent: LoadingSkeleton,
-  meta: ({ loaderData: submissionItem }) => [
-    { title: submissionItem.type.name },
-  ],
+  meta: ({ loaderData }) => [{ title: loaderData.submissionItem.type.name }],
 });
 
 export function Submission() {
