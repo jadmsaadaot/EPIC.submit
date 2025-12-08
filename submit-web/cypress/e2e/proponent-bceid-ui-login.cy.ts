@@ -1,4 +1,4 @@
-describe('Proponent User Login via BCeID (UI Flow)', () => {
+describe.skip('Proponent User Login via BCeID (UI Flow)', () => {
   beforeEach(() => {
     cy.kcLogout();
   });

@@ -21,8 +21,7 @@ module.exports = defineConfig({
 
   // E2E Testing Configuration
   e2e: {
-    // baseUrl: 'https://submit-web-c8b80a-dev.apps.gold.devops.gov.bc.ca',
-    baseUrl: "http://localhost:5173",
+    baseUrl: "http://localhost:5173", // Default, can be overridden via cypress.env.json
     specPattern: "cypress/e2e/**/*.cy.{js,jsx,ts,tsx}",
     supportFile: "cypress/support/e2e.ts",
     video: true,
@@ -38,6 +37,10 @@ module.exports = defineConfig({
       openMode: 0,
     },
     setupNodeEvents(on, config) {
+      // Allow baseUrl to be overridden via cypress.env.json
+      if (config.env.BASE_URL) {
+        config.baseUrl = config.env.BASE_URL;
+      }
       return config;
     },
   },
