@@ -1,36 +1,138 @@
-name: E2E Tests
+name: E2E Tests (Ephemeral Environment)
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'submit-web/**'
+      - 'submit-api/**'
+      - '.github/workflows/e2e.yml'
 
-defaults:
-  run:
-    shell: bash
-    working-directory: ./submit-web
+env:
+  NAMESPACE: c8b80a-dev
+  TOOLS_NAMESPACE: c8b80a-tools
+  IMAGE_TAG: dev
 
 jobs:
-  playwright-tests:
+  e2e-tests:
     runs-on: ubuntu-22.04
+    timeout-minutes: 30
 
     steps:
+      # 1. Setup: Generate unique run ID
+      - name: Generate run ID
+        id: id
+        run: |
+          RUN_ID="e2e-$(echo ${{ github.sha }} | cut -c1-7)-$(date +%s)"
+          echo "RUN_ID=${RUN_ID}" >> $GITHUB_OUTPUT
+          echo "RELEASE_PATRONI=submit-patroni-${RUN_ID}" >> $GITHUB_OUTPUT
+          echo "RELEASE_API=submit-api-${RUN_ID}" >> $GITHUB_OUTPUT
+          echo "RELEASE_WEB=submit-web-${RUN_ID}" >> $GITHUB_OUTPUT
+
+      # 2. Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # 3. Install OpenShift CLI
+      - name: Install OpenShift CLI
+        run: |
+          curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
+          tar -xzf openshift-client-linux.tar.gz
+          sudo mv oc kubectl /usr/local/bin/
+          oc version
+
+      # 4. Install Helm
+      - name: Install Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+          helm version
+
+      # 5. Login to OpenShift
+      - name: Login to OpenShift
+        run: |
+          oc login --token=${{ secrets.OPENSHIFT_TOKEN }} --server=https://api.gold.devops.gov.bc.ca:6443
+          oc project ${{ env.NAMESPACE }}
+
+      # 6. Deploy Patroni (database)
+      - name: Deploy Ephemeral Database
+        run: |
+          helm install ${{ steps.id.outputs.RELEASE_PATRONI }} \
+            ./deployment/charts/submit-patroni \
+            --namespace ${{ env.NAMESPACE }} \
+            --set replicaCount=1 \
+            --set persistentVolume.size=256Mi \
+            --wait --timeout 5m
+
+      # 7. Deploy API
+      - name: Deploy Ephemeral API
+        run: |
+          helm install ${{ steps.id.outputs.RELEASE_API }} \
+            ./deployment/charts/submit-api \
+            --namespace ${{ env.NAMESPACE }} \
+            --set image.tag=${{ env.IMAGE_TAG }} \
+            --set database.secret=${{ steps.id.outputs.RELEASE_PATRONI }} \
+            --set database.service.name=${{ steps.id.outputs.RELEASE_PATRONI }} \
+            --set cors.origin="https://${{ steps.id.outputs.RELEASE_WEB }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca," \
+            --wait --timeout 5m
+
+      # 8. Seed test data
+      - name: Seed test data
+        run: |
+          echo "Seeding test projects and invitation..."
+
+          # Wait for database to be ready
+          sleep 10
+
+          # Get database pod name
+          DB_POD=$(oc get pod -l app.kubernetes.io/instance=${{ steps.id.outputs.RELEASE_PATRONI }} -o jsonpath='{.items[0].metadata.name}')
+
+          # Get database credentials from secret
+          DB_NAME=$(oc get secret ${{ steps.id.outputs.RELEASE_PATRONI }} -o jsonpath='{.data.app-db-name}' | base64 -d)
+          DB_USER=$(oc get secret ${{ steps.id.outputs.RELEASE_PATRONI }} -o jsonpath='{.data.app-db-username}' | base64 -d)
+
+          # Copy seed script to pod
+          oc cp submit-api/scripts/seed_e2e_test_data.sql $DB_POD:/tmp/seed.sql
+
+          # Run seed script
+          oc exec $DB_POD -- psql -U $DB_USER -d $DB_NAME -f /tmp/seed.sql
+
+          echo "Test data seeded successfully"
+
+      # 9. Deploy Web
+      - name: Deploy Ephemeral Web
+        run: |
+          helm install ${{ steps.id.outputs.RELEASE_WEB }} \
+            ./deployment/charts/submit-web \
+            --namespace ${{ env.NAMESPACE }} \
+            --set image.tag=${{ env.IMAGE_TAG }} \
+            --set app.url="${{ steps.id.outputs.RELEASE_WEB }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca" \
+            --set app.api="https://${{ steps.id.outputs.RELEASE_API }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca/api" \
+            --wait --timeout 5m
+
+      # 10. Setup Node.js for tests
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
 
+      # 11. Install dependencies
       - name: Install dependencies
+        working-directory: ./submit-web
         run: npm install --legacy-peer-deps
 
+      # 12. Install Playwright Browsers
       - name: Install Playwright Browsers
+        working-directory: ./submit-web
         run: npx playwright install --with-deps chromium
 
-      - name: Create .env.playwright
+      # 13. Run Playwright tests
+      - name: Run Playwright tests
+        id: tests
+        continue-on-error: true
+        working-directory: ./submit-web
         run: |
           cat > .env.playwright << EOF
-          BASE_URL=https://dev.submit.eao.gov.bc.ca
+          BASE_URL=https://${{ steps.id.outputs.RELEASE_WEB }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca
           STAFF_USERNAME=${{ secrets.STAFF_USERNAME }}
           STAFF_PASSWORD=${{ secrets.STAFF_PASSWORD }}
           PROPONENT_USERNAME=${{ secrets.PROPONENT_USERNAME }}
@@ -40,10 +142,9 @@ jobs:
           PROPONENT_BCEID_USERNAME=${{ secrets.PROPONENT_BCEID_USERNAME }}
           PROPONENT_BCEID_PASSWORD=${{ secrets.PROPONENT_BCEID_PASSWORD }}
           EOF
+          npx playwright test
 
-      - name: Run Playwright tests
-        run: npx playwright test
-
+      # 14. Upload Playwright report
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
@@ -52,6 +153,7 @@ jobs:
           path: submit-web/playwright-report
           retention-days: 30
 
+      # 15. Upload test results
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -59,3 +161,26 @@ jobs:
           name: playwright-test-results
           path: submit-web/test-results
           retention-days: 30
+
+      # 16. Cleanup ephemeral environment (ALWAYS runs)
+      - name: Cleanup ephemeral environment
+        if: always()
+        run: |
+          echo "Cleaning up ephemeral environment..."
+
+          # Uninstall Helm releases
+          helm uninstall ${{ steps.id.outputs.RELEASE_WEB }} -n ${{ env.NAMESPACE }} || true
+          helm uninstall ${{ steps.id.outputs.RELEASE_API }} -n ${{ env.NAMESPACE }} || true
+          helm uninstall ${{ steps.id.outputs.RELEASE_PATRONI }} -n ${{ env.NAMESPACE }} || true
+
+          # Force cleanup remaining resources
+          oc delete all,pvc,secret -l app.kubernetes.io/instance=${{ steps.id.outputs.RELEASE_PATRONI }} -n ${{ env.NAMESPACE }} || true
+          oc delete all,pvc,secret,configmap -l app=${{ steps.id.outputs.RELEASE_API }} -n ${{ env.NAMESPACE }} || true
+          oc delete all,pvc,secret,configmap -l app=${{ steps.id.outputs.RELEASE_WEB }} -n ${{ env.NAMESPACE }} || true
+
+          echo "Cleanup completed"
+
+      # 17. Fail if tests failed
+      - name: Fail if tests failed
+        if: steps.tests.outcome == 'failure'
+        run: exit 1
