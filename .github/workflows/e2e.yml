@@ -1,158 +1,96 @@
-name: E2E Tests (Ephemeral Environment)
+name: E2E Tests (Docker Compose)
 
 on:
-  workflow_dispatch:
-  pull_request:
-    paths:
-      - 'submit-web/**'
-      - 'submit-api/**'
-      - '.github/workflows/e2e.yml'
+  workflow_dispatch:  # Manual trigger for now
+  # pull_request:      # Uncomment to enable PR triggers
+  #   paths:
+  #     - 'submit-web/**'
+  #     - 'submit-api/**'
+  #     - 'docker-compose.e2e.yml'
+  #     - '.github/workflows/e2e.yml'
 
 env:
-  NAMESPACE: c8b80a-dev
-  TOOLS_NAMESPACE: c8b80a-tools
-  IMAGE_TAG: dev
-  OPENSHIFT_SERVER: https://api.gold.devops.gov.bc.ca:6443
+  # Use DEV Keycloak credentials from GitHub secrets
+  KEYCLOAK_ADMIN_CLIENT: ${{ secrets.KEYCLOAK_ADMIN_CLIENT_DEV }}
+  KEYCLOAK_ADMIN_SECRET: ${{ secrets.KEYCLOAK_ADMIN_SECRET_DEV }}
 
 jobs:
   e2e-tests:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     steps:
-      # 1. Setup: Generate unique run ID
-      - name: Generate run ID
-        id: id
-        run: |
-          RUN_ID="e2e-$(echo ${{ github.sha }} | cut -c1-7)-$(date +%s)"
-          echo "RUN_ID=${RUN_ID}" >> $GITHUB_OUTPUT
-          echo "RELEASE_PATRONI=submit-patroni-${RUN_ID}" >> $GITHUB_OUTPUT
-          echo "RELEASE_API=submit-api-${RUN_ID}" >> $GITHUB_OUTPUT
-          echo "RELEASE_WEB=submit-web-${RUN_ID}" >> $GITHUB_OUTPUT
-
-      # 2. Checkout code
+      # 1. Checkout code
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # 3. Install OpenShift CLI
-      - name: Install OpenShift CLI
-        uses: redhat-actions/openshift-tools-installer@v1
-        with:
-          oc: 'latest'
-
-      # 4. Install Helm
-      - name: Install Helm
-        uses: azure/setup-helm@v3
-        with:
-          version: 'latest'
-
-      # 5. Login to OpenShift
-      - name: Login to OpenShift
-        timeout-minutes: 2
+      # 2. Start services via docker-compose
+      - name: Start services
         run: |
-          for i in {1..3}; do
-            if oc login --token=${{ secrets.OPENSHIFT_TOKEN }} --server=${{ env.OPENSHIFT_SERVER }}; then
-              oc project ${{ env.NAMESPACE }}
-              exit 0
-            fi
-            echo "Login attempt $i failed, retrying..."
-            sleep 5
-          done
-          exit 1
+          docker-compose -f docker-compose.e2e.yml up -d
+          echo "Services starting..."
 
-      # 6. Deploy Patroni (database)
-      - name: Deploy Ephemeral Database
+      # 3. Wait for services to be healthy
+      - name: Wait for services
         run: |
-          helm install ${{ steps.id.outputs.RELEASE_PATRONI }} \
-            ./deployment/charts/submit-patroni \
-            --namespace ${{ env.NAMESPACE }} \
-            --set replicaCount=1 \
-            --set persistentVolume.size=256Mi \
-            --wait --timeout 5m
+          echo "Waiting for services to be healthy..."
 
-      # 7. Deploy API
-      - name: Deploy Ephemeral API
-        env:
-          KEYCLOAK_ADMIN_CLIENT: ${{ secrets.KEYCLOAK_ADMIN_CLIENT_DEV }}
-          KEYCLOAK_ADMIN_SECRET: ${{ secrets.KEYCLOAK_ADMIN_SECRET_DEV }}
-        run: |
-          helm install ${{ steps.id.outputs.RELEASE_API }} \
-            ./deployment/charts/submit-api \
-            --namespace ${{ env.NAMESPACE }} \
-            --set image.tag=${{ env.IMAGE_TAG }} \
-            --set database.secret=${{ steps.id.outputs.RELEASE_PATRONI }} \
-            --set database.service.name=${{ steps.id.outputs.RELEASE_PATRONI }} \
-            --set cors.origin="https://${{ steps.id.outputs.RELEASE_WEB }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca," \
-            --set auth.keycloak.adminClientId="$KEYCLOAK_ADMIN_CLIENT" \
-            --set auth.keycloak.adminClientSecret="$KEYCLOAK_ADMIN_SECRET" \
-            --wait --timeout 5m
+          # Wait for all services to report healthy status
+          timeout 120 bash -c 'until [ "$(docker inspect --format="{{.State.Health.Status}}" $(docker-compose -f docker-compose.e2e.yml ps -q db))" = "healthy" ]; do echo "Waiting for db..."; sleep 2; done'
+          echo "✓ Database is healthy"
 
-      # 9. Seed test data
-      - name: Seed test data
-        run: |
-          echo "Seeding test projects and invitation..."
+          timeout 120 bash -c 'until [ "$(docker inspect --format="{{.State.Health.Status}}" $(docker-compose -f docker-compose.e2e.yml ps -q api))" = "healthy" ]; do echo "Waiting for API..."; sleep 2; done'
+          echo "✓ API is healthy"
 
-          # Wait for database pod to be ready
-          oc wait --for=condition=ready pod \
-            -l app.kubernetes.io/instance=${{ steps.id.outputs.RELEASE_PATRONI }} \
-            -n ${{ env.NAMESPACE }} \
-            --timeout=60s
+          timeout 120 bash -c 'until [ "$(docker inspect --format="{{.State.Health.Status}}" $(docker-compose -f docker-compose.e2e.yml ps -q web))" = "healthy" ]; do echo "Waiting for Web..."; sleep 2; done'
+          echo "✓ Web is healthy"
 
-          # Get database pod name
-          DB_POD=$(oc get pod -l app.kubernetes.io/instance=${{ steps.id.outputs.RELEASE_PATRONI }} -o jsonpath='{.items[0].metadata.name}')
+          echo "All services are ready!"
 
-          # Get database credentials from secret
-          DB_NAME=$(oc get secret ${{ steps.id.outputs.RELEASE_PATRONI }} -o jsonpath='{.data.app-db-name}' | base64 -d)
-          DB_USER=$(oc get secret ${{ steps.id.outputs.RELEASE_PATRONI }} -o jsonpath='{.data.app-db-username}' | base64 -d)
+      # 4. Seed test data (COMMENTED OUT - Testing basic login first)
+      # - name: Seed test data
+      #   run: |
+      #     echo "Seeding test data..."
 
-          # Copy seed script to pod
-          oc cp submit-api/scripts/seed_e2e_test_data.sql $DB_POD:/tmp/seed.sql
+      #     # Get API container name
+      #     API_CONTAINER=$(docker-compose -f docker-compose.e2e.yml ps -q api)
 
-          # Run seed script
-          oc exec $DB_POD -- psql -U $DB_USER -d $DB_NAME -f /tmp/seed.sql
+      #     # Verify database is ready using pg_isready
+      #     echo "Verifying database readiness..."
+      #     timeout 30 bash -c 'until docker exec '"$API_CONTAINER"' pg_isready -h db -U submit -d submit; do echo "Waiting for Postgres..."; sleep 2; done'
+      #     echo "✓ Database is ready for connections"
 
-          echo "Test data seeded successfully"
+      #     # Copy seed script to container
+      #     docker cp submit-api/scripts/seed_e2e_test_data.sql $API_CONTAINER:/tmp/seed.sql
 
-      # 10. Deploy Web
-      - name: Deploy Ephemeral Web
-        run: |
-          helm install ${{ steps.id.outputs.RELEASE_WEB }} \
-            ./deployment/charts/submit-web \
-            --namespace ${{ env.NAMESPACE }} \
-            --set image.tag=${{ env.IMAGE_TAG }} \
-            --set app.url="${{ steps.id.outputs.RELEASE_WEB }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca" \
-            --set app.api="https://${{ steps.id.outputs.RELEASE_API }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca/api" \
-            --wait --timeout 5m
+      #     # Execute seed script
+      #     docker exec $API_CONTAINER psql -h db -U submit -d submit -f /tmp/seed.sql
 
-          echo "========================================="
-          echo "🔗 Ephemeral Environment URLs:"
-          echo "   Web: https://${{ steps.id.outputs.RELEASE_WEB }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca"
-          echo "   API: https://${{ steps.id.outputs.RELEASE_API }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca/api"
-          echo "========================================="
+      #     echo "Test data seeded successfully!"
 
-      # 11. Setup Node.js for tests
+      # 5. Install Playwright dependencies
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '18.x'
+          cache: 'npm'
+          cache-dependency-path: submit-web/package-lock.json
 
-      # 12. Install dependencies
       - name: Install dependencies
         working-directory: ./submit-web
         run: npm install --legacy-peer-deps
 
-      # 13. Install Playwright Browsers
-      - name: Install Playwright Browsers
+      - name: Install Playwright browsers
         working-directory: ./submit-web
         run: npx playwright install --with-deps chromium
 
-      # 14. Run Playwright tests
+      # 6. Run Playwright tests
       - name: Run Playwright tests
         id: tests
         continue-on-error: true
         working-directory: ./submit-web
         env:
-          BASE_URL: https://${{ steps.id.outputs.RELEASE_WEB }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca
+          BASE_URL: http://localhost:5173
           STAFF_USERNAME: ${{ secrets.STAFF_USERNAME }}
           STAFF_PASSWORD: ${{ secrets.STAFF_PASSWORD }}
           PROPONENT_USERNAME: ${{ secrets.PROPONENT_USERNAME }}
@@ -163,7 +101,7 @@ jobs:
           PROPONENT_BCEID_PASSWORD: ${{ secrets.PROPONENT_BCEID_PASSWORD }}
         run: npx playwright test
 
-      # 15. Upload Playwright report
+      # 7. Upload artifacts
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
@@ -172,7 +110,6 @@ jobs:
           path: submit-web/playwright-report
           retention-days: 30
 
-      # 16. Upload test results
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -181,26 +118,27 @@ jobs:
           path: submit-web/test-results
           retention-days: 30
 
-      # 17. Cleanup ephemeral environment (ALWAYS runs)
-      - name: Cleanup ephemeral environment
-        if: always()
-        continue-on-error: true
+      # 8. Show logs on failure
+      - name: Show service logs
+        if: failure()
         run: |
-          echo "Cleaning up ephemeral environment..."
+          echo "=== API Logs ==="
+          docker-compose -f docker-compose.e2e.yml logs api
 
-          # Uninstall Helm releases
-          helm uninstall ${{ steps.id.outputs.RELEASE_WEB }} -n ${{ env.NAMESPACE }} --wait || true
-          helm uninstall ${{ steps.id.outputs.RELEASE_API }} -n ${{ env.NAMESPACE }} --wait || true
-          helm uninstall ${{ steps.id.outputs.RELEASE_PATRONI }} -n ${{ env.NAMESPACE }} --wait || true
+          echo "=== Web Logs ==="
+          docker-compose -f docker-compose.e2e.yml logs web
 
-          # Force cleanup remaining resources
-          oc delete all,pvc,secret -l app.kubernetes.io/instance=${{ steps.id.outputs.RELEASE_PATRONI }} -n ${{ env.NAMESPACE }} || true
-          oc delete all,pvc,secret,configmap -l app=${{ steps.id.outputs.RELEASE_API }} -n ${{ env.NAMESPACE }} || true
-          oc delete all,pvc,secret,configmap -l app=${{ steps.id.outputs.RELEASE_WEB }} -n ${{ env.NAMESPACE }} || true
+          echo "=== Database Logs ==="
+          docker-compose -f docker-compose.e2e.yml logs db
 
+      # 9. Cleanup
+      - name: Cleanup
+        if: always()
+        run: |
+          docker-compose -f docker-compose.e2e.yml down -v
           echo "Cleanup completed"
 
-      # 18. Fail if tests failed
+      # 10. Fail if tests failed
       - name: Fail if tests failed
         if: steps.tests.outcome == 'failure'
         run: exit 1

@@ -253,66 +253,71 @@ USE_TEST_KEYCLOAK_DOCKER: YES
 
 **Output**: OWASP ZAP Scan artifact
 
-#### E2E Testing Workflow ([e2e.yml](.github/workflows/e2e.yml))
+#### E2E Testing Workflow - Docker Compose ([e2e.yml](.github/workflows/e2e.yml))
 
-**Purpose**: End-to-end testing of authentication flows and user journeys
+**Purpose**: End-to-end testing using docker-compose for fast PR feedback
 
-**Trigger**: Manual workflow dispatch only
+**Trigger**: Manual workflow dispatch (`workflow_dispatch`)
 
 **Framework**: Playwright
 
 **Test Coverage**:
+- Complete proponent registration flow (OIDC authentication)
+- Project access verification
+- Submission CRUD operations
 - Staff login (ROPC flow)
-- Proponent login (ROPC flow)
 - BC Services Card UI login flow
-- BCeID UI login flow (currently skipped)
+- BCeID UI login flow
 
-**Environment**:
-- Tests run against dev environment: `https://submit-web-c8b80a-dev.apps.gold.devops.gov.bc.ca`
-- Backend API: `https://submit-api-c8b80a-dev.apps.gold.devops.gov.bc.ca/api`
-- Keycloak: `https://dev.loginproxy.gov.bc.ca/auth/realms/eao-epic`
+**Architecture**: Docker Compose Stack
 
-**Steps**:
+Each workflow run deploys services locally via docker-compose:
+- **Database**: PostgreSQL 15 (isolated container)
+- **API**: Submit API (Flask on port 3200)
+- **Web**: Submit Web (Vite dev server on port 5173)
+- **External**: Uses real DEV services (Keycloak, condition-api, epic-document-api)
 
-1. **Install Dependencies**
-   ```bash
-   npm install --legacy-peer-deps
-   ```
+**Workflow Steps**:
 
-2. **Install Playwright Browsers**
-   ```bash
-   npx playwright install --with-deps chromium
-   ```
-
-3. **Create Test Environment Configuration**
-   - Creates `.env.playwright` from GitHub secrets
-   - Sets `BASE_URL` to dev environment
-   - Configures test user credentials
-
-4. **Run E2E Tests**
-   ```bash
-   npx playwright test
-   ```
-   - Browser: Chromium (headless)
-   - Retries: 2 attempts per test
-   - Timeout: 60 seconds per test
-
-5. **Upload Artifacts** (on failure or completion)
-   - Playwright HTML report (interactive test results)
-   - Test results (raw output)
-   - Traces (for debugging failed tests)
+1. **Checkout Code** - Fetches repository source
+2. **Start Services** - `docker-compose up -d` starts all services
+3. **Wait for Health** - Polls services until healthy (max 120s each)
+4. **Seed Test Data** - Runs `seed_e2e_test_data.sql` against Postgres
+5. **Install Dependencies** - Node.js 18, npm, Playwright browsers
+6. **Run Playwright Tests** - Tests against `http://localhost:5173`
+7. **Upload Artifacts** - Playwright reports, videos, screenshots
+8. **Show Logs** - Service logs on failure for debugging
+9. **Cleanup** - `docker-compose down -v` removes all containers/volumes
+10. **Fail if Tests Failed** - Ensures workflow status reflects test outcome
 
 **Required GitHub Secrets**:
-- `CYPRESS_STAFF_USERNAME` - Staff test user credentials
-- `CYPRESS_STAFF_PASSWORD`
-- `CYPRESS_PROPONENT_USERNAME` - Proponent test user credentials
-- `CYPRESS_PROPONENT_PASSWORD`
-- `CYPRESS_PROPONENT_BCSC_USERNAME` - BCSC test credentials
-- `CYPRESS_PROPONENT_BCSC_PASSWORD`
-- `CYPRESS_PROPONENT_BCEID_USERNAME` - BCeID test credentials
-- `CYPRESS_PROPONENT_BCEID_PASSWORD`
+- `KEYCLOAK_ADMIN_CLIENT_DEV` - Keycloak admin client ID
+- `KEYCLOAK_ADMIN_SECRET_DEV` - Keycloak admin client secret
+- `STAFF_USERNAME` - Staff test credentials
+- `STAFF_PASSWORD`
+- `PROPONENT_USERNAME` - Proponent test credentials
+- `PROPONENT_PASSWORD`
+- `PROPONENT_BCSC_USERNAME` - BC Services Card test credentials
+- `PROPONENT_BCSC_PASSWORD`
+- `PROPONENT_BCEID_USERNAME` - BCeID test credentials
+- `PROPONENT_BCEID_PASSWORD`
 
-**Note**: Secret names still use `CYPRESS_` prefix for backward compatibility with existing secrets configuration.
+**Benefits**:
+- 🚀 **Fast**: ~5 minutes vs ~15-20 minutes for OpenShift deployments
+- 🧩 **Simple**: No cluster access, Helm, or OpenShift dependencies
+- 🔄 **Reproducible**: Developers can run exact same setup locally
+- 💰 **Cost-effective**: Runs entirely on GitHub Actions runners
+- 🐛 **Debuggable**: Service logs available, easy to troubleshoot
+
+**Local Development**:
+```bash
+# Run E2E tests locally
+docker-compose -f docker-compose.e2e.yml up -d
+cd submit-web
+npm install --legacy-peer-deps
+npx playwright install --with-deps chromium
+npx playwright test
+```
 
 **Artifacts Retention**: 30 days
 

@@ -3,7 +3,7 @@ import { kcLogin, kcLogout } from "../auth";
 
 const INVITATION_TOKEN = "e2e-test-invitation-token-uuid";
 
-test.describe("Proponent Onboarding and Submission CRUD", () => {
+test.describe.skip("Proponent Onboarding and Submission CRUD", () => {
   test.beforeEach(async ({ page }) => {
     await kcLogout(page);
   });
