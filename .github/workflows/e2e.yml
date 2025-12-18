@@ -12,6 +12,7 @@ env:
   NAMESPACE: c8b80a-dev
   TOOLS_NAMESPACE: c8b80a-tools
   IMAGE_TAG: dev
+  OPENSHIFT_SERVER: https://api.gold.devops.gov.bc.ca:6443
 
 jobs:
   e2e-tests:
@@ -35,23 +36,29 @@ jobs:
 
       # 3. Install OpenShift CLI
       - name: Install OpenShift CLI
-        run: |
-          curl -LO https://mirror.openshift.com/pub/openshift-v4/clients/ocp/stable/openshift-client-linux.tar.gz
-          tar -xzf openshift-client-linux.tar.gz
-          sudo mv oc kubectl /usr/local/bin/
-          oc version
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+          oc: 'latest'
 
       # 4. Install Helm
       - name: Install Helm
-        run: |
-          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-          helm version
+        uses: azure/setup-helm@v3
+        with:
+          version: 'latest'
 
       # 5. Login to OpenShift
       - name: Login to OpenShift
+        timeout-minutes: 2
         run: |
-          oc login --token=${{ secrets.OPENSHIFT_TOKEN }} --server=https://api.gold.devops.gov.bc.ca:6443
-          oc project ${{ env.NAMESPACE }}
+          for i in {1..3}; do
+            if oc login --token=${{ secrets.OPENSHIFT_TOKEN }} --server=${{ env.OPENSHIFT_SERVER }}; then
+              oc project ${{ env.NAMESPACE }}
+              exit 0
+            fi
+            echo "Login attempt $i failed, retrying..."
+            sleep 5
+          done
+          exit 1
 
       # 6. Deploy Patroni (database)
       - name: Deploy Ephemeral Database
@@ -65,6 +72,9 @@ jobs:
 
       # 7. Deploy API
       - name: Deploy Ephemeral API
+        env:
+          KEYCLOAK_ADMIN_CLIENT: ${{ secrets.KEYCLOAK_ADMIN_CLIENT_DEV }}
+          KEYCLOAK_ADMIN_SECRET: ${{ secrets.KEYCLOAK_ADMIN_SECRET_DEV }}
         run: |
           helm install ${{ steps.id.outputs.RELEASE_API }} \
             ./deployment/charts/submit-api \
@@ -73,15 +83,20 @@ jobs:
             --set database.secret=${{ steps.id.outputs.RELEASE_PATRONI }} \
             --set database.service.name=${{ steps.id.outputs.RELEASE_PATRONI }} \
             --set cors.origin="https://${{ steps.id.outputs.RELEASE_WEB }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca," \
+            --set auth.keycloak.adminClientId="$KEYCLOAK_ADMIN_CLIENT" \
+            --set auth.keycloak.adminClientSecret="$KEYCLOAK_ADMIN_SECRET" \
             --wait --timeout 5m
 
-      # 8. Seed test data
+      # 9. Seed test data
       - name: Seed test data
         run: |
           echo "Seeding test projects and invitation..."
 
-          # Wait for database to be ready
-          sleep 10
+          # Wait for database pod to be ready
+          oc wait --for=condition=ready pod \
+            -l app.kubernetes.io/instance=${{ steps.id.outputs.RELEASE_PATRONI }} \
+            -n ${{ env.NAMESPACE }} \
+            --timeout=60s
 
           # Get database pod name
           DB_POD=$(oc get pod -l app.kubernetes.io/instance=${{ steps.id.outputs.RELEASE_PATRONI }} -o jsonpath='{.items[0].metadata.name}')
@@ -98,7 +113,7 @@ jobs:
 
           echo "Test data seeded successfully"
 
-      # 9. Deploy Web
+      # 10. Deploy Web
       - name: Deploy Ephemeral Web
         run: |
           helm install ${{ steps.id.outputs.RELEASE_WEB }} \
@@ -109,42 +124,46 @@ jobs:
             --set app.api="https://${{ steps.id.outputs.RELEASE_API }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca/api" \
             --wait --timeout 5m
 
-      # 10. Setup Node.js for tests
+          echo "========================================="
+          echo "🔗 Ephemeral Environment URLs:"
+          echo "   Web: https://${{ steps.id.outputs.RELEASE_WEB }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca"
+          echo "   API: https://${{ steps.id.outputs.RELEASE_API }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca/api"
+          echo "========================================="
+
+      # 11. Setup Node.js for tests
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18.x'
 
-      # 11. Install dependencies
+      # 12. Install dependencies
       - name: Install dependencies
         working-directory: ./submit-web
         run: npm install --legacy-peer-deps
 
-      # 12. Install Playwright Browsers
+      # 13. Install Playwright Browsers
       - name: Install Playwright Browsers
         working-directory: ./submit-web
         run: npx playwright install --with-deps chromium
 
-      # 13. Run Playwright tests
+      # 14. Run Playwright tests
       - name: Run Playwright tests
         id: tests
         continue-on-error: true
         working-directory: ./submit-web
-        run: |
-          cat > .env.playwright << EOF
-          BASE_URL=https://${{ steps.id.outputs.RELEASE_WEB }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca
-          STAFF_USERNAME=${{ secrets.STAFF_USERNAME }}
-          STAFF_PASSWORD=${{ secrets.STAFF_PASSWORD }}
-          PROPONENT_USERNAME=${{ secrets.PROPONENT_USERNAME }}
-          PROPONENT_PASSWORD=${{ secrets.PROPONENT_PASSWORD }}
-          PROPONENT_BCSC_USERNAME=${{ secrets.PROPONENT_BCSC_USERNAME }}
-          PROPONENT_BCSC_PASSWORD=${{ secrets.PROPONENT_BCSC_PASSWORD }}
-          PROPONENT_BCEID_USERNAME=${{ secrets.PROPONENT_BCEID_USERNAME }}
-          PROPONENT_BCEID_PASSWORD=${{ secrets.PROPONENT_BCEID_PASSWORD }}
-          EOF
-          npx playwright test
+        env:
+          BASE_URL: https://${{ steps.id.outputs.RELEASE_WEB }}-${{ env.NAMESPACE }}.apps.gold.devops.gov.bc.ca
+          STAFF_USERNAME: ${{ secrets.STAFF_USERNAME }}
+          STAFF_PASSWORD: ${{ secrets.STAFF_PASSWORD }}
+          PROPONENT_USERNAME: ${{ secrets.PROPONENT_USERNAME }}
+          PROPONENT_PASSWORD: ${{ secrets.PROPONENT_PASSWORD }}
+          PROPONENT_BCSC_USERNAME: ${{ secrets.PROPONENT_BCSC_USERNAME }}
+          PROPONENT_BCSC_PASSWORD: ${{ secrets.PROPONENT_BCSC_PASSWORD }}
+          PROPONENT_BCEID_USERNAME: ${{ secrets.PROPONENT_BCEID_USERNAME }}
+          PROPONENT_BCEID_PASSWORD: ${{ secrets.PROPONENT_BCEID_PASSWORD }}
+        run: npx playwright test
 
-      # 14. Upload Playwright report
+      # 15. Upload Playwright report
       - name: Upload Playwright report
         if: always()
         uses: actions/upload-artifact@v4
@@ -153,7 +172,7 @@ jobs:
           path: submit-web/playwright-report
           retention-days: 30
 
-      # 15. Upload test results
+      # 16. Upload test results
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
@@ -162,16 +181,17 @@ jobs:
           path: submit-web/test-results
           retention-days: 30
 
-      # 16. Cleanup ephemeral environment (ALWAYS runs)
+      # 17. Cleanup ephemeral environment (ALWAYS runs)
       - name: Cleanup ephemeral environment
         if: always()
+        continue-on-error: true
         run: |
           echo "Cleaning up ephemeral environment..."
 
           # Uninstall Helm releases
-          helm uninstall ${{ steps.id.outputs.RELEASE_WEB }} -n ${{ env.NAMESPACE }} || true
-          helm uninstall ${{ steps.id.outputs.RELEASE_API }} -n ${{ env.NAMESPACE }} || true
-          helm uninstall ${{ steps.id.outputs.RELEASE_PATRONI }} -n ${{ env.NAMESPACE }} || true
+          helm uninstall ${{ steps.id.outputs.RELEASE_WEB }} -n ${{ env.NAMESPACE }} --wait || true
+          helm uninstall ${{ steps.id.outputs.RELEASE_API }} -n ${{ env.NAMESPACE }} --wait || true
+          helm uninstall ${{ steps.id.outputs.RELEASE_PATRONI }} -n ${{ env.NAMESPACE }} --wait || true
 
           # Force cleanup remaining resources
           oc delete all,pvc,secret -l app.kubernetes.io/instance=${{ steps.id.outputs.RELEASE_PATRONI }} -n ${{ env.NAMESPACE }} || true
@@ -180,7 +200,7 @@ jobs:
 
           echo "Cleanup completed"
 
-      # 17. Fail if tests failed
+      # 18. Fail if tests failed
       - name: Fail if tests failed
         if: steps.tests.outcome == 'failure'
         run: exit 1

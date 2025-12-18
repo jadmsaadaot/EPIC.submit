@@ -29,7 +29,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.database.secret }}
-                  key: app-db-name
+                  key: app-db-username
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
@@ -39,7 +39,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.database.secret }}
-                  key: app-db-username
+                  key: app-db-name
             - name: DATABASE_HOST
               value: {{ .Values.database.service.name }}
             - name: DATABASE_PORT
